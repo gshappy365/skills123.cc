@@ -4,6 +4,7 @@ import { loadDimensions } from '../lib/loadData';
 
 const dimensions = loadDimensions();
 const submitUrl = 'https://github.com/gshappy365/skills123.cc/issues/new?template=submit-project.yml';
+const issuesUrl = 'https://github.com/gshappy365/skills123.cc/issues';
 ---
 
 <Layout title="提交项目 | Harness Engineering 评估">
@@ -23,6 +24,10 @@ const submitUrl = 'https://github.com/gshappy365/skills123.cc/issues/new?templat
         在 GitHub 上提交项目
       </a>
       <p class="text-xs text-blue-600 mt-3">需要 GitHub 账号 · 提交后我们会评估并回复</p>
+      <p class="text-xs text-gray-400 mt-2">
+        提示：如果按钮跳转到 GitHub 登录页，登录后会自动跳转到提交表单。
+        你也可以直接访问 <a href={issuesUrl} target="_blank" class="text-blue-600 hover:underline">Issues 页面</a> 选择模板。
+      </p>
     </div>
 
     <!-- How It Works -->
