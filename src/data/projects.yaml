@@ -1,0 +1,143 @@
+projects:
+  - id: atomcode
+    name: AtomCode
+    category: agent
+    repo: https://github.com/atomgit-atomcode/atomcode
+    website: https://atomcode.atomgit.com
+    description: "纯 Rust 开源 Coding Agent，小模型友好，MIT 许可。内置 Agent Loop、代码图谱、MCP 支持、多 Provider 切换，支持 8 个 LLM Provider。"
+    scores:
+      community: 15
+      engineering: 70
+      model_compat: 85
+      security: 80
+      ux: 55
+      ecosystem: 75
+    communityData:
+      stars: 100
+      forks: 15
+      contributors: 21
+      openIssues: 1
+      lastCommit: "2026-05-24"
+    tags: ["Rust", "Coding Agent", "Multi-Provider", "MIT", "MCP"]
+    milestones:
+      - date: "2026-03-19"
+        title: "项目启动"
+        description: "单人 Scaffold 搭建"
+      - date: "2026-04-18"
+        title: "全量开源发布"
+        description: "AtomCode CLI 开源"
+      - date: "2026-05-16"
+        title: "生态扩张"
+        description: "AtomCode Air + 代码审计上线"
+      - date: "2026-05-21"
+        title: "全员切换"
+        description: "公司全员从 Cursor 切换到 AtomCode"
+
+  - id: reasonix
+    name: deepseek-reasonix
+    category: agent
+    repo: https://github.com/esengine/deepseek-reasonix
+    website: https://reasonix.dev
+    description: "DeepSeek 原生优化的终端 Coding Agent，缓存优先架构实现 99.82% 缓存命中率。含桌面 GUI、MCP 原生支持、Skills 系统。"
+    scores:
+      community: 85
+      engineering: 75
+      model_compat: 30
+      security: 65
+      ux: 80
+      ecosystem: 80
+    communityData:
+      stars: 7129
+      forks: 394
+      contributors: 49
+      openIssues: 176
+      lastCommit: "2026-05-25"
+    tags: ["TypeScript", "Coding Agent", "DeepSeek", "MIT", "MCP", "Desktop GUI"]
+    milestones:
+      - date: "2025-Q4"
+        title: "项目启动"
+        description: "DeepSeek 原生 Agent 起步"
+      - date: "2026-05"
+        title: "v0.49 发布"
+        description: "高频迭代，社区最大 Coding Agent"
+
+  - id: kaku
+    name: Kaku
+    category: terminal
+    repo: https://github.com/tw93/Kaku
+    description: "macOS 原生 AI 终端模拟器，WezTerm 深度定制分支。40% 体积缩减、AI 辅助内建、零配置开箱即用。"
+    scores:
+      community: 70
+      engineering: 80
+      model_compat: null
+      security: null
+      ux: 85
+      ecosystem: 50
+    communityData:
+      stars: 5165
+      forks: 252
+      contributors: 40
+      openIssues: 4
+      lastCommit: "2026-05-24"
+    tags: ["Rust", "Terminal", "macOS", "WezTerm Fork", "AI Assistant"]
+    milestones:
+      - date: "2025"
+        title: "项目启动"
+        description: "WezTerm 深度定制分支"
+      - date: "2026-05"
+        title: "成熟阶段"
+        description: "5K+ stars，macOS AI 终端标杆"
+
+  - id: waza
+    name: Waza
+    category: skills
+    repo: https://github.com/tw93/Waza
+    description: "8 个 AI Agent 技能（Slash Commands）集合，编码工程纪律到可重复工作流。跨 Claude Code/Codex/Pi/Desktop 通用。"
+    scores:
+      community: 70
+      engineering: 75
+      model_compat: 85
+      security: 50
+      ux: 80
+      ecosystem: 85
+    communityData:
+      stars: 5060
+      forks: 303
+      contributors: 7
+      openIssues: 0
+      lastCommit: "2026-05-25"
+    tags: ["Python", "Skills", "Claude Code", "MIT", "Cross-Platform"]
+    milestones:
+      - date: "2025"
+        title: "项目启动"
+        description: "Claude Code 技能集合"
+      - date: "2026-05"
+        title: "生态扩展"
+        description: "跨 Agent 支持，5K+ stars"
+
+  - id: meta-kim
+    name: Meta_Kim
+    category: governance
+    repo: https://github.com/KimYx0207/Meta_Kim
+    description: "AI Coding Agent 治理层。9 个 Specialist Meta-Agents、8 阶段执行骨架、3 层记忆系统、动态 Dealing Cards。将 AI 编码从「执行」升级到「治理」。"
+    scores:
+      community: 10
+      engineering: 60
+      model_compat: null
+      security: 85
+      ux: 30
+      ecosystem: 70
+    communityData:
+      stars: 141
+      forks: 43
+      contributors: 2
+      openIssues: 1
+      lastCommit: "2026-05-25"
+    tags: ["JavaScript", "Governance", "Meta-Agent", "MIT", "Multi-Platform"]
+    milestones:
+      - date: "2025-Q4"
+        title: "项目启动"
+        description: "AI 治理层概念验证"
+      - date: "2026-05"
+        title: "架构成熟"
+        description: "9 Agent / 8 阶段 / 3 层记忆完整体系"

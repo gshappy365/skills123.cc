@@ -1,0 +1,74 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import BarChart from '../components/BarChart.astro';
+import { loadProjects, loadDimensions } from '../lib/loadData';
+
+const projects = loadProjects();
+const dimensions = loadDimensions();
+const categories = [...new Set(projects.map(p => p.category))];
+---
+
+<Layout title="Harness Engineering 全链路工具链评估">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Hero -->
+    <div class="mb-10">
+      <h1 class="text-3xl font-bold text-gray-900 mb-3">
+        Harness Engineering 全链路工具链评估
+      </h1>
+      <p class="text-gray-600 max-w-2xl">
+        对 AI Coding Agent、终端、技能集、治理层四个类别的开源项目进行多维度评估。
+        数据每周自动更新，维度覆盖社区影响力、工程质量、模型兼容性、安全治理、用户体验、生态开放性。
+      </p>
+    </div>
+
+    <!-- Community Data Overview -->
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">社区数据概览</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <BarChart projects={projects} metric="stars" label="GitHub Stars" />
+      <BarChart projects={projects} metric="forks" label="Forks" />
+      <BarChart projects={projects} metric="contributors" label="Contributors" />
+    </div>
+
+    <!-- Category Filter -->
+    <div class="flex flex-wrap items-center gap-3 mb-6">
+      <span class="text-sm font-medium text-gray-500">筛选：</span>
+      <button class="category-filter active text-sm px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 font-medium hover:bg-blue-200 transition-colors" data-category="all">
+        全部
+      </button>
+      {categories.map(cat => {
+        const catLabels = { agent: 'Coding Agent', terminal: '终端', skills: '技能集', governance: '治理层' };
+        return (
+          <button class="category-filter text-sm px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 font-medium hover:bg-gray-200 transition-colors" data-category={cat}>
+            {catLabels[cat] || cat}
+          </button>
+        );
+      })}
+    </div>
+
+    <!-- Project Grid -->
+    <div id="project-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {projects.map(p => (
+        <div class="project-item" data-category={p.category}>
+          <ProjectCard project={p} />
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<script>
+  document.querySelectorAll('.category-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.category-filter').forEach(b => {
+        b.className = 'category-filter text-sm px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 font-medium hover:bg-gray-200 transition-colors';
+      });
+      btn.className = 'category-filter active text-sm px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 font-medium hover:bg-blue-200 transition-colors';
+
+      const cat = btn.dataset.category;
+      document.querySelectorAll('.project-item').forEach(item => {
+        item.style.display = cat === 'all' || item.dataset.category === cat ? '' : 'none';
+      });
+    });
+  });
+</script>

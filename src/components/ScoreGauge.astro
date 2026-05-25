@@ -1,0 +1,39 @@
+---
+export interface Props {
+  label: string;
+  score: number;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const { label, score, size = 'md' } = Astro.props;
+const sizeClasses = { sm: 'w-12 h-12 text-xs', md: 'w-16 h-16 text-sm', lg: 'w-24 h-24 text-base' };
+const strokeWidth = { sm: 4, md: 5, lg: 6 };
+const radius = { sm: 20, md: 28, lg: 42 };
+const circumference = { sm: 125.6, md: 175.9, lg: 263.9 };
+const color = score >= 70 ? '#22c55e' : score >= 40 ? '#eab308' : '#ef4444';
+---
+
+<div class="flex flex-col items-center gap-1">
+  <div class={`relative ${sizeClasses[size]}`}>
+    <svg class="w-full h-full -rotate-90" viewBox={`0 0 ${size === 'lg' ? 100 : size === 'md' ? 68 : 52} ${size === 'lg' ? 100 : size === 'md' ? 68 : 52}`}>
+      <circle
+        cx="50%" cy="50%" r={radius[size]}
+        fill="none" stroke="#e5e7eb"
+        stroke-width={strokeWidth[size]}
+      />
+      <circle
+        cx="50%" cy="50%" r={radius[size]}
+        fill="none" stroke={color}
+        stroke-width={strokeWidth[size]}
+        stroke-dasharray={circumference[size]}
+        stroke-dashoffset={circumference[size] - (circumference[size] * score) / 100}
+        stroke-linecap="round"
+        class="transition-all duration-500"
+      />
+    </svg>
+    <span class="absolute inset-0 flex items-center justify-center font-bold" style={`color: ${color}`}>
+      {score}
+    </span>
+  </div>
+  <span class="text-xs text-gray-500 font-medium">{label}</span>
+</div>

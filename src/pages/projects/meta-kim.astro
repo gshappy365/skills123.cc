@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ComparisonTable from '../../components/ComparisonTable.astro';
+import ScoreGauge from '../../components/ScoreGauge.astro';
+import TagBadge from '../../components/TagBadge.astro';
+import MilestoneTimeline from '../../components/MilestoneTimeline.astro';
+import { getProjectById } from '../../lib/loadData';
+
+const project = getProjectById('meta-kim');
+if (!project) throw new Error('Project not found');
+---
+
+<Layout title={`${project.name} | Harness Engineering 评估`}>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8">
+      <div class="flex items-center gap-3 mb-3">
+        <a href="/" class="text-sm text-blue-600 hover:underline">← 返回总览</a>
+      </div>
+      <h1 class="text-3xl font-bold text-gray-900">{project.name}</h1>
+      <p class="text-gray-600 mt-2">{project.description}</p>
+      <div class="flex flex-wrap items-center gap-4 mt-4">
+        <a href={project.repo} target="_blank" class="text-sm text-blue-600 hover:underline">GitHub ↗</a>
+        {project.website && <a href={project.website} target="_blank" class="text-sm text-blue-600 hover:underline">官网 ↗</a>}
+        <TagBadge tags={project.tags} />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 sm:grid-cols-4 gap-4 mb-10">
+      {Object.entries(project.scores).filter(([_, v]) => v !== null).map(([key, score]) => {
+        const labels = { community: '社区', engineering: '工程', model_compat: '模型兼容', security: '安全', ux: '体验', ecosystem: '生态' };
+        const label = labels[key] || key;
+        return <ScoreGauge label={label} score={score} size="md" />;
+      })}
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+      <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">社区数据</h2>
+        <dl class="space-y-3 text-sm">
+          <div class="flex justify-between">
+            <dt class="text-gray-500">Stars</dt>
+            <dd class="font-mono font-medium">{project.communityData.stars.toLocaleString()}</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-gray-500">Forks</dt>
+            <dd class="font-mono font-medium">{project.communityData.forks.toLocaleString()}</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-gray-500">Contributors</dt>
+            <dd class="font-mono font-medium">{project.communityData.contributors.toLocaleString()}</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-gray-500">Open Issues</dt>
+            <dd class="font-mono font-medium">{project.communityData.openIssues.toLocaleString()}</dd>
+          </div>
+          <div class="flex justify-between">
+            <dt class="text-gray-500">Last Commit</dt>
+            <dd class="font-mono font-medium">{project.communityData.lastCommit}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">维度评分明细</h2>
+        <ComparisonTable scores={project.scores} projectId={project.id} />
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-gray-200 p-6 mb-10">
+      <h2 class="text-lg font-semibold text-gray-900 mb-6">项目里程碑</h2>
+      <MilestoneTimeline milestones={project.milestones} />
+    </div>
+
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">评估分析</h2>
+      <div class="prose prose-gray max-w-none text-sm space-y-3">
+        <p><strong>核心优势：</strong>目前唯一的 AI Coding Agent 治理层方案。9 个 Specialist Meta-Agents 分工明确，8 阶段执行骨架从意图确认到进化写回形成闭环。3 层记忆系统（Markdown + 代码图谱 + 向量检索）保证跨会话连续性。安全治理维度评分最高（85）。</p>
+        <p><strong>主要短板：</strong>社区极小（141 stars，2 contributors），单点维护风险。安装复杂，概念多（9 Agent / 8 阶段 / 10 Dealing Cards / 3 层记忆），学习曲线陡峭。不适用模型兼容性评估。</p>
+        <p><strong>定位：</strong>AI 编码的"操作系统层"——不是替代 Coding Agent，而是给 Agent 加上治理、审查、进化的闭环。如果 Waza 是"技能"，Meta_Kim 就是"流程"。理念超前，但社区和文档需要时间追赶。</p>
+        <p><strong>适合人群：</strong>对 AI 编码质量有高要求的团队；需要审计、合规、知识沉淀的企业用户；愿意投入时间建立治理体系的早期采用者。</p>
+      </div>
+    </div>
+  </div>
+</Layout>

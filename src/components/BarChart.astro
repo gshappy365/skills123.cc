@@ -1,0 +1,36 @@
+---
+import type { Project } from '../lib/loadData';
+
+export interface Props {
+  projects: Project[];
+  metric: 'stars' | 'forks' | 'contributors';
+  label: string;
+}
+
+const { projects, metric, label } = Astro.props;
+const sorted = [...projects].sort((a, b) => b.communityData[metric] - a.communityData[metric]);
+const maxVal = Math.max(...projects.map(p => p.communityData[metric]));
+---
+
+<div class="bg-white rounded-xl border border-gray-200 p-6">
+  <h3 class="text-sm font-semibold text-gray-900 mb-4">{label}</h3>
+  <div class="space-y-3">
+    {sorted.map((p) => {
+      const pct = (p.communityData[metric] / maxVal) * 100;
+      return (
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-medium text-gray-600 w-24 truncate text-right">{p.name}</span>
+          <div class="flex-1 h-5 bg-gray-100 rounded-full overflow-hidden relative">
+            <div
+              class="h-full rounded-full bg-blue-500 transition-all"
+              style={`width: ${Math.max(pct, 3)}%`}
+            ></div>
+          </div>
+          <span class="text-xs font-mono text-gray-500 w-16 text-left">
+            {p.communityData[metric].toLocaleString()}
+          </span>
+        </div>
+      );
+    })}
+  </div>
+</div>

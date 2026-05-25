@@ -1,0 +1,54 @@
+---
+import type { Project } from '../lib/loadData';
+import { getCategoryLabel, getCategoryColor } from '../lib/loadData';
+
+export interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<a
+  href={`/projects/${project.id}`}
+  class="block bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg hover:border-blue-200 transition-all duration-200"
+>
+  <div class="flex items-start justify-between mb-3">
+    <h3 class="text-lg font-semibold text-gray-900">{project.name}</h3>
+    <span class={`text-xs font-medium px-2.5 py-1 rounded-full ${getCategoryColor(project.category)}`}>
+      {getCategoryLabel(project.category)}
+    </span>
+  </div>
+
+  <p class="text-sm text-gray-600 mb-4 line-clamp-2">{project.description}</p>
+
+  <!-- Community Data Row -->
+  <div class="flex items-center gap-4 text-xs text-gray-500 mb-4">
+    <span class="flex items-center gap-1">⭐ {project.communityData.stars.toLocaleString()}</span>
+    <span class="flex items-center gap-1">⑂ {project.communityData.forks}</span>
+    <span class="flex items-center gap-1">👥 {project.communityData.contributors}</span>
+  </div>
+
+  <!-- Score Bars -->
+  <div class="space-y-1.5">
+    {Object.entries(project.scores).filter(([, v]) => v !== null).slice(0, 4).map(([key, score]) => (
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-gray-500 w-16 truncate">{key === 'model_compat' ? '模型兼容' : key === 'community' ? '社区' : key === 'engineering' ? '工程' : key === 'security' ? '安全' : key === 'ux' ? '体验' : key === 'ecosystem' ? '生态' : key}</span>
+        <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div
+            class="h-full rounded-full transition-all"
+            style={`width: ${score}%; background: ${score >= 70 ? '#22c55e' : score >= 40 ? '#eab308' : '#ef4444'}`}
+          ></div>
+        </div>
+        <span class="text-xs text-gray-500 w-6 text-right">{score}</span>
+      </div>
+    ))}
+  </div>
+
+  <!-- Tags -->
+  <div class="flex flex-wrap gap-1.5 mt-4">
+    {project.tags.slice(0, 4).map((tag) => (
+      <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{tag}</span>
+    ))}
+  </div>
+</a>

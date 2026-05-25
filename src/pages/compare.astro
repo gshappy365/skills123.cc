@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RadarChart from '../components/RadarChart.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
+import { loadProjects, loadDimensions } from '../lib/loadData';
+
+const projects = loadProjects();
+const dimensions = loadDimensions();
+const defaultIds = projects.filter(p => p.category === 'agent').map(p => p.id);
+---
+
+<Layout title="项目对比 | Harness Engineering 评估">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-2xl font-bold text-gray-900 mb-2">项目对比</h1>
+    <p class="text-gray-600 mb-8">选择项目进行多维度雷达图对比</p>
+
+    <!-- Project Selector -->
+    <div class="mb-6">
+      <div id="project-selector" class="flex flex-wrap gap-3">
+        {projects.map(p => (
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              class="project-checkbox w-4 h-4 text-blue-600 border-gray-300 rounded"
+              value={p.id}
+              checked={defaultIds.includes(p.id)}
+            />
+            <span class="text-sm font-medium text-gray-700">{p.name}</span>
+            <span class="text-xs text-gray-400">({p.category === 'agent' ? 'Agent' : p.category === 'terminal' ? '终端' : p.category === 'skills' ? '技能' : '治理'})</span>
+          </label>
+        ))}
+      </div>
+    </div>
+
+    <!-- Radar Chart -->
+    <RadarChart projects={projects} selectedIds={defaultIds} />
+
+    <!-- Comparison Table -->
+    <div class="mt-10">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">维度评分明细</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {projects.map(p => (
+          <div class="bg-white rounded-xl border border-gray-200 p-6">
+            <h3 class="font-semibold text-gray-900 mb-4">{p.name}</h3>
+            <ComparisonTable scores={p.scores} projectId={p.id} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  document.querySelectorAll('.project-checkbox').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const checked = Array.from(document.querySelectorAll('.project-checkbox:checked')).map(c => c.value);
+      // Dispatch custom event to radar chart
+      window.dispatchEvent(new CustomEvent('projects-changed', { detail: checked }));
+    });
+  });
+</script>

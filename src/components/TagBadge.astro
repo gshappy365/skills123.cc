@@ -1,0 +1,17 @@
+---
+export interface Props {
+  tags: string[];
+  limit?: number;
+}
+
+const { tags, limit } = Astro.props;
+const displayTags = limit ? tags.slice(0, limit) : tags;
+---
+
+<div class="flex flex-wrap gap-1.5">
+  {displayTags.map((tag) => (
+    <span class="inline-flex items-center text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full font-medium hover:bg-gray-200 transition-colors">
+      {tag}
+    </span>
+  ))}
+</div>

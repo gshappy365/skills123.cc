@@ -1,0 +1,52 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | Harness Engineering 评估</title>
+    <meta name="description" content={description || 'Harness Engineering 全链路工具链评估平台'} />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <a href="/" class="flex items-center gap-2 text-lg font-bold text-gray-900">
+            <span class="text-blue-600">⚡</span>
+            <span>Harness Eval</span>
+          </a>
+          <div class="flex items-center gap-6 text-sm font-medium text-gray-600">
+            <a href="/" class="hover:text-blue-600 transition-colors">项目总览</a>
+            <a href="/compare" class="hover:text-blue-600 transition-colors">对比</a>
+            <a href="/methodology" class="hover:text-blue-600 transition-colors">方法论</a>
+            <a href="/about" class="hover:text-blue-600 transition-colors">关于</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-8 mt-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500">
+        <p>Harness Engineering 评估平台 · 数据每周自动更新</p>
+        <p class="mt-1">评估维度基于社区数据 + 人工调研，仅供参考</p>
+      </div>
+    </footer>
+  </body>
+</html>

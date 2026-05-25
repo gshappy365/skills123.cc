@@ -1,0 +1,92 @@
+dimensions:
+  - id: community
+    name: 社区影响力
+    weight: 25
+    icon: "👥"
+    description: "项目的社区规模、活跃度和外部认可度"
+    subMetrics:
+      - name: GitHub Stars
+        source: GitHub API
+      - name: Contributors 数量
+        source: GitHub API
+      - name: Issue 活跃度
+        source: GitHub API
+      - name: Fork 数
+        source: GitHub API
+
+  - id: engineering
+    name: 工程质量
+    weight: 20
+    icon: "⚙️"
+    description: "代码质量、迭代速度和技术选型的合理性"
+    subMetrics:
+      - name: Commit 频率
+        source: GitHub API
+      - name: 发布节奏
+        source: GitHub Releases
+      - name: 技术栈合理性
+        source: 人工评估
+      - name: 二进制/安装体积
+        source: 人工评估
+
+  - id: model_compat
+    name: 模型兼容性
+    weight: 15
+    icon: "🧠"
+    description: "对多种 LLM 的支持程度，特别是小模型和本地模型的友好度"
+    subMetrics:
+      - name: Provider 数量
+        source: 源码/文档
+      - name: 本地模型支持
+        source: 源码/文档
+      - name: 小模型友好度
+        source: 人工评估
+      - name: 缓存/成本优化
+        source: 源码/文档
+    applicableCategories: ["agent", "skills"]
+
+  - id: security
+    name: 安全与治理
+    weight: 15
+    icon: "🛡️"
+    description: "安全护栏、权限控制、可回滚和审计能力"
+    subMetrics:
+      - name: 危险操作拦截
+        source: 源码/文档
+      - name: 敏感文件保护
+        source: 源码/文档
+      - name: 可回滚机制
+        source: 源码/文档
+      - name: 审计日志
+        source: 源码/文档
+    applicableCategories: ["agent", "governance"]
+
+  - id: ux
+    name: 用户体验
+    weight: 15
+    icon: "🎯"
+    description: "上手门槛、平台覆盖、工作流嵌入的顺畅度"
+    subMetrics:
+      - name: 启动速度
+        source: 实测/文档
+      - name: 平台覆盖
+        source: 文档
+      - name: IDE 集成
+        source: 人工评估
+      - name: 配置复杂度
+        source: 人工评估
+
+  - id: ecosystem
+    name: 生态开放性
+    weight: 10
+    icon: "🔗"
+    description: "开源协议、扩展能力、可沉淀性"
+    subMetrics:
+      - name: 开源协议友好度
+        source: LICENSE
+      - name: 插件/MCP 支持
+        source: 源码/文档
+      - name: 技能/模板系统
+        source: 源码/文档
+      - name: 文档质量
+        source: 人工评估

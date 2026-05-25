@@ -1,0 +1,31 @@
+name: Update GitHub Stats
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"  # 每周一早6点 UTC
+  workflow_dispatch:       # 支持手动触发
+
+jobs:
+  fetch-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch latest GitHub stats
+        run: node scripts/fetch-github-stats.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build site
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4

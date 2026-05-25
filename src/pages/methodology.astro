@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { loadDimensions } from '../lib/loadData';
+
+const dimensions = loadDimensions();
+---
+
+<Layout title="评估方法论 | Harness Engineering 评估">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-2xl font-bold text-gray-900 mb-2">评估方法论</h1>
+    <p class="text-gray-600 mb-8">Harness Engineering 全链路工具链的评估框架说明</p>
+
+    <div class="prose prose-gray max-w-none">
+      <h2 class="text-lg font-semibold">评估框架</h2>
+      <p>
+        Harness Engineering 评估框架从 <strong>6 个维度</strong> 对工具链项目进行综合评估。
+        每个维度 0-100 分，加权计算总分。不同类别的项目（Agent / 终端 / 技能集 / 治理层）
+        的适用维度有所不同（如终端工具不评估模型兼容性）。
+      </p>
+
+      <h2 class="text-lg font-semibold mt-8">维度详解</h2>
+    </div>
+
+    <div class="space-y-6 mt-6">
+      {dimensions.map(dim => (
+        <div class="bg-white rounded-xl border border-gray-200 p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-2xl">{dim.icon}</span>
+            <div>
+              <h3 class="font-semibold text-gray-900">{dim.name}</h3>
+              <span class="text-xs text-gray-400">权重 {dim.weight}%</span>
+            </div>
+          </div>
+          <p class="text-sm text-gray-600 mb-3">{dim.description}</p>
+          {dim.applicableCategories && (
+            <p class="text-xs text-gray-400 mb-3">
+              适用类别：{dim.applicableCategories.map(c => ({ agent: 'Coding Agent', terminal: '终端', skills: '技能集', governance: '治理层' }[c] || c)).join('、')}
+            </p>
+          )}
+          <div class="text-sm text-gray-500">
+            <span class="font-medium text-gray-700">子指标：</span>
+            <ul class="mt-1 space-y-1">
+              {dim.subMetrics.map(sm => (
+                <li class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 bg-gray-300 rounded-full"></span>
+                  {sm.name}
+                  <span class="text-xs text-gray-400">({sm.source})</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="prose prose-gray max-w-none mt-10">
+      <h2 class="text-lg font-semibold">评分标准</h2>
+      <ul>
+        <li><strong>0-39</strong>：待完善 — 该维度有显著短板</li>
+        <li><strong>40-69</strong>：良好 — 基本满足需求，有改进空间</li>
+        <li><strong>70-100</strong>：优秀 — 该维度表现突出</li>
+      </ul>
+
+      <h2 class="text-lg font-semibold mt-8">数据来源</h2>
+      <ul>
+        <li><strong>社区数据</strong>：GitHub API，每周自动更新（stars、forks、contributors、issues）</li>
+        <li><strong>定性评分</strong>：基于源码分析、文档阅读、社区调研的人工评估</li>
+        <li><strong>时效性</strong>：社区数据自动更新，定性评分随项目版本迭代人工刷新</li>
+      </ul>
+
+      <h2 class="text-lg font-semibold mt-8">分类说明</h2>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-gray-200">
+            <th class="text-left py-2 font-medium">类别</th>
+            <th class="text-left py-2 font-medium">说明</th>
+            <th class="text-left py-2 font-medium">代表项目</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-gray-100"><td class="py-2">Coding Agent</td><td class="py-2">AI 编码代理，直接操作代码</td><td class="py-2">AtomCode, Reasonix</td></tr>
+          <tr class="border-b border-gray-100"><td class="py-2">终端</td><td class="py-2">AI 原生终端模拟器</td><td class="py-2">Kaku</td></tr>
+          <tr class="border-b border-gray-100"><td class="py-2">技能集</td><td class="py-2">可复用工作流/技能集合</td><td class="py-2">Waza</td></tr>
+          <tr class="border-b border-gray-100"><td class="py-2">治理层</td><td class="py-2">AI Agent 治理与编排</td><td class="py-2">Meta_Kim</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</Layout>

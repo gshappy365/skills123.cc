@@ -1,0 +1,83 @@
+---
+import { loadDimensions } from '../lib/loadData';
+import type { Project } from '../lib/loadData';
+
+export interface Props {
+  projects: Project[];
+  selectedIds: string[];
+}
+
+const { projects, selectedIds } = Astro.props;
+const dimensions = loadDimensions();
+const selected = projects.filter(p => selectedIds.includes(p.id));
+const dimColors = ['#3b82f6', '#22c55e', '#eab308', '#ef4444', '#a855f7', '#06b6d4'];
+
+const chartData = JSON.stringify(selected.map(p => ({ id: p.id, name: p.name, scores: p.scores })));
+const chartDims = JSON.stringify(dimensions.map(d => ({ id: d.id, name: d.name })));
+const chartColors = JSON.stringify(dimColors);
+---
+
+<div class="bg-white rounded-xl border border-gray-200 p-6">
+  <div
+    id="radar-chart"
+    class="w-full"
+    style="height: 400px;"
+    data-projects={chartData}
+    data-dimensions={chartDims}
+    data-colors={chartColors}
+  ></div>
+</div>
+
+<script>
+  import * as echarts from 'echarts';
+
+  const el = document.getElementById('radar-chart');
+  const projects = JSON.parse(el.dataset.projects);
+  const dimensions = JSON.parse(el.dataset.dimensions);
+  const colors = JSON.parse(el.dataset.colors);
+
+  const chart = echarts.init(el);
+
+  const option = {
+    tooltip: {},
+    legend: {
+      data: projects.map(p => p.name),
+      bottom: 0,
+    },
+    radar: {
+      indicator: dimensions.filter(d => projects[0]?.scores[d.id] !== null).map(d => ({
+        name: d.name,
+        max: 100,
+      })),
+      center: ['50%', '45%'],
+      radius: '60%',
+      axisName: {
+        color: '#6b7280',
+        fontSize: 12,
+      },
+    },
+    series: [{
+      type: 'radar',
+      data: projects.map((p, i) => ({
+        name: p.name,
+        value: dimensions.filter(d => p.scores[d.id] !== null).map(d => p.scores[d.id]),
+        areaStyle: {
+          color: colors[i],
+          opacity: 0.1,
+        },
+        lineStyle: {
+          color: colors[i],
+          width: 2,
+        },
+        itemStyle: {
+          color: colors[i],
+        },
+      })),
+    }],
+  };
+
+  chart.setOption(option);
+
+  const resize = () => chart.resize();
+  window.addEventListener('resize', resize);
+</script>

@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="关于 | Harness Engineering 评估">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-2xl font-bold text-gray-900 mb-2">关于本平台</h1>
+    <p class="text-gray-600 mb-8">Harness Engineering 全链路工具链评估平台</p>
+
+    <div class="prose prose-gray max-w-none">
+      <h2 class="text-lg font-semibold">什么是 Harness Engineering？</h2>
+      <p>
+        Harness Engineering 是 2025-2026 年由 HashiCorp 创始人 Mitchell Hashimoto、Anthropic、OpenAI
+        共同确立的软件工程新范式。核心公式：
+      </p>
+      <blockquote class="border-l-4 border-blue-500 pl-4 italic">
+        Agent = Model + Harness<br />
+        "If you're not the model, you're the harness."
+      </blockquote>
+      <p>
+        简言之，未来的软件工程不再是"一个人写代码"，而是"一个人调度 N 个 AI Agent 同时写代码"。
+        Harness 就是调度 AI Agent 的系统层。
+      </p>
+
+      <h2 class="text-lg font-semibold mt-8">全链路工具链</h2>
+      <p>
+        Harness Engineering 的实践需要完整的工具链支撑，我们将其分为四个层次：
+      </p>
+      <ul>
+        <li><strong>Coding Agent</strong> — 直接操作代码的 AI 代理（AtomCode、Reasonix）</li>
+        <li><strong>终端</strong> — AI 原生的终端体验（Kaku）</li>
+        <li><strong>技能集</strong> — 可复用的工程纪律工作流（Waza）</li>
+        <li><strong>治理层</strong> — Agent 编排与治理（Meta_Kim）</li>
+      </ul>
+
+      <h2 class="text-lg font-semibold mt-8">技术栈</h2>
+      <p>
+        本平台基于 Astro + Tailwind CSS 构建，可视化使用 ECharts，
+        数据以 YAML 文件管理，社区数据通过 GitHub Actions 每周自动更新。
+      </p>
+
+      <h2 class="text-lg font-semibold mt-8">免责声明</h2>
+      <p>
+        评分基于公开数据和人工调研，仅供参考。开源项目发展迅速，评分可能滞后于最新版本。
+        欢迎提交 Issue 或 PR 更新数据。
+      </p>
+    </div>
+  </div>
+</Layout>
