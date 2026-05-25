@@ -13,13 +13,24 @@ const categories = [...new Set(projects.map(p => p.category))];
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Hero -->
     <div class="mb-10">
-      <h1 class="text-3xl font-bold text-gray-900 mb-3">
-        Harness Engineering 全链路工具链评估
-      </h1>
-      <p class="text-gray-600 max-w-2xl">
-        对 AI Coding Agent、终端、技能集、治理层四个类别的开源项目进行多维度评估。
-        数据每周自动更新，维度覆盖社区影响力、工程质量、模型兼容性、安全治理、用户体验、生态开放性。
-      </p>
+      <div class="flex items-start justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900 mb-3">
+            Harness Engineering 全链路工具链评估
+          </h1>
+          <p class="text-gray-600 max-w-2xl">
+            对 AI Coding Agent、终端、技能集、治理层四个类别的开源项目进行多维度评估。
+            数据每周自动更新，维度覆盖社区影响力、工程质量、模型兼容性、安全治理、用户体验、生态开放性。
+          </p>
+        </div>
+        <a
+          href="/submit"
+          class="hidden sm:inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shrink-0"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          提交项目
+        </a>
+      </div>
     </div>
 
     <!-- Community Data Overview -->

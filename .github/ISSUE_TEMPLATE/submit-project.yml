@@ -1,0 +1,72 @@
+name: 提交新项目
+description: 提交一个新的 Harness Engineering 工具链项目进行评估
+title: "[项目提交] "
+labels: ["project-submission"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: 项目名称
+      placeholder: 例：AtomCode
+    validations:
+      required: true
+
+  - type: input
+    id: repo
+    attributes:
+      label: GitHub 仓库地址
+      placeholder: https://github.com/owner/repo
+    validations:
+      required: true
+
+  - type: input
+    id: website
+    attributes:
+      label: 官网地址（如有）
+      placeholder: https://example.com
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 工具链类别
+      options:
+        - Coding Agent（直接操作代码的 AI 代理）
+        - 终端（AI 原生终端模拟器）
+        - 技能集（可复用工作流/技能集合）
+        - 治理层（Agent 编排与治理）
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 项目简介
+      description: 用 2-3 句话描述项目是什么、解决什么问题
+      placeholder: 纯 Rust 开源 Coding Agent，小模型友好...
+    validations:
+      required: true
+
+  - type: textarea
+    id: highlights
+    attributes:
+      label: 核心亮点
+      description: 列出项目的 3-5 个核心优势或特色
+      placeholder: |
+        1. 支持 8 个 LLM Provider
+        2. MIT 开源
+        3. 完善的权限模型
+
+  - type: textarea
+    id: tags
+    attributes:
+      label: 技术标签
+      description: 逗号分隔的技术栈标签
+      placeholder: Rust, MCP, Multi-Provider, MIT
+
+  - type: textarea
+    id: why
+    attributes:
+      label: 为什么应该被收录？
+      description: 说明项目在 Harness Engineering 生态中的独特价值
+    validations:
+      required: true
