@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
 @layer base {
+  :root {
+    --color-accent: #2563eb;
+    --color-accent-light: #3b82f6;
+  }
+
   body {
     @apply bg-gray-50 text-gray-900 antialiased;
   }

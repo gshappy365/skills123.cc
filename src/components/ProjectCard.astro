@@ -4,51 +4,86 @@ import { getCategoryLabel, getCategoryColor } from '../lib/loadData';
 
 export interface Props {
   project: Project;
+  featured?: boolean;
 }
 
-const { project } = Astro.props;
+const { project, featured = false } = Astro.props;
+const topScore = Math.max(...Object.values(project.scores).filter((v): v is number => v !== null));
+const topDim = Object.entries(project.scores).find(([, v]) => v === topScore)?.[0] || '';
+const dimLabels: Record<string, string> = {
+  community: '社区', engineering: '工程', model_compat: '模型兼容',
+  security: '安全', ux: '体验', ecosystem: '生态'
+};
 ---
 
 <a
   href={`/projects/${project.id}`}
-  class="block bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg hover:border-blue-200 transition-all duration-200"
+  class={`block bg-white rounded-xl border transition-all duration-200 ${
+    featured
+      ? 'border-blue-200 hover:border-blue-400 shadow-sm hover:shadow-md'
+      : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
+  } hover:-translate-y-0.5`}
 >
-  <div class="flex items-start justify-between mb-3">
-    <h3 class="text-lg font-semibold text-gray-900">{project.name}</h3>
-    <span class={`text-xs font-medium px-2.5 py-1 rounded-full ${getCategoryColor(project.category)}`}>
-      {getCategoryLabel(project.category)}
-    </span>
-  </div>
+  <!-- Top Accent Bar for featured projects -->
+  {featured && <div class="h-1 bg-blue-500 rounded-t-xl"></div>}
 
-  <p class="text-sm text-gray-600 mb-4 line-clamp-2">{project.description}</p>
-
-  <!-- Community Data Row -->
-  <div class="flex items-center gap-4 text-xs text-gray-500 mb-4">
-    <span class="flex items-center gap-1">⭐ {project.communityData.stars.toLocaleString()}</span>
-    <span class="flex items-center gap-1">⑂ {project.communityData.forks}</span>
-    <span class="flex items-center gap-1">👥 {project.communityData.contributors}</span>
-  </div>
-
-  <!-- Score Bars -->
-  <div class="space-y-1.5">
-    {Object.entries(project.scores).filter(([, v]) => v !== null).slice(0, 4).map(([key, score]) => (
-      <div class="flex items-center gap-2">
-        <span class="text-xs text-gray-500 w-16 truncate">{key === 'model_compat' ? '模型兼容' : key === 'community' ? '社区' : key === 'engineering' ? '工程' : key === 'security' ? '安全' : key === 'ux' ? '体验' : key === 'ecosystem' ? '生态' : key}</span>
-        <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-          <div
-            class="h-full rounded-full transition-all"
-            style={`width: ${score}%; background: ${score >= 70 ? '#22c55e' : score >= 40 ? '#eab308' : '#ef4444'}`}
-          ></div>
+  <div class="p-5">
+    <!-- Header Row -->
+    <div class="flex items-start justify-between mb-3">
+      <div class="flex-1 min-w-0 mr-2">
+        <h3 class="text-base font-semibold text-gray-900 truncate">{project.name}</h3>
+        <div class="flex items-center gap-2 mt-0.5">
+          <span class={`text-xs font-medium px-2 py-0.5 rounded-full ${getCategoryColor(project.category)}`}>
+            {getCategoryLabel(project.category)}
+          </span>
+          {topScore >= 80 && (
+            <span class="text-xs text-blue-600 font-medium">最强: {dimLabels[topDim] || topDim} {topScore}</span>
+          )}
         </div>
-        <span class="text-xs text-gray-500 w-6 text-right">{score}</span>
       </div>
-    ))}
-  </div>
+    </div>
 
-  <!-- Tags -->
-  <div class="flex flex-wrap gap-1.5 mt-4">
-    {project.tags.slice(0, 4).map((tag) => (
-      <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{tag}</span>
-    ))}
+    <p class="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed">{project.description}</p>
+
+    <!-- Community Data Row - compact -->
+    <div class="flex items-center gap-3 text-xs text-gray-500 mb-3">
+      <span class="flex items-center gap-1">
+        <span class="text-amber-500">★</span>
+        {project.communityData.stars.toLocaleString()}
+      </span>
+      <span class="text-gray-300">·</span>
+      <span>⑂ {project.communityData.forks}</span>
+      <span class="text-gray-300">·</span>
+      <span>👥 {project.communityData.contributors}</span>
+    </div>
+
+    <!-- Score Bars - mini -->
+    <div class="space-y-1">
+      {Object.entries(project.scores).filter(([, v]) => v !== null).slice(0, 4).map(([key, score]) => {
+        const label = dimLabels[key] || key;
+        const barColor = score >= 70 ? 'bg-blue-500' : score >= 40 ? 'bg-amber-400' : 'bg-red-400';
+        return (
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-gray-400 w-10 text-right">{label}</span>
+            <div class="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                class={`h-full rounded-full ${barColor} transition-all duration-500`}
+                style={`width: ${score}%`}
+              ></div>
+            </div>
+            <span class="text-xs text-gray-400 w-5 text-right font-mono">{score}</span>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Tags -->
+    {project.tags.length > 0 && (
+      <div class="flex flex-wrap gap-1 mt-3 pt-3 border-t border-gray-100">
+        {project.tags.slice(0, 3).map((tag) => (
+          <span class="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded">{tag}</span>
+        ))}
+      </div>
+    )}
   </div>
 </a>
