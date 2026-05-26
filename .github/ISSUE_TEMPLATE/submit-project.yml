@@ -70,3 +70,10 @@ body:
       description: 说明项目在 Harness Engineering 生态中的独特价值
     validations:
       required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        **提交后**: 我们会评估项目并在 3-5 个工作日内回复。
+        评分数据每季度 review 一次，确保时效性。

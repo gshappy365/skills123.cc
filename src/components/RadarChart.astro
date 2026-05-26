@@ -26,11 +26,16 @@ const chartDimLabels = JSON.stringify(dimensions.map(d => ({ id: d.id, name: d.n
     data-dimensions={chartDims}
     data-dim-labels={chartDimLabels}
     data-colors={chartColors}
+    data-selected-ids={JSON.stringify(selectedIds)}
   ></div>
 </div>
 
 <script>
-  import * as echarts from 'echarts';
+  import { init, use } from 'echarts/core';
+  import { RadarChart } from 'echarts/charts';
+  import { TooltipComponent, LegendComponent, RadarComponent } from 'echarts/components';
+  import { CanvasRenderer } from 'echarts/renderers';
+  use([RadarChart, TooltipComponent, LegendComponent, RadarComponent, CanvasRenderer]);
 
   const el = document.getElementById('radar-chart');
   const allProjects = JSON.parse(el.dataset.projects);
@@ -38,7 +43,7 @@ const chartDimLabels = JSON.stringify(dimensions.map(d => ({ id: d.id, name: d.n
   const dimLabels = JSON.parse(el.dataset.dimLabels);
   const colors = JSON.parse(el.dataset.colors);
 
-  const chart = echarts.init(el);
+  const chart = init(el);
 
   function getActiveDims(project) {
     return dimensions.filter(d => project.scores[d.id] !== null);
@@ -94,9 +99,9 @@ const chartDimLabels = JSON.stringify(dimensions.map(d => ({ id: d.id, name: d.n
     };
   }
 
-  // 初始渲染
-  const initialSelected = allProjects.filter(p => p.category === 'agent').map(p => p.id);
-  chart.setOption(buildOption(initialSelected));
+  // 初始渲染 — 使用服务端传入的 selectedIds prop
+  const initialSelected = JSON.parse(el.dataset.selectedIds || '[]');
+  chart.setOption(buildOption(initialSelected.length > 0 ? initialSelected : allProjects.map(p => p.id)));
 
   // 监听切换事件
   window.addEventListener('projects-changed', (e) => {

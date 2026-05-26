@@ -5,6 +5,7 @@ projects:
     repo: https://github.com/atomgit-atomcode/atomcode
     website: https://atomcode.atomgit.com
     description: "纯 Rust 开源 Coding Agent，小模型友好，MIT 许可。内置 Agent Loop、代码图谱、MCP 支持、多 Provider 切换，支持 8 个 LLM Provider。"
+    lastReviewed: "2026-05-26"
     scores:
       community: 15
       engineering: 70
@@ -54,6 +55,7 @@ projects:
     repo: https://github.com/esengine/deepseek-reasonix
     website: https://reasonix.dev
     description: "DeepSeek 原生优化的终端 Coding Agent，缓存优先架构实现 99.82% 缓存命中率。含桌面 GUI、MCP 原生支持、Skills 系统。"
+    lastReviewed: "2026-05-26"
     scores:
       community: 85
       engineering: 75
@@ -95,6 +97,7 @@ projects:
     category: terminal
     repo: https://github.com/tw93/Kaku
     description: "macOS 原生 AI 终端模拟器，WezTerm 深度定制分支。40% 体积缩减、AI 辅助内建、零配置开箱即用。"
+    lastReviewed: "2026-05-26"
     scores:
       community: 70
       engineering: 80
@@ -136,6 +139,7 @@ projects:
     category: skills
     repo: https://github.com/tw93/Waza
     description: "8 个 AI Agent 技能（Slash Commands）集合，编码工程纪律到可重复工作流。跨 Claude Code/Codex/Pi/Desktop 通用。"
+    lastReviewed: "2026-05-26"
     scores:
       community: 70
       engineering: 75
@@ -177,6 +181,7 @@ projects:
     repo: https://github.com/Hmbown/CodeWhale
     website: https://codewhale.net/
     description: "Agentic coding terminal。DeepSeek-first，多 Provider 支持，缓存优先架构。5 语言界面、中国区端点、CNB 镜像、鲸鱼主题。"
+    lastReviewed: "2026-05-26"
     scores:
       community: 95
       engineering: 85
@@ -200,7 +205,7 @@ projects:
       weaknesses: >
         442 个 open issues 积压较多。
         DeepSeek-first 定位可能限制模型选择自由度。
-        contributors endpoint 未公开，社区贡献者数据不透明。
+        contributors endpoint 未公开，社区贡献者数据不透明（GitHub API 返回 ~99 含匿名 vs ~89 不含匿名）。
       positioning: >
         当前社区最大的 AI Coding Terminal，DeepSeek 生态的代表作。
         与 deepseek-reasonix 定位相似但社区规模大 4 倍。
@@ -222,6 +227,7 @@ projects:
     category: governance
     repo: https://github.com/KimYx0207/Meta_Kim
     description: "AI Coding Agent 治理层。9 个 Specialist Meta-Agents、8 阶段执行骨架、3 层记忆系统、动态 Dealing Cards。将 AI 编码从「执行」升级到「治理」。"
+    lastReviewed: "2026-05-26"
     scores:
       community: 10
       engineering: 60
@@ -262,3 +268,96 @@ projects:
       - date: "2026-05"
         title: "架构成熟"
         description: "9 Agent / 8 阶段 / 3 层记忆完整体系"
+
+  - id: agentscope
+    name: AgentScope
+    category: agent
+    repo: https://github.com/modelscope/agentscope
+    description: "构建和运行「可观察、可理解、可信任」的 AI Agent。多 Agent 框架，10 个 LLM Provider 支持，MCP/A2A 原生集成，生产级事件驱动架构。"
+    lastReviewed: "2026-05-26"
+    scores:
+      community: 92
+      engineering: 85
+      model_compat: 88
+      security: 75
+      ux: 78
+      ecosystem: 82
+    communityData:
+      stars: 25580
+      forks: 2804
+      contributors: 49
+      openIssues: 216
+      lastCommit: "2026-05-26"
+    tags: ["multi-agent", "MCP", "Alibaba", "production-framework", "Apache-2.0"]
+    analysis:
+      strengths: >
+        阿里通义实验室背书，38 个 Release 和 2 篇学术论文。
+        v2.0 生产级重写：事件驱动架构、多租户 Agent 服务、权限引擎、MCP/A2A 双协议支持。
+        10 个 LLM Provider（含 Ollama 本地模型）覆盖全。
+      weaknesses: >
+        框架而非终端工具，使用门槛较高。
+        216 open issues 积压，仍处于 Beta 阶段。
+        ReActAgent 工具调用存在 shell 执行安全风险。
+      positioning: >
+        「AI Agent 的 Spring Boot」——企业级多 Agent 框架。
+        对标 LangChain/LangGraph，但在 MCP 原生支持和多模态上更进。
+        适合需要生产级部署（K8s、Serverless）和 OTel 可观测性的团队。
+      audience: >
+        中大型组织的 AI/ML 工程团队；
+        阿里/DashScope 生态用户；
+        需要生产级多 Agent 编排的企业。
+    milestones:
+      - date: "2024-01-12"
+        title: "项目启动"
+        description: "初始发布 + arxiv 论文"
+      - date: "2025-08"
+        title: "v1.0 成熟"
+        description: "框架稳定，20+ releases"
+      - date: "2026-05-25"
+        title: "v2.0 发布"
+        description: "事件系统、权限引擎、Agent 服务、MCP/A2A"
+
+  - id: skyclaw
+    name: SkyClaw
+    category: agent
+    repo: https://github.com/SkyworkAI/skyclaw
+    website: https://skyclaw.ai
+    description: "百万上下文 Agent 模型。OpenAI 兼容 API，0.5 元/M tokens（DeepSeek 一半）。11 个交互式 Demo 展示 Agent 编程、UI 生成、金融看板等能力。"
+    lastReviewed: "2026-05-26"
+    scores:
+      community: 10
+      engineering: 30
+      model_compat: 50
+      security: 35
+      ux: 70
+      ecosystem: 40
+    communityData:
+      stars: 13
+      forks: 0
+      contributors: 1
+      openIssues: 0
+      lastCommit: "2026-05-26"
+    tags: ["agent-model", "api-only", "low-cost", "openclaw", "deepseek-competitor"]
+    analysis:
+      strengths: >
+        极低定价（0.5 元/M tokens，DeepSeek V4 Flash 的一半）。
+        1M 上下文窗口，OpenAI 兼容 API 零迁移成本。
+        11 个交互式 Demo 展示真实 Agent 能力（游戏生成、UI 应用、金融看板）。
+      weaknesses: >
+        7 天历史，零社区（13 stars，0 forks）。
+        无开源代码/权重、无论文、基准全自报无第三方验证。
+        API-only 无自托管路径，MIT badge 但无 LICENSE 文件。
+      positioning: >
+        低成本 Agent 模型，定位 OpenClaw/Hermes/Claude Code 的多轮工具调用场景。
+        以价格而非能力为竞争点。
+      audience: >
+        成本敏感的中国 AI 开发者；
+        OpenClaw/Hermes 生态用户；
+        需要长上下文 Agent 模型但预算有限的团队。
+    milestones:
+      - date: "2026-05-19"
+        title: "v1.0 发布"
+        description: "SkyClaw-v1.0 初始发布"
+      - date: "2026-05-26"
+        title: "Google Console 集成"
+        description: "最新提交，站点搜索控制台集成"

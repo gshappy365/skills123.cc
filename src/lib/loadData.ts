@@ -30,6 +30,7 @@ export interface Project {
   repo: string;
   website?: string;
   description: string;
+  lastReviewed?: string;
   scores: Record<string, number | null>;
   communityData: CommunityData;
   tags: string[];

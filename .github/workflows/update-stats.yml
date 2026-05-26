@@ -27,6 +27,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Validate YAML after update
+        run: node -e "
+          const yaml = require('js-yaml');
+          const fs = require('fs');
+          yaml.load(fs.readFileSync('src/data/projects.yaml','utf8'));
+          console.log('YAML valid after stats update');
+          "
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
