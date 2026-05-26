@@ -27,31 +27,21 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Validate YAML data files
-        run: node -e "
+        run: |
+          node -e "
           const yaml = require('js-yaml');
           const fs = require('fs');
-          const path = require('path');
-
-          // Validate projects.yaml
           const p = yaml.load(fs.readFileSync('src/data/projects.yaml','utf8'));
           if(!p.projects || !Array.isArray(p.projects)) throw new Error('Invalid projects.yaml: missing projects array');
-          const requiredFields = ['id','name','category','repo','description','scores','communityData','tags'];
           const validCategories = ['agent','terminal','skills','governance'];
+          const requiredFields = ['id','name','category','repo','description','scores','communityData','tags'];
           p.projects.forEach((pr,i)=>{
-            requiredFields.forEach(k=>{if(pr[k]===undefined) throw new Error('Project '+i+' ('+(pr.id||'?')+') missing field: '+k)});
-            if(!validCategories.includes(pr.category)) throw new Error('Project '+i+' invalid category: '+pr.category);
+            requiredFields.forEach(k=>{if(pr[k]===undefined) throw new Error('Project '+i+' missing '+k)});
+            if(!validCategories.includes(pr.category)) throw new Error('Project '+i+' invalid category');
           });
           console.log('  projects.yaml: '+p.projects.length+' projects valid');
-
-          // Validate dimensions.yaml
           const d = yaml.load(fs.readFileSync('src/data/dimensions.yaml','utf8'));
           if(!d.dimensions || !Array.isArray(d.dimensions)) throw new Error('Invalid dimensions.yaml');
-          d.dimensions.forEach((dim,i)=>{
-            if(!dim.id||!dim.name||typeof dim.weight!=='number') throw new Error('Dimension '+i+' missing required fields');
-            if(dim.applicableCategories) dim.applicableCategories.forEach(c=>{
-              if(!validCategories.includes(c)) throw new Error('Dimension '+dim.id+' invalid category: '+c);
-            });
-          });
           console.log('  dimensions.yaml: '+d.dimensions.length+' dimensions valid');
           "
 

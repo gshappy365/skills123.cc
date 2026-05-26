@@ -28,7 +28,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validate YAML after update
-        run: node -e "
+        run: |
+          node -e "
           const yaml = require('js-yaml');
           const fs = require('fs');
           yaml.load(fs.readFileSync('src/data/projects.yaml','utf8'));
