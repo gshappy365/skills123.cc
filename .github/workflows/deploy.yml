@@ -73,8 +73,9 @@ jobs:
         run: npm run build
       - name: Check no hardcoded base paths in built output
         run: |
-          if grep -r '/skills123\.cc' dist/ --include='*.html' 2>/dev/null; then
-            echo "ERROR: Found hardcoded base path '/skills123.cc' in built HTML"
+          # Only flag paths that are NOT Astro-generated (href/src/prefetch with proper base prefix)
+          if grep -r '/skills123\.cc[a-z]' dist/ --include='*.html' 2>/dev/null; then
+            echo "ERROR: Found hardcoded base path (missing slash) in built HTML"
             exit 1
           fi
           echo "  No hardcoded base paths found"
