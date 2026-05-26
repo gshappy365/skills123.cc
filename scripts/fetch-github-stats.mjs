@@ -57,7 +57,7 @@ function repoFromUrl(url) {
   return m ? m[1] : null;
 }
 
-async function fetchStats(repo) {
+async function fetchRepoData(repo) {
   const headers = { Accept: 'application/vnd.github.v3+json' };
   if (process.env.GITHUB_TOKEN) {
     headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
@@ -69,11 +69,47 @@ async function fetchStats(repo) {
     return null;
   }
 
-  const data = await res.json();
+  return await res.json();
+}
+
+async function fetchContributorsCount(repo) {
+  const headers = { Accept: 'application/vnd.github.v3+json' };
+  if (process.env.GITHUB_TOKEN) {
+    headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  }
+
+  // Use per_page=1 and parse Link header for last page number = total count
+  const res = await fetch(`https://api.github.com/repos/${repo}/contributors?per_page=1&anon=true`, { headers });
+  if (!res.ok) {
+    console.warn(`  Failed to fetch contributors for ${repo}: ${res.status}, falling back to 0`);
+    return 0;
+  }
+
+  const link = res.headers.get('link');
+  if (!link) {
+    // Only 1 page or no contributors — count the response body
+    const body = await res.json();
+    return Array.isArray(body) ? body.length : 0;
+  }
+
+  const match = link.match(/page=(\d+)>; rel="last"/);
+  if (match) {
+    return parseInt(match[1], 10);
+  }
+
+  return 0;
+}
+
+async function fetchStats(repo) {
+  const data = await fetchRepoData(repo);
+  if (!data) return null;
+
+  const contributors = await fetchContributorsCount(repo);
+
   return {
     stars: data.stargazers_count,
     forks: data.forks_count,
-    contributors: data.subscribers_count,
+    contributors,
     openIssues: data.open_issues_count,
     lastCommit: data.pushed_at ? data.pushed_at.split('T')[0] : 'unknown',
   };

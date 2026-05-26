@@ -16,6 +16,13 @@ export interface Milestone {
   description: string;
 }
 
+export interface ProjectAnalysis {
+  strengths: string;
+  weaknesses: string;
+  positioning: string;
+  audience: string;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -27,6 +34,7 @@ export interface Project {
   communityData: CommunityData;
   tags: string[];
   milestones: Milestone[];
+  analysis?: ProjectAnalysis;
 }
 
 export interface SubMetric {

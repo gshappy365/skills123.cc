@@ -13,12 +13,27 @@ projects:
       ux: 55
       ecosystem: 75
     communityData:
-      stars: 100
-      forks: 15
-      contributors: 21
+      stars: 116
+      forks: 17
+      contributors: 37
       openIssues: 1
       lastCommit: "2026-05-24"
     tags: ["Rust", "Coding Agent", "Multi-Provider", "MIT", "MCP"]
+    analysis:
+      strengths: >
+        AtomCode 是目前唯一将「小模型友好」作为原生设计的 Coding Agent。
+        8 个 LLM Provider 支持、MIT 开源、完善的权限模型（危险命令拦截、敏感文件保护、undo 快照）
+        使其在安全治理和模型兼容性上表现突出。
+      weaknesses: >
+        社区刚起步（100 stars），无正式 Release 和预编译二进制，
+        纯 TUI 对非终端用户有学习门槛，JetBrains 无插件。
+      positioning: >
+        中国第一个「用 Harness Engineering 方式造出的 Harness Engineering 工具」。
+        哲学上对标 Claude Code 的「大刀阔斧」，AtomCode 走「丰田精益生产」路线
+        ——每一步可干预、可回滚。
+      audience: >
+        重视模型选择自由度和成本控制的中国开发者；
+        希望在 CLI 中完成全流程 AI 编码的工程师。
     milestones:
       - date: "2026-03-19"
         title: "项目启动"
@@ -47,12 +62,26 @@ projects:
       ux: 80
       ecosystem: 80
     communityData:
-      stars: 7129
-      forks: 394
-      contributors: 49
+      stars: 8684
+      forks: 470
+      contributors: 54
       openIssues: 176
       lastCommit: "2026-05-25"
     tags: ["TypeScript", "Coding Agent", "DeepSeek", "MIT", "MCP", "Desktop GUI"]
+    analysis:
+      strengths: >
+        社区最大（7,129 stars），49 个 contributors，迭代速度极快。
+        缓存优先架构是杀手级特性——真实案例 99.82% 缓存命中率，Token 成本降低 80%。
+        桌面 GUI + TUI 双模式，npm 安装零门槛。
+      weaknesses: >
+        DeepSeek 独占，无法切换其他模型。176 个 open issues 积压。
+        无 undo 机制，安全防护主要靠 hooks 而非内置。
+      positioning: >
+        DeepSeek 原生优化的 Coding Agent，缓存架构将 DeepSeek 的低价优势放大到极致。
+        适合已选定 DeepSeek 的团队。
+      audience: >
+        DeepSeek 用户、追求极致 Token 成本控制的独立开发者、
+        需要桌面 GUI 的非终端用户。
     milestones:
       - date: "2025-Q4"
         title: "项目启动"
@@ -74,12 +103,26 @@ projects:
       ux: 85
       ecosystem: 50
     communityData:
-      stars: 5165
-      forks: 252
-      contributors: 40
+      stars: 5172
+      forks: 254
+      contributors: 43
       openIssues: 4
       lastCommit: "2026-05-24"
     tags: ["Rust", "Terminal", "macOS", "WezTerm Fork", "AI Assistant"]
+    analysis:
+      strengths: >
+        macOS 终端体验天花板。40% 体积缩减（40MB vs 67MB），
+        零配置开箱即用，内建 AI 辅助（错误恢复 + 自然语言转命令）。
+        5,165 stars，社区认可度极高。
+      weaknesses: >
+        macOS 独占，无 Windows/Linux 支持。
+        作为 WezTerm fork，依赖上游更新节奏。
+        非独立 Coding Agent，不参与模型兼容性和安全治理维度评估。
+      positioning: >
+        AI 时代的终端——不是替代 Coding Agent，而是让终端本身更智能。
+        与 Waza 互补，共同构成 tw93 的「编码 + 技能」生态。
+      audience: >
+        macOS 开发者、重度终端用户、需要 AI 辅助命令行的工程师。
     milestones:
       - date: "2025"
         title: "项目启动"
@@ -101,12 +144,25 @@ projects:
       ux: 80
       ecosystem: 85
     communityData:
-      stars: 5060
-      forks: 303
-      contributors: 7
+      stars: 5169
+      forks: 306
+      contributors: 8
       openIssues: 0
       lastCommit: "2026-05-25"
     tags: ["Python", "Skills", "Claude Code", "MIT", "Cross-Platform"]
+    analysis:
+      strengths: >
+        跨 Agent 通用（Claude Code / Codex / Pi / Desktop），
+        8 个技能覆盖编码全流程（规划、调试、Review、发布）。
+        MIT 开源，5,060 stars，0 open issues 说明维护质量高。安装简单（npx skills add）。
+      weaknesses: >
+        本身不是 Agent，依赖宿主 Agent 的安全机制。
+        Python 脚本维护成本。技能数量有限（8 个），扩展依赖社区贡献。
+      positioning: >
+        「工程纪律的编码器」——将 think → design → code → check 的最佳实践
+        沉淀为可复用技能。不是替代 Coding Agent，而是让任何 Agent 更规范。
+      audience: >
+        所有使用 AI Coding Agent 的工程师，特别是希望建立结构化工作流的团队。
     milestones:
       - date: "2025"
         title: "项目启动"
@@ -128,12 +184,31 @@ projects:
       ux: 30
       ecosystem: 70
     communityData:
-      stars: 141
+      stars: 142
       forks: 43
       contributors: 2
       openIssues: 1
       lastCommit: "2026-05-25"
     tags: ["JavaScript", "Governance", "Meta-Agent", "MIT", "Multi-Platform"]
+    analysis:
+      strengths: >
+        目前唯一的 AI Coding Agent 治理层方案。
+        9 个 Specialist Meta-Agents 分工明确，8 阶段执行骨架从意图确认到进化写回形成闭环。
+        3 层记忆系统（Markdown + 代码图谱 + 向量检索）保证跨会话连续性。
+        安全治理维度评分最高（85）。
+      weaknesses: >
+        社区极小（141 stars，2 contributors），单点维护风险。
+        安装复杂，概念多（9 Agent / 8 阶段 / 10 Dealing Cards / 3 层记忆），学习曲线陡峭。
+        不适用模型兼容性评估。
+      positioning: >
+        AI 编码的「操作系统层」——不是替代 Coding Agent，
+        而是给 Agent 加上治理、审查、进化的闭环。
+        如果 Waza 是「技能」，Meta_Kim 就是「流程」。
+        理念超前，但社区和文档需要时间追赶。
+      audience: >
+        对 AI 编码质量有高要求的团队；
+        需要审计、合规、知识沉淀的企业用户；
+        愿意投入时间建立治理体系的早期采用者。
     milestones:
       - date: "2025-Q4"
         title: "项目启动"

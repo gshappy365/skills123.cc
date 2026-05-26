@@ -9,12 +9,12 @@ export interface Props {
 
 const { projects, selectedIds } = Astro.props;
 const dimensions = loadDimensions();
-const selected = projects.filter(p => selectedIds.includes(p.id));
 const dimColors = ['#3b82f6', '#22c55e', '#eab308', '#ef4444', '#a855f7', '#06b6d4'];
 
-const chartData = JSON.stringify(selected.map(p => ({ id: p.id, name: p.name, scores: p.scores })));
-const chartDims = JSON.stringify(dimensions.map(d => ({ id: d.id, name: d.name })));
+const chartData = JSON.stringify(projects.map(p => ({ id: p.id, name: p.name, scores: p.scores })));
+const chartDims = JSON.stringify(dimensions.map(d => ({ id: d.id, name: d.id })));
 const chartColors = JSON.stringify(dimColors);
+const chartDimLabels = JSON.stringify(dimensions.map(d => ({ id: d.id, name: d.name })));
 ---
 
 <div class="bg-white rounded-xl border border-gray-200 p-6">
@@ -24,6 +24,7 @@ const chartColors = JSON.stringify(dimColors);
     style="height: 400px;"
     data-projects={chartData}
     data-dimensions={chartDims}
+    data-dim-labels={chartDimLabels}
     data-colors={chartColors}
   ></div>
 </div>
@@ -32,51 +33,75 @@ const chartColors = JSON.stringify(dimColors);
   import * as echarts from 'echarts';
 
   const el = document.getElementById('radar-chart');
-  const projects = JSON.parse(el.dataset.projects);
+  const allProjects = JSON.parse(el.dataset.projects);
   const dimensions = JSON.parse(el.dataset.dimensions);
+  const dimLabels = JSON.parse(el.dataset.dimLabels);
   const colors = JSON.parse(el.dataset.colors);
 
   const chart = echarts.init(el);
 
-  const option = {
-    tooltip: {},
-    legend: {
-      data: projects.map(p => p.name),
-      bottom: 0,
-    },
-    radar: {
-      indicator: dimensions.filter(d => projects[0]?.scores[d.id] !== null).map(d => ({
-        name: d.name,
-        max: 100,
-      })),
-      center: ['50%', '45%'],
-      radius: '60%',
-      axisName: {
-        color: '#6b7280',
-        fontSize: 12,
-      },
-    },
-    series: [{
-      type: 'radar',
-      data: projects.map((p, i) => ({
-        name: p.name,
-        value: dimensions.filter(d => p.scores[d.id] !== null).map(d => p.scores[d.id]),
-        areaStyle: {
-          color: colors[i],
-          opacity: 0.1,
-        },
-        lineStyle: {
-          color: colors[i],
-          width: 2,
-        },
-        itemStyle: {
-          color: colors[i],
-        },
-      })),
-    }],
-  };
+  function getActiveDims(project) {
+    return dimensions.filter(d => project.scores[d.id] !== null);
+  }
 
-  chart.setOption(option);
+  function buildOption(selectedIds) {
+    const selected = allProjects.filter(p => selectedIds.includes(p.id));
+    if (selected.length === 0) return {};
+
+    // 取所有选中项目的活跃维度并集
+    const activeDimIds = new Set();
+    selected.forEach(p => {
+      getActiveDims(p).forEach(d => activeDimIds.add(d.id));
+    });
+    const activeDims = dimensions.filter(d => activeDimIds.has(d.id));
+
+    return {
+      tooltip: {},
+      legend: {
+        data: selected.map(p => p.name),
+        bottom: 0,
+      },
+      radar: {
+        indicator: activeDims.map(d => ({
+          name: dimLabels.find(l => l.id === d.id)?.name || d.id,
+          max: 100,
+        })),
+        center: ['50%', '45%'],
+        radius: '60%',
+        axisName: {
+          color: '#6b7280',
+          fontSize: 12,
+        },
+      },
+      series: [{
+        type: 'radar',
+        data: selected.map((p, i) => ({
+          name: p.name,
+          value: activeDims.map(d => p.scores[d.id] ?? 0),
+          areaStyle: {
+            color: colors[i],
+            opacity: 0.1,
+          },
+          lineStyle: {
+            color: colors[i],
+            width: 2,
+          },
+          itemStyle: {
+            color: colors[i],
+          },
+        })),
+      }],
+    };
+  }
+
+  // 初始渲染
+  const initialSelected = allProjects.filter(p => p.category === 'agent').map(p => p.id);
+  chart.setOption(buildOption(initialSelected));
+
+  // 监听切换事件
+  window.addEventListener('projects-changed', (e) => {
+    chart.setOption(buildOption(e.detail));
+  });
 
   const resize = () => chart.resize();
   window.addEventListener('resize', resize);
