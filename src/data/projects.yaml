@@ -317,6 +317,54 @@ projects:
         title: "v2.0 发布"
         description: "事件系统、权限引擎、Agent 服务、MCP/A2A"
 
+  - id: openclacky
+    name: OpenClacky
+    category: agent
+    repo: https://github.com/clacky-ai/openclacky
+    website: https://www.openclacky.com
+    description: "最 Token 高效的开源 AI Agent。16 个核心工具，近 100% 缓存命中率，Skill 自进化系统。Ruby 实现，MIT 许可，支持任意 OpenAI 兼容模型。"
+    lastReviewed: "2026-05-26"
+    scores:
+      community: 40
+      engineering: 75
+      model_compat: 85
+      security: 50
+      ux: 70
+      ecosystem: 80
+    communityData:
+      stars: 782
+      forks: 65
+      contributors: 13
+      openIssues: 32
+      lastCommit: "2026-05-25"
+    tags: ["Ruby", "Coding Agent", "MIT", "Skill Evolution", "BYOK", "Multi-Provider"]
+    analysis:
+      strengths: >
+        极致的 Token 效率——16 工具 vs Claude Code 40+ / Hermes 52，
+        近 100% 缓存命中率，Insert-then-Compress 技术保持系统提示可缓存。
+        Skill 自进化系统允许自然语言创建和自动优化技能。
+        BYOK 支持任意 OpenAI 兼容 API，Ruby gem + 桌面安装器双模式。
+        红杉中国、奇绩创坛等顶级 VC 背书。
+      weaknesses: >
+        社区规模较小（782 stars），Ruby 语言在 AI Agent 领域小众。
+        32 个 open issues 积压，安全治理机制文档不足。
+        无 TUI 模式（仅 CLI + Web UI），纯终端用户受限。
+      positioning: >
+        Token 效率第一的 Coding Agent——不是功能最多，而是每个 Token 产出最高。
+        对标 Claude Code 的能力和 Hermes 的开放性，但在成本控制上更激进。
+        适合对 API 成本敏感、重视 Skill 生态自进化的团队。
+      audience: >
+        对 API Token 成本敏感的独立开发者和创业团队；
+        Ruby 生态开发者；
+        需要 Skill 自进化能力的 AI Agent 高级用户。
+    milestones:
+      - date: "2026-Q1"
+        title: "项目启动"
+        description: "Ruby 原生 Agent 起步"
+      - date: "2026-05"
+        title: "公开发布"
+        description: "MIT 开源，782 stars，顶级 VC 背书"
+
   - id: skyclaw
     name: SkyClaw
     category: agent
