@@ -33,9 +33,9 @@ const chartDimLabels = JSON.stringify(dimensions.map(d => ({ id: d.id, name: d.n
 <script>
   import { init, use } from 'echarts/core';
   import { RadarChart } from 'echarts/charts';
-  import { TooltipComponent, LegendComponent, RadarComponent } from 'echarts/components';
+  import { TooltipComponent, LegendComponent } from 'echarts/components';
   import { CanvasRenderer } from 'echarts/renderers';
-  use([RadarChart, TooltipComponent, LegendComponent, RadarComponent, CanvasRenderer]);
+  use([RadarChart, TooltipComponent, LegendComponent, CanvasRenderer]);
 
   const el = document.getElementById('radar-chart');
   const allProjects = JSON.parse(el.dataset.projects);

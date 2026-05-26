@@ -26,7 +26,7 @@ projects:
         8 个 LLM Provider 支持、MIT 开源、完善的权限模型（危险命令拦截、敏感文件保护、undo 快照）
         使其在安全治理和模型兼容性上表现突出。
       weaknesses: >
-        社区刚起步（100 stars），无正式 Release 和预编译二进制，
+        社区刚起步（116 stars），无正式 Release 和预编译二进制，
         纯 TUI 对非终端用户有学习门槛，JetBrains 无插件。
       positioning: >
         中国第一个「用 Harness Engineering 方式造出的 Harness Engineering 工具」。
@@ -192,7 +192,7 @@ projects:
     communityData:
       stars: 34778
       forks: 2972
-      contributors: 143
+      contributors: 99
       openIssues: 442
       lastCommit: "2026-05-26"
     tags: ["Rust", "Coding Agent", "DeepSeek", "MIT", "TUI", "Multi-Locale"]

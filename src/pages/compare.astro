@@ -38,9 +38,9 @@ const defaultIds = projects.filter(p => p.category === 'agent').map(p => p.id);
     <!-- Comparison Table -->
     <div class="mt-10">
       <h2 class="text-lg font-semibold text-gray-900 mb-4">维度评分明细</h2>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div id="comparison-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {projects.map(p => (
-          <div class="bg-white rounded-xl border border-gray-200 p-6">
+          <div class="comparison-item bg-white rounded-xl border border-gray-200 p-6" data-project-id={p.id}>
             <h3 class="font-semibold text-gray-900 mb-4">{p.name}</h3>
             <ComparisonTable scores={p.scores} projectId={p.id} />
           </div>
@@ -51,11 +51,23 @@ const defaultIds = projects.filter(p => p.category === 'agent').map(p => p.id);
 </Layout>
 
 <script>
-  document.querySelectorAll('.project-checkbox').forEach(cb => {
+  const checkboxes = document.querySelectorAll('.project-checkbox');
+  const comparisonGrid = document.getElementById('comparison-grid');
+
+  function updateComparisonTables(checkedIds) {
+    comparisonGrid.querySelectorAll('.comparison-item').forEach(item => {
+      item.style.display = checkedIds.includes(item.dataset.projectId) ? '' : 'none';
+    });
+  }
+
+  checkboxes.forEach(cb => {
     cb.addEventListener('change', () => {
       const checked = Array.from(document.querySelectorAll('.project-checkbox:checked')).map(c => c.value);
-      // Dispatch custom event to radar chart
       window.dispatchEvent(new CustomEvent('projects-changed', { detail: checked }));
+      updateComparisonTables(checked);
     });
   });
+
+  // 初始化时同步一次
+  updateComparisonTables(Array.from(document.querySelectorAll('.project-checkbox:checked')).map(c => c.value));
 </script>
