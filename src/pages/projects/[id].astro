@@ -6,9 +6,9 @@ import TagBadge from '../../components/TagBadge.astro';
 import MilestoneTimeline from '../../components/MilestoneTimeline.astro';
 import { getProjectById } from '../../lib/loadData';
 
-export function getStaticPaths() {
-  const projects = ['atomcode', 'reasonix', 'kaku', 'waza', 'meta-kim'];
-  return projects.map(id => ({ params: { id } }));
+export async function getStaticPaths() {
+  const { loadProjects } = await import('../../lib/loadData');
+  return loadProjects().map(p => ({ params: { id: p.id } }));
 }
 
 const { id } = Astro.params;

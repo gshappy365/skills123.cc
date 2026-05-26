@@ -171,6 +171,52 @@ projects:
         title: "生态扩展"
         description: "跨 Agent 支持，5K+ stars"
 
+  - id: codewhale
+    name: CodeWhale
+    category: agent
+    repo: https://github.com/Hmbown/CodeWhale
+    website: https://codewhale.net/
+    description: "Agentic coding terminal。DeepSeek-first，多 Provider 支持，缓存优先架构。5 语言界面、中国区端点、CNB 镜像、鲸鱼主题。"
+    scores:
+      community: 95
+      engineering: 85
+      model_compat: 75
+      security: 70
+      ux: 80
+      ecosystem: 80
+    communityData:
+      stars: 34778
+      forks: 2972
+      contributors: 143
+      openIssues: 442
+      lastCommit: "2026-05-26"
+    tags: ["Rust", "Coding Agent", "DeepSeek", "MIT", "TUI", "Multi-Locale"]
+    analysis:
+      strengths: >
+        社区规模极大（34,778 stars），Rust 高质量实现，MIT 开源。
+        DeepSeek-first + 多 Provider 策略兼顾成本与灵活性。
+        缓存优先架构，5 语言 UI，中国区端点和 CNB 镜像对国内开发者友好。
+        鲸鱼主题有辨识度。
+      weaknesses: >
+        442 个 open issues 积压较多。
+        DeepSeek-first 定位可能限制模型选择自由度。
+        contributors endpoint 未公开，社区贡献者数据不透明。
+      positioning: >
+        当前社区最大的 AI Coding Terminal，DeepSeek 生态的代表作。
+        与 deepseek-reasonix 定位相似但社区规模大 4 倍。
+        适合追求社区活跃度和 Rust 质量的 DeepSeek 用户。
+      audience: >
+        偏好 DeepSeek 生态的开发者、
+        需要中文友好的 AI 编码终端的中英文用户、
+        重视社区规模和 Rust 质量的工程师。
+    milestones:
+      - date: "2025"
+        title: "项目启动"
+        description: "DeepSeek-first 编码终端起步"
+      - date: "2026-05"
+        title: "爆发增长"
+        description: "34K+ stars，最大 AI Coding Terminal"
+
   - id: meta-kim
     name: Meta_Kim
     category: governance
