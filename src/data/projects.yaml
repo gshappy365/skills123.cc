@@ -4,7 +4,7 @@ projects:
     category: agent
     repo: https://github.com/atomgit-atomcode/atomcode
     website: https://atomcode.atomgit.com
-    description: "纯 Rust 开源 Coding Agent，小模型友好，MIT 许可。内置 Agent Loop、代码图谱、MCP 支持、多 Provider 切换，支持 8 个 LLM Provider。"
+    description: 纯 Rust 开源 Coding Agent，小模型友好，MIT 许可。内置 Agent Loop、代码图谱、MCP 支持、多 Provider 切换，支持 8 个 LLM Provider。
     lastReviewed: "2026-05-26"
     scores:
       community: 15
@@ -14,47 +14,45 @@ projects:
       ux: 55
       ecosystem: 75
     communityData:
-      stars: 116
-      forks: 17
-      contributors: 37
-      openIssues: 1
-      lastCommit: "2026-05-24"
-    tags: ["Rust", "Coding Agent", "Multi-Provider", "MIT", "MCP"]
+      stars: 122
+      forks: 19
+      contributors: 36
+      openIssues: 2
+      lastCommit: "2026-05-26"
+    tags:
+      - Rust
+      - Coding Agent
+      - Multi-Provider
+      - MIT
+      - MCP
     analysis:
-      strengths: >
-        AtomCode 是目前唯一将「小模型友好」作为原生设计的 Coding Agent。
-        8 个 LLM Provider 支持、MIT 开源、完善的权限模型（危险命令拦截、敏感文件保护、undo 快照）
-        使其在安全治理和模型兼容性上表现突出。
-      weaknesses: >
-        社区刚起步（116 stars），无正式 Release 和预编译二进制，
-        纯 TUI 对非终端用户有学习门槛，JetBrains 无插件。
-      positioning: >
-        中国第一个「用 Harness Engineering 方式造出的 Harness Engineering 工具」。
-        哲学上对标 Claude Code 的「大刀阔斧」，AtomCode 走「丰田精益生产」路线
-        ——每一步可干预、可回滚。
-      audience: >
-        重视模型选择自由度和成本控制的中国开发者；
-        希望在 CLI 中完成全流程 AI 编码的工程师。
+      strengths: |
+        AtomCode 是目前唯一将「小模型友好」作为原生设计的 Coding Agent。 8 个 LLM Provider 支持、MIT 开源、完善的权限模型（危险命令拦截、敏感文件保护、undo 快照） 使其在安全治理和模型兼容性上表现突出。
+      weaknesses: |
+        社区刚起步（116 stars），无正式 Release 和预编译二进制， 纯 TUI 对非终端用户有学习门槛，JetBrains 无插件。
+      positioning: |
+        中国第一个「用 Harness Engineering 方式造出的 Harness Engineering 工具」。 哲学上对标 Claude Code 的「大刀阔斧」，AtomCode 走「丰田精益生产」路线 ——每一步可干预、可回滚。
+      audience: |
+        重视模型选择自由度和成本控制的中国开发者； 希望在 CLI 中完成全流程 AI 编码的工程师。
     milestones:
       - date: "2026-03-19"
-        title: "项目启动"
-        description: "单人 Scaffold 搭建"
+        title: 项目启动
+        description: 单人 Scaffold 搭建
       - date: "2026-04-18"
-        title: "全量开源发布"
-        description: "AtomCode CLI 开源"
+        title: 全量开源发布
+        description: AtomCode CLI 开源
       - date: "2026-05-16"
-        title: "生态扩张"
-        description: "AtomCode Air + 代码审计上线"
+        title: 生态扩张
+        description: AtomCode Air + 代码审计上线
       - date: "2026-05-21"
-        title: "全员切换"
-        description: "公司全员从 Cursor 切换到 AtomCode"
-
+        title: 全员切换
+        description: 公司全员从 Cursor 切换到 AtomCode
   - id: reasonix
     name: deepseek-reasonix
     category: agent
     repo: https://github.com/esengine/deepseek-reasonix
     website: https://reasonix.dev
-    description: "DeepSeek 原生优化的终端 Coding Agent，缓存优先架构实现 99.82% 缓存命中率。含桌面 GUI、MCP 原生支持、Skills 系统。"
+    description: DeepSeek 原生优化的终端 Coding Agent，缓存优先架构实现 99.82% 缓存命中率。含桌面 GUI、MCP 原生支持、Skills 系统。
     lastReviewed: "2026-05-26"
     scores:
       community: 85
@@ -64,39 +62,39 @@ projects:
       ux: 80
       ecosystem: 80
     communityData:
-      stars: 8684
-      forks: 470
-      contributors: 54
-      openIssues: 176
-      lastCommit: "2026-05-25"
-    tags: ["TypeScript", "Coding Agent", "DeepSeek", "MIT", "MCP", "Desktop GUI"]
+      stars: 15724
+      forks: 927
+      contributors: 14
+      openIssues: 450
+      lastCommit: "2026-06-01"
+    tags:
+      - TypeScript
+      - Coding Agent
+      - DeepSeek
+      - MIT
+      - MCP
+      - Desktop GUI
     analysis:
-      strengths: >
-        社区最大（7,129 stars），49 个 contributors，迭代速度极快。
-        缓存优先架构是杀手级特性——真实案例 99.82% 缓存命中率，Token 成本降低 80%。
-        桌面 GUI + TUI 双模式，npm 安装零门槛。
-      weaknesses: >
-        DeepSeek 独占，无法切换其他模型。176 个 open issues 积压。
-        无 undo 机制，安全防护主要靠 hooks 而非内置。
-      positioning: >
-        DeepSeek 原生优化的 Coding Agent，缓存架构将 DeepSeek 的低价优势放大到极致。
-        适合已选定 DeepSeek 的团队。
-      audience: >
-        DeepSeek 用户、追求极致 Token 成本控制的独立开发者、
-        需要桌面 GUI 的非终端用户。
+      strengths: |
+        社区最大（7,129 stars），49 个 contributors，迭代速度极快。 缓存优先架构是杀手级特性——真实案例 99.82% 缓存命中率，Token 成本降低 80%。 桌面 GUI + TUI 双模式，npm 安装零门槛。
+      weaknesses: |
+        DeepSeek 独占，无法切换其他模型。176 个 open issues 积压。 无 undo 机制，安全防护主要靠 hooks 而非内置。
+      positioning: |
+        DeepSeek 原生优化的 Coding Agent，缓存架构将 DeepSeek 的低价优势放大到极致。 适合已选定 DeepSeek 的团队。
+      audience: |
+        DeepSeek 用户、追求极致 Token 成本控制的独立开发者、 需要桌面 GUI 的非终端用户。
     milestones:
-      - date: "2025-Q4"
-        title: "项目启动"
-        description: "DeepSeek 原生 Agent 起步"
-      - date: "2026-05"
-        title: "v0.49 发布"
-        description: "高频迭代，社区最大 Coding Agent"
-
+      - date: 2025-Q4
+        title: 项目启动
+        description: DeepSeek 原生 Agent 起步
+      - date: 2026-05
+        title: v0.49 发布
+        description: 高频迭代，社区最大 Coding Agent
   - id: kaku
     name: Kaku
     category: terminal
     repo: https://github.com/tw93/Kaku
-    description: "macOS 原生 AI 终端模拟器，WezTerm 深度定制分支。40% 体积缩减、AI 辅助内建、零配置开箱即用。"
+    description: macOS 原生 AI 终端模拟器，WezTerm 深度定制分支。40% 体积缩减、AI 辅助内建、零配置开箱即用。
     lastReviewed: "2026-05-26"
     scores:
       community: 70
@@ -106,39 +104,38 @@ projects:
       ux: 85
       ecosystem: 50
     communityData:
-      stars: 5172
-      forks: 254
-      contributors: 43
-      openIssues: 4
-      lastCommit: "2026-05-24"
-    tags: ["Rust", "Terminal", "macOS", "WezTerm Fork", "AI Assistant"]
+      stars: 5234
+      forks: 261
+      contributors: 47
+      openIssues: 6
+      lastCommit: "2026-06-01"
+    tags:
+      - Rust
+      - Terminal
+      - macOS
+      - WezTerm Fork
+      - AI Assistant
     analysis:
-      strengths: >
-        macOS 终端体验天花板。40% 体积缩减（40MB vs 67MB），
-        零配置开箱即用，内建 AI 辅助（错误恢复 + 自然语言转命令）。
-        5,165 stars，社区认可度极高。
-      weaknesses: >
-        macOS 独占，无 Windows/Linux 支持。
-        作为 WezTerm fork，依赖上游更新节奏。
-        非独立 Coding Agent，不参与模型兼容性和安全治理维度评估。
-      positioning: >
-        AI 时代的终端——不是替代 Coding Agent，而是让终端本身更智能。
-        与 Waza 互补，共同构成 tw93 的「编码 + 技能」生态。
-      audience: >
+      strengths: |
+        macOS 终端体验天花板。40% 体积缩减（40MB vs 67MB）， 零配置开箱即用，内建 AI 辅助（错误恢复 + 自然语言转命令）。 5,165 stars，社区认可度极高。
+      weaknesses: |
+        macOS 独占，无 Windows/Linux 支持。 作为 WezTerm fork，依赖上游更新节奏。 非独立 Coding Agent，不参与模型兼容性和安全治理维度评估。
+      positioning: |
+        AI 时代的终端——不是替代 Coding Agent，而是让终端本身更智能。 与 Waza 互补，共同构成 tw93 的「编码 + 技能」生态。
+      audience: |
         macOS 开发者、重度终端用户、需要 AI 辅助命令行的工程师。
     milestones:
       - date: "2025"
-        title: "项目启动"
-        description: "WezTerm 深度定制分支"
-      - date: "2026-05"
-        title: "成熟阶段"
-        description: "5K+ stars，macOS AI 终端标杆"
-
+        title: 项目启动
+        description: WezTerm 深度定制分支
+      - date: 2026-05
+        title: 成熟阶段
+        description: 5K+ stars，macOS AI 终端标杆
   - id: waza
     name: Waza
     category: skills
     repo: https://github.com/tw93/Waza
-    description: "8 个 AI Agent 技能（Slash Commands）集合，编码工程纪律到可重复工作流。跨 Claude Code/Codex/Pi/Desktop 通用。"
+    description: 8 个 AI Agent 技能（Slash Commands）集合，编码工程纪律到可重复工作流。跨 Claude Code/Codex/Pi/Desktop 通用。
     lastReviewed: "2026-05-26"
     scores:
       community: 70
@@ -148,39 +145,39 @@ projects:
       ux: 80
       ecosystem: 85
     communityData:
-      stars: 5169
-      forks: 306
+      stars: 5466
+      forks: 322
       contributors: 8
-      openIssues: 0
-      lastCommit: "2026-05-25"
-    tags: ["Python", "Skills", "Claude Code", "MIT", "Cross-Platform"]
+      openIssues: 1
+      lastCommit: "2026-06-01"
+    tags:
+      - Python
+      - Skills
+      - Claude Code
+      - MIT
+      - Cross-Platform
     analysis:
-      strengths: >
-        跨 Agent 通用（Claude Code / Codex / Pi / Desktop），
-        8 个技能覆盖编码全流程（规划、调试、Review、发布）。
-        MIT 开源，5,060 stars，0 open issues 说明维护质量高。安装简单（npx skills add）。
-      weaknesses: >
-        本身不是 Agent，依赖宿主 Agent 的安全机制。
-        Python 脚本维护成本。技能数量有限（8 个），扩展依赖社区贡献。
-      positioning: >
-        「工程纪律的编码器」——将 think → design → code → check 的最佳实践
-        沉淀为可复用技能。不是替代 Coding Agent，而是让任何 Agent 更规范。
-      audience: >
+      strengths: |
+        跨 Agent 通用（Claude Code / Codex / Pi / Desktop）， 8 个技能覆盖编码全流程（规划、调试、Review、发布）。 MIT 开源，5,060 stars，0 open issues 说明维护质量高。安装简单（npx skills add）。
+      weaknesses: |
+        本身不是 Agent，依赖宿主 Agent 的安全机制。 Python 脚本维护成本。技能数量有限（8 个），扩展依赖社区贡献。
+      positioning: |
+        「工程纪律的编码器」——将 think → design → code → check 的最佳实践 沉淀为可复用技能。不是替代 Coding Agent，而是让任何 Agent 更规范。
+      audience: |
         所有使用 AI Coding Agent 的工程师，特别是希望建立结构化工作流的团队。
     milestones:
       - date: "2025"
-        title: "项目启动"
-        description: "Claude Code 技能集合"
-      - date: "2026-05"
-        title: "生态扩展"
-        description: "跨 Agent 支持，5K+ stars"
-
+        title: 项目启动
+        description: Claude Code 技能集合
+      - date: 2026-05
+        title: 生态扩展
+        description: 跨 Agent 支持，5K+ stars
   - id: codewhale
     name: CodeWhale
     category: agent
     repo: https://github.com/Hmbown/CodeWhale
     website: https://codewhale.net/
-    description: "Agentic coding terminal。DeepSeek-first，多 Provider 支持，缓存优先架构。5 语言界面、中国区端点、CNB 镜像、鲸鱼主题。"
+    description: Agentic coding terminal。DeepSeek-first，多 Provider 支持，缓存优先架构。5 语言界面、中国区端点、CNB 镜像、鲸鱼主题。
     lastReviewed: "2026-05-26"
     scores:
       community: 95
@@ -190,43 +187,39 @@ projects:
       ux: 80
       ecosystem: 80
     communityData:
-      stars: 34778
-      forks: 2972
-      contributors: 99
-      openIssues: 442
-      lastCommit: "2026-05-26"
-    tags: ["Rust", "Coding Agent", "DeepSeek", "MIT", "TUI", "Multi-Locale"]
+      stars: 36354
+      forks: 3130
+      contributors: 141
+      openIssues: 379
+      lastCommit: "2026-06-01"
+    tags:
+      - Rust
+      - Coding Agent
+      - DeepSeek
+      - MIT
+      - TUI
+      - Multi-Locale
     analysis:
-      strengths: >
-        社区规模极大（34,778 stars），Rust 高质量实现，MIT 开源。
-        DeepSeek-first + 多 Provider 策略兼顾成本与灵活性。
-        缓存优先架构，5 语言 UI，中国区端点和 CNB 镜像对国内开发者友好。
-        鲸鱼主题有辨识度。
-      weaknesses: >
-        442 个 open issues 积压较多。
-        DeepSeek-first 定位可能限制模型选择自由度。
-        contributors endpoint 未公开，社区贡献者数据不透明（GitHub API 返回 ~99 含匿名 vs ~89 不含匿名）。
-      positioning: >
-        当前社区最大的 AI Coding Terminal，DeepSeek 生态的代表作。
-        与 deepseek-reasonix 定位相似但社区规模大 4 倍。
-        适合追求社区活跃度和 Rust 质量的 DeepSeek 用户。
-      audience: >
-        偏好 DeepSeek 生态的开发者、
-        需要中文友好的 AI 编码终端的中英文用户、
-        重视社区规模和 Rust 质量的工程师。
+      strengths: |
+        社区规模极大（34,778 stars），Rust 高质量实现，MIT 开源。 DeepSeek-first + 多 Provider 策略兼顾成本与灵活性。 缓存优先架构，5 语言 UI，中国区端点和 CNB 镜像对国内开发者友好。 鲸鱼主题有辨识度。
+      weaknesses: |
+        442 个 open issues 积压较多。 DeepSeek-first 定位可能限制模型选择自由度。 contributors endpoint 未公开，社区贡献者数据不透明（GitHub API 返回 ~99 含匿名 vs ~89 不含匿名）。
+      positioning: |
+        当前社区最大的 AI Coding Terminal，DeepSeek 生态的代表作。 与 deepseek-reasonix 定位相似但社区规模大 4 倍。 适合追求社区活跃度和 Rust 质量的 DeepSeek 用户。
+      audience: |
+        偏好 DeepSeek 生态的开发者、 需要中文友好的 AI 编码终端的中英文用户、 重视社区规模和 Rust 质量的工程师。
     milestones:
       - date: "2025"
-        title: "项目启动"
-        description: "DeepSeek-first 编码终端起步"
-      - date: "2026-05"
-        title: "爆发增长"
-        description: "34K+ stars，最大 AI Coding Terminal"
-
+        title: 项目启动
+        description: DeepSeek-first 编码终端起步
+      - date: 2026-05
+        title: 爆发增长
+        description: 34K+ stars，最大 AI Coding Terminal
   - id: meta-kim
     name: Meta_Kim
     category: governance
     repo: https://github.com/KimYx0207/Meta_Kim
-    description: "AI Coding Agent 治理层。9 个 Specialist Meta-Agents、8 阶段执行骨架、3 层记忆系统、动态 Dealing Cards。将 AI 编码从「执行」升级到「治理」。"
+    description: AI Coding Agent 治理层。9 个 Specialist Meta-Agents、8 阶段执行骨架、3 层记忆系统、动态 Dealing Cards。将 AI 编码从「执行」升级到「治理」。
     lastReviewed: "2026-05-26"
     scores:
       community: 10
@@ -236,44 +229,38 @@ projects:
       ux: 30
       ecosystem: 70
     communityData:
-      stars: 142
-      forks: 43
+      stars: 151
+      forks: 47
       contributors: 2
-      openIssues: 1
-      lastCommit: "2026-05-25"
-    tags: ["JavaScript", "Governance", "Meta-Agent", "MIT", "Multi-Platform"]
+      openIssues: 2
+      lastCommit: "2026-06-01"
+    tags:
+      - JavaScript
+      - Governance
+      - Meta-Agent
+      - MIT
+      - Multi-Platform
     analysis:
-      strengths: >
-        目前唯一的 AI Coding Agent 治理层方案。
-        9 个 Specialist Meta-Agents 分工明确，8 阶段执行骨架从意图确认到进化写回形成闭环。
-        3 层记忆系统（Markdown + 代码图谱 + 向量检索）保证跨会话连续性。
-        安全治理维度评分最高（85）。
-      weaknesses: >
-        社区极小（141 stars，2 contributors），单点维护风险。
-        安装复杂，概念多（9 Agent / 8 阶段 / 10 Dealing Cards / 3 层记忆），学习曲线陡峭。
-        不适用模型兼容性评估。
-      positioning: >
-        AI 编码的「操作系统层」——不是替代 Coding Agent，
-        而是给 Agent 加上治理、审查、进化的闭环。
-        如果 Waza 是「技能」，Meta_Kim 就是「流程」。
-        理念超前，但社区和文档需要时间追赶。
-      audience: >
-        对 AI 编码质量有高要求的团队；
-        需要审计、合规、知识沉淀的企业用户；
-        愿意投入时间建立治理体系的早期采用者。
+      strengths: |
+        目前唯一的 AI Coding Agent 治理层方案。 9 个 Specialist Meta-Agents 分工明确，8 阶段执行骨架从意图确认到进化写回形成闭环。 3 层记忆系统（Markdown + 代码图谱 + 向量检索）保证跨会话连续性。 安全治理维度评分最高（85）。
+      weaknesses: |
+        社区极小（141 stars，2 contributors），单点维护风险。 安装复杂，概念多（9 Agent / 8 阶段 / 10 Dealing Cards / 3 层记忆），学习曲线陡峭。 不适用模型兼容性评估。
+      positioning: |
+        AI 编码的「操作系统层」——不是替代 Coding Agent， 而是给 Agent 加上治理、审查、进化的闭环。 如果 Waza 是「技能」，Meta_Kim 就是「流程」。 理念超前，但社区和文档需要时间追赶。
+      audience: |
+        对 AI 编码质量有高要求的团队； 需要审计、合规、知识沉淀的企业用户； 愿意投入时间建立治理体系的早期采用者。
     milestones:
-      - date: "2025-Q4"
-        title: "项目启动"
-        description: "AI 治理层概念验证"
-      - date: "2026-05"
-        title: "架构成熟"
-        description: "9 Agent / 8 阶段 / 3 层记忆完整体系"
-
+      - date: 2025-Q4
+        title: 项目启动
+        description: AI 治理层概念验证
+      - date: 2026-05
+        title: 架构成熟
+        description: 9 Agent / 8 阶段 / 3 层记忆完整体系
   - id: agentscope
     name: AgentScope
     category: agent
     repo: https://github.com/modelscope/agentscope
-    description: "构建和运行「可观察、可理解、可信任」的 AI Agent。多 Agent 框架，10 个 LLM Provider 支持，MCP/A2A 原生集成，生产级事件驱动架构。"
+    description: 构建和运行「可观察、可理解、可信任」的 AI Agent。多 Agent 框架，10 个 LLM Provider 支持，MCP/A2A 原生集成，生产级事件驱动架构。
     lastReviewed: "2026-05-26"
     scores:
       community: 92
@@ -283,46 +270,42 @@ projects:
       ux: 78
       ecosystem: 82
     communityData:
-      stars: 25580
-      forks: 2804
-      contributors: 49
-      openIssues: 216
-      lastCommit: "2026-05-26"
-    tags: ["multi-agent", "MCP", "Alibaba", "production-framework", "Apache-2.0"]
+      stars: 25957
+      forks: 2867
+      contributors: 54
+      openIssues: 252
+      lastCommit: "2026-06-01"
+    tags:
+      - multi-agent
+      - MCP
+      - Alibaba
+      - production-framework
+      - Apache-2.0
     analysis:
-      strengths: >
-        阿里通义实验室背书，38 个 Release 和 2 篇学术论文。
-        v2.0 生产级重写：事件驱动架构、多租户 Agent 服务、权限引擎、MCP/A2A 双协议支持。
-        10 个 LLM Provider（含 Ollama 本地模型）覆盖全。
-      weaknesses: >
-        框架而非终端工具，使用门槛较高。
-        216 open issues 积压，仍处于 Beta 阶段。
-        ReActAgent 工具调用存在 shell 执行安全风险。
-      positioning: >
-        「AI Agent 的 Spring Boot」——企业级多 Agent 框架。
-        对标 LangChain/LangGraph，但在 MCP 原生支持和多模态上更进。
-        适合需要生产级部署（K8s、Serverless）和 OTel 可观测性的团队。
-      audience: >
-        中大型组织的 AI/ML 工程团队；
-        阿里/DashScope 生态用户；
-        需要生产级多 Agent 编排的企业。
+      strengths: |
+        阿里通义实验室背书，38 个 Release 和 2 篇学术论文。 v2.0 生产级重写：事件驱动架构、多租户 Agent 服务、权限引擎、MCP/A2A 双协议支持。 10 个 LLM Provider（含 Ollama 本地模型）覆盖全。
+      weaknesses: |
+        框架而非终端工具，使用门槛较高。 216 open issues 积压，仍处于 Beta 阶段。 ReActAgent 工具调用存在 shell 执行安全风险。
+      positioning: |
+        「AI Agent 的 Spring Boot」——企业级多 Agent 框架。 对标 LangChain/LangGraph，但在 MCP 原生支持和多模态上更进。 适合需要生产级部署（K8s、Serverless）和 OTel 可观测性的团队。
+      audience: |
+        中大型组织的 AI/ML 工程团队； 阿里/DashScope 生态用户； 需要生产级多 Agent 编排的企业。
     milestones:
       - date: "2024-01-12"
-        title: "项目启动"
-        description: "初始发布 + arxiv 论文"
-      - date: "2025-08"
-        title: "v1.0 成熟"
-        description: "框架稳定，20+ releases"
+        title: 项目启动
+        description: 初始发布 + arxiv 论文
+      - date: 2025-08
+        title: v1.0 成熟
+        description: 框架稳定，20+ releases
       - date: "2026-05-25"
-        title: "v2.0 发布"
-        description: "事件系统、权限引擎、Agent 服务、MCP/A2A"
-
+        title: v2.0 发布
+        description: 事件系统、权限引擎、Agent 服务、MCP/A2A
   - id: openclacky
     name: OpenClacky
     category: agent
     repo: https://github.com/clacky-ai/openclacky
     website: https://www.openclacky.com
-    description: "最 Token 高效的开源 AI Agent。16 个核心工具，近 100% 缓存命中率，Skill 自进化系统。Ruby 实现，MIT 许可，支持任意 OpenAI 兼容模型。"
+    description: 最 Token 高效的开源 AI Agent。16 个核心工具，近 100% 缓存命中率，Skill 自进化系统。Ruby 实现，MIT 许可，支持任意 OpenAI 兼容模型。
     lastReviewed: "2026-05-26"
     scores:
       community: 40
@@ -332,45 +315,40 @@ projects:
       ux: 70
       ecosystem: 80
     communityData:
-      stars: 782
-      forks: 65
-      contributors: 13
-      openIssues: 32
-      lastCommit: "2026-05-25"
-    tags: ["Ruby", "Coding Agent", "MIT", "Skill Evolution", "BYOK", "Multi-Provider"]
+      stars: 912
+      forks: 80
+      contributors: 14
+      openIssues: 27
+      lastCommit: "2026-06-01"
+    tags:
+      - Ruby
+      - Coding Agent
+      - MIT
+      - Skill Evolution
+      - BYOK
+      - Multi-Provider
     analysis:
-      strengths: >
-        极致的 Token 效率——16 工具 vs Claude Code 40+ / Hermes 52，
-        近 100% 缓存命中率，Insert-then-Compress 技术保持系统提示可缓存。
-        Skill 自进化系统允许自然语言创建和自动优化技能。
-        BYOK 支持任意 OpenAI 兼容 API，Ruby gem + 桌面安装器双模式。
-        红杉中国、奇绩创坛等顶级 VC 背书。
-      weaknesses: >
-        社区规模较小（782 stars），Ruby 语言在 AI Agent 领域小众。
-        32 个 open issues 积压，安全治理机制文档不足。
-        无 TUI 模式（仅 CLI + Web UI），纯终端用户受限。
-      positioning: >
-        Token 效率第一的 Coding Agent——不是功能最多，而是每个 Token 产出最高。
-        对标 Claude Code 的能力和 Hermes 的开放性，但在成本控制上更激进。
-        适合对 API 成本敏感、重视 Skill 生态自进化的团队。
-      audience: >
-        对 API Token 成本敏感的独立开发者和创业团队；
-        Ruby 生态开发者；
-        需要 Skill 自进化能力的 AI Agent 高级用户。
+      strengths: |
+        极致的 Token 效率——16 工具 vs Claude Code 40+ / Hermes 52， 近 100% 缓存命中率，Insert-then-Compress 技术保持系统提示可缓存。 Skill 自进化系统允许自然语言创建和自动优化技能。 BYOK 支持任意 OpenAI 兼容 API，Ruby gem + 桌面安装器双模式。 红杉中国、奇绩创坛等顶级 VC 背书。
+      weaknesses: |
+        社区规模较小（782 stars），Ruby 语言在 AI Agent 领域小众。 32 个 open issues 积压，安全治理机制文档不足。 无 TUI 模式（仅 CLI + Web UI），纯终端用户受限。
+      positioning: |
+        Token 效率第一的 Coding Agent——不是功能最多，而是每个 Token 产出最高。 对标 Claude Code 的能力和 Hermes 的开放性，但在成本控制上更激进。 适合对 API 成本敏感、重视 Skill 生态自进化的团队。
+      audience: |
+        对 API Token 成本敏感的独立开发者和创业团队； Ruby 生态开发者； 需要 Skill 自进化能力的 AI Agent 高级用户。
     milestones:
-      - date: "2026-Q1"
-        title: "项目启动"
-        description: "Ruby 原生 Agent 起步"
-      - date: "2026-05"
-        title: "公开发布"
-        description: "MIT 开源，782 stars，顶级 VC 背书"
-
+      - date: 2026-Q1
+        title: 项目启动
+        description: Ruby 原生 Agent 起步
+      - date: 2026-05
+        title: 公开发布
+        description: MIT 开源，782 stars，顶级 VC 背书
   - id: skyclaw
     name: SkyClaw
     category: agent
     repo: https://github.com/SkyworkAI/skyclaw
     website: https://skyclaw.ai
-    description: "百万上下文 Agent 模型。OpenAI 兼容 API，0.5 元/M tokens（DeepSeek 一半）。11 个交互式 Demo 展示 Agent 编程、UI 生成、金融看板等能力。"
+    description: 百万上下文 Agent 模型。OpenAI 兼容 API，0.5 元/M tokens（DeepSeek 一半）。11 个交互式 Demo 展示 Agent 编程、UI 生成、金融看板等能力。
     lastReviewed: "2026-05-26"
     scores:
       community: 10
@@ -380,32 +358,30 @@ projects:
       ux: 70
       ecosystem: 40
     communityData:
-      stars: 13
-      forks: 0
-      contributors: 1
+      stars: 90
+      forks: 10
+      contributors: 3
       openIssues: 0
-      lastCommit: "2026-05-26"
-    tags: ["agent-model", "api-only", "low-cost", "openclaw", "deepseek-competitor"]
+      lastCommit: "2026-05-27"
+    tags:
+      - agent-model
+      - api-only
+      - low-cost
+      - openclaw
+      - deepseek-competitor
     analysis:
-      strengths: >
-        极低定价（0.5 元/M tokens，DeepSeek V4 Flash 的一半）。
-        1M 上下文窗口，OpenAI 兼容 API 零迁移成本。
-        11 个交互式 Demo 展示真实 Agent 能力（游戏生成、UI 应用、金融看板）。
-      weaknesses: >
-        7 天历史，零社区（13 stars，0 forks）。
-        无开源代码/权重、无论文、基准全自报无第三方验证。
-        API-only 无自托管路径，MIT badge 但无 LICENSE 文件。
-      positioning: >
-        低成本 Agent 模型，定位 OpenClaw/Hermes/Claude Code 的多轮工具调用场景。
-        以价格而非能力为竞争点。
-      audience: >
-        成本敏感的中国 AI 开发者；
-        OpenClaw/Hermes 生态用户；
-        需要长上下文 Agent 模型但预算有限的团队。
+      strengths: |
+        极低定价（0.5 元/M tokens，DeepSeek V4 Flash 的一半）。 1M 上下文窗口，OpenAI 兼容 API 零迁移成本。 11 个交互式 Demo 展示真实 Agent 能力（游戏生成、UI 应用、金融看板）。
+      weaknesses: |
+        7 天历史，零社区（13 stars，0 forks）。 无开源代码/权重、无论文、基准全自报无第三方验证。 API-only 无自托管路径，MIT badge 但无 LICENSE 文件。
+      positioning: |
+        低成本 Agent 模型，定位 OpenClaw/Hermes/Claude Code 的多轮工具调用场景。 以价格而非能力为竞争点。
+      audience: |
+        成本敏感的中国 AI 开发者； OpenClaw/Hermes 生态用户； 需要长上下文 Agent 模型但预算有限的团队。
     milestones:
       - date: "2026-05-19"
-        title: "v1.0 发布"
-        description: "SkyClaw-v1.0 初始发布"
+        title: v1.0 发布
+        description: SkyClaw-v1.0 初始发布
       - date: "2026-05-26"
-        title: "Google Console 集成"
-        description: "最新提交，站点搜索控制台集成"
+        title: Google Console 集成
+        description: 最新提交，站点搜索控制台集成
