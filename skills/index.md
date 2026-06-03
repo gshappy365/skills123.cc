@@ -44,6 +44,11 @@
 
 - [Memory Management](/skills/productivity/memory-management) — 双层记忆架构，解码工作场所简写
 
+## Bio-Research
+
+- [Scientific Problem Selection](/skills/bio-research/scientific-problem-selection) — 研究问题选择框架与决策树
+- [Single-Cell RNA QC](/skills/bio-research/single-cell-rna-qc) — scRNA-seq 自动化质量控制流程
+
 ## Enterprise Search
 
 - [Search Strategy](/skills/enterprise-search/search-strategy) — 多源搜索策略与查询分解

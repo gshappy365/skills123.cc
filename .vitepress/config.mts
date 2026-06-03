@@ -134,6 +134,13 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Bio-Research',
+          items: [
+            { text: 'Scientific Problem Selection', link: '/skills/bio-research/scientific-problem-selection' },
+            { text: 'Single-Cell RNA QC', link: '/skills/bio-research/single-cell-rna-qc' },
+          ],
+        },
+        {
           text: 'Productivity',
           items: [
             { text: 'Memory Management', link: '/skills/productivity/memory-management' },
