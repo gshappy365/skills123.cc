@@ -1,0 +1,172 @@
+- generic [ref=e3]:
+  - link "Skip to content" [ref=e4] [cursor=pointer]:
+    - /url: "#VPContent"
+  - banner:
+    - generic:
+      - generic:
+        - generic:
+          - link "Skills123.cc" [ref=e6] [cursor=pointer]:
+            - /url: /
+            - generic [ref=e7]: Skills123.cc
+          - generic [ref=e8]:
+            - button "Search" [ref=e11] [cursor=pointer]:
+              - generic [ref=e14]: Search
+              - generic [ref=e15]:
+                - generic [ref=e16]: ⌘
+                - generic [ref=e17]: K
+            - navigation "Main Navigation" [ref=e18]:
+              - generic [ref=e19]: Main Navigation
+              - link "首页" [ref=e20] [cursor=pointer]:
+                - /url: /
+                - generic [ref=e21]: 首页
+              - link "插件目录" [ref=e22] [cursor=pointer]:
+                - /url: /plugins/
+                - generic [ref=e23]: 插件目录
+              - link "技能百科" [ref=e24] [cursor=pointer]:
+                - /url: /skills/
+                - generic [ref=e25]: 技能百科
+              - link "Codex 技能" [ref=e26] [cursor=pointer]:
+                - /url: /codex/
+                - generic [ref=e27]: Codex 技能
+              - link "概念科普" [ref=e28] [cursor=pointer]:
+                - /url: /concepts/
+                - generic [ref=e29]: 概念科普
+            - button "extra navigation" [ref=e31] [cursor=pointer]
+  - button "本页目录" [ref=e36] [cursor=pointer]: 本页目录
+  - generic [ref=e42]:
+    - main [ref=e43]:
+      - generic [ref=e45]:
+        - heading "Skills123.cc Permalink to \"Skills123.cc\"" [level=1] [ref=e46]:
+          - text: Skills123.cc
+          - link "Permalink to \"Skills123.cc\"" [ref=e47] [cursor=pointer]:
+            - /url: "#skills123-cc"
+            - text: "#"
+        - paragraph [ref=e48]: AI Agent Skills 百科 — 深度介绍、使用指南与案例分析
+        - paragraph [ref=e49]:
+          - text: Skills123.cc 是一个专注于
+          - strong [ref=e50]: AI Agent Skills
+          - text: 的中文百科站点。我们系统化地收录、解读和分析来自
+          - strong [ref=e51]: Anthropic knowledge-work-plugins
+          - text: 和
+          - strong [ref=e52]: OpenAI Codex
+          - text: 两大生态的官方技能与社区精选，帮助开发者、分析师、营销人员、法务、财务等各行业从业者快速找到适合自己的 AI 技能，并真正用起来。
+        - heading "站点统计 Permalink to \"站点统计\"" [level=2] [ref=e53]:
+          - text: 站点统计
+          - link "Permalink to \"站点统计\"" [ref=e54] [cursor=pointer]:
+            - /url: "#站点统计"
+            - text: "#"
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - generic [ref=e57]: "21"
+            - generic [ref=e58]: 技能页面
+          - generic [ref=e59]:
+            - generic [ref=e60]: "14"
+            - generic [ref=e61]: 覆盖插件
+          - generic [ref=e62]:
+            - generic [ref=e63]: "6"
+            - generic [ref=e64]: 概念科普
+          - generic [ref=e65]:
+            - generic [ref=e66]: "10"
+            - generic [ref=e67]: 业务领域
+        - heading "快速入口 Permalink to \"快速入口\"" [level=2] [ref=e68]:
+          - text: 快速入口
+          - link "Permalink to \"快速入口\"" [ref=e69] [cursor=pointer]:
+            - /url: "#快速入口"
+            - text: "#"
+        - generic [ref=e70]:
+          - link "▤ 数据分析师 SQL Queries →" [ref=e71] [cursor=pointer]:
+            - /url: /skills/data/sql-queries
+            - generic [ref=e72]: ▤
+            - generic [ref=e73]:
+              - generic [ref=e74]: 数据分析师
+              - generic [ref=e75]: SQL Queries →
+          - link "◷ 销售人员 Pipeline Review →" [ref=e76] [cursor=pointer]:
+            - /url: /skills/sales/pipeline-review
+            - generic [ref=e77]: ◷
+            - generic [ref=e78]:
+              - generic [ref=e79]: 销售人员
+              - generic [ref=e80]: Pipeline Review →
+          - link "▦ 财务人员 Variance Analysis →" [ref=e81] [cursor=pointer]:
+            - /url: /skills/finance/variance-analysis
+            - generic [ref=e82]: ▦
+            - generic [ref=e83]:
+              - generic [ref=e84]: 财务人员
+              - generic [ref=e85]: Variance Analysis →
+          - link "▣ 产品经理 Write Spec →" [ref=e86] [cursor=pointer]:
+            - /url: /skills/product-management/write-spec
+            - generic [ref=e87]: ▣
+            - generic [ref=e88]:
+              - generic [ref=e89]: 产品经理
+              - generic [ref=e90]: Write Spec →
+          - link "◐ 设计师 Design Critique →" [ref=e91] [cursor=pointer]:
+            - /url: /skills/design/design-critique
+            - generic [ref=e92]: ◐
+            - generic [ref=e93]:
+              - generic [ref=e94]: 设计师
+              - generic [ref=e95]: Design Critique →
+          - link "▯ HR Draft Offer →" [ref=e96] [cursor=pointer]:
+            - /url: /skills/human-resources/draft-offer
+            - generic [ref=e97]: ▯
+            - generic [ref=e98]:
+              - generic [ref=e99]: HR
+              - generic [ref=e100]: Draft Offer →
+        - heading "三大内容板块 Permalink to \"三大内容板块\"" [level=2] [ref=e101]:
+          - text: 三大内容板块
+          - link "Permalink to \"三大内容板块\"" [ref=e102] [cursor=pointer]:
+            - /url: "#三大内容板块"
+            - text: "#"
+        - heading "插件目录 Permalink to \"插件目录\"" [level=3] [ref=e103]:
+          - text: 插件目录
+          - link "Permalink to \"插件目录\"" [ref=e104] [cursor=pointer]:
+            - /url: "#插件目录"
+            - text: "#"
+        - paragraph [ref=e105]:
+          - text: Anthropic knowledge-work-plugins 全部插件的完整介绍，覆盖 Data、Sales、Finance、Marketing、Legal、Design、HR、Operations 等业务领域。
+          - link "浏览全部插件 →" [ref=e106] [cursor=pointer]:
+            - /url: /plugins/
+        - heading "技能百科 Permalink to \"技能百科\"" [level=3] [ref=e107]:
+          - text: 技能百科
+          - link "Permalink to \"技能百科\"" [ref=e108] [cursor=pointer]:
+            - /url: "#技能百科"
+            - text: "#"
+        - paragraph [ref=e109]:
+          - text: 每个技能的深度拆解：架构设计、核心能力、输出格式、使用场景、竞品对比、MCP 集成方式。信息密度超过官方文档。
+          - link "浏览全部技能 →" [ref=e110] [cursor=pointer]:
+            - /url: /skills/
+        - heading "概念科普 Permalink to \"概念科普\"" [level=3] [ref=e111]:
+          - text: 概念科普
+          - link "Permalink to \"概念科普\"" [ref=e112] [cursor=pointer]:
+            - /url: "#概念科普"
+            - text: "#"
+        - paragraph [ref=e113]:
+          - text: 了解 AI Agent Skills 生态的基础概念：Claude Cowork、Claude Code、Codex、MCP 协议、Skill vs Plugin 的区别。
+          - link "浏览概念 →" [ref=e114] [cursor=pointer]:
+            - /url: /concepts/
+        - separator [ref=e115]
+        - blockquote [ref=e116]:
+          - paragraph [ref=e117]:
+            - text: 站点持续建设中。内容基于
+            - link "Anthropic knowledge-work-plugins" [ref=e118] [cursor=pointer]:
+              - /url: https://github.com/anthropics/knowledge-work-plugins
+            - text: 和
+            - link "开源社区" [ref=e119] [cursor=pointer]:
+              - /url: https://github.com/hashgraph-online/awesome-codex-plugins
+            - text: 。
+    - contentinfo [ref=e120]:
+      - generic [ref=e121]:
+        - link "在 GitHub 上编辑此页" [ref=e123] [cursor=pointer]:
+          - /url: https://github.com/gshappy365/skills123.cc/edit/main/index.md
+          - text: 在 GitHub 上编辑此页
+        - paragraph [ref=e126]:
+          - text: "最后更新:"
+          - time [ref=e127]: 6/3/26, 12:09 PM
+  - contentinfo [ref=e128]:
+    - generic [ref=e129]:
+      - paragraph [ref=e130]: Skills123.cc — AI Agent Skills 百科
+      - paragraph [ref=e131]:
+        - text: 基于 MIT 协议开源 · 内容来自
+        - link "Anthropic" [ref=e132] [cursor=pointer]:
+          - /url: https://github.com/anthropics/knowledge-work-plugins
+        - text: 和
+        - link "开源社区" [ref=e133] [cursor=pointer]:
+          - /url: https://github.com/hashgraph-online/awesome-codex-plugins
