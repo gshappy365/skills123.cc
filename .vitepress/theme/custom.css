@@ -2,7 +2,16 @@
   --vp-c-brand-1: #6366f1;
   --vp-c-brand-2: #4f46e5;
   --vp-c-brand-3: #4338ca;
-  --vp-c-brand-soft: rgba(99, 102, 241, 0.14);
+  --vp-c-brand-soft: rgba(99, 102, 241, 0.10);
+
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-soft: #f8f9fc;
+  --vp-c-bg-mute: #eef0f5;
+  --vp-c-border: #e6e8ef;
+  --vp-c-divider: #e6e8ef;
+  --vp-c-text-1: #1a1a2e;
+  --vp-c-text-2: #6b6f82;
+  --vp-c-text-3: #9ca0b0;
 
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
@@ -10,46 +19,117 @@
   --vp-home-hero-image-filter: blur(80px);
 
   --vp-custom-block-font-size: 14px;
+
+  --vp-font-family-base: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --vp-font-family-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 .dark {
   --vp-c-brand-1: #818cf8;
   --vp-c-brand-2: #6366f1;
   --vp-c-brand-3: #4f46e5;
-  --vp-c-brand-soft: rgba(99, 102, 241, 0.16);
+  --vp-c-brand-soft: rgba(99, 102, 241, 0.15);
+
+  --vp-c-bg: #0b0c10;
+  --vp-c-bg-soft: #111217;
+  --vp-c-bg-mute: #1a1c23;
+  --vp-c-border: #252830;
+  --vp-c-divider: #252830;
+  --vp-c-text-1: #e8e9ed;
+  --vp-c-text-2: #9094a6;
+  --vp-c-text-3: #5c6070;
 }
 
-/* Brand header gradient */
+/* ===== Nav ===== */
 .VPNavBar {
-  border-bottom: 1px solid var(--vp-c-gutter);
+  border-bottom: 1px solid var(--vp-c-border);
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
 }
 
-/* Stats cards grid */
+.dark .VPNavBar {
+  background: rgba(11,12,16,0.85);
+}
+
+/* ===== Typography ===== */
+.vp-doc h1 {
+  font-size: 2.4rem;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+
+.vp-doc h2 {
+  font-size: 1.4rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 40px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.vp-doc h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 28px 0 8px;
+}
+
+.vp-doc p {
+  line-height: 1.7;
+  margin: 12px 0;
+  color: var(--vp-c-text-1);
+}
+
+.vp-doc .header-anchor {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.vp-doc h1:hover .header-anchor,
+.vp-doc h2:hover .header-anchor,
+.vp-doc h3:hover .header-anchor {
+  opacity: 1;
+}
+
+/* ===== Intro paragraph on homepage ===== */
+.vp-doc > p:first-of-type {
+  font-size: 1.05rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.8;
+  max-width: 680px;
+}
+
+/* ===== Stats grid ===== */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 16px;
-  margin: 24px 0;
+  margin: 28px 0 36px;
 }
 
 .stat-card {
   background: var(--vp-c-bg-soft);
-  border-radius: 16px;
-  padding: 24px 16px;
+  border-radius: 14px;
+  padding: 28px 16px 24px;
   text-align: center;
   border: 1px solid var(--vp-c-border);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.2s cubic-bezier(0.16,1,0.3,1);
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(99,102,241,0.10);
+  border-color: var(--vp-c-brand-1);
 }
 
 .stat-card .stat-number {
-  font-size: 36px;
+  font-size: 38px;
   font-weight: 800;
-  line-height: 1.1;
+  line-height: 1;
+  letter-spacing: -0.03em;
   background: linear-gradient(135deg, #6366f1, #06b6d4);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -58,16 +138,18 @@
 
 .stat-card .stat-label {
   font-size: 13px;
+  font-weight: 500;
   color: var(--vp-c-text-2);
-  margin-top: 6px;
+  margin-top: 8px;
+  letter-spacing: 0.02em;
 }
 
-/* Role-based nav cards */
+/* ===== Role cards ===== */
 .role-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 12px;
-  margin: 20px 0;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+  margin: 20px 0 36px;
 }
 
 .role-card {
@@ -80,25 +162,35 @@
   border: 1px solid var(--vp-c-border);
   text-decoration: none;
   color: var(--vp-c-text-1);
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.16,1,0.3,1);
 }
 
 .role-card:hover {
   border-color: var(--vp-c-brand-1);
   background: var(--vp-c-brand-soft);
-  transform: translateX(4px);
+  transform: translateX(5px);
 }
 
 .role-card .role-emoji {
-  font-size: 24px;
+  font-size: 20px;
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--vp-c-bg-mute);
   border-radius: 10px;
+  color: var(--vp-c-text-2);
+}
+
+.role-card:hover .role-emoji {
+  color: var(--vp-c-brand-1);
+  background: white;
+}
+
+.dark .role-card:hover .role-emoji {
+  background: var(--vp-c-bg);
 }
 
 .role-card .role-info {
@@ -115,45 +207,92 @@
 .role-card .role-link {
   font-size: 13px;
   color: var(--vp-c-brand-1);
-  margin-top: 2px;
+  margin-top: 3px;
+  font-weight: 500;
 }
 
-/* Section titles */
-.section-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin: 32px 0 12px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--vp-c-brand-1);
-  display: inline-block;
+/* ===== Content section links ===== */
+.vp-doc h3 a {
+  color: var(--vp-c-text-1);
+  text-decoration: none;
 }
 
-/* Content area max-width tuning */
+.vp-doc h3 a:hover {
+  color: var(--vp-c-brand-1);
+}
+
+/* ===== Content area ===== */
 .VPContent .container {
   max-width: 1100px;
 }
 
-/* Better table styling for skill pages */
+/* ===== Tables ===== */
 .vp-doc table {
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
   font-size: 14px;
+  border: 1px solid var(--vp-c-border);
 }
 
 .vp-doc th {
   background: var(--vp-c-brand-soft);
   font-weight: 600;
+  font-size: 13px;
+  text-transform: none;
+  letter-spacing: 0.01em;
 }
 
-/* Code blocks */
+/* ===== Code blocks ===== */
 .vp-doc div[class*=language-] {
   border-radius: 10px;
+  border: 1px solid var(--vp-c-border);
 }
 
-/* Blockquote styling */
+/* ===== Blockquotes ===== */
 .vp-doc blockquote {
   border-left: 3px solid var(--vp-c-brand-1);
   background: var(--vp-c-bg-soft);
-  padding: 12px 16px;
-  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  border-radius: 0 10px 10px 0;
+  color: var(--vp-c-text-2);
+}
+
+.vp-doc blockquote p {
+  color: var(--vp-c-text-2);
+}
+
+/* ===== Inline code ===== */
+.vp-doc code {
+  font-size: 0.875em;
+  background: var(--vp-c-bg-mute);
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-weight: 500;
+}
+
+/* ===== Footer ===== */
+.VPFooter {
+  border-top: 1px solid var(--vp-c-border);
+  padding: 20px 0;
+}
+
+/* ===== Section header for "三大内容板块" ===== */
+.content-section {
+  margin: 28px 0;
+}
+
+.content-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--vp-c-brand-1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.content-section-desc {
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+  line-height: 1.6;
+  margin: 0;
 }
