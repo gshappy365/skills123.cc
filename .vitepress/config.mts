@@ -110,6 +110,30 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Enterprise Search',
+          items: [
+            { text: 'Search Strategy', link: '/skills/enterprise-search/search-strategy' },
+            { text: 'Knowledge Synthesis', link: '/skills/enterprise-search/knowledge-synthesis' },
+            { text: 'Source Management', link: '/skills/enterprise-search/source-management' },
+          ],
+        },
+        {
+          text: 'Human Resources',
+          items: [
+            { text: 'Draft Offer', link: '/skills/human-resources/draft-offer' },
+            { text: 'Performance Review', link: '/skills/human-resources/performance-review' },
+            { text: 'Comp Analysis', link: '/skills/human-resources/comp-analysis' },
+          ],
+        },
+        {
+          text: 'Product Management',
+          items: [
+            { text: 'Write Spec', link: '/skills/product-management/write-spec' },
+            { text: 'Synthesize Research', link: '/skills/product-management/synthesize-research' },
+            { text: 'Roadmap Update', link: '/skills/product-management/roadmap-update' },
+          ],
+        },
+        {
           text: 'Productivity',
           items: [
             { text: 'Memory Management', link: '/skills/productivity/memory-management' },
