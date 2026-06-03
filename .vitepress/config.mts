@@ -2,15 +2,40 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'Skills123.cc',
-  description: 'AI Agent Skills 百科 — Anthropic + Codex 技能深度介绍、使用指南与案例分析',
+  titleTemplate: ':title — AI Agent Skills 百科',
+  description: 'AI Agent Skills 百科 — Anthropic + Codex 技能深度介绍、使用指南与案例分析，覆盖 Data、Sales、Finance、Marketing、Legal 等 14+ 插件领域',
   lang: 'zh-CN',
   base: '/',
   cleanUrls: true,
   ignoreDeadLinks: true,
+  lastUpdated: true,
+
+  sitemap: {
+    hostname: 'https://skills123.cc',
+  },
 
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
-    ['meta', { name: 'keywords', content: 'Claude Code, Codex, AI Skills, Plugins, Anthropic, OpenAI, MCP' }],
+    ['link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }],
+    ['meta', { name: 'keywords', content: 'Claude Code, Codex, AI Skills, Plugins, Anthropic, OpenAI, MCP, AI Agent, 技能百科' }],
+    ['meta', { name: 'author', content: 'Skills123.cc' }],
+
+    // Open Graph
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:title', content: 'Skills123.cc — AI Agent Skills 百科' }],
+    ['meta', { property: 'og:description', content: 'Anthropic + Codex 技能深度介绍、使用指南与案例分析' }],
+    ['meta', { property: 'og:image', content: '/og-image.png' }],
+    ['meta', { property: 'og:url', content: 'https://skills123.cc' }],
+    ['meta', { property: 'og:locale', content: 'zh_CN' }],
+
+    // Twitter Card
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:title', content: 'Skills123.cc — AI Agent Skills 百科' }],
+    ['meta', { name: 'twitter:description', content: 'Anthropic + Codex 技能深度介绍、使用指南与案例分析' }],
+    ['meta', { name: 'twitter:image', content: '/og-image.png' }],
+
+    // Plausible Analytics (placeholder — 替换为自己的 data-domain)
+    // ['script', { src: 'https://plausible.io/js/script.js', 'data-domain': 'skills123.cc', defer: '' }],
   ],
 
   themeConfig: {
@@ -193,9 +218,25 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/gshappy365/skills123.cc' },
     ],
 
+    outline: {
+      level: [2, 3],
+      label: '本页目录',
+    },
+
+    docFooter: {
+      prev: '上一篇',
+      next: '下一篇',
+    },
+
+    returnToTopLabel: '返回顶部',
+    sidebarMenuLabel: '菜单',
+    darkModeSwitchLabel: '深色模式',
+    lightModeSwitchTitle: '切换到浅色模式',
+    darkModeSwitchTitle: '切换到深色模式',
+
     footer: {
       message: 'Skills123.cc — AI Agent Skills 百科',
-      copyright: '基于 MIT 协议开源',
+      copyright: '基于 MIT 协议开源 · 内容来自 <a href="https://github.com/anthropics/knowledge-work-plugins" target="_blank">Anthropic</a> 和 <a href="https://github.com/hashgraph-online/awesome-codex-plugins" target="_blank">开源社区</a>',
     },
 
     editLink: {

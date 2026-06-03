@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://skills123.cc/sitemap.xml
