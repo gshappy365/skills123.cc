@@ -22,4 +22,10 @@
 
 ---
 
+## Productivity
+
+- [Memory Management](/skills/productivity/memory-management) — 双层记忆架构，解码工作场所简写
+
+---
+
 > 更多技能持续添加中。
