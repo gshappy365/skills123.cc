@@ -74,6 +74,42 @@ export default defineConfig({
           ],
         },
         {
+          text: 'Marketing',
+          items: [
+            { text: 'Competitive Brief', link: '/skills/marketing/competitive-brief' },
+          ],
+        },
+        {
+          text: 'Legal',
+          items: [
+            { text: 'Review Contract', link: '/skills/legal/review-contract' },
+          ],
+        },
+        {
+          text: 'Customer Support',
+          items: [
+            { text: 'Ticket Triage', link: '/skills/customer-support/ticket-triage' },
+          ],
+        },
+        {
+          text: 'Design',
+          items: [
+            { text: 'Design Critique', link: '/skills/design/design-critique' },
+          ],
+        },
+        {
+          text: 'Operations',
+          items: [
+            { text: 'Process Documentation', link: '/skills/operations/process-documentation' },
+          ],
+        },
+        {
+          text: 'Small Business',
+          items: [
+            { text: 'Cash Flow Planning', link: '/skills/small-business/cash-flow-planning' },
+          ],
+        },
+        {
           text: 'Productivity',
           items: [
             { text: 'Memory Management', link: '/skills/productivity/memory-management' },
