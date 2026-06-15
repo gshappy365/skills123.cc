@@ -10,6 +10,10 @@ export default defineConfig({
   ignoreDeadLinks: true,
   lastUpdated: true,
 
+  rewrites: {
+    'skills/community/serenity-skill.md': 'serenity-skill-landing.html',
+  },
+
   sitemap: {
     hostname: 'https://skills123.cc',
   },
@@ -17,6 +21,9 @@ export default defineConfig({
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
+    ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
+    ['link', { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap' }],
     ['meta', { name: 'keywords', content: 'Claude Code, Codex, AI Skills, Plugins, Anthropic, OpenAI, MCP, AI Agent, 技能百科' }],
     ['meta', { name: 'author', content: 'Skills123.cc' }],
 
@@ -102,6 +109,12 @@ export default defineConfig({
           text: 'Marketing',
           items: [
             { text: 'Competitive Brief', link: '/skills/marketing/competitive-brief' },
+          ],
+        },
+        {
+          text: 'Community',
+          items: [
+            { text: 'Serenity Skill', link: '/skills/community/serenity-skill' },
           ],
         },
         {
