@@ -33,6 +33,7 @@ jobs:
           cp index.html site/index.html
           cp CNAME site/CNAME
           cp .nojekyll site/.nojekyll
+          cp -R assets site/assets
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
