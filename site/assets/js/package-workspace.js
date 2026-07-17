@@ -1,4 +1,8 @@
-import { derivePackageWorkspaceState } from "./package-workspace-state.js";
+import {
+  createSelectedSkillUrl,
+  derivePackageWorkspaceState,
+  getSelectedSkillIdFromUrl,
+} from "./package-workspace-state.js";
 
 const packageId = document.body.dataset.packageId;
 const workspaceInput = {
@@ -55,7 +59,7 @@ function toggleFilter(filterName, value) {
       ? values.filter((item) => item !== value)
       : [...values, value],
   };
-  render();
+  render({ syncUrl: true });
 }
 
 function renderFilterGroup(container, filterName, facet, facetLabels) {
@@ -138,14 +142,23 @@ function setDetailOpen(open) {
   document.body.classList.toggle("has-detail-drawer", open);
 }
 
-function selectSkill(skillId, { openDetail = true } = {}) {
+function updateSelectedSkillUrl(selectedSkillId, historyMode = "replaceState") {
+  const nextUrl = createSelectedSkillUrl(location.href, selectedSkillId);
+  history[historyMode]({}, "", nextUrl);
+}
+
+function selectSkill(
+  skillId,
+  { openDetail = true, historyMode = "pushState" } = {}
+) {
   workspaceInput.directoryPosition = window.scrollY;
   workspaceInput.selectedSkillId = skillId;
-  render();
+  const state = render();
+  updateSelectedSkillUrl(state.navigation.selectedSkillId, historyMode);
   if (openDetail) setDetailOpen(true);
 }
 
-function render() {
+function render({ syncUrl = false } = {}) {
   const state = derivePackageWorkspaceState({
     ...workspaceInput,
     skills,
@@ -161,12 +174,14 @@ function render() {
   );
   renderList(state);
   renderDetail(state);
+  if (syncUrl) updateSelectedSkillUrl(state.navigation.selectedSkillId);
+  return state;
 }
 
 function bindEvents() {
   elements.search.addEventListener("input", (event) => {
     workspaceInput.query = event.target.value;
-    render();
+    render({ syncUrl: true });
   });
 
   document.addEventListener("click", async (event) => {
@@ -196,7 +211,7 @@ function bindEvents() {
     workspaceInput.query = "";
     workspaceInput.filters = { groups: [], lifecycles: [] };
     elements.search.value = "";
-    render();
+    render({ syncUrl: true });
   });
 
   const closeDetail = () => {
@@ -207,6 +222,10 @@ function bindEvents() {
   elements.detailBackdrop.addEventListener("click", closeDetail);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && detailOpen) closeDetail();
+  });
+  window.addEventListener("popstate", () => {
+    workspaceInput.selectedSkillId = getSelectedSkillIdFromUrl(location.href);
+    render();
   });
 }
 
@@ -225,8 +244,9 @@ async function init() {
   elements.packageName.textContent = packageData.name;
   elements.totalCount.textContent = skills.length;
   elements.directoryTotal.textContent = skills.length;
+  workspaceInput.selectedSkillId = getSelectedSkillIdFromUrl(location.href);
   bindEvents();
-  render();
+  render({ syncUrl: Boolean(workspaceInput.selectedSkillId) });
   elements.shell.setAttribute("aria-busy", "false");
 }
 

@@ -1,0 +1,98 @@
+export const PACKAGE_GROUP_ORDER = Object.freeze([
+  "development",
+  "research",
+  "operations",
+  "content",
+]);
+
+function normalizedText(values) {
+  return values
+    .flat()
+    .filter(Boolean)
+    .join(" ")
+    .toLocaleLowerCase();
+}
+
+function packageHref(packageId, skillId = null) {
+  const base = `/packages/${encodeURIComponent(packageId)}/`;
+  return skillId ? `${base}?skill=${encodeURIComponent(skillId)}` : base;
+}
+
+export function buildPackageGroups(catalog) {
+  const scenarioById = new Map(
+    catalog.scenarios.map((scenario) => [scenario.id, scenario])
+  );
+
+  return PACKAGE_GROUP_ORDER.map((id) => {
+    const scenario = scenarioById.get(id);
+    return {
+      ...scenario,
+      id,
+      status: scenario?.status ?? "coming-soon",
+      packages: catalog.packages.filter((item) => item.scenario === id),
+    };
+  });
+}
+
+export async function loadPackageSkills(catalog, fetchJson) {
+  const entries = await Promise.all(
+    catalog.packages.map(async (pkg) => {
+      const loadedSkills = pkg.workspace?.skillsUrl
+        ? await fetchJson(pkg.workspace.skillsUrl)
+        : [];
+      const skills = [...loadedSkills];
+      const featuredSkill = pkg.featuredSkill;
+      if (featuredSkill && !skills.some((skill) => skill.id === featuredSkill.id)) {
+        skills.push(featuredSkill);
+      }
+      return [pkg.id, skills];
+    })
+  );
+
+  return Object.fromEntries(entries);
+}
+
+export function searchCatalogue({ catalog, packageSkills, query }) {
+  const normalizedQuery = String(query).trim().toLocaleLowerCase();
+  if (!normalizedQuery) return { packageMatches: [], skillMatches: [] };
+
+  const scenarioById = new Map(
+    catalog.scenarios.map((scenario) => [scenario.id, scenario])
+  );
+  const packageMatches = catalog.packages
+    .filter((pkg) =>
+      normalizedText([
+        pkg.name,
+        pkg.description,
+        pkg.tags,
+        scenarioById.get(pkg.scenario)?.name,
+      ]).includes(normalizedQuery)
+    )
+    .map((pkg) => ({ ...pkg, href: packageHref(pkg.id) }));
+
+  const skillMatches = catalog.packages.flatMap((pkg) =>
+    (packageSkills[pkg.id] ?? [])
+      .filter((skill) =>
+        normalizedText([
+          skill.id,
+          skill.name,
+          skill.command,
+          skill.description,
+          skill.descriptionZh,
+          skill.descriptionEn,
+          skill.tags,
+        ]).includes(normalizedQuery)
+      )
+      .map((skill) => ({
+        ...skill,
+        package: {
+          id: pkg.id,
+          name: pkg.name,
+          scenario: pkg.scenario,
+        },
+        href: packageHref(pkg.id, skill.id),
+      }))
+  );
+
+  return { packageMatches, skillMatches };
+}

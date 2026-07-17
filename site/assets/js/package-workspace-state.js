@@ -1,5 +1,16 @@
 const DEFAULT_FILTERS = Object.freeze({ groups: [], lifecycles: [] });
 
+export function getSelectedSkillIdFromUrl(url) {
+  return new URL(url, "https://skills123.invalid").searchParams.get("skill");
+}
+
+export function createSelectedSkillUrl(url, selectedSkillId) {
+  const nextUrl = new URL(url, "https://skills123.invalid");
+  if (selectedSkillId) nextUrl.searchParams.set("skill", selectedSkillId);
+  else nextUrl.searchParams.delete("skill");
+  return nextUrl.href;
+}
+
 function uniqueStrings(values) {
   return [...new Set((Array.isArray(values) ? values : []).filter(Boolean))];
 }

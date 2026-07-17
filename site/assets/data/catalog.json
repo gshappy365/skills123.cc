@@ -47,7 +47,13 @@
       "skillCount":1,
       "tags":["投研","行业研究","金融"],
       "status":"active",
-      "featuredSkill":{"id":"serenity-skill","name":"Serenity.skill"}
+      "featuredSkill":{
+        "id":"serenity-skill",
+        "name":"Serenity.skill",
+        "descriptionZh":"供应链瓶颈投研方法：从热点判断推进到证据验证。",
+        "command":"/serenity-skill",
+        "tags":["供应链","证据验证","行业研究"]
+      }
     }
   ]
 }

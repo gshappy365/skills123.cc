@@ -82,6 +82,73 @@ test("development package supports desktop browsing, filtering and search", asyn
   await page.close();
 });
 
+test("grouped navigation searches owned skills and restores search on back", async () => {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
+  await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
+
+  assert.deepEqual(await page.locator(".package-index-group h2").allTextContents(), [
+    "开发",
+    "研究",
+    "运营",
+    "内容",
+  ]);
+  assert.equal(await page.locator(".package-index-group.is-coming-soon").count(), 2);
+  assert.equal(
+    await page.locator(".package-index-group.is-coming-soon a").count(),
+    0
+  );
+
+  await page.getByPlaceholder("搜索技能包、技能或 /command").fill("prototype");
+  assert.equal(await page.locator(".catalogue-result.skill-result").count(), 1);
+  assert.match(
+    await page.locator(".catalogue-result.skill-result").innerText(),
+    /归属 · 开发技能包/
+  );
+  await page.locator(".catalogue-result.skill-result").click();
+
+  assert.equal(new URL(page.url()).searchParams.get("skill"), "prototype");
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "prototype");
+
+  await page.goBack({ waitUntil: "networkidle" });
+  assert.equal(new URL(page.url()).searchParams.get("q"), "prototype");
+  assert.equal(
+    await page.getByPlaceholder("搜索技能包、技能或 /command").inputValue(),
+    "prototype"
+  );
+  assert.equal(await page.locator(".catalogue-result.skill-result").count(), 1);
+
+  await page.getByPlaceholder("搜索技能包、技能或 /command").fill("serenity");
+  assert.match(
+    await page.locator(".catalogue-result.skill-result").innerText(),
+    /归属 · 投研与行业研究技能包/
+  );
+  await page.locator(".catalogue-result.skill-result").click();
+  assert.equal(new URL(page.url()).searchParams.get("skill"), "serenity-skill");
+  assert.equal(
+    await page.locator("#serenity-skill").evaluate((node) => node.classList.contains("is-selected")),
+    true
+  );
+  assert.equal(await page.locator("#search-position").innerText(), "已从全局搜索定位");
+  await page.close();
+});
+
+test("workspace direct URL and browser history resolve the same selected skill", async () => {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
+  await page.goto(`${baseUrl}/packages/development/?skill=prototype`, {
+    waitUntil: "networkidle",
+  });
+
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "prototype");
+  await page.locator('[data-skill-id="ask-matt"]').click();
+  assert.equal(new URL(page.url()).searchParams.get("skill"), "ask-matt");
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "ask-matt");
+
+  await page.goBack();
+  assert.equal(new URL(page.url()).searchParams.get("skill"), "prototype");
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "prototype");
+  await page.close();
+});
+
 test("mobile detail drawer closes without losing workspace selection", async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await page.goto(`${baseUrl}/packages/development/`, { waitUntil: "networkidle" });

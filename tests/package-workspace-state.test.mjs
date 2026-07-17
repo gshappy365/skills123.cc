@@ -2,7 +2,11 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-import { derivePackageWorkspaceState } from "../site/assets/js/package-workspace-state.js";
+import {
+  createSelectedSkillUrl,
+  derivePackageWorkspaceState,
+  getSelectedSkillIdFromUrl,
+} from "../site/assets/js/package-workspace-state.js";
 
 const skillsUrl = new URL("../site/assets/data/atlas-skills.json", import.meta.url);
 
@@ -90,4 +94,21 @@ test("empty results and navigation state remain explicit", async () => {
     reading: true,
     directoryPosition: 620,
   });
+});
+
+test("selected skill URL state round-trips for search entry and direct loading", () => {
+  const selectedUrl = createSelectedSkillUrl(
+    "https://skills123.cc/packages/development/",
+    "prototype"
+  );
+
+  assert.equal(
+    selectedUrl,
+    "https://skills123.cc/packages/development/?skill=prototype"
+  );
+  assert.equal(getSelectedSkillIdFromUrl(selectedUrl), "prototype");
+  assert.equal(
+    createSelectedSkillUrl(selectedUrl, null),
+    "https://skills123.cc/packages/development/"
+  );
 });
