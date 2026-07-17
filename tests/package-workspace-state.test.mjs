@@ -3,8 +3,11 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import {
+  createPackageWorkspaceUrl,
+  createReadingUrl,
   createSelectedSkillUrl,
   derivePackageWorkspaceState,
+  getPackageWorkspaceNavigationFromUrl,
   getSelectedSkillIdFromUrl,
 } from "../site/assets/js/package-workspace-state.js";
 
@@ -110,5 +113,41 @@ test("selected skill URL state round-trips for search entry and direct loading",
   assert.equal(
     createSelectedSkillUrl(selectedUrl, null),
     "https://skills123.cc/packages/development/"
+  );
+});
+
+test("reading URLs round-trip the complete package workspace state", () => {
+  const navigation = {
+    query: "证据验证",
+    filters: { groups: ["industry-research"], lifecycles: ["published"] },
+    selectedSkillId: "serenity-skill",
+    directoryPosition: 486,
+  };
+  const readingUrl = createReadingUrl(
+    "https://skills123.cc/packages/investment-research/skills/serenity-skill/",
+    navigation
+  );
+
+  assert.deepEqual(getPackageWorkspaceNavigationFromUrl(readingUrl), navigation);
+  assert.equal(
+    createPackageWorkspaceUrl(
+      "https://skills123.cc/packages/investment-research/",
+      getPackageWorkspaceNavigationFromUrl(readingUrl)
+    ),
+    "https://skills123.cc/packages/investment-research/?skill=serenity-skill&q=%E8%AF%81%E6%8D%AE%E9%AA%8C%E8%AF%81&group=industry-research&lifecycle=published&position=486"
+  );
+});
+
+test("a direct reading URL has empty state for a deterministic package fallback", () => {
+  assert.deepEqual(
+    getPackageWorkspaceNavigationFromUrl(
+      "https://skills123.cc/packages/investment-research/skills/serenity-skill/"
+    ),
+    {
+      query: "",
+      filters: { groups: [], lifecycles: [] },
+      selectedSkillId: null,
+      directoryPosition: 0,
+    }
   );
 });

@@ -11,6 +11,60 @@ export function createSelectedSkillUrl(url, selectedSkillId) {
   return nextUrl.href;
 }
 
+export function getPackageWorkspaceNavigationFromUrl(url) {
+  const params = new URL(url, "https://skills123.invalid").searchParams;
+  const directoryPosition = Number(params.get("position"));
+
+  return {
+    query: params.get("q") ?? "",
+    filters: {
+      groups: uniqueStrings(params.getAll("group")),
+      lifecycles: uniqueStrings(params.getAll("lifecycle")),
+    },
+    selectedSkillId: params.get("skill"),
+    directoryPosition:
+      Number.isFinite(directoryPosition) && directoryPosition > 0
+        ? directoryPosition
+        : 0,
+  };
+}
+
+function replaceListParam(params, name, values) {
+  params.delete(name);
+  uniqueStrings(values).forEach((value) => params.append(name, value));
+}
+
+export function createPackageWorkspaceUrl(url, navigation = {}) {
+  const nextUrl = new URL(url, "https://skills123.invalid");
+  const query = String(navigation.query ?? "").trim();
+  const position = Number(navigation.directoryPosition);
+
+  if (navigation.selectedSkillId) {
+    nextUrl.searchParams.set("skill", navigation.selectedSkillId);
+  } else {
+    nextUrl.searchParams.delete("skill");
+  }
+  if (query) nextUrl.searchParams.set("q", query);
+  else nextUrl.searchParams.delete("q");
+  replaceListParam(nextUrl.searchParams, "group", navigation.filters?.groups);
+  replaceListParam(
+    nextUrl.searchParams,
+    "lifecycle",
+    navigation.filters?.lifecycles
+  );
+  if (Number.isFinite(position) && position > 0) {
+    nextUrl.searchParams.set("position", String(Math.round(position)));
+  } else {
+    nextUrl.searchParams.delete("position");
+  }
+
+  return nextUrl.href;
+}
+
+export function createReadingUrl(url, navigation = {}) {
+  return createPackageWorkspaceUrl(url, navigation);
+}
+
 function uniqueStrings(values) {
   return [...new Set((Array.isArray(values) ? values : []).filter(Boolean))];
 }

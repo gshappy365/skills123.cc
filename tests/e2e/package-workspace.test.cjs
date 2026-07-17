@@ -217,3 +217,71 @@ test("mobile detail drawer closes without losing workspace selection", async () 
   );
   await page.close();
 });
+
+test("Serenity full reading returns to the complete research workspace state", async () => {
+  const page = await browser.newPage({ viewport: { width: 390, height: 240 } });
+  await page.goto(`${baseUrl}/packages/investment-research/`, {
+    waitUntil: "networkidle",
+  });
+
+  await page.locator("#skill-search").fill("证据验证");
+  await page.getByRole("button", { name: "行业研究", exact: true }).click();
+  await page.getByRole("button", { name: "已发布", exact: true }).click();
+  const directoryPosition = await page.evaluate(() => {
+    window.scrollTo(0, document.documentElement.scrollHeight);
+    return window.scrollY;
+  });
+  await page.locator('[data-skill-id="serenity-skill"]').click();
+  await page.locator(".reading-link").click();
+  await page.waitForLoadState("networkidle");
+
+  assert.match(page.url(), /\/skills\/serenity-skill\//);
+  assert.equal(await page.locator(".package-reading-bar").count(), 1);
+  assert.match(await page.locator("main").innerText(), /Serenity 是什么/);
+  assert.equal(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+    ),
+    false
+  );
+
+  await page.locator("#returnToWorkspace").click();
+  await page.waitForLoadState("networkidle");
+  assert.equal(await page.locator("#skill-search").inputValue(), "证据验证");
+  assert.equal(
+    await page.getByRole("button", { name: "行业研究", exact: true }).getAttribute("aria-pressed"),
+    "true"
+  );
+  assert.equal(
+    await page.getByRole("button", { name: "已发布", exact: true }).getAttribute("aria-pressed"),
+    "true"
+  );
+  assert.match(await page.locator(".skill-row.is-selected").innerText(), /serenity-skill/);
+  assert.ok(directoryPosition > 0);
+  assert.ok(
+    Math.abs((await page.evaluate(() => window.scrollY)) - directoryPosition) <= 2
+  );
+  await page.close();
+});
+
+test("direct Serenity reading has a package return path and stable browser history", async () => {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
+  await page.goto(
+    `${baseUrl}/packages/investment-research/skills/serenity-skill/`,
+    { waitUntil: "networkidle" }
+  );
+
+  assert.equal(
+    new URL(await page.locator("#returnToWorkspace").getAttribute("href")).searchParams.get("skill"),
+    "serenity-skill"
+  );
+  await page.locator("#returnToWorkspace").click();
+  await page.waitForLoadState("networkidle");
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "Serenity.skill");
+
+  await page.goBack({ waitUntil: "networkidle" });
+  assert.match(page.url(), /\/skills\/serenity-skill\/$/);
+  await page.goForward({ waitUntil: "networkidle" });
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "Serenity.skill");
+  await page.close();
+});

@@ -1,7 +1,8 @@
 import {
-  createSelectedSkillUrl,
+  createPackageWorkspaceUrl,
+  createReadingUrl,
   derivePackageWorkspaceState,
-  getSelectedSkillIdFromUrl,
+  getPackageWorkspaceNavigationFromUrl,
 } from "./package-workspace-state.js";
 
 const packageId = document.body.dataset.packageId;
@@ -153,7 +154,10 @@ function setDetailOpen(open) {
 }
 
 function updateSelectedSkillUrl(selectedSkillId, historyMode = "replaceState") {
-  const nextUrl = createSelectedSkillUrl(location.href, selectedSkillId);
+  const nextUrl = createPackageWorkspaceUrl(location.href, {
+    ...workspaceInput,
+    selectedSkillId,
+  });
   history[historyMode]({}, "", nextUrl);
 }
 
@@ -215,6 +219,23 @@ function bindEvents() {
       await navigator.clipboard.writeText(command);
       copy.textContent = "已复制";
     }
+
+    const readingLink = event.target.closest(".reading-link");
+    if (readingLink) {
+      event.preventDefault();
+      workspaceInput.directoryPosition = detailOpen
+        ? workspaceInput.directoryPosition
+        : window.scrollY;
+      const state = derivePackageWorkspaceState({ ...workspaceInput, skills, labels });
+      const workspaceUrl = createPackageWorkspaceUrl(location.href, state.navigation);
+      history.replaceState({}, "", workspaceUrl);
+      location.assign(
+        createReadingUrl(new URL(readingLink.getAttribute("href"), location.origin), {
+          ...state.navigation,
+          reading: true,
+        })
+      );
+    }
   });
 
   elements.clearFilters.addEventListener("click", () => {
@@ -234,8 +255,15 @@ function bindEvents() {
     if (event.key === "Escape" && detailOpen) closeDetail();
   });
   window.addEventListener("popstate", () => {
-    workspaceInput.selectedSkillId = getSelectedSkillIdFromUrl(location.href);
+    Object.assign(
+      workspaceInput,
+      getPackageWorkspaceNavigationFromUrl(location.href)
+    );
+    elements.search.value = workspaceInput.query;
     render();
+    requestAnimationFrame(() =>
+      window.scrollTo({ top: workspaceInput.directoryPosition })
+    );
   });
 }
 
@@ -254,10 +282,19 @@ async function init() {
   elements.packageName.textContent = packageData.name;
   elements.totalCount.textContent = skills.length;
   elements.directoryTotal.textContent = skills.length;
-  workspaceInput.selectedSkillId = getSelectedSkillIdFromUrl(location.href);
+  Object.assign(
+    workspaceInput,
+    getPackageWorkspaceNavigationFromUrl(location.href)
+  );
+  elements.search.value = workspaceInput.query;
   bindEvents();
   render({ syncUrl: Boolean(workspaceInput.selectedSkillId) });
   elements.shell.setAttribute("aria-busy", "false");
+  if (workspaceInput.directoryPosition) {
+    requestAnimationFrame(() =>
+      window.scrollTo({ top: workspaceInput.directoryPosition })
+    );
+  }
 }
 
 init().catch((error) => {
