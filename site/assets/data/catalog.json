@@ -1,0 +1,31 @@
+{
+  "scenarios": [
+    {"id":"research","name":"研究","description":"投研、行业、市场与尽调","status":"active"},
+    {"id":"content","name":"内容","description":"写作、叙事与分发","status":"coming-soon"},
+    {"id":"development","name":"开发","description":"构建、测试与交付","status":"active"},
+    {"id":"operations","name":"运营","description":"流程、协作与增长","status":"coming-soon"}
+  ],
+  "packages": [
+    {
+      "id":"development",
+      "name":"开发技能包",
+      "scenario":"development",
+      "description":"以 Skills Atlas 为参考，组织从设计、构建、测试到交付的 42 项 AI 工作技能。",
+      "skillCount":42,
+      "tags":["软件工程","产品设计","流程协作"],
+      "status":"active",
+      "source":{"name":"Skills Atlas","url":"https://gshappy365.github.io/skills-atlas/"},
+      "groups":["软件工程","产品设计","写作内容","研究学习","流程协作","工具环境"]
+    },
+    {
+      "id":"investment-research",
+      "name":"投研与行业研究技能包",
+      "scenario":"research",
+      "description":"从产业链拆解、证据验证到研究优先级，组织可复用的行业研究方法。",
+      "skillCount":1,
+      "tags":["投研","行业研究","金融"],
+      "status":"active",
+      "featuredSkill":{"id":"serenity-skill","name":"Serenity.skill"}
+    }
+  ]
+}
