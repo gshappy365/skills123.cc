@@ -1,0 +1,338 @@
+[
+  {
+    "id": "ask-matt",
+    "descriptionEn": "Ask which skill or flow fits your situation. A router over the skills in this repo.",
+    "group": "engineering",
+    "command": "/ask-matt",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "claude-handoff",
+    "descriptionEn": "Hand the current conversation off to a fresh background agent that picks up the work immediately.",
+    "group": "in-progress",
+    "command": "/claude-handoff",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
+  },
+  {
+    "id": "code-review",
+    "descriptionEn": "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\".",
+    "group": "engineering",
+    "command": "/code-review",
+    "invocationMode": "model-allowed",
+    "lifecycle": "published"
+  },
+  {
+    "id": "codebase-design",
+    "descriptionEn": "Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.",
+    "group": "engineering",
+    "command": "/codebase-design",
+    "invocationMode": "model-allowed",
+    "lifecycle": "published"
+  },
+  {
+    "id": "decision-mapping",
+    "descriptionEn": "Turn a loose idea into a sequenced map of investigation tickets, then drive them to resolution one at a time.",
+    "group": "in-progress",
+    "command": "/decision-mapping",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
+  },
+  {
+    "id": "design-an-interface",
+    "descriptionEn": "Generate multiple radically different interface designs for a module using parallel sub-agents. Use when user wants to design an API, explore interface options, compare module shapes, or mentions \"design it twice\".",
+    "group": "deprecated",
+    "command": "/design-an-interface",
+    "invocationMode": "model-allowed",
+    "lifecycle": "deprecated"
+  },
+  {
+    "id": "diagnosing-bugs",
+    "descriptionEn": "Diagnosis loop for hard bugs and performance regressions. Use when the user says \"diagnose\"/\"debug this\", or reports something broken/throwing/failing/slow.",
+    "group": "engineering",
+    "command": "/diagnosing-bugs",
+    "invocationMode": "model-allowed",
+    "lifecycle": "published"
+  },
+  {
+    "id": "domain-modeling",
+    "descriptionEn": "Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural decision, or when another skill needs to maintain the domain model.",
+    "group": "engineering",
+    "command": "/domain-modeling",
+    "invocationMode": "model-allowed",
+    "lifecycle": "published"
+  },
+  {
+    "id": "edit-article",
+    "descriptionEn": "Edit and improve articles by restructuring sections, improving clarity, and tightening prose. Use when user wants to edit, revise, or improve an article draft.",
+    "group": "personal",
+    "command": "/edit-article",
+    "invocationMode": "user-only",
+    "lifecycle": "repository-only"
+  },
+  {
+    "id": "git-guardrails-claude-code",
+    "descriptionEn": "Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.",
+    "group": "misc",
+    "command": "/git-guardrails-claude-code",
+    "invocationMode": "model-allowed",
+    "lifecycle": "repository-only"
+  },
+  {
+    "id": "grill-me",
+    "descriptionEn": "A relentless interview to sharpen a plan or design.",
+    "group": "productivity",
+    "command": "/grill-me",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "grill-with-docs",
+    "descriptionEn": "A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.",
+    "group": "engineering",
+    "command": "/grill-with-docs",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "grilling",
+    "descriptionEn": "Grill the user relentlessly about a plan or design. Use when the user wants to stress-test a plan before building, or uses any 'grill' trigger phrases.",
+    "group": "productivity",
+    "command": "/grilling",
+    "invocationMode": "model-allowed",
+    "lifecycle": "published"
+  },
+  {
+    "id": "handoff",
+    "descriptionEn": "Compact the current conversation into a handoff document for another agent to pick up.",
+    "group": "productivity",
+    "command": "/handoff",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "implement",
+    "descriptionEn": "Implement a piece of work based on a spec or set of tickets.",
+    "group": "engineering",
+    "command": "/implement",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "improve-codebase-architecture",
+    "descriptionEn": "Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.",
+    "group": "engineering",
+    "command": "/improve-codebase-architecture",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "loop-me",
+    "descriptionEn": "Grill me about specs for the workflows I want to build, within this workspace.",
+    "group": "in-progress",
+    "command": "/loop-me",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
+  },
+  {
+    "id": "migrate-to-shoehorn",
+    "descriptionEn": "Migrate test files from `as` type assertions to @total-typescript/shoehorn. Use when user mentions shoehorn, wants to replace `as` in tests, or needs partial test data.",
+    "group": "misc",
+    "command": "/migrate-to-shoehorn",
+    "invocationMode": "model-allowed",
+    "lifecycle": "repository-only"
+  },
+  {
+    "id": "obsidian-vault",
+    "descriptionEn": "Search, create, and manage notes in the Obsidian vault with wikilinks and index notes. Use when user wants to find, create, or organize notes in Obsidian.",
+    "group": "personal",
+    "command": "/obsidian-vault",
+    "invocationMode": "model-allowed",
+    "lifecycle": "repository-only"
+  },
+  {
+    "id": "prototype",
+    "descriptionEn": "Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.",
+    "group": "engineering",
+    "command": "/prototype",
+    "invocationMode": "model-allowed",
+    "lifecycle": "published"
+  },
+  {
+    "id": "qa",
+    "descriptionEn": "Interactive QA session where user reports bugs or issues conversationally, and the agent files GitHub issues. Explores the codebase in the background for context and domain language. Use when user wants to report bugs, do QA, file issues conversationally, or mentions \"QA session\".",
+    "group": "deprecated",
+    "command": "/qa",
+    "invocationMode": "model-allowed",
+    "lifecycle": "deprecated"
+  },
+  {
+    "id": "request-refactor-plan",
+    "descriptionEn": "Create a detailed refactor plan with tiny commits via user interview, then file it as a GitHub issue. Use when user wants to plan a refactor, create a refactoring RFC, or break a refactor into safe incremental steps.",
+    "group": "deprecated",
+    "command": "/request-refactor-plan",
+    "invocationMode": "model-allowed",
+    "lifecycle": "deprecated"
+  },
+  {
+    "id": "research",
+    "descriptionEn": "Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo. Use when the user wants a topic researched, docs or API facts gathered, or reading legwork delegated to a background agent.",
+    "group": "engineering",
+    "command": "/research",
+    "invocationMode": "model-allowed",
+    "lifecycle": "published"
+  },
+  {
+    "id": "resolving-merge-conflicts",
+    "descriptionEn": "Use when you need to resolve an in-progress git merge/rebase conflict.",
+    "group": "engineering",
+    "command": "/resolving-merge-conflicts",
+    "invocationMode": "model-allowed",
+    "lifecycle": "repository-only"
+  },
+  {
+    "id": "review",
+    "descriptionEn": "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\".",
+    "group": "in-progress",
+    "command": "/review",
+    "invocationMode": "model-allowed",
+    "lifecycle": "experimental"
+  },
+  {
+    "id": "scaffold-exercises",
+    "descriptionEn": "Create exercise directory structures with sections, problems, solutions, and explainers that pass linting. Use when user wants to scaffold exercises, create exercise stubs, or set up a new course section.",
+    "group": "misc",
+    "command": "/scaffold-exercises",
+    "invocationMode": "model-allowed",
+    "lifecycle": "repository-only"
+  },
+  {
+    "id": "setup-matt-pocock-skills",
+    "descriptionEn": "Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.",
+    "group": "engineering",
+    "command": "/setup-matt-pocock-skills",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "setup-pre-commit",
+    "descriptionEn": "Set up Husky pre-commit hooks with lint-staged (Prettier), type checking, and tests in the current repo. Use when user wants to add pre-commit hooks, set up Husky, configure lint-staged, or add commit-time formatting/typechecking/testing.",
+    "group": "misc",
+    "command": "/setup-pre-commit",
+    "invocationMode": "model-allowed",
+    "lifecycle": "repository-only"
+  },
+  {
+    "id": "tdd",
+    "descriptionEn": "Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions \"red-green-refactor\", or wants integration tests.",
+    "group": "engineering",
+    "command": "/tdd",
+    "invocationMode": "model-allowed",
+    "lifecycle": "published"
+  },
+  {
+    "id": "teach",
+    "descriptionEn": "Teach the user a new skill or concept, within this workspace.",
+    "group": "productivity",
+    "command": "/teach",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "to-issues",
+    "descriptionEn": "Break a plan, spec, or PRD into independently-grabbable issues on the project issue tracker using tracer-bullet vertical slices.",
+    "group": "engineering",
+    "command": "/to-issues",
+    "invocationMode": "user-only",
+    "lifecycle": "repository-only"
+  },
+  {
+    "id": "to-prd",
+    "descriptionEn": "Turn the current conversation into a PRD and publish it to the project issue tracker — no interview, just synthesis of what you've already discussed.",
+    "group": "engineering",
+    "command": "/to-prd",
+    "invocationMode": "user-only",
+    "lifecycle": "repository-only"
+  },
+  {
+    "id": "to-spec",
+    "descriptionEn": "Turn the current conversation into a spec and publish it to the project issue tracker — no interview, just synthesis of what you've already discussed.",
+    "group": "engineering",
+    "command": "/to-spec",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "to-tickets",
+    "descriptionEn": "Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker — edges as text in a local file, or native blocking links on a real tracker.",
+    "group": "engineering",
+    "command": "/to-tickets",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "triage",
+    "descriptionEn": "Move issues and external PRs through a state machine of triage roles — categorise, verify, grill if needed, and write agent-ready briefs.",
+    "group": "engineering",
+    "command": "/triage",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "ubiquitous-language",
+    "descriptionEn": "Extract a DDD-style ubiquitous language glossary from the current conversation, flagging ambiguities and proposing canonical terms. Saves to UBIQUITOUS_LANGUAGE.md. Use when user wants to define domain terms, build a glossary, harden terminology, create a ubiquitous language, or mentions \"domain model\" or \"DDD\".",
+    "group": "deprecated",
+    "command": "/ubiquitous-language",
+    "invocationMode": "user-only",
+    "lifecycle": "deprecated"
+  },
+  {
+    "id": "wayfinder",
+    "descriptionEn": "Plan a huge chunk of work — more than one agent session can hold — as a shared map of investigation tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear.",
+    "group": "engineering",
+    "command": "/wayfinder",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "wizard",
+    "descriptionEn": "Generate an interactive bash wizard that walks a human through a manual procedure — third-party setup, a one-off migration, an A→B state transition — opening URLs, capturing values, confirming each step, and writing .env files and GitHub Actions secrets.",
+    "group": "in-progress",
+    "command": "/wizard",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
+  },
+  {
+    "id": "writing-beats",
+    "descriptionEn": "Writing, exploit — assemble raw material into a journey of beats, grounding each term before a beat leans on it.",
+    "group": "in-progress",
+    "command": "/writing-beats",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
+  },
+  {
+    "id": "writing-fragments",
+    "descriptionEn": "Writing, explore — mine raw fragments, no structure yet.",
+    "group": "in-progress",
+    "command": "/writing-fragments",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
+  },
+  {
+    "id": "writing-great-skills",
+    "descriptionEn": "Reference for writing and editing skills well — the vocabulary and principles that make a skill predictable.",
+    "group": "productivity",
+    "command": "/writing-great-skills",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "writing-shape",
+    "descriptionEn": "Writing, exploit — shape raw material into an article, paragraph by paragraph.",
+    "group": "in-progress",
+    "command": "/writing-shape",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
+  }
+]
