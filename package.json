@@ -1,0 +1,12 @@
+{
+  "name": "skills123-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "test:e2e": "node --test tests/e2e/*.test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.61.1"
+  }
+}

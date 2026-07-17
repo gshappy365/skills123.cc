@@ -15,7 +15,29 @@
       "tags":["软件工程","产品设计","流程协作"],
       "status":"active",
       "source":{"name":"Skills Atlas","url":"https://gshappy365.github.io/skills-atlas/"},
-      "groups":["软件工程","产品设计","写作内容","研究学习","流程协作","工具环境"]
+      "groups":["软件工程","进行中","效率方法","个人知识","工具配置","已弃用"],
+      "workspace":{
+        "skillsUrl":"/assets/data/atlas-skills.json",
+        "eyebrow":"DEVELOPMENT PACKAGE",
+        "groupLabels":{
+          "engineering":"软件工程",
+          "in-progress":"进行中",
+          "productivity":"效率方法",
+          "personal":"个人知识",
+          "misc":"工具配置",
+          "deprecated":"已弃用"
+        },
+        "lifecycleLabels":{
+          "published":"已发布",
+          "experimental":"实验中",
+          "repository-only":"仓库内",
+          "deprecated":"已弃用"
+        },
+        "invocationModeLabels":{
+          "user-only":"用户触发",
+          "model-allowed":"模型可调用"
+        }
+      }
     },
     {
       "id":"investment-research",

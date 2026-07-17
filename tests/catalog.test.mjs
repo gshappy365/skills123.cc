@@ -28,6 +28,9 @@ test("development package retains the Atlas catalogue boundary", async () => {
   assert.equal(development.skillCount, 42);
   assert.equal(development.source.name, "Skills Atlas");
   assert.equal(development.groups.length, 6);
+  assert.equal(development.workspace.skillsUrl, "/assets/data/atlas-skills.json");
+  assert.equal(development.workspace.groupLabels.engineering, "软件工程");
+  assert.equal(development.workspace.lifecycleLabels.published, "已发布");
 });
 
 test("investment research package makes Serenity discoverable", async () => {
