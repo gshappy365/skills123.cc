@@ -1,0 +1,19 @@
+[
+  {
+    "id": "serenity-skill",
+    "name": "Serenity.skill",
+    "descriptionZh": "供应链瓶颈投研方法：从产业链拆解、热点判断推进到证据验证与研究排序。",
+    "descriptionEn": "A supply-chain bottleneck research method that moves from industry mapping to evidence-backed prioritization.",
+    "group": "industry-research",
+    "command": "/serenity-skill",
+    "invocationMode": "user-only",
+    "lifecycle": "published",
+    "tags": ["供应链", "证据验证", "研究排序"],
+    "readingUrl": "/packages/investment-research/skills/serenity-skill/",
+    "relationships": [
+      {"type": "核心方法", "label": "9 步研究流程"},
+      {"type": "证据框架", "label": "Evidence Ladder"},
+      {"type": "最终输出", "label": "研究排序与判断"}
+    ]
+  }
+]

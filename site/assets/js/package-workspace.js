@@ -115,7 +115,16 @@ function renderDetail(state) {
             `<button type="button" data-related-id="${escapeHtml(id)}"><span>同领域</span><strong>${escapeHtml(id)}</strong></button>`
         )
         .join("")
-    : "<p>当前没有关联技能。</p>";
+    : "";
+  const relationshipMarkup = detail.relationships
+    .map(
+      (relationship) =>
+        `<div class="relationship-row"><span>${escapeHtml(relationship.type)}</span><strong>${escapeHtml(relationship.label)}</strong></div>`
+    )
+    .join("");
+  const readingMarkup = detail.readingUrl
+    ? `<a class="reading-link" href="${escapeHtml(detail.readingUrl)}"><span>完整方法、证据与案例</span><strong>完整阅读 →</strong></a>`
+    : "";
 
   elements.detailContent.innerHTML = `
     <p class="detail-eyebrow">SELECTED SKILL</p>
@@ -123,6 +132,7 @@ function renderDetail(state) {
     <p class="detail-summary">${escapeHtml(detail.summary)}</p>
     <div class="detail-tags">${tagMarkup}</div>
     <div class="command-bar"><code>${escapeHtml(detail.command)}</code><button type="button" id="copy-command">复制</button></div>
+    ${readingMarkup}
     <dl class="detail-facts">
       <div><dt>领域</dt><dd>${escapeHtml(detail.groupLabel)}</dd></div>
       <div><dt>状态</dt><dd>${escapeHtml(detail.lifecycleLabel)}</dd></div>
@@ -130,8 +140,8 @@ function renderDetail(state) {
       <div><dt>技能包</dt><dd>${escapeHtml(packageData.name)}</dd></div>
     </dl>
     <section class="related-skills" aria-labelledby="related-title">
-      <h3 id="related-title">关联技能</h3>
-      ${relatedMarkup}
+      <h3 id="related-title">关联信息</h3>
+      ${relationshipMarkup}${relatedMarkup || (!relationshipMarkup ? "<p>当前没有关联信息。</p>" : "")}
     </section>`;
 }
 

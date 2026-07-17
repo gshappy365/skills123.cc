@@ -70,7 +70,7 @@ test("development package supports desktop browsing, filtering and search", asyn
   await page.getByRole("button", { name: "软件工程", exact: true }).click();
   assert.equal(await page.locator(".skill-row").count(), 19);
 
-  await page.getByPlaceholder("例如 implement").fill("prototype");
+  await page.locator("#skill-search").fill("prototype");
   assert.equal(await page.locator(".skill-row").count(), 1);
   assert.match(await page.locator(".skill-row.is-selected").innerText(), /prototype/);
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "prototype");
@@ -124,11 +124,8 @@ test("grouped navigation searches owned skills and restores search on back", asy
   );
   await page.locator(".catalogue-result.skill-result").click();
   assert.equal(new URL(page.url()).searchParams.get("skill"), "serenity-skill");
-  assert.equal(
-    await page.locator("#serenity-skill").evaluate((node) => node.classList.contains("is-selected")),
-    true
-  );
-  assert.equal(await page.locator("#search-position").innerText(), "已从全局搜索定位");
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "Serenity.skill");
+  assert.match(await page.locator(".skill-row.is-selected").innerText(), /serenity-skill/);
   await page.close();
 });
 
@@ -146,6 +143,54 @@ test("workspace direct URL and browser history resolve the same selected skill",
   await page.goBack();
   assert.equal(new URL(page.url()).searchParams.get("skill"), "prototype");
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "prototype");
+  await page.close();
+});
+
+test("research package uses the shared workspace and exposes Serenity reading context", async () => {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
+  await page.goto(
+    `${baseUrl}/packages/investment-research/?skill=serenity-skill`,
+    { waitUntil: "networkidle" }
+  );
+
+  assert.equal(await page.locator("#package-name").innerText(), "投研与行业研究技能包");
+  assert.equal(await page.locator(".skill-row").count(), 1);
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "Serenity.skill");
+  assert.equal(await page.locator(".relationship-row").count(), 3);
+  assert.equal(
+    await page.locator(".reading-link").getAttribute("href"),
+    "/packages/investment-research/skills/serenity-skill/"
+  );
+
+  await page.locator("#skill-search").fill("证据验证");
+  assert.equal(await page.locator(".skill-row").count(), 1);
+  await page.getByRole("button", { name: "行业研究", exact: true }).click();
+  assert.equal(await page.locator(".skill-row").count(), 1);
+  await page.close();
+});
+
+test("research package opens Serenity detail in the mobile drawer", async () => {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await page.goto(`${baseUrl}/packages/investment-research/`, {
+    waitUntil: "networkidle",
+  });
+
+  await page.locator('[data-skill-id="serenity-skill"]').click();
+  await page.waitForTimeout(220);
+  assert.equal(
+    await page
+      .locator(".workspace-detail")
+      .evaluate((node) => node.classList.contains("is-open")),
+    true
+  );
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "Serenity.skill");
+  assert.equal(await page.locator(".workspace-detail .reading-link").count(), 1);
+  assert.equal(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+    ),
+    false
+  );
   await page.close();
 });
 

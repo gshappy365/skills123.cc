@@ -10,15 +10,21 @@ import {
 
 const catalogUrl = new URL("../site/assets/data/catalog.json", import.meta.url);
 const atlasUrl = new URL("../site/assets/data/atlas-skills.json", import.meta.url);
+const researchUrl = new URL(
+  "../site/assets/data/research-skills.json",
+  import.meta.url
+);
 
 async function fixtures() {
-  const [catalog, atlasSkills] = await Promise.all([
+  const [catalog, atlasSkills, researchSkills] = await Promise.all([
     readFile(catalogUrl, "utf8").then(JSON.parse),
     readFile(atlasUrl, "utf8").then(JSON.parse),
+    readFile(researchUrl, "utf8").then(JSON.parse),
   ]);
   const packageSkills = await loadPackageSkills(catalog, async (url) => {
-    assert.equal(url, "/assets/data/atlas-skills.json");
-    return atlasSkills;
+    if (url === "/assets/data/atlas-skills.json") return atlasSkills;
+    if (url === "/assets/data/research-skills.json") return researchSkills;
+    assert.fail(`Unexpected skills URL: ${url}`);
   });
   return { catalog, packageSkills };
 }

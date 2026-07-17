@@ -392,6 +392,29 @@ button {
   cursor: pointer;
 }
 
+.reading-link {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 50px;
+  margin: -10px 0 22px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--gold);
+  background: #fbf8ef;
+}
+
+.reading-link span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.reading-link strong {
+  color: var(--blue);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
 .detail-facts {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -442,6 +465,27 @@ button {
   background: transparent;
   text-align: left;
   cursor: pointer;
+}
+
+.relationship-row {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.relationship-row span {
+  color: var(--gold);
+  font-size: 9px;
+}
+
+.relationship-row strong {
+  overflow-wrap: anywhere;
+  color: var(--blue);
+  font-size: 10px;
+  text-align: right;
 }
 
 .related-skills button span {

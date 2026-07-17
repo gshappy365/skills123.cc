@@ -4,44 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>投研与行业研究技能包 · Skills123</title>
-  <meta name="description" content="从产业链拆解到证据验证的研究技能包。">
+  <meta name="description" content="在浅色 Atlas 工作台中浏览 Serenity 供应链瓶颈投研方法。">
   <link rel="canonical" href="https://skills123.cc/packages/investment-research/">
   <link rel="stylesheet" href="/assets/css/site.css">
-  <style>
-    .research-skill{position:relative;margin-top:24px;padding:20px;border:1px solid var(--line);background:var(--surface)}
-    .research-skill.is-selected{border-left:3px solid var(--blue);background:var(--blue-soft)}
-    .research-skill strong{color:var(--blue)}
-    .research-skill p{margin:6px 0 0;color:var(--muted)}
-    .search-position{display:inline-block;margin-top:12px;color:var(--gold);font-size:11px;font-weight:700}
-  </style>
+  <link rel="stylesheet" href="/assets/css/package-workspace.css">
 </head>
-<body>
-  <div class="shell">
-    <header class="site-header">
-      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
-      <a style="color:#1b365d;font-weight:700" href="/packages/">技能包目录</a>
-    </header>
-    <main style="max-width:760px;padding:80px 0">
-      <p class="eyebrow">INVESTMENT RESEARCH PACKAGE</p>
-      <h1>投研与行业研究技能包</h1>
-      <p class="lede">从产业链拆解、证据验证到研究优先级的工作方法。</p>
-      <article class="research-skill" id="serenity-skill">
-        <a href="/packages/investment-research/skills/serenity-skill/">
-          <strong>Serenity.skill</strong>
-          <p>供应链瓶颈投研方法：从热点判断到证据验证。</p>
-        </a>
-        <span class="search-position" id="search-position" hidden>已从全局搜索定位</span>
-      </article>
-      <p><a style="color:#1b365d;font-weight:700" href="/">返回首页 →</a></p>
-    </main>
-  </div>
-  <script type="module">
-    import { getSelectedSkillIdFromUrl } from "/assets/js/package-workspace-state.js";
-    if (getSelectedSkillIdFromUrl(location.href) === "serenity-skill") {
-      document.querySelector("#serenity-skill").classList.add("is-selected");
-      document.querySelector("#serenity-skill a").setAttribute("aria-current", "true");
-      document.querySelector("#search-position").hidden = false;
-    }
-  </script>
+<body data-package-id="investment-research">
+  <div id="package-workspace-app"></div>
+  <script type="module" src="/assets/js/package-workspace-page.js"></script>
 </body>
 </html>

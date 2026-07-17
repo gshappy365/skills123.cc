@@ -25,7 +25,14 @@ function normalizeFilters(filters = DEFAULT_FILTERS) {
 function matchesQuery(skill, normalizedQuery) {
   if (!normalizedQuery) return true;
 
-  return [skill.id, skill.command, skill.descriptionZh, skill.descriptionEn]
+  return [
+    skill.id,
+    skill.name,
+    skill.command,
+    skill.descriptionZh,
+    skill.descriptionEn,
+    ...(skill.tags ?? []),
+  ]
     .filter(Boolean)
     .join(" ")
     .toLocaleLowerCase()
@@ -64,11 +71,17 @@ function createDetail(skill, skills, labels) {
     lifecycleLabel: labelFor(labels, "lifecycles", skill.lifecycle),
     invocationMode: skill.invocationMode,
     invocationModeLabel: labelFor(labels, "invocationModes", skill.invocationMode),
-    tags: [
+    tags: uniqueStrings([
       labelFor(labels, "groups", skill.group),
       labelFor(labels, "lifecycles", skill.lifecycle),
       labelFor(labels, "invocationModes", skill.invocationMode),
-    ],
+      ...(skill.tags ?? []),
+    ]),
+    readingUrl: skill.readingUrl ?? null,
+    relationships: (skill.relationships ?? []).map(({ type, label }) => ({
+      type,
+      label,
+    })),
     relatedSkillIds,
   };
 }

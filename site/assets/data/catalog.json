@@ -53,6 +53,19 @@
         "descriptionZh":"供应链瓶颈投研方法：从热点判断推进到证据验证。",
         "command":"/serenity-skill",
         "tags":["供应链","证据验证","行业研究"]
+      },
+      "workspace":{
+        "skillsUrl":"/assets/data/research-skills.json",
+        "eyebrow":"INVESTMENT RESEARCH PACKAGE",
+        "groupLabels":{
+          "industry-research":"行业研究"
+        },
+        "lifecycleLabels":{
+          "published":"已发布"
+        },
+        "invocationModeLabels":{
+          "user-only":"用户触发"
+        }
       }
     }
   ]

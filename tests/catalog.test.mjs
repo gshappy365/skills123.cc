@@ -41,4 +41,12 @@ test("investment research package makes Serenity discoverable", async () => {
 
   assert.equal(investmentResearch.featuredSkill.id, "serenity-skill");
   assert.equal(investmentResearch.featuredSkill.name, "Serenity.skill");
+  assert.equal(
+    investmentResearch.workspace.skillsUrl,
+    "/assets/data/research-skills.json"
+  );
+  assert.equal(
+    investmentResearch.workspace.groupLabels["industry-research"],
+    "行业研究"
+  );
 });
