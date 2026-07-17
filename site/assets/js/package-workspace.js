@@ -20,6 +20,10 @@ let skills = [];
 let labels = {};
 let detailOpen = false;
 
+function usesDetailDrawer() {
+  return window.matchMedia("(max-width: 900px)").matches;
+}
+
 const elements = {
   shell: document.querySelector(".workspace-shell"),
   packageName: document.querySelector("#package-name"),
@@ -259,8 +263,10 @@ function bindEvents() {
       workspaceInput,
       getPackageWorkspaceNavigationFromUrl(location.href)
     );
+    const hasRequestedSkill = Boolean(workspaceInput.selectedSkillId);
     elements.search.value = workspaceInput.query;
     render();
+    if (usesDetailDrawer()) setDetailOpen(hasRequestedSkill);
     requestAnimationFrame(() =>
       window.scrollTo({ top: workspaceInput.directoryPosition })
     );
@@ -286,9 +292,11 @@ async function init() {
     workspaceInput,
     getPackageWorkspaceNavigationFromUrl(location.href)
   );
+  const hasRequestedSkill = Boolean(workspaceInput.selectedSkillId);
   elements.search.value = workspaceInput.query;
   bindEvents();
   render({ syncUrl: Boolean(workspaceInput.selectedSkillId) });
+  if (usesDetailDrawer() && hasRequestedSkill) setDetailOpen(true);
   elements.shell.setAttribute("aria-busy", "false");
   if (workspaceInput.directoryPosition) {
     requestAnimationFrame(() =>

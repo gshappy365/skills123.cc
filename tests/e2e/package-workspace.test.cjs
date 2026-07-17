@@ -194,6 +194,23 @@ test("research package opens Serenity detail in the mobile drawer", async () => 
   await page.close();
 });
 
+test("mobile Serenity deep links open the selected detail drawer", async () => {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await page.goto(
+    `${baseUrl}/packages/investment-research/?skill=serenity-skill`,
+    { waitUntil: "networkidle" }
+  );
+
+  assert.equal(
+    await page
+      .locator(".workspace-detail")
+      .evaluate((node) => node.classList.contains("is-open")),
+    true
+  );
+  assert.equal(await page.locator(".reading-link").isVisible(), true);
+  await page.close();
+});
+
 test("mobile detail drawer closes without losing workspace selection", async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await page.goto(`${baseUrl}/packages/development/`, { waitUntil: "networkidle" });
