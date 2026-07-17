@@ -3,6 +3,10 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const catalogUrl = new URL("../site/assets/data/catalog.json", import.meta.url);
+const atlasSkillsUrl = new URL(
+  "../site/assets/data/atlas-skills.json",
+  import.meta.url
+);
 
 async function loadCatalog() {
   return JSON.parse(await readFile(catalogUrl, "utf8"));
@@ -31,6 +35,16 @@ test("development package retains the Atlas catalogue boundary", async () => {
   assert.equal(development.workspace.skillsUrl, "/assets/data/atlas-skills.json");
   assert.equal(development.workspace.groupLabels.engineering, "软件工程");
   assert.equal(development.workspace.lifecycleLabels.published, "已发布");
+});
+
+test("every development skill has a Chinese introduction and keeps its English source", async () => {
+  const skills = JSON.parse(await readFile(atlasSkillsUrl, "utf8"));
+
+  assert.equal(skills.length, 42);
+  for (const skill of skills) {
+    assert.match(skill.descriptionZh, /[\u3400-\u9fff]/, `${skill.id} 缺少中文介绍`);
+    assert.ok(skill.descriptionEn, `${skill.id} 缺少英文来源介绍`);
+  }
 });
 
 test("investment research package makes Serenity discoverable", async () => {

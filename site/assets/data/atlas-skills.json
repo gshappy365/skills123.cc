@@ -2,6 +2,7 @@
   {
     "id": "ask-matt",
     "descriptionEn": "Ask which skill or flow fits your situation. A router over the skills in this repo.",
+    "descriptionZh": "根据当前情境推荐合适的技能或流程，作为本技能库的统一入口。",
     "group": "engineering",
     "command": "/ask-matt",
     "invocationMode": "user-only",
@@ -10,6 +11,7 @@
   {
     "id": "claude-handoff",
     "descriptionEn": "Hand the current conversation off to a fresh background agent that picks up the work immediately.",
+    "descriptionZh": "把当前对话交接给新的后台智能体，使其立即接续现有工作。",
     "group": "in-progress",
     "command": "/claude-handoff",
     "invocationMode": "user-only",
@@ -18,6 +20,7 @@
   {
     "id": "code-review",
     "descriptionEn": "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\".",
+    "descriptionZh": "从指定提交、分支、标签或合并基点开始，分别按代码规范和需求符合度审查变更，并并列呈现两类审查结果。",
     "group": "engineering",
     "command": "/code-review",
     "invocationMode": "model-allowed",
@@ -26,6 +29,7 @@
   {
     "id": "codebase-design",
     "descriptionEn": "Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.",
+    "descriptionZh": "提供深模块设计的统一方法，用于改进模块接口、划分边界，以及提升代码的可测试性和 AI 可理解性。",
     "group": "engineering",
     "command": "/codebase-design",
     "invocationMode": "model-allowed",
@@ -34,6 +38,7 @@
   {
     "id": "decision-mapping",
     "descriptionEn": "Turn a loose idea into a sequenced map of investigation tickets, then drive them to resolution one at a time.",
+    "descriptionZh": "把模糊想法整理成有顺序的调查任务地图，并逐项推进到结论。",
     "group": "in-progress",
     "command": "/decision-mapping",
     "invocationMode": "user-only",
@@ -42,6 +47,7 @@
   {
     "id": "design-an-interface",
     "descriptionEn": "Generate multiple radically different interface designs for a module using parallel sub-agents. Use when user wants to design an API, explore interface options, compare module shapes, or mentions \"design it twice\".",
+    "descriptionZh": "通过并行智能体为模块生成多种差异明显的接口方案，用于设计 API、探索选项和比较模块形态。",
     "group": "deprecated",
     "command": "/design-an-interface",
     "invocationMode": "model-allowed",
@@ -50,6 +56,7 @@
   {
     "id": "diagnosing-bugs",
     "descriptionEn": "Diagnosis loop for hard bugs and performance regressions. Use when the user says \"diagnose\"/\"debug this\", or reports something broken/throwing/failing/slow.",
+    "descriptionZh": "针对复杂故障和性能回退执行系统化诊断循环，定位报错、失败、异常或变慢的根因。",
     "group": "engineering",
     "command": "/diagnosing-bugs",
     "invocationMode": "model-allowed",
@@ -58,6 +65,7 @@
   {
     "id": "domain-modeling",
     "descriptionEn": "Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural decision, or when another skill needs to maintain the domain model.",
+    "descriptionZh": "建立并完善项目领域模型，统一领域术语和通用语言，并记录相关架构决策。",
     "group": "engineering",
     "command": "/domain-modeling",
     "invocationMode": "model-allowed",
@@ -66,6 +74,7 @@
   {
     "id": "edit-article",
     "descriptionEn": "Edit and improve articles by restructuring sections, improving clarity, and tightening prose. Use when user wants to edit, revise, or improve an article draft.",
+    "descriptionZh": "通过重组章节、提升表达清晰度和精简文字来编辑与改进文章草稿。",
     "group": "personal",
     "command": "/edit-article",
     "invocationMode": "user-only",
@@ -74,6 +83,7 @@
   {
     "id": "git-guardrails-claude-code",
     "descriptionEn": "Set up Claude Code hooks to block dangerous git commands (push, reset --hard, clean, branch -D, etc.) before they execute. Use when user wants to prevent destructive git operations, add git safety hooks, or block git push/reset in Claude Code.",
+    "descriptionZh": "为 Claude Code 配置 Git 安全钩子，在执行前拦截 push、reset --hard、clean、branch -D 等危险命令。",
     "group": "misc",
     "command": "/git-guardrails-claude-code",
     "invocationMode": "model-allowed",
@@ -82,6 +92,7 @@
   {
     "id": "grill-me",
     "descriptionEn": "A relentless interview to sharpen a plan or design.",
+    "descriptionZh": "通过持续追问和压力测试，让计划或设计更加清晰、严密。",
     "group": "productivity",
     "command": "/grill-me",
     "invocationMode": "user-only",
@@ -90,6 +101,7 @@
   {
     "id": "grill-with-docs",
     "descriptionEn": "A relentless interview to sharpen a plan or design, which also creates docs (ADR's and glossary) as we go.",
+    "descriptionZh": "通过持续追问完善计划或设计，并在过程中同步生成架构决策记录和术语表。",
     "group": "engineering",
     "command": "/grill-with-docs",
     "invocationMode": "user-only",
@@ -98,6 +110,7 @@
   {
     "id": "grilling",
     "descriptionEn": "Grill the user relentlessly about a plan or design. Use when the user wants to stress-test a plan before building, or uses any 'grill' trigger phrases.",
+    "descriptionZh": "对计划或设计进行高强度追问，在实施前暴露假设、缺口和风险。",
     "group": "productivity",
     "command": "/grilling",
     "invocationMode": "model-allowed",
@@ -106,6 +119,7 @@
   {
     "id": "handoff",
     "descriptionEn": "Compact the current conversation into a handoff document for another agent to pick up.",
+    "descriptionZh": "把当前对话压缩成结构化交接文档，供另一个智能体继续处理。",
     "group": "productivity",
     "command": "/handoff",
     "invocationMode": "user-only",
@@ -114,6 +128,7 @@
   {
     "id": "implement",
     "descriptionEn": "Implement a piece of work based on a spec or set of tickets.",
+    "descriptionZh": "依据规格说明或任务清单完成具体实现。",
     "group": "engineering",
     "command": "/implement",
     "invocationMode": "user-only",
@@ -122,6 +137,7 @@
   {
     "id": "improve-codebase-architecture",
     "descriptionEn": "Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.",
+    "descriptionZh": "扫描代码库中的架构深化机会，以可视化 HTML 报告呈现，并针对选定方向展开深入评审。",
     "group": "engineering",
     "command": "/improve-codebase-architecture",
     "invocationMode": "user-only",
@@ -130,6 +146,7 @@
   {
     "id": "loop-me",
     "descriptionEn": "Grill me about specs for the workflows I want to build, within this workspace.",
+    "descriptionZh": "围绕当前工作区中准备构建的工作流，持续追问并完善其规格说明。",
     "group": "in-progress",
     "command": "/loop-me",
     "invocationMode": "user-only",
@@ -138,6 +155,7 @@
   {
     "id": "migrate-to-shoehorn",
     "descriptionEn": "Migrate test files from `as` type assertions to @total-typescript/shoehorn. Use when user mentions shoehorn, wants to replace `as` in tests, or needs partial test data.",
+    "descriptionZh": "将测试文件中的 `as` 类型断言迁移到 @total-typescript/shoehorn，便于构造部分测试数据。",
     "group": "misc",
     "command": "/migrate-to-shoehorn",
     "invocationMode": "model-allowed",
@@ -146,6 +164,7 @@
   {
     "id": "obsidian-vault",
     "descriptionEn": "Search, create, and manage notes in the Obsidian vault with wikilinks and index notes. Use when user wants to find, create, or organize notes in Obsidian.",
+    "descriptionZh": "在 Obsidian 仓库中搜索、创建和管理笔记，并维护双向链接与索引笔记。",
     "group": "personal",
     "command": "/obsidian-vault",
     "invocationMode": "model-allowed",
@@ -154,6 +173,7 @@
   {
     "id": "prototype",
     "descriptionEn": "Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.",
+    "descriptionZh": "构建一次性原型来验证设计问题、状态模型、交互逻辑或界面方向是否合理。",
     "group": "engineering",
     "command": "/prototype",
     "invocationMode": "model-allowed",
@@ -162,6 +182,7 @@
   {
     "id": "qa",
     "descriptionEn": "Interactive QA session where user reports bugs or issues conversationally, and the agent files GitHub issues. Explores the codebase in the background for context and domain language. Use when user wants to report bugs, do QA, file issues conversationally, or mentions \"QA session\".",
+    "descriptionZh": "通过对话开展交互式质量检查，收集问题、理解代码背景，并将确认的缺陷整理为 GitHub Issue。",
     "group": "deprecated",
     "command": "/qa",
     "invocationMode": "model-allowed",
@@ -170,6 +191,7 @@
   {
     "id": "request-refactor-plan",
     "descriptionEn": "Create a detailed refactor plan with tiny commits via user interview, then file it as a GitHub issue. Use when user wants to plan a refactor, create a refactoring RFC, or break a refactor into safe incremental steps.",
+    "descriptionZh": "通过访谈制定由小提交组成的详细重构计划，并整理为 GitHub Issue，支持安全的渐进式实施。",
     "group": "deprecated",
     "command": "/request-refactor-plan",
     "invocationMode": "model-allowed",
@@ -178,6 +200,7 @@
   {
     "id": "research",
     "descriptionEn": "Investigate a question against high-trust primary sources and capture the findings as a Markdown file in the repo. Use when the user wants a topic researched, docs or API facts gathered, or reading legwork delegated to a background agent.",
+    "descriptionZh": "基于高可信一手来源调查问题，并把研究发现整理为仓库内的 Markdown 文档。",
     "group": "engineering",
     "command": "/research",
     "invocationMode": "model-allowed",
@@ -186,6 +209,7 @@
   {
     "id": "resolving-merge-conflicts",
     "descriptionEn": "Use when you need to resolve an in-progress git merge/rebase conflict.",
+    "descriptionZh": "处理正在进行的 Git 合并或变基冲突。",
     "group": "engineering",
     "command": "/resolving-merge-conflicts",
     "invocationMode": "model-allowed",
@@ -194,6 +218,7 @@
   {
     "id": "review",
     "descriptionEn": "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\".",
+    "descriptionZh": "从指定提交、分支、标签或合并基点开始，分别按代码规范和需求符合度审查变更，并并列呈现两类审查结果。",
     "group": "in-progress",
     "command": "/review",
     "invocationMode": "model-allowed",
@@ -202,6 +227,7 @@
   {
     "id": "scaffold-exercises",
     "descriptionEn": "Create exercise directory structures with sections, problems, solutions, and explainers that pass linting. Use when user wants to scaffold exercises, create exercise stubs, or set up a new course section.",
+    "descriptionZh": "创建包含章节、题目、答案和讲解的练习目录结构，并确保其通过代码检查。",
     "group": "misc",
     "command": "/scaffold-exercises",
     "invocationMode": "model-allowed",
@@ -210,6 +236,7 @@
   {
     "id": "setup-matt-pocock-skills",
     "descriptionEn": "Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.",
+    "descriptionZh": "为工程技能初始化仓库，配置任务跟踪、分诊标签体系和领域文档结构。",
     "group": "engineering",
     "command": "/setup-matt-pocock-skills",
     "invocationMode": "user-only",
@@ -218,6 +245,7 @@
   {
     "id": "setup-pre-commit",
     "descriptionEn": "Set up Husky pre-commit hooks with lint-staged (Prettier), type checking, and tests in the current repo. Use when user wants to add pre-commit hooks, set up Husky, configure lint-staged, or add commit-time formatting/typechecking/testing.",
+    "descriptionZh": "在当前仓库配置 Husky 提交前钩子，集成 lint-staged、Prettier、类型检查和测试。",
     "group": "misc",
     "command": "/setup-pre-commit",
     "invocationMode": "model-allowed",
@@ -226,6 +254,7 @@
   {
     "id": "tdd",
     "descriptionEn": "Test-driven development. Use when the user wants to build features or fix bugs test-first, mentions \"red-green-refactor\", or wants integration tests.",
+    "descriptionZh": "采用测试驱动开发，以红灯、绿灯、重构循环实现功能或修复缺陷，并补充集成测试。",
     "group": "engineering",
     "command": "/tdd",
     "invocationMode": "model-allowed",
@@ -234,6 +263,7 @@
   {
     "id": "teach",
     "descriptionEn": "Teach the user a new skill or concept, within this workspace.",
+    "descriptionZh": "结合当前工作区教授新的技能或概念。",
     "group": "productivity",
     "command": "/teach",
     "invocationMode": "user-only",
@@ -242,6 +272,7 @@
   {
     "id": "to-issues",
     "descriptionEn": "Break a plan, spec, or PRD into independently-grabbable issues on the project issue tracker using tracer-bullet vertical slices.",
+    "descriptionZh": "采用示踪弹式垂直切片，把计划、规格或 PRD 拆分成可独立领取的项目 Issue。",
     "group": "engineering",
     "command": "/to-issues",
     "invocationMode": "user-only",
@@ -250,6 +281,7 @@
   {
     "id": "to-prd",
     "descriptionEn": "Turn the current conversation into a PRD and publish it to the project issue tracker — no interview, just synthesis of what you've already discussed.",
+    "descriptionZh": "把当前对话直接归纳为产品需求文档，并发布到项目任务跟踪系统。",
     "group": "engineering",
     "command": "/to-prd",
     "invocationMode": "user-only",
@@ -258,6 +290,7 @@
   {
     "id": "to-spec",
     "descriptionEn": "Turn the current conversation into a spec and publish it to the project issue tracker — no interview, just synthesis of what you've already discussed.",
+    "descriptionZh": "把当前对话直接归纳为规格说明，并发布到项目任务跟踪系统。",
     "group": "engineering",
     "command": "/to-spec",
     "invocationMode": "user-only",
@@ -266,6 +299,7 @@
   {
     "id": "to-tickets",
     "descriptionEn": "Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker — edges as text in a local file, or native blocking links on a real tracker.",
+    "descriptionZh": "把计划、规格或对话拆成一组示踪弹任务，明确任务间阻塞关系并发布到已配置的跟踪系统。",
     "group": "engineering",
     "command": "/to-tickets",
     "invocationMode": "user-only",
@@ -274,6 +308,7 @@
   {
     "id": "triage",
     "descriptionEn": "Move issues and external PRs through a state machine of triage roles — categorise, verify, grill if needed, and write agent-ready briefs.",
+    "descriptionZh": "通过分诊状态机处理 Issue 和外部 PR，完成分类、验证、追问并生成可由智能体执行的任务简报。",
     "group": "engineering",
     "command": "/triage",
     "invocationMode": "user-only",
@@ -282,6 +317,7 @@
   {
     "id": "ubiquitous-language",
     "descriptionEn": "Extract a DDD-style ubiquitous language glossary from the current conversation, flagging ambiguities and proposing canonical terms. Saves to UBIQUITOUS_LANGUAGE.md. Use when user wants to define domain terms, build a glossary, harden terminology, create a ubiquitous language, or mentions \"domain model\" or \"DDD\".",
+    "descriptionZh": "从当前对话提取 DDD 风格的通用语言术语表，标记歧义、建议标准术语并保存为文档。",
     "group": "deprecated",
     "command": "/ubiquitous-language",
     "invocationMode": "user-only",
@@ -290,6 +326,7 @@
   {
     "id": "wayfinder",
     "descriptionEn": "Plan a huge chunk of work — more than one agent session can hold — as a shared map of investigation tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear.",
+    "descriptionZh": "把超出单次智能体会话容量的大型工作规划成共享调查任务地图，并逐项解决直到实施路径清晰。",
     "group": "engineering",
     "command": "/wayfinder",
     "invocationMode": "user-only",
@@ -298,6 +335,7 @@
   {
     "id": "wizard",
     "descriptionEn": "Generate an interactive bash wizard that walks a human through a manual procedure — third-party setup, a one-off migration, an A→B state transition — opening URLs, capturing values, confirming each step, and writing .env files and GitHub Actions secrets.",
+    "descriptionZh": "生成交互式 Bash 向导，引导用户完成第三方配置、一次性迁移或状态转换，并处理链接、输入值、环境变量和 GitHub Actions Secret。",
     "group": "in-progress",
     "command": "/wizard",
     "invocationMode": "user-only",
@@ -306,6 +344,7 @@
   {
     "id": "writing-beats",
     "descriptionEn": "Writing, exploit — assemble raw material into a journey of beats, grounding each term before a beat leans on it.",
+    "descriptionZh": "写作收敛阶段：把原始材料组织成连贯的内容节拍，并在使用术语前建立清晰语境。",
     "group": "in-progress",
     "command": "/writing-beats",
     "invocationMode": "user-only",
@@ -314,6 +353,7 @@
   {
     "id": "writing-fragments",
     "descriptionEn": "Writing, explore — mine raw fragments, no structure yet.",
+    "descriptionZh": "写作探索阶段：挖掘原始片段和想法，暂不强加结构。",
     "group": "in-progress",
     "command": "/writing-fragments",
     "invocationMode": "user-only",
@@ -322,6 +362,7 @@
   {
     "id": "writing-great-skills",
     "descriptionEn": "Reference for writing and editing skills well — the vocabulary and principles that make a skill predictable.",
+    "descriptionZh": "提供编写和编辑高质量技能的术语与原则，使技能行为稳定且可预测。",
     "group": "productivity",
     "command": "/writing-great-skills",
     "invocationMode": "user-only",
@@ -330,6 +371,7 @@
   {
     "id": "writing-shape",
     "descriptionEn": "Writing, exploit — shape raw material into an article, paragraph by paragraph.",
+    "descriptionZh": "写作收敛阶段：逐段塑造原始材料，形成结构完整的文章。",
     "group": "in-progress",
     "command": "/writing-shape",
     "invocationMode": "user-only",

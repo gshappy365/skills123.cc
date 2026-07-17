@@ -58,6 +58,10 @@ test("development package supports desktop browsing, filtering and search", asyn
   assert.equal(await page.locator(".skill-row").count(), 42);
   assert.match(await page.locator(".skill-row.is-selected").innerText(), /ask-matt/);
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "ask-matt");
+  assert.match(
+    await page.locator(".workspace-detail .detail-summary").innerText(),
+    /推荐合适的技能或流程/
+  );
   assert.deepEqual(await page.locator("#group-filters button").allTextContents(), [
     "软件工程",
     "进行中",
@@ -74,6 +78,10 @@ test("development package supports desktop browsing, filtering and search", asyn
   assert.equal(await page.locator(".skill-row").count(), 1);
   assert.match(await page.locator(".skill-row.is-selected").innerText(), /prototype/);
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "prototype");
+
+  await page.locator("#skill-search").fill("一次性原型");
+  assert.equal(await page.locator(".skill-row").count(), 1);
+  assert.match(await page.locator(".skill-row.is-selected").innerText(), /prototype/);
 
   const horizontalOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > document.documentElement.clientWidth
