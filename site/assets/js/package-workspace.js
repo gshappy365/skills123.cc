@@ -4,6 +4,7 @@ import {
   derivePackageWorkspaceState,
   getPackageWorkspaceNavigationFromUrl,
 } from "./package-workspace-state.js";
+import { createPackageWorkspaceModel } from "./catalogue-model.js";
 
 const packageId = document.body.dataset.packageId;
 const workspaceInput = {
@@ -29,6 +30,7 @@ const elements = {
   packageName: document.querySelector("#package-name"),
   search: document.querySelector("#skill-search"),
   groupFilters: document.querySelector("#group-filters"),
+  groupFilterLabel: document.querySelector("#group-filter-label"),
   lifecycleFilters: document.querySelector("#lifecycle-filters"),
   list: document.querySelector("#skill-list"),
   empty: document.querySelector("#workspace-empty"),
@@ -130,20 +132,58 @@ function renderDetail(state) {
   const readingMarkup = detail.readingUrl
     ? `<a class="reading-link" href="${escapeHtml(detail.readingUrl)}"><span>完整方法、证据与案例</span><strong>完整阅读 →</strong></a>`
     : "";
+  const command = detail.installCommand ?? detail.command;
+  const copyLabel = detail.installCommand ? "复制安装命令" : "复制";
+  const commandMarkup = command
+    ? `<div class="command-bar"><code>${escapeHtml(command)}</code><button type="button" id="copy-command">${copyLabel}</button></div>`
+    : "";
+  const licenseLabel = detail.license === "unconfirmed" ? "未确认" : detail.license;
+  const extraFacts = [
+    detail.platform ? ["适用平台", detail.platform] : null,
+    detail.upstreamVersion ? ["上游版本", `v${detail.upstreamVersion}`] : null,
+    detail.license ? ["许可证", licenseLabel] : null,
+  ]
+    .filter(Boolean)
+    .map(([term, value]) => `<div><dt>${term}</dt><dd>${escapeHtml(value)}</dd></div>`)
+    .join("");
+  const renderList = (title, items, emptyText = "无额外要求") => `
+    <section class="detail-section">
+      <h3>${title}</h3>
+      ${items.length ? `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : `<p>${emptyText}</p>`}
+    </section>`;
+  const environmentMarkup = detail.environmentVariables.length
+    ? `<section class="detail-section"><h3>环境变量</h3><dl class="environment-list">${detail.environmentVariables
+        .map(
+          (variable) =>
+            `<div><dt><code>${escapeHtml(variable.name)}</code></dt><dd>${escapeHtml(variable.description)}</dd></div>`
+        )
+        .join("")}</dl></section>`
+    : detail.installCommand
+      ? `<section class="detail-section"><h3>环境变量</h3><p>无需配置</p></section>`
+      : "";
+  const pluginDetailMarkup = detail.installCommand
+    ? `${renderList("使用示例", detail.usageExamples, "使用自然语言描述任务")}
+       ${renderList("外部依赖", detail.requirements)}
+       ${environmentMarkup}
+       ${renderList("输出产物", detail.outputs, "根据任务直接返回结果")}
+       <a class="source-link" href="${escapeHtml(detail.sourceUrl)}" target="_blank" rel="noreferrer"><span>固定上游版本</span><strong>查看源文件 →</strong><small>${escapeHtml(detail.upstreamCommit.slice(0, 7))}</small></a>`
+    : "";
 
   elements.detailContent.innerHTML = `
     <p class="detail-eyebrow">SELECTED SKILL</p>
     <h2 id="detail-title">${escapeHtml(detail.name)}</h2>
     <p class="detail-summary">${escapeHtml(detail.summary)}</p>
     <div class="detail-tags">${tagMarkup}</div>
-    <div class="command-bar"><code>${escapeHtml(detail.command)}</code><button type="button" id="copy-command">复制</button></div>
+    ${commandMarkup}
     ${readingMarkup}
     <dl class="detail-facts">
-      <div><dt>领域</dt><dd>${escapeHtml(detail.groupLabel)}</dd></div>
+      <div><dt>${escapeHtml(packageData.workspace.groupFacetLabel ?? "领域")}</dt><dd>${escapeHtml(detail.groupLabel)}</dd></div>
       <div><dt>状态</dt><dd>${escapeHtml(detail.lifecycleLabel)}</dd></div>
       <div><dt>调用方式</dt><dd>${escapeHtml(detail.invocationModeLabel)}</dd></div>
       <div><dt>技能包</dt><dd>${escapeHtml(packageData.name)}</dd></div>
+      ${extraFacts}
     </dl>
+    ${pluginDetailMarkup}
     <section class="related-skills" aria-labelledby="related-title">
       <h3 id="related-title">关联信息</h3>
       ${relationshipMarkup}${relatedMarkup || (!relationshipMarkup ? "<p>当前没有关联信息。</p>" : "")}
@@ -219,7 +259,7 @@ function bindEvents() {
 
     const copy = event.target.closest("#copy-command");
     if (copy) {
-      const command = document.querySelector(".command-bar code")?.textContent ?? "";
+      const command = copy.closest(".command-bar")?.querySelector("code")?.textContent ?? "";
       await navigator.clipboard.writeText(command);
       copy.textContent = "已复制";
     }
@@ -274,18 +314,19 @@ function bindEvents() {
 }
 
 async function init() {
-  const catalog = await fetch("/assets/data/catalog.json").then((response) => response.json());
-  packageData = catalog.packages.find((item) => item.id === packageId);
-  if (!packageData?.workspace?.skillsUrl) throw new Error(`Unknown package: ${packageId}`);
-
-  skills = await fetch(packageData.workspace.skillsUrl).then((response) => response.json());
-  labels = {
-    groups: packageData.workspace.groupLabels,
-    lifecycles: packageData.workspace.lifecycleLabels,
-    invocationModes: packageData.workspace.invocationModeLabels,
+  const fetchJson = async (url) => {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Unable to load ${url}: ${response.status}`);
+    return response.json();
   };
+  const catalog = await fetchJson("/assets/data/catalog.json");
+  const workspace = await createPackageWorkspaceModel(catalog, packageId, fetchJson);
+  packageData = workspace.package;
+  skills = workspace.skills;
+  labels = workspace.labels;
 
   elements.packageName.textContent = packageData.name;
+  elements.groupFilterLabel.textContent = packageData.workspace.groupFacetLabel ?? "领域";
   elements.totalCount.textContent = skills.length;
   elements.directoryTotal.textContent = skills.length;
   Object.assign(

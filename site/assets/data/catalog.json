@@ -67,6 +67,31 @@
           "user-only":"用户触发"
         }
       }
+    },
+    {
+      "id":"dair-academy",
+      "name":"DAIR Academy 技能包",
+      "scenario":"research",
+      "description":"面向学习、研究与知识生产的 8 项 Claude Code 插件，覆盖课程、调研、知识库、视觉生成与情报监控。",
+      "skillCount":8,
+      "tags":["DAIR.AI","Claude Code","学习研究","知识生产"],
+      "status":"active",
+      "source":{"name":"DAIR Academy Plugins","url":"https://github.com/dair-ai/dair-academy-plugins","commit":"945b237049a08765c0cd164774f974647a6b7f97"},
+      "groups":["视觉生成","学习与课程","研究与调研","知识管理","情报监控"],
+      "workspace":{
+        "skillsUrl":"/assets/data/dair-academy-skills.json",
+        "eyebrow":"DAIR ACADEMY PACKAGE",
+        "groupFacetLabel":"技能方向",
+        "groupLabels":{
+          "visual-content":"视觉生成",
+          "learning":"学习与课程",
+          "research-generation":"研究与调研",
+          "knowledge-management":"知识管理",
+          "intelligence-monitoring":"情报监控"
+        },
+        "lifecycleLabels":{"published":"已发布"},
+        "invocationModeLabels":{"model-allowed":"自然语言触发"}
+      }
     }
   ]
 }

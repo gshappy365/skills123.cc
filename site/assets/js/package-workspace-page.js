@@ -25,7 +25,7 @@ app.innerHTML = `
           <input id="skill-search" type="search" placeholder="例如技能名称" autocomplete="off">
         </label>
         <fieldset>
-          <legend>领域</legend>
+          <legend id="group-filter-label">领域</legend>
           <div class="filter-chips" id="group-filters"></div>
         </fieldset>
         <fieldset>

@@ -76,7 +76,7 @@ function normalizeFilters(filters = DEFAULT_FILTERS) {
   };
 }
 
-function matchesQuery(skill, normalizedQuery) {
+function matchesQuery(skill, normalizedQuery, labels) {
   if (!normalizedQuery) return true;
 
   return [
@@ -85,6 +85,14 @@ function matchesQuery(skill, normalizedQuery) {
     skill.command,
     skill.descriptionZh,
     skill.descriptionEn,
+    labelFor(labels, "groups", skill.group),
+    ...(skill.requirements ?? []),
+    ...(skill.outputs ?? []),
+    ...(skill.usageExamples ?? []),
+    ...(skill.environmentVariables ?? []).flatMap((variable) => [
+      variable.name,
+      variable.description,
+    ]),
     ...(skill.tags ?? []),
   ]
     .filter(Boolean)
@@ -132,6 +140,18 @@ function createDetail(skill, skills, labels) {
       ...(skill.tags ?? []),
     ]),
     readingUrl: skill.readingUrl ?? null,
+    installCommand: skill.installCommand ?? null,
+    platform: skill.platform ?? null,
+    requirements: uniqueStrings(skill.requirements),
+    environmentVariables: (skill.environmentVariables ?? []).map(
+      ({ name, description }) => ({ name, description })
+    ),
+    outputs: uniqueStrings(skill.outputs),
+    usageExamples: uniqueStrings(skill.usageExamples),
+    license: skill.license ?? null,
+    sourceUrl: skill.sourceUrl ?? null,
+    upstreamVersion: skill.upstreamVersion ?? null,
+    upstreamCommit: skill.upstreamCommit ?? null,
     relationships: (skill.relationships ?? []).map(({ type, label }) => ({
       type,
       label,
@@ -156,7 +176,8 @@ export function derivePackageWorkspaceState({
   const normalizedFilters = normalizeFilters(filters);
   const visibleSkills = skills.filter(
     (skill) =>
-      matchesQuery(skill, normalizedQuery) && matchesFilters(skill, normalizedFilters)
+      matchesQuery(skill, normalizedQuery, labels) &&
+      matchesFilters(skill, normalizedFilters)
   );
   const selectedSkill =
     visibleSkills.find((skill) => skill.id === selectedSkillId) ??
