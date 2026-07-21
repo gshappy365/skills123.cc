@@ -21,6 +21,7 @@ test("catalogue model loads and validates every package through one boundary", a
     "/assets/data/dair-academy-skills.json": await readJson(
       "dair-academy-skills.json"
     ),
+    "/assets/data/rayskills-skills.json": await readJson("rayskills-skills.json"),
   };
   const model = await createCatalogueModel(catalog, async (url) => sources[url]);
 
@@ -28,6 +29,7 @@ test("catalogue model loads and validates every package through one boundary", a
     "development",
     "investment-research",
     "dair-academy",
+    "rayskills",
   ]);
   assert.equal(getPackageWorkspaceModel(model, "development").skills.length, 42);
   assert.equal(getPackageWorkspaceModel(model, "dair-academy").skills.length, 8);
@@ -38,6 +40,7 @@ test("DAIR Academy skills expose the confirmed plugin detail contract", async ()
   const dairSkills = await readJson("dair-academy-skills.json");
   const model = await createCatalogueModel(catalog, async (url) => {
     if (url === "/assets/data/dair-academy-skills.json") return dairSkills;
+    if (url === "/assets/data/rayskills-skills.json") return readJson("rayskills-skills.json");
     return url.includes("atlas") ? await readJson("atlas-skills.json") : await readJson("research-skills.json");
   });
   const workspace = getPackageWorkspaceModel(model, "dair-academy");

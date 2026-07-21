@@ -1,7 +1,7 @@
 {
   "scenarios": [
     {"id":"research","name":"研究","description":"投研、行业、市场与尽调","status":"active"},
-    {"id":"content","name":"内容","description":"写作、叙事与分发","status":"coming-soon"},
+    {"id":"content","name":"内容","description":"写作、叙事与分发","status":"active"},
     {"id":"development","name":"开发","description":"构建、测试与交付","status":"active"},
     {"id":"operations","name":"运营","description":"流程、协作与增长","status":"coming-soon"}
   ],
@@ -88,6 +88,37 @@
           "research-generation":"研究与调研",
           "knowledge-management":"知识管理",
           "intelligence-monitoring":"情报监控"
+        },
+        "lifecycleLabels":{"published":"已发布"},
+        "invocationModeLabels":{"model-allowed":"自然语言触发"}
+      }
+    },
+    {
+      "id":"rayskills",
+      "name":"Rayskills 内容技能包",
+      "scenario":"content",
+      "description":"面向 Claude Code 和 Codex 的 builder 实战工具箱，将内容、知识库、咨询、产品、协作与运维流程组织成可执行、可验证、可恢复的 21 项 Skill。",
+      "skillCount":21,
+      "tags":["AI Builder","内容生产","知识库","咨询","可验证工作流"],
+      "status":"active",
+      "installCommand":"npx -y skills add imraywang/rayskills -g --all",
+      "platform":"Claude Code / Codex",
+      "license":"CC BY-NC 4.0",
+      "source":{"name":"imraywang/rayskills","url":"https://github.com/imraywang/rayskills","commit":"454bff330bb3ddae9d3c639bd0f791e6c61dd830"},
+      "groups":["路由","基建","知识库","内容","咨询","产品","协作","内务"],
+      "workspace":{
+        "skillsUrl":"/assets/data/rayskills-skills.json",
+        "eyebrow":"RAYSKILLS BUILDER TOOLKIT",
+        "groupFacetLabel":"技能方向",
+        "groupLabels":{
+          "routing":"路由",
+          "infrastructure":"基建",
+          "knowledge":"知识库",
+          "content":"内容",
+          "consulting":"咨询",
+          "product":"产品",
+          "collaboration":"协作",
+          "operations":"内务"
         },
         "lifecycleLabels":{"published":"已发布"},
         "invocationModeLabels":{"model-allowed":"自然语言触发"}

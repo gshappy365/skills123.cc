@@ -31,6 +31,7 @@ const elements = {
   search: document.querySelector("#skill-search"),
   groupFilters: document.querySelector("#group-filters"),
   groupFilterLabel: document.querySelector("#group-filter-label"),
+  packageInstall: document.querySelector("#package-install"),
   lifecycleFilters: document.querySelector("#lifecycle-filters"),
   list: document.querySelector("#skill-list"),
   empty: document.querySelector("#workspace-empty"),
@@ -161,11 +162,13 @@ function renderDetail(state) {
     : detail.installCommand
       ? `<section class="detail-section"><h3>环境变量</h3><p>无需配置</p></section>`
       : "";
-  const pluginDetailMarkup = detail.installCommand
+  const hasStructuredDetail = Boolean(detail.sourceUrl && detail.upstreamCommit);
+  const pluginDetailMarkup = hasStructuredDetail
     ? `${renderList("使用示例", detail.usageExamples, "使用自然语言描述任务")}
        ${renderList("外部依赖", detail.requirements)}
        ${environmentMarkup}
        ${renderList("输出产物", detail.outputs, "根据任务直接返回结果")}
+       ${renderList("验证与边界", detail.safetyNotes, "按宿主默认边界执行")}
        <a class="source-link" href="${escapeHtml(detail.sourceUrl)}" target="_blank" rel="noreferrer"><span>固定上游版本</span><strong>查看源文件 →</strong><small>${escapeHtml(detail.upstreamCommit.slice(0, 7))}</small></a>`
     : "";
 
@@ -264,6 +267,13 @@ function bindEvents() {
       copy.textContent = "已复制";
     }
 
+    const packageCopy = event.target.closest("#copy-package-command");
+    if (packageCopy) {
+      const command = packageCopy.closest(".package-install-banner")?.querySelector("code")?.textContent ?? "";
+      await navigator.clipboard.writeText(command);
+      packageCopy.textContent = "已复制";
+    }
+
     const readingLink = event.target.closest(".reading-link");
     if (readingLink) {
       event.preventDefault();
@@ -327,6 +337,10 @@ async function init() {
 
   elements.packageName.textContent = packageData.name;
   elements.groupFilterLabel.textContent = packageData.workspace.groupFacetLabel ?? "领域";
+  if (packageData.installCommand) {
+    elements.packageInstall.hidden = false;
+    elements.packageInstall.innerHTML = `<span><strong>安装整个技能包</strong><small>${escapeHtml(packageData.license ?? "")}</small></span><code>${escapeHtml(packageData.installCommand)}</code><button type="button" id="copy-package-command">复制整包安装命令</button>`;
+  }
   elements.totalCount.textContent = skills.length;
   elements.directoryTotal.textContent = skills.length;
   Object.assign(

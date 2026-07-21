@@ -148,6 +148,7 @@ function createDetail(skill, skills, labels) {
     ),
     outputs: uniqueStrings(skill.outputs),
     usageExamples: uniqueStrings(skill.usageExamples),
+    safetyNotes: uniqueStrings(skill.safetyNotes),
     license: skill.license ?? null,
     sourceUrl: skill.sourceUrl ?? null,
     upstreamVersion: skill.upstreamVersion ?? null,

@@ -12,6 +12,7 @@ app.innerHTML = `
     </nav>
     <p class="workspace-count"><strong id="total-count">--</strong><small>SKILLS</small></p>
   </header>
+  <div class="package-install-banner" id="package-install" hidden></div>
 
   <main class="workspace-shell" aria-busy="true">
     <aside class="workspace-filters" aria-labelledby="filters-title">

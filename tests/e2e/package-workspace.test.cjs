@@ -100,7 +100,7 @@ test("grouped navigation searches owned skills and restores search on back", asy
     "运营",
     "内容",
   ]);
-  assert.equal(await page.locator(".package-index-group.is-coming-soon").count(), 2);
+  assert.equal(await page.locator(".package-index-group.is-coming-soon").count(), 1);
   assert.equal(
     await page.locator(".package-index-group.is-coming-soon a").count(),
     0
@@ -230,6 +230,43 @@ test("global search finds a DAIR skill and reports its package", async () => {
     /归属 · DAIR Academy 技能包/
   );
   await page.close();
+});
+
+test("Rayskills package shows the complete directory and separates package install from member call", async () => {
+  const context = await browser.newContext({
+    permissions: ["clipboard-read", "clipboard-write"],
+    viewport: { width: 1440, height: 900 },
+  });
+  const page = await context.newPage();
+  await page.goto(`${baseUrl}/packages/rayskills/?skill=ray-writer`, {
+    waitUntil: "networkidle",
+  });
+
+  assert.equal(await page.locator("#package-name").innerText(), "Rayskills 内容技能包");
+  assert.equal(await page.locator(".skill-row").count(), 21);
+  assert.deepEqual(await page.locator("#group-filters button").allTextContents(), [
+    "路由",
+    "基建",
+    "知识库",
+    "内容",
+    "咨询",
+    "产品",
+    "协作",
+    "内务",
+  ]);
+  assert.equal(await page.locator("#package-install").count(), 1);
+  assert.match(await page.locator("#package-install").innerText(), /npx -y skills add imraywang\/rayskills -g --all/);
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "ray-writer");
+  assert.equal(await page.locator("#copy-command").innerText(), "复制");
+  assert.match(await page.locator(".workspace-detail").innerText(), /CC BY-NC 4.0/);
+  assert.match(await page.locator(".workspace-detail").innerText(), /验证|恢复|确认/);
+
+  await page.locator("#copy-package-command").click();
+  assert.equal(
+    await page.evaluate(() => navigator.clipboard.readText()),
+    "npx -y skills add imraywang/rayskills -g --all"
+  );
+  await context.close();
 });
 
 test("research package opens Serenity detail in the mobile drawer", async () => {

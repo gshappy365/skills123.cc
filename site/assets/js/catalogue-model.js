@@ -1,4 +1,4 @@
-const EXTENDED_ARRAY_FIELDS = ["requirements", "outputs", "usageExamples"];
+const EXTENDED_ARRAY_FIELDS = ["requirements", "outputs", "usageExamples", "safetyNotes"];
 
 function assert(condition, message) {
   if (!condition) throw new TypeError(`Invalid catalogue: ${message}`);
@@ -57,7 +57,7 @@ function validateExtendedFields(skill) {
   }
   if (skill.license !== undefined) {
     assert(
-      ["MIT", "unconfirmed"].includes(skill.license),
+      ["MIT", "CC BY-NC 4.0", "unconfirmed"].includes(skill.license),
       `skill "${skill.id}" has an invalid license`
     );
   }
@@ -72,6 +72,21 @@ function validateCatalogShell(catalog) {
   for (const pkg of catalog.packages) {
     assert(scenarioIds.has(pkg.scenario), `package "${pkg.id}" has unknown scenario "${pkg.scenario}"`);
     assert(pkg.workspace?.skillsUrl, `package "${pkg.id}" is missing workspace.skillsUrl`);
+    if (pkg.installCommand !== undefined) {
+      assert(
+        typeof pkg.installCommand === "string" && pkg.installCommand.startsWith("npx -y skills add "),
+        `package "${pkg.id}" has an invalid installCommand`
+      );
+    }
+    if (pkg.license !== undefined) {
+      assert(
+        ["MIT", "CC BY-NC 4.0", "unconfirmed"].includes(pkg.license),
+        `package "${pkg.id}" has an invalid license`
+      );
+    }
+    if (pkg.source?.commit !== undefined) {
+      assert(/^[a-f0-9]{40}$/.test(pkg.source.commit), `package "${pkg.id}" has an invalid source commit`);
+    }
   }
 }
 

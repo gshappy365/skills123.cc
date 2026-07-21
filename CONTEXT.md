@@ -35,3 +35,17 @@
 ## DAIR Academy 技能包
 
 收录 `dair-ai/dair-academy-plugins` 的研究场景技能包。稳定 ID 为 `dair-academy`，永久路由为 `/packages/dair-academy/`；第一版按固定上游快照收录 8 项技能条目。
+
+## rayskills 技能包
+
+收录 `imraywang/rayskills` 的完整工具箱，而不是只挑选成员 Skill。第一版按固定上游快照收录 `/ray` 主路由和 20 个成员，共 21 项技能条目；全站任务场景归属为“内容”，跨领域成员通过包内技能方向区分。
+
+包内技能方向沿用上游 8 条线：路由、基建、知识库、内容、咨询、产品、协作、内务。
+
+第一版使用共享技能详情承载 21 项成员的中文说明、调用命令、整包安装、平台、输入输出、依赖、验证/恢复/确认边界、来源、固定 commit 和许可证；不制作 21 个独立长文页。
+
+安装与调用入口分开：技能包顶部复制整包安装命令 `npx -y skills add imraywang/rayskills -g --all`；成员详情复制 `/ray` 或 `/ray-*` 调用命令，不把成员调用命令标为独立安装命令。
+
+`rayskills` 使用固定上游 commit `454bff330bb3ddae9d3c639bd0f791e6c61dd830` 快照，手动研究和同步，页面运行时不调用 GitHub API。
+
+`rayskills` 技能包中文名称为“Rayskills 内容技能包”，英文标识为“RAYSKILLS BUILDER TOOLKIT”，稳定 ID 为 `rayskills`，永久路由为 `/packages/rayskills/`。
