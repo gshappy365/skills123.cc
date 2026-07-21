@@ -8,13 +8,13 @@
   "packages": [
     {
       "id":"development",
-      "name":"开发技能包",
+      "name":"Mattpocock 技能包",
       "scenario":"development",
       "description":"以 Skills Atlas 为参考，组织从设计、构建、测试到交付的 42 项 AI 工作技能。",
       "skillCount":42,
       "tags":["软件工程","产品设计","流程协作"],
       "status":"active",
-      "source":{"name":"Skills Atlas","url":"https://gshappy365.github.io/skills-atlas/"},
+      "source":{"name":"Mattpocock","url":"https://github.com/mattpocock/skills/commits?author=mattpocock"},
       "groups":["软件工程","进行中","效率方法","个人知识","工具配置","已弃用"],
       "workspace":{
         "skillsUrl":"/assets/data/atlas-skills.json",
@@ -41,7 +41,7 @@
     },
     {
       "id":"investment-research",
-      "name":"投研与行业研究技能包",
+      "name":"Serenity.skill",
       "scenario":"research",
       "description":"从产业链拆解、证据验证到研究优先级，组织可复用的行业研究方法。",
       "skillCount":1,

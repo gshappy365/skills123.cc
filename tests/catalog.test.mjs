@@ -57,7 +57,9 @@ test("development package retains the Atlas catalogue boundary", async () => {
   const development = catalog.packages.find((item) => item.id === "development");
 
   assert.equal(development.skillCount, 42);
-  assert.equal(development.source.name, "Skills Atlas");
+  assert.equal(development.name, "Mattpocock 技能包");
+  assert.equal(development.source.name, "Mattpocock");
+  assert.equal(development.source.url, "https://github.com/mattpocock/skills/commits?author=mattpocock");
   assert.equal(development.groups.length, 6);
   assert.equal(development.workspace.skillsUrl, "/assets/data/atlas-skills.json");
   assert.equal(development.workspace.groupLabels.engineering, "软件工程");

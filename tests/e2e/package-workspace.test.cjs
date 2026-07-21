@@ -97,8 +97,8 @@ test("grouped navigation searches owned skills and restores search on back", asy
   assert.deepEqual(await page.locator(".package-index-group h2").allTextContents(), [
     "开发",
     "研究",
-    "运营",
     "内容",
+    "运营",
   ]);
   assert.equal(await page.locator(".package-index-group.is-coming-soon").count(), 1);
   assert.equal(
@@ -110,7 +110,7 @@ test("grouped navigation searches owned skills and restores search on back", asy
   assert.equal(await page.locator(".catalogue-result.skill-result").count(), 1);
   assert.match(
     await page.locator(".catalogue-result.skill-result").innerText(),
-    /归属 · 开发技能包/
+    /归属 · Mattpocock 技能包/
   );
   await page.locator(".catalogue-result.skill-result").click();
 
@@ -128,7 +128,7 @@ test("grouped navigation searches owned skills and restores search on back", asy
   await page.getByPlaceholder("搜索技能包、技能或 /command").fill("serenity");
   assert.match(
     await page.locator(".catalogue-result.skill-result").innerText(),
-    /归属 · 投研与行业研究技能包/
+    /归属 · Serenity.skill/
   );
   await page.locator(".catalogue-result.skill-result").click();
   assert.equal(new URL(page.url()).searchParams.get("skill"), "serenity-skill");
@@ -161,7 +161,7 @@ test("research package uses the shared workspace and exposes Serenity reading co
     { waitUntil: "networkidle" }
   );
 
-  assert.equal(await page.locator("#package-name").innerText(), "投研与行业研究技能包");
+  assert.equal(await page.locator("#package-name").innerText(), "Serenity.skill");
   assert.equal(await page.locator(".skill-row").count(), 1);
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "Serenity.skill");
   assert.equal(await page.locator(".relationship-row").count(), 3);

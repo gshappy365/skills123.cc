@@ -3,8 +3,8 @@ import { createCatalogueModel } from "./catalogue-model.js";
 export const PACKAGE_GROUP_ORDER = Object.freeze([
   "development",
   "research",
-  "operations",
   "content",
+  "operations",
 ]);
 
 function normalizedText(values) {

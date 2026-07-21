@@ -48,14 +48,14 @@ test("package groups use the approved order and retain coming-soon groups", asyn
   assert.deepEqual(groups.map((group) => group.id), [
     "development",
     "research",
-    "operations",
     "content",
+    "operations",
   ]);
   assert.equal(groups[0].packages[0].id, "development");
   assert.equal(groups[1].packages[0].id, "investment-research");
-  assert.equal(groups[2].status, "coming-soon");
-  assert.equal(groups[3].status, "active");
-  assert.equal(groups[3].packages[0].id, "rayskills");
+  assert.equal(groups[2].status, "active");
+  assert.equal(groups[2].packages[0].id, "rayskills");
+  assert.equal(groups[3].status, "coming-soon");
 });
 
 test("global search distinguishes package matches from owned skill matches", async () => {
@@ -92,7 +92,7 @@ test("global search matches commands and reports Serenity package ownership", as
   });
 
   assert.deepEqual(result.skillMatches.map((item) => item.id), ["serenity-skill"]);
-  assert.equal(result.skillMatches[0].package.name, "投研与行业研究技能包");
+  assert.equal(result.skillMatches[0].package.name, "Serenity.skill");
   assert.equal(
     result.skillMatches[0].href,
     "/packages/investment-research/?skill=serenity-skill"
