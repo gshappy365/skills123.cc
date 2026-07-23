@@ -14,16 +14,28 @@ const researchUrl = new URL(
   "../site/assets/data/research-skills.json",
   import.meta.url
 );
+const dairUrl = new URL(
+  "../site/assets/data/dair-academy-skills.json",
+  import.meta.url
+);
+const rayskillsUrl = new URL(
+  "../site/assets/data/rayskills-skills.json",
+  import.meta.url
+);
 
 async function fixtures() {
-  const [catalog, atlasSkills, researchSkills] = await Promise.all([
+  const [catalog, atlasSkills, researchSkills, dairSkills, rayskills] = await Promise.all([
     readFile(catalogUrl, "utf8").then(JSON.parse),
     readFile(atlasUrl, "utf8").then(JSON.parse),
     readFile(researchUrl, "utf8").then(JSON.parse),
+    readFile(dairUrl, "utf8").then(JSON.parse),
+    readFile(rayskillsUrl, "utf8").then(JSON.parse),
   ]);
   const packageSkills = await loadPackageSkills(catalog, async (url) => {
     if (url === "/assets/data/atlas-skills.json") return atlasSkills;
     if (url === "/assets/data/research-skills.json") return researchSkills;
+    if (url === "/assets/data/dair-academy-skills.json") return dairSkills;
+    if (url === "/assets/data/rayskills-skills.json") return rayskills;
     assert.fail(`Unexpected skills URL: ${url}`);
   });
   return { catalog, packageSkills };
@@ -36,12 +48,13 @@ test("package groups use the approved order and retain coming-soon groups", asyn
   assert.deepEqual(groups.map((group) => group.id), [
     "development",
     "research",
-    "operations",
     "content",
+    "operations",
   ]);
   assert.equal(groups[0].packages[0].id, "development");
   assert.equal(groups[1].packages[0].id, "investment-research");
-  assert.equal(groups[2].status, "coming-soon");
+  assert.equal(groups[2].status, "active");
+  assert.equal(groups[2].packages[0].id, "rayskills");
   assert.equal(groups[3].status, "coming-soon");
 });
 
@@ -79,10 +92,43 @@ test("global search matches commands and reports Serenity package ownership", as
   });
 
   assert.deepEqual(result.skillMatches.map((item) => item.id), ["serenity-skill"]);
-  assert.equal(result.skillMatches[0].package.name, "投研与行业研究技能包");
+  assert.equal(result.skillMatches[0].package.name, "Serenity.skill");
   assert.equal(
     result.skillMatches[0].href,
     "/packages/investment-research/?skill=serenity-skill"
+  );
+});
+
+test("global search matches a DAIR skill direction and retains package ownership", async () => {
+  const { catalog, packageSkills } = await fixtures();
+  const result = searchCatalogue({
+    catalog,
+    packageSkills,
+    query: "情报监控",
+  });
+
+  assert.deepEqual(result.skillMatches.map((item) => item.id), [
+    "x-agent-intelligence",
+  ]);
+  assert.equal(result.skillMatches[0].package.id, "dair-academy");
+  assert.equal(
+    result.skillMatches[0].href,
+    "/packages/dair-academy/?skill=x-agent-intelligence"
+  );
+});
+
+test("global search matches a Rayskills direction and retains content package ownership", async () => {
+  const { catalog, packageSkills } = await fixtures();
+  const result = searchCatalogue({
+    catalog,
+    packageSkills,
+    query: "内容",
+  });
+
+  assert.ok(result.skillMatches.some((item) => item.id === "ray-writer"));
+  assert.equal(
+    result.skillMatches.find((item) => item.id === "ray-writer").package.id,
+    "rayskills"
   );
 });
 
@@ -90,15 +136,37 @@ test("loading featured skills does not mutate a shared package data source", asy
   const sourceSkills = [{ id: "existing" }];
   const packageSkills = await loadPackageSkills(
     {
+      scenarios: [{ id: "development", name: "开发", status: "active" }],
       packages: [
         {
           id: "example",
-          workspace: { skillsUrl: "/skills.json" },
-          featuredSkill: { id: "featured" },
+          name: "Example",
+          scenario: "development",
+          skillCount: 2,
+          status: "active",
+          workspace: {
+            skillsUrl: "/skills.json",
+            groupLabels: { example: "示例" },
+            lifecycleLabels: { published: "已发布" },
+            invocationModeLabels: { "user-only": "用户触发" },
+          },
+          featuredSkill: {
+            id: "featured",
+            group: "example",
+            lifecycle: "published",
+            invocationMode: "user-only",
+          },
         },
       ],
     },
-    async () => sourceSkills
+    async () => [
+      {
+        ...sourceSkills[0],
+        group: "example",
+        lifecycle: "published",
+        invocationMode: "user-only",
+      },
+    ]
   );
 
   assert.deepEqual(sourceSkills, [{ id: "existing" }]);

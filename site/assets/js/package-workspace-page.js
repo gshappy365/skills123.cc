@@ -12,6 +12,7 @@ app.innerHTML = `
     </nav>
     <p class="workspace-count"><strong id="total-count">--</strong><small>SKILLS</small></p>
   </header>
+  <div class="package-install-banner" id="package-install" hidden></div>
 
   <main class="workspace-shell" aria-busy="true">
     <aside class="workspace-filters" aria-labelledby="filters-title">
@@ -25,7 +26,7 @@ app.innerHTML = `
           <input id="skill-search" type="search" placeholder="例如技能名称" autocomplete="off">
         </label>
         <fieldset>
-          <legend>领域</legend>
+          <legend id="group-filter-label">领域</legend>
           <div class="filter-chips" id="group-filters"></div>
         </fieldset>
         <fieldset>

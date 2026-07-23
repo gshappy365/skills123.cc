@@ -65,6 +65,52 @@ button {
   color: var(--ink);
 }
 
+.package-install-banner {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  min-height: 60px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--line);
+  background: #fbf8ef;
+}
+
+.package-install-banner > span,
+.package-install-banner > span strong,
+.package-install-banner > span small {
+  display: block;
+}
+
+.package-install-banner strong {
+  color: var(--blue);
+  font-size: 11px;
+}
+
+.package-install-banner small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.package-install-banner code {
+  overflow-wrap: anywhere;
+  color: var(--blue);
+  font-size: 11px;
+}
+
+.package-install-banner button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 10px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
 .workspace-count {
   margin: 0;
   color: var(--blue);
@@ -382,14 +428,94 @@ button {
 }
 
 .command-bar button {
-  min-width: 58px;
+  min-width: 78px;
   min-height: 36px;
+  padding: 0 8px;
   border: 0;
   border-radius: 4px;
   background: var(--blue);
   color: white;
   font-size: 10px;
+  white-space: nowrap;
   cursor: pointer;
+}
+
+.detail-section {
+  margin-top: 22px;
+  padding-top: 17px;
+  border-top: 1px solid var(--line);
+}
+
+.detail-section h3 {
+  margin: 0 0 9px;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.detail-section ul {
+  margin: 0;
+  padding-left: 17px;
+}
+
+.detail-section li,
+.detail-section p,
+.environment-list dd {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.detail-section li + li {
+  margin-top: 5px;
+}
+
+.detail-section p {
+  margin: 0;
+}
+
+.environment-list {
+  margin: 0;
+}
+
+.environment-list div + div {
+  margin-top: 9px;
+}
+
+.environment-list dt code {
+  color: var(--blue);
+  font-size: 10px;
+}
+
+.environment-list dd {
+  margin: 3px 0 0;
+}
+
+.source-link {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3px 12px;
+  margin-top: 22px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--paper);
+}
+
+.source-link span,
+.source-link small {
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.source-link strong {
+  color: var(--blue);
+  font-size: 10px;
+}
+
+.source-link small {
+  grid-column: 1 / -1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 .reading-link {
@@ -505,6 +631,20 @@ button {
 }
 
 @media (max-width: 900px) {
+  .package-install-banner {
+    grid-template-columns: 1fr auto;
+  }
+
+  .package-install-banner code {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .package-install-banner button {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
   .workspace-shell {
     grid-template-columns: 220px minmax(0, 1fr);
   }

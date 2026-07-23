@@ -1,13 +1,15 @@
+import { createCatalogueModel } from "./catalogue-model.js";
+
 export const PACKAGE_GROUP_ORDER = Object.freeze([
   "development",
   "research",
-  "operations",
   "content",
+  "operations",
 ]);
 
 function normalizedText(values) {
   return values
-    .flat()
+    .flat(Infinity)
     .filter(Boolean)
     .join(" ")
     .toLocaleLowerCase();
@@ -35,21 +37,7 @@ export function buildPackageGroups(catalog) {
 }
 
 export async function loadPackageSkills(catalog, fetchJson) {
-  const entries = await Promise.all(
-    catalog.packages.map(async (pkg) => {
-      const loadedSkills = pkg.workspace?.skillsUrl
-        ? await fetchJson(pkg.workspace.skillsUrl)
-        : [];
-      const skills = [...loadedSkills];
-      const featuredSkill = pkg.featuredSkill;
-      if (featuredSkill && !skills.some((skill) => skill.id === featuredSkill.id)) {
-        skills.push(featuredSkill);
-      }
-      return [pkg.id, skills];
-    })
-  );
-
-  return Object.fromEntries(entries);
+  return (await createCatalogueModel(catalog, fetchJson)).packageSkills;
 }
 
 export function searchCatalogue({ catalog, packageSkills, query }) {
@@ -81,6 +69,10 @@ export function searchCatalogue({ catalog, packageSkills, query }) {
           skill.descriptionZh,
           skill.descriptionEn,
           skill.tags,
+          pkg.workspace?.groupLabels?.[skill.group],
+          skill.requirements,
+          skill.outputs,
+          skill.environmentVariables?.map((variable) => [variable.name, variable.description]),
         ]).includes(normalizedQuery)
       )
       .map((skill) => ({

@@ -97,10 +97,10 @@ test("grouped navigation searches owned skills and restores search on back", asy
   assert.deepEqual(await page.locator(".package-index-group h2").allTextContents(), [
     "开发",
     "研究",
-    "运营",
     "内容",
+    "运营",
   ]);
-  assert.equal(await page.locator(".package-index-group.is-coming-soon").count(), 2);
+  assert.equal(await page.locator(".package-index-group.is-coming-soon").count(), 1);
   assert.equal(
     await page.locator(".package-index-group.is-coming-soon a").count(),
     0
@@ -110,7 +110,7 @@ test("grouped navigation searches owned skills and restores search on back", asy
   assert.equal(await page.locator(".catalogue-result.skill-result").count(), 1);
   assert.match(
     await page.locator(".catalogue-result.skill-result").innerText(),
-    /归属 · 开发技能包/
+    /归属 · Mattpocock 技能包/
   );
   await page.locator(".catalogue-result.skill-result").click();
 
@@ -128,7 +128,7 @@ test("grouped navigation searches owned skills and restores search on back", asy
   await page.getByPlaceholder("搜索技能包、技能或 /command").fill("serenity");
   assert.match(
     await page.locator(".catalogue-result.skill-result").innerText(),
-    /归属 · 投研与行业研究技能包/
+    /归属 · Serenity.skill/
   );
   await page.locator(".catalogue-result.skill-result").click();
   assert.equal(new URL(page.url()).searchParams.get("skill"), "serenity-skill");
@@ -161,7 +161,7 @@ test("research package uses the shared workspace and exposes Serenity reading co
     { waitUntil: "networkidle" }
   );
 
-  assert.equal(await page.locator("#package-name").innerText(), "投研与行业研究技能包");
+  assert.equal(await page.locator("#package-name").innerText(), "Serenity.skill");
   assert.equal(await page.locator(".skill-row").count(), 1);
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "Serenity.skill");
   assert.equal(await page.locator(".relationship-row").count(), 3);
@@ -175,6 +175,98 @@ test("research package uses the shared workspace and exposes Serenity reading co
   await page.getByRole("button", { name: "行业研究", exact: true }).click();
   assert.equal(await page.locator(".skill-row").count(), 1);
   await page.close();
+});
+
+test("DAIR Academy package filters directions and copies a skill install command", async () => {
+  const context = await browser.newContext({
+    permissions: ["clipboard-read", "clipboard-write"],
+    viewport: { width: 1440, height: 900 },
+  });
+  const page = await context.newPage();
+  await page.goto(`${baseUrl}/packages/dair-academy/?skill=survey-generator`, {
+    waitUntil: "networkidle",
+  });
+
+  assert.equal(await page.locator("#package-name").innerText(), "DAIR Academy 技能包");
+  assert.equal(await page.locator(".skill-row").count(), 8);
+  assert.equal(await page.locator("#group-filter-label").innerText(), "技能方向");
+  assert.deepEqual(await page.locator("#group-filters button").allTextContents(), [
+    "视觉生成",
+    "学习与课程",
+    "研究与调研",
+    "知识管理",
+    "情报监控",
+  ]);
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "Survey Generator");
+  assert.match(await page.locator(".workspace-detail").innerText(), /FIREWORKS_API_KEY/);
+  assert.match(await page.locator(".workspace-detail").innerText(), /许可证\s*MIT/);
+  assert.equal(await page.locator("#copy-command").innerText(), "复制安装命令");
+  await page.locator("#copy-command").click();
+  assert.equal(
+    await page.evaluate(() => navigator.clipboard.readText()),
+    "/plugin install survey-generator@dair-academy-plugins"
+  );
+
+  await page.locator("#skill-search").fill("知识管理");
+  assert.deepEqual(await page.locator(".skill-row").allTextContents().then((rows) => rows.map((row) => row.match(/wiki-builder|youtube-notetaker/)[0]).sort()), [
+    "wiki-builder",
+    "youtube-notetaker",
+  ].sort());
+  await context.close();
+});
+
+test("global search finds a DAIR skill and reports its package", async () => {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
+  await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
+
+  await page.getByPlaceholder("搜索技能包、技能或 /command").fill("情报监控");
+  assert.equal(await page.locator(".catalogue-result.skill-result").count(), 1);
+  assert.match(
+    await page.locator(".catalogue-result.skill-result").innerText(),
+    /X Agent Intelligence/
+  );
+  assert.match(
+    await page.locator(".catalogue-result.skill-result").innerText(),
+    /归属 · DAIR Academy 技能包/
+  );
+  await page.close();
+});
+
+test("Rayskills package shows the complete directory and separates package install from member call", async () => {
+  const context = await browser.newContext({
+    permissions: ["clipboard-read", "clipboard-write"],
+    viewport: { width: 1440, height: 900 },
+  });
+  const page = await context.newPage();
+  await page.goto(`${baseUrl}/packages/rayskills/?skill=ray-writer`, {
+    waitUntil: "networkidle",
+  });
+
+  assert.equal(await page.locator("#package-name").innerText(), "Rayskills 内容技能包");
+  assert.equal(await page.locator(".skill-row").count(), 21);
+  assert.deepEqual(await page.locator("#group-filters button").allTextContents(), [
+    "路由",
+    "基建",
+    "知识库",
+    "内容",
+    "咨询",
+    "产品",
+    "协作",
+    "内务",
+  ]);
+  assert.equal(await page.locator("#package-install").count(), 1);
+  assert.match(await page.locator("#package-install").innerText(), /npx -y skills add imraywang\/rayskills -g --all/);
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "ray-writer");
+  assert.equal(await page.locator("#copy-command").innerText(), "复制");
+  assert.match(await page.locator(".workspace-detail").innerText(), /CC BY-NC 4.0/);
+  assert.match(await page.locator(".workspace-detail").innerText(), /验证|恢复|确认/);
+
+  await page.locator("#copy-package-command").click();
+  assert.equal(
+    await page.evaluate(() => navigator.clipboard.readText()),
+    "npx -y skills add imraywang/rayskills -g --all"
+  );
+  await context.close();
 });
 
 test("research package opens Serenity detail in the mobile drawer", async () => {
