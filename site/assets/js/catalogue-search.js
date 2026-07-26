@@ -1,4 +1,4 @@
-import { createCatalogueModel } from "./catalogue-model.js";
+import { createCatalogueModel } from "./catalogue-model.js?v=20260726-2";
 
 export const PACKAGE_GROUP_ORDER = Object.freeze([
   "development",

@@ -4,7 +4,7 @@ import {
   derivePackageWorkspaceState,
   getPackageWorkspaceNavigationFromUrl,
 } from "./package-workspace-state.js";
-import { createPackageWorkspaceModel } from "./catalogue-model.js";
+import { createPackageWorkspaceModel } from "./catalogue-model.js?v=20260726-2";
 
 const packageId = document.body.dataset.packageId;
 const workspaceInput = {
