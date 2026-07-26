@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify Admin API 深度应用 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify Admin API 深度应用 Shopify Admin API 是 Shopify 后端能力对外暴露的核心入口。所有应用、ERP / WMS 同步、自动化集成最终都要走这套 API。本文聚焦在 实战开发中真正影响项">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/shopify-api-advanced/">
+  <meta property="og:title" content="Shopify Admin API 深度应用 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify Admin API 深度应用 Shopify Admin API 是 Shopify 后端能力对外暴露的核心入口。所有应用、ERP / WMS 同步、自动化集成最终都要走这套 API。本文聚焦在 实战开发中真正影响项">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>Shopify Admin API 深度应用</h1>
+        <p>Shopify Admin API 深度应用 Shopify Admin API 是 Shopify 后端能力对外暴露的核心入口。所有应用、ERP / WMS 同步、自动化集成最终都要走这套 API。本文聚焦在 实战开发中真正影响项</p>
+      </header>
+      <div class="article-content"><h2 id="shopify-admin-api-深度应用">Shopify Admin API 深度应用</h2><p>Shopify Admin API 是 Shopify 后端能力对外暴露的核心入口。所有应用、ERP / WMS 同步、自动化集成最终都要走这套 API。本文聚焦在<strong>实战开发中真正影响项目成败的几个关键点</strong>：选型决策、限流机制、批量操作、版本管理。</p>
+<p>不涉及基础调用入门——基础部分见 <a href="https://shopify.dev/docs/api/admin" target="_blank" rel="noreferrer">Shopify 官方 API 文档</a> 。</p>
+<h2 id="一-graphql-vs-rest-选型">一、GraphQL vs REST 选型</h2><p>Shopify 2018 年起把 GraphQL 作为推荐方向，<strong>REST API 自 2024 年 10 月起进入维护模式</strong>（仅安全修复，不再新增功能）。新项目应优先使用 GraphQL。</p>
+<h3 id="关键差异">关键差异</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>REST</th>
+<th>GraphQL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据获取</td>
+<td>多次请求拼装</td>
+<td>单次请求获取嵌套数据</td>
+</tr>
+<tr>
+<td>接口稳定性</td>
+<td>字段固定</td>
+<td>客户端按需查询</td>
+</tr>
+<tr>
+<td>限流计算</td>
+<td>每秒请求数（leaky bucket）</td>
+<td>查询成本（cost-based）</td>
+</tr>
+<tr>
+<td>文档与示例</td>
+<td>历史积累丰富</td>
+<td>较新但完整</td>
+</tr>
+<tr>
+<td>复杂查询</td>
+<td>需要多次往返</td>
+<td>一次往返</td>
+</tr>
+<tr>
+<td>工具支持</td>
+<td>curl / Postman 友好</td>
+<td>GraphQL IDE 支持</td>
+</tr>
+<tr>
+<td>Shopify 官方推荐</td>
+<td>不再</td>
+<td>推荐</td>
+</tr>
+</tbody></table>
+<h3 id="何时仍可用-rest">何时仍可用 REST</h3><ul>
+<li>维护老代码且未在迁移计划中</li>
+<li>简单的单一资源 CRUD</li>
+<li>第三方库仅支持 REST</li>
+</ul>
+<p>新功能 / 新接口（如 Cart API 部分）只在 GraphQL 提供。<strong>2025 年起的所有新项目都应优先 GraphQL</strong>。</p>
+<h3 id="选型实例">选型实例</h3><p>获取 50 个产品 + 每个产品的图片 + 变体 + 库存：</p>
+<ul>
+<li>REST：3-4 次请求（products + 每个产品的 images + variants + inventory levels）</li>
+<li>GraphQL：1 次请求</li>
+</ul>
+<pre><code>query GetProductsWithDetails($first: Int!) {
+  products(first: $first) {
+    edges {
+      node {
+        id
+        title
+        handle
+        descriptionHtml
+        images(first: 10) {
+          edges {
+            node {
+              url(transform: { maxWidth: 800 })
+              altText
+              width
+              height
+            }
+          }
+        }
+        variants(first: 100) {
+          edges {
+            node {
+              id
+              sku
+              price
+              inventoryQuantity
+              selectedOptions { name value }
+            }
+          }
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+</code></pre>
+<h2 id="二-限流机制详解">二、限流机制详解</h2><p>Shopify API 限流是<strong>初学者最常踩的坑</strong>。两套 API 用不同的限流模型：</p>
+<h3 id="rest-leaky-bucket">REST：Leaky Bucket</h3><ul>
+<li>每个店铺有”桶容量”40 请求（Plus 商家更高）</li>
+<li>桶以每秒 2 个请求的速度漏水</li>
+<li>请求填桶，桶满后 429 拒绝</li>
+</ul>
+<p><strong>应对</strong>：</p>
+<ul>
+<li>监控 HTTP 响应 header <code>X-Shopify-Shop-Api-Call-Limit</code>（如 <code>35/40</code>）</li>
+<li>接近 40 时延迟下次请求</li>
+<li>收到 429 后按响应 header <code>Retry-After</code> 等待</li>
+</ul>
+<pre><code>async function callShopifyRest(endpoint, options) {
+  const response = await fetch(endpoint, options);
+ 
+  const limit = response.headers.get('x-shopify-shop-api-call-limit');
+  const [current, max] = limit.split('/').map(Number);
+ 
+  if (current &gt; max * 0.8) {
+    await sleep(500);
+  }
+ 
+  if (response.status === 429) {
+    const retryAfter = parseInt(response.headers.get('retry-after') || '2');
+    await sleep(retryAfter * 1000);
+    return callShopifyRest(endpoint, options);
+  }
+ 
+  return response.json();
+}
+</code></pre>
+<h3 id="graphql-cost-based">GraphQL：Cost-Based</h3><ul>
+<li>每个店铺有”成本桶” 1000 点（Plus 更高）</li>
+<li>桶以每秒 50 点的速度恢复</li>
+<li>每个查询消耗一定点数（基础 1 点，连接字段按返回数量）</li>
+</ul>
+<p><strong>成本计算</strong>：</p>
+<pre><code>query {
+  products(first: 100) {  # 成本 = 100（连接字段按 first 计算）
+    edges {
+      node {
+        id              # 0
+        variants(first: 10) {  # 100 × 10 = 1000（嵌套连接乘法）
+          edges {
+            node { id price }
+          }
+        }
+      }
+    }
+  }
+}
+# 总成本 ≈ 1100 点，单次查询即可超出桶容量
+</code></pre>
+<p><strong>应对</strong>：</p>
+<ul>
+<li>在响应 <code>extensions.cost</code> 中查看实际消耗</li>
+<li>减少 first 参数或拆多次查询</li>
+<li>用 fragment 但不要无限嵌套</li>
+</ul>
+<pre><code>const result = await graphqlClient.query({ query: PRODUCTS_QUERY });
+console.log('Cost:', result.extensions.cost);
+// {
+//   requestedQueryCost: 1100,
+//   actualQueryCost: 250,  // 实际成本基于返回数量
+//   throttleStatus: {
+//     maximumAvailable: 1000,
+//     currentlyAvailable: 750,
+//     restoreRate: 50
+//   }
+// }
+</code></pre>
+<h3 id="bulk-operations-批量操作">Bulk Operations（批量操作）</h3><p>需要导出全店数据时不要用普通分页查询——会消耗大量配额。使用 GraphQL Bulk Operations：</p>
+<pre><code>mutation {
+  bulkOperationRunQuery(
+    query: """
+    {
+      products {
+        edges {
+          node {
+            id
+            title
+            variants {
+              edges {
+                node { id sku }
+              }
+            }
+          }
+        }
+      }
+    }
+    """
+  ) {
+    bulkOperation { id status }
+    userErrors { field message }
+  }
+}
+</code></pre>
+<p>特点：</p>
+<ul>
+<li>异步执行（提交后立即返回）</li>
+<li>完成后下载 JSONL 文件</li>
+<li><strong>不消耗主限流配额</strong></li>
+<li>适合全量导出（10万+ 产品的店铺）</li>
+</ul>
+<p>每个店铺同时只能跑 1 个 Bulk Operation。</p>
+<h2 id="三-webhook-集成">三、Webhook 集成</h2><p>实时事件推送，避免轮询消耗 API 配额。</p>
+<h3 id="常用事件">常用事件</h3><table>
+<thead>
+<tr>
+<th>事件</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>orders/create</td>
+<td>新订单 → 同步到 ERP</td>
+</tr>
+<tr>
+<td>orders/updated</td>
+<td>订单变更 → 状态同步</td>
+</tr>
+<tr>
+<td>orders/paid</td>
+<td>支付完成 → 触发履约</td>
+</tr>
+<tr>
+<td>orders/fulfilled</td>
+<td>发货 → 通知客户</td>
+</tr>
+<tr>
+<td>products/create / update</td>
+<td>产品同步</td>
+</tr>
+<tr>
+<td>inventory_levels/update</td>
+<td>库存同步</td>
+</tr>
+<tr>
+<td>customers/create</td>
+<td>新客户 → CRM 同步</td>
+</tr>
+<tr>
+<td>customers/data_request</td>
+<td>GDPR 请求</td>
+</tr>
+<tr>
+<td>customers/redact</td>
+<td>GDPR 删除</td>
+</tr>
+<tr>
+<td>shop/redact</td>
+<td>店铺卸载 App 后清理数据</td>
+</tr>
+</tbody></table>
+<h3 id="注册-webhook">注册 Webhook</h3><pre><code>mutation {
+  webhookSubscriptionCreate(
+    topic: ORDERS_CREATE
+    webhookSubscription: {
+      callbackUrl: "https://yourapp.com/webhooks/orders-create"
+      format: JSON
+    }
+  ) {
+    webhookSubscription { id }
+    userErrors { field message }
+  }
+}
+</code></pre>
+<h3 id="验证-webhook-签名">验证 Webhook 签名</h3><p>Shopify 在 HTTP header <code>X-Shopify-Hmac-Sha256</code> 提供签名。<strong>所有 Webhook 必须验签</strong>，否则接口可能被恶意伪造调用：</p>
+<pre><code>const crypto = require('crypto');
+ 
+function verifyWebhook(rawBody, hmacHeader, secret) {
+  const calculated = crypto
+    .createHmac('sha256', secret)
+    .update(rawBody, 'utf8')
+    .digest('base64');
+ 
+  return crypto.timingSafeEqual(
+    Buffer.from(calculated),
+    Buffer.from(hmacHeader)
+  );
+}
+ 
+app.post('/webhooks/orders-create', (req, res) =&gt; {
+  const hmac = req.headers['x-shopify-hmac-sha256'];
+  const rawBody = req.rawBody; // 原始 body，未 JSON.parse
+ 
+  if (!verifyWebhook(rawBody, hmac, SHOPIFY_WEBHOOK_SECRET)) {
+    return res.status(401).send('Unauthorized');
+  }
+ 
+  // 处理事件
+  res.status(200).send('OK');
+});
+</code></pre>
+<h3 id="webhook-处理原则">Webhook 处理原则</h3><ul>
+<li><strong>5 秒内响应 200</strong>：Shopify 等待时间上限 5 秒</li>
+<li><strong>重试机制</strong>：超时或返回 5xx 时 Shopify 自动重试（最多 19 次，48 小时内）</li>
+<li><strong>幂等性</strong>：同一事件可能被多次推送，处理函数必须幂等</li>
+<li><strong>异步处理</strong>：复杂业务逻辑放队列异步处理，先 200 返回</li>
+</ul>
+<pre><code>app.post('/webhooks/orders-create', async (req, res) =&gt; {
+  // 立即验签并响应
+  if (!verifyWebhook(...)) return res.status(401).send('Unauthorized');
+ 
+  // 入队，不阻塞响应
+  await queue.add('process-order', { body: req.body });
+ 
+  res.status(200).send('OK');
+});
+</code></pre>
+<h2 id="四-access-token-管理">四、Access Token 管理</h2><h3 id="token-类型">Token 类型</h3><ul>
+<li><strong>Public App Token</strong>：通过 OAuth 流程获取，给已安装店铺</li>
+<li><strong>Custom App Token</strong>：店主在后台创建，用于私有集成</li>
+<li><strong>Storefront API Token</strong>：用于面向公众的 Headless 站点</li>
+</ul>
+<h3 id="安全要点">安全要点</h3><ul>
+<li><strong>永远不要硬编码 token</strong>：用环境变量或密钥管理服务</li>
+<li><strong>最小权限</strong>：只申请实际需要的 scope</li>
+<li><strong>定期轮换</strong>：每 6-12 个月更换一次</li>
+<li><strong>泄露应急</strong>：在 Shopify Partner 后台撤销并重新生成</li>
+</ul>
+<h3 id="scopes-选择原则">Scopes 选择原则</h3><p>Shopify 把权限拆得很细。常用：</p>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>read_products / write_products</td>
+<td>产品读写</td>
+</tr>
+<tr>
+<td>read_orders / write_orders</td>
+<td>订单读写</td>
+</tr>
+<tr>
+<td>read_customers / write_customers</td>
+<td>客户读写</td>
+</tr>
+<tr>
+<td>read_inventory / write_inventory</td>
+<td>库存读写</td>
+</tr>
+<tr>
+<td>read_fulfillments / write_fulfillments</td>
+<td>履约</td>
+</tr>
+<tr>
+<td>read_locations</td>
+<td>多仓</td>
+</tr>
+<tr>
+<td>read_price_rules / write_price_rules</td>
+<td>折扣规则</td>
+</tr>
+</tbody></table>
+<p><strong>只申请必要的 scope</strong>——app review 阶段超出实际需要的 scope 会被 Shopify 退回审核。</p>
+<h2 id="五-api-版本管理">五、API 版本管理</h2><h3 id="版本周期">版本周期</h3><p>Shopify 每季度发布新 API 版本，命名 <code>YYYY-MM</code>：</p>
+<ul>
+<li>2024-01（1 月发布）</li>
+<li>2024-04（4 月发布）</li>
+<li>2024-07（7 月发布）</li>
+<li>2024-10（10 月发布）</li>
+</ul>
+<p>每个版本支持 12 个月，过期后强制升级。<strong>未升级的应用会被自动迁移到下一个稳定版</strong>，可能触发 breaking change。</p>
+<h3 id="升级策略">升级策略</h3><ul>
+<li>监控 <a href="https://shopify.dev/changelog" target="_blank" rel="noreferrer">Shopify Changelog</a> </li>
+<li>测试环境验证后再升级生产</li>
+<li>升级前查阅 <a href="https://shopify.dev/docs/api/release-notes" target="_blank" rel="noreferrer">Migration Guide</a></li>
+</ul>
+<p> </p>
+<h3 id="调用版本指定">调用版本指定</h3><p>每次 API 调用都应该显式指定版本：</p>
+<pre><code>GET /admin/api/2024-10/products.json
+</code></pre>
+<p>GraphQL 同理：</p>
+<pre><code>POST /admin/api/2024-10/graphql.json
+</code></pre>
+<p><strong>不要使用 unstable</strong>——它是开发预览，每周可能变更。</p>
+<h2 id="六-常见集成场景">六、常见集成场景</h2><h3 id="场景-1-erp-同步">场景 1：ERP 同步</h3><pre><code>ERP（NetSuite / 用友等） ↔ Shopify
+
+订单方向：
+  Shopify orders/create webhook
+  → 服务器解析
+  → 推送到 ERP
+  → 创建 ERP 订单
+
+库存方向：
+  ERP 库存变化
+  → 调 Shopify GraphQL mutation inventorySetOnHandQuantities
+  → 同步到 Shopify
+</code></pre>
+<p>注意：</p>
+<ul>
+<li>双向同步必须有”事件来源”标记，避免无限循环</li>
+<li>网络异常时本地队列重试</li>
+<li>月度对账机制</li>
+</ul>
+<h3 id="场景-2-第三方仓库-3pl-集成">场景 2：第三方仓库（3PL）集成</h3><pre><code>Shopify orders/paid → 推送到 3PL → 3PL 发货 → fulfillment 回写 Shopify
+</code></pre>
+<p>关键点：</p>
+<ul>
+<li>用 fulfillmentCreate mutation 完成发货</li>
+<li>物流追踪号回传：<code>trackingInfo</code> 字段</li>
+<li>部分发货支持（拆单）</li>
+</ul>
+<h3 id="场景-3-自定义-checkout-后处理">场景 3：自定义 Checkout 后处理</h3><pre><code>orders/paid webhook
+→ 异步处理：发优惠券、加会员积分、推送 CRM
+</code></pre>
+<p>不要在 Checkout 同步流程里做这些——会拖慢结账。</p>
+<h3 id="场景-4-客户数据导出-gdpr">场景 4：客户数据导出（GDPR）</h3><p>强制实现两个 Webhook：</p>
+<ul>
+<li><code>customers/data_request</code>：客户请求数据 → 30 天内提供</li>
+<li><code>customers/redact</code>：客户请求删除 → 30 天内删除</li>
+</ul>
+<p>详见 <a href="/guides/shopify-handbook/advanced/gdpr-compliance-guide/">GDPR 合规完整指南</a>。</p>
+<h2 id="七-性能与监控">七、性能与监控</h2><h3 id="客户端缓存">客户端缓存</h3><ul>
+<li>不变数据（产品分类、店铺信息）本地缓存</li>
+<li>缓存失效靠 Webhook 触发（如 products/update）</li>
+<li>不要缓存订单或库存等高频变化数据</li>
+</ul>
+<h3 id="重试策略">重试策略</h3><ul>
+<li>网络错误：指数退避（1s, 2s, 4s, 8s）</li>
+<li>429 限流：按 Retry-After 等待</li>
+<li>5xx 错误：最多 3 次重试</li>
+</ul>
+<h3 id="监控指标">监控指标</h3><ul>
+<li>API 调用次数 / 错误率 / 延迟（按 endpoint）</li>
+<li>限流命中次数</li>
+<li>Webhook 接收延迟 / 失败率</li>
+<li>Bulk Operation 完成时间</li>
+</ul>
+<h2 id="八-避免的常见错误">八、避免的常见错误</h2><h3 id="错误-1-在循环中调-api">错误 1：在循环中调 API</h3><pre><code>// 反例：N+1 问题
+for (const productId of productIds) {
+  const product = await fetchProduct(productId); // 多次单独调用
+}
+ 
+// 正确：批量查询
+const products = await graphqlQuery(`
+  query { nodes(ids: ${JSON.stringify(productIds)}) { ... } }
+`);
+</code></pre>
+<h3 id="错误-2-硬编码-api-版本">错误 2：硬编码 API 版本</h3><pre><code>// 反例：永远用 2022-01，无法升级
+const url = 'https://shop.myshopify.com/admin/api/2022-01/products.json';
+ 
+// 正确：版本变量化
+const API_VERSION = process.env.SHOPIFY_API_VERSION || '2024-10';
+const url = `https://shop.myshopify.com/admin/api/${API_VERSION}/products.json`;
+</code></pre>
+<h3 id="错误-3-忽略-webhook-重试">错误 3：忽略 Webhook 重试</h3><p>如果 Webhook 处理超过 5 秒，Shopify 会重试。如果处理函数不幂等，会重复处理订单。</p>
+<h3 id="错误-4-写权限申请过大">错误 4：写权限申请过大</h3><p>申请了 <code>write_products</code> 但只读产品。审核会被 Shopify 退回，且增加安全风险。</p>
+<h3 id="错误-5-不验签直接处理-webhook">错误 5：不验签直接处理 Webhook</h3><p>恶意第三方可以伪造 Webhook 攻击。<strong>所有 Webhook 必须验签</strong>。</p>
+<h3 id="错误-6-缺少错误处理">错误 6：缺少错误处理</h3><pre><code>// 反例
+const data = await fetch(url).then(r =&gt; r.json());
+ 
+// 正确
+const response = await fetch(url);
+if (!response.ok) {
+  const text = await response.text();
+  throw new Error(`Shopify API ${response.status}: ${text}`);
+}
+const data = await response.json();
+if (data.errors) {
+  throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
+}
+</code></pre>
+<h2 id="九-开发工具">九、开发工具</h2><h3 id="必备工具">必备工具</h3><ul>
+<li><strong>Shopify CLI</strong>：脚手架与本地开发</li>
+<li><strong>GraphiQL App</strong>：Shopify 自家的 GraphQL IDE</li>
+<li><strong>Postman 与 Shopify Postman Collection</strong>：REST 测试</li>
+<li><strong>Shopify Dev Console</strong>：API 调用日志查看</li>
+</ul>
+<h3 id="推荐工具">推荐工具</h3><ul>
+<li><strong>GraphQL Codegen</strong>：从 GraphQL Schema 自动生成 TypeScript 类型</li>
+<li><strong>@shopify/shopify-api</strong>：官方 Node.js SDK</li>
+<li><strong>@shopify/cli-hydrogen</strong>：Headless 项目脚手架</li>
+</ul>
+<h2 id="十-相关教程">十、相关教程</h2><ul>
+<li><a href="/guides/shopify-handbook/advanced/shopify-webhooks-guide/">Shopify Webhook 开发指南</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-app-development/">Shopify App 开发指南</a></li>
+<li><a href="/guides/shopify-handbook/advanced/headless-commerce-architecture/">Headless Commerce 架构</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-discount-function-buy-gift/">Shopify Functions 实战</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-metafields-metaobjects/">Metafields 与 Metaobjects</a></li>
+<li><a href="https://shopify.dev/docs/api/admin-graphql" target="_blank" rel="noreferrer">Shopify Admin GraphQL 官方文档</a> </li>
+<li><a href="https://shopify.dev/docs/api/admin-rest" target="_blank" rel="noreferrer">Shopify Admin REST API 文档</a> </li>
+<li><a href="https://shopify.dev/changelog" target="_blank" rel="noreferrer">Shopify Changelog</a></li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/conversion-optimization/"><span>上一篇</span><strong>Shopify 转化率优化（CRO）实战</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-agentic-storefronts/"><span>下一篇</span><strong>Shopify Agentic Storefronts 指南：让商品出现在 AI 对话里</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

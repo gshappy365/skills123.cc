@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify AI Toolkit 使用指南 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify AI Toolkit 使用指南 Shopify AI Toolkit 是 Shopify 官方提供的 AI 开发增强套件 ：把你的 AI 助手（Cursor、Claude Code、VS Code、Gemini CL">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/shopify-ai-toolkit/">
+  <meta property="og:title" content="Shopify AI Toolkit 使用指南 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify AI Toolkit 使用指南 Shopify AI Toolkit 是 Shopify 官方提供的 AI 开发增强套件 ：把你的 AI 助手（Cursor、Claude Code、VS Code、Gemini CL">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>Shopify AI Toolkit 使用指南</h1>
+        <p>Shopify AI Toolkit 使用指南 Shopify AI Toolkit 是 Shopify 官方提供的 AI 开发增强套件 ：把你的 AI 助手（Cursor、Claude Code、VS Code、Gemini CL</p>
+      </header>
+      <div class="article-content"><h2 id="shopify-ai-toolkit-使用指南">Shopify AI Toolkit 使用指南</h2><p><a href="https://shopify.dev/docs/apps/build/ai-toolkit" target="_blank" rel="noreferrer">Shopify AI Toolkit</a>  是 Shopify 官方提供的 <strong>AI 开发增强套件</strong>：把你的 AI 助手（Cursor、Claude Code、VS Code、Gemini CLI、Codex 等）与 <strong>Shopify 文档、API Schema、代码校验能力</strong> 以及 <strong>CLI 侧与店铺相关的执行能力</strong> 连接起来，让智能体<strong>按平台真实行为工作</strong>，而不是凭训练数据「猜」接口怎么写。</p>
+<blockquote>
+<p><strong>定位说明</strong>：官方文档归类在 <strong>Apps → Build → Dev tools</strong> 下，主要面向 <strong>Shopify 应用与扩展</strong> 开发场景。若你主要做 <strong>主题与 Liquid</strong>，可搭配阅读 <a href="/guides/shopify-handbook/liquid/ai-theme-engineering/">AI 辅助与主题工程化</a>；Toolkit 与 Theme Check、CLI 仍可共用同一套编辑器习惯。</p>
+</blockquote>
+<p>最近也有不少海外开发者把它放进日常工作流里，比如 WebSensePro 的这篇 <a href="https://websensepro.com/blog/shopify-ai-toolkit-tutorial-build-themes-automate-seo-in-minutes/" target="_blank" rel="noreferrer">Shopify AI Toolkit Tutorial</a>  提到：通过自然语言让 AI 辅助更新产品标签、优化图片与 SEO 元信息、创建主题区块。这里不照搬案例，而是结合我们自己的建站、主题和运营经验，把它拆成更实用的判断：<strong>哪些事可以大胆交给 AI 起草，哪些事必须人来收口</strong>。</p>
+<hr />
+<h2 id="一-toolkit-解决什么问题">一、Toolkit 解决什么问题</h2><table>
+<thead>
+<tr>
+<th>痛点</th>
+<th>Toolkit 的作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>模型编造不存在的 Admin API 字段或 GraphQL 操作名</td>
+<td>通过官方文档与 Schema 约束回答与生成</td>
+</tr>
+<tr>
+<td>团队各自问 ChatGPT，答案版本不一致</td>
+<td>统一 插件 / Skills / MCP 入口，随官方更新</td>
+</tr>
+<tr>
+<td>写完代码不知道是否符合平台习惯</td>
+<td>结合校验与 CLI 能力，减少「能跑但不符合规范」的代码</td>
+</tr>
+</tbody></table>
+<p>官方表述：<strong>让 agent 与 Shopify 正确协作，而不是猜测实现细节。</strong>（参见 <a href="https://shopify.dev/docs/apps/build/ai-toolkit" target="_blank" rel="noreferrer">Shopify AI Toolkit 文档</a> 。）</p>
+<p>换成更接地气的话说：它不是「替你经营一家店」，而是把原来分散在文档、CLI、API Schema、主题文件里的信息，变成 AI 可以调用的上下文。它真正省时间的地方，通常不是一次生成一个惊艳功能，而是少走这些弯路：</p>
+<ul>
+<li>少查很多遍同一个 Admin API 字段名</li>
+<li>少写一批重复的 GraphQL 查询</li>
+<li>少在主题文件里凭感觉改 section schema</li>
+<li>少把 SEO 标签、图片 alt、产品标签这些重复工作逐条人工处理</li>
+<li>少让初级同事在旧博客和新文档之间反复对答案</li>
+</ul>
+<hr />
+<p>很多介绍 AI Toolkit 的文章会强调「几分钟做完主题、SEO、批量修改」。这个方向没错，但实际项目里要稍微冷静一点看。</p>
+<p>它擅长：</p>
+<ul>
+<li><strong>起草代码</strong>：例如生成一个 section、写一个 Admin GraphQL 查询、补一段 App Extension 配置</li>
+<li><strong>读文档并对齐接口</strong>：让 AI 不再靠旧知识猜 Shopify 的字段</li>
+<li><strong>批量整理</strong>：产品标签、图片 alt、SEO 标题、描述、metafield 草稿</li>
+<li><strong>解释项目结构</strong>：快速理解 app、extension、theme 的目录与入口</li>
+</ul>
+<p>它不适合直接接管：</p>
+<ul>
+<li>真实生产店铺的批量写入，不经人工 review 就执行</li>
+<li>品牌口吻、SEO 策略、产品合规承诺</li>
+<li>价格、库存、折扣、税务、支付等高风险配置</li>
+<li>客户数据、订单数据、私密 token 的随意粘贴</li>
+</ul>
+<p>比较稳的用法是：<strong>先让 AI 生成计划与 diff，再由人决定是否执行</strong>。尤其是批量改产品、图片、SEO 字段时，先抽样 5～10 个结果，比一上来跑全店安全得多。</p>
+<hr />
+<h2 id="三-安装前要求">三、安装前要求</h2><p>根据官方说明，安装前应满足：</p>
+<ul>
+<li><strong>Node.js</strong>：<strong>18 及以上</strong>（建议与团队 CLI 版本对齐，使用 LTS）。</li>
+<li><strong>受支持的 AI 工具之一</strong>：Claude Code、Codex（<strong>仅支持 Skills 与 MCP</strong>）、Cursor、Gemini CLI、Visual Studio Code。</li>
+</ul>
+<p>具体子版本与兼容性以 <a href="https://shopify.dev/docs/apps/build/ai-toolkit#requirements" target="_blank" rel="noreferrer">官方 Requirements</a>  为准。</p>
+<hr />
+<h2 id="四-三种安装方式概览">四、三种安装方式概览</h2><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>适用场景</th>
+<th>维护方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>插件（Plugin，推荐）</td>
+<td>希望「一次装好、自动跟新」</td>
+<td>插件随官方发布更新</td>
+</tr>
+<tr>
+<td>Agent Skills（手动）</td>
+<td>只想要部分能力、可自选技能包</td>
+<td>需自行拉取更新</td>
+</tr>
+<tr>
+<td>Dev MCP Server</td>
+<td>已在工作流里深度使用 MCP、希望接本地 stdio 服务</td>
+<td>本地 npx 拉起，按文档配置各客户端</td>
+</tr>
+</tbody></table>
+<p>下面分方式说明要点；<strong>命令与菜单位置以你本机文档版本为准</strong>，若与官方不一致，请以 <a href="https://shopify.dev/docs/apps/build/ai-toolkit" target="_blank" rel="noreferrer">shopify.dev AI Toolkit</a>  为准。</p>
+<hr />
+<h2 id="五-方式-a-插件安装-推荐">五、方式 A：插件安装（推荐）</h2><p>插件把能力打成一个整体，<strong>官方推荐优先用插件</strong>，以便新能力发布时自动带上。</p>
+<h3 id="claude-code">Claude Code</h3><ol>
+<li>在 Claude Code 中启用 Shopify 插件市场（官方示例命令）： <code>/plugin marketplace add Shopify/shopify-ai-toolkit</code></li>
+<li>再安装插件： <code>/plugin install shopify-plugin@shopify-plugin</code></li>
+</ol>
+<h3 id="cursor">Cursor</h3><p>在 <strong>Cursor Marketplace</strong> 中搜索并添加 <strong>Shopify</strong> 相关官方插件（详见官方文档「Cursor」小节）。</p>
+<h3 id="gemini-cli">Gemini CLI</h3><p>在终端执行（官方提供的扩展安装方式）：</p>
+<pre><code>gemini extensions install https://github.com/Shopify/shopify-ai-toolkit
+</code></pre>
+<h3 id="visual-studio-code">Visual Studio Code</h3><ol>
+<li>在 VS Code 设置中启用 <strong>Agent plugins</strong> 相关预览能力（以当前 VS Code 版本说明为准）。</li>
+<li>命令面板执行 <strong>Chat: Install Plugin From Source</strong>。</li>
+<li>仓库地址填入：<code>https://github.com/Shopify/shopify-ai-toolkit</code>（与官方文档一致）。</li>
+</ol>
+<hr />
+<h2 id="六-方式-b-agent-skills-npx-skills">六、方式 B：Agent Skills（<code>npx skills</code>）</h2><p>适合希望 <strong>按需安装</strong>、或只引入部分技能的场景，不希望占用太多插件空间。</p>
+<p><strong>安装全部技能：</strong></p>
+<pre><code>npx skills add Shopify/shopify-ai-toolkit
+</code></pre>
+<p><img src="/assets/images/shopify-handbook/ffa81a15d5029b29.png" alt="安装 Shopify-ai-toolkit" loading="lazy" /></p>
+<p>也可以一个个空格勾选部分选中的技能，选完之后一直回车就安装好了</p>
+<p><img src="/assets/images/shopify-handbook/5c68ee05620b15b9.png" alt="安装 Shopify-ai-toolkit 一直回车安装完毕" loading="lazy" /></p>
+<p><strong>仅安装单个技能：</strong></p>
+<pre><code>npx skills add Shopify/shopify-ai-toolkit --skill shopify-admin
+</code></pre>
+<p>完整技能列表见官方 GitHub 仓库说明。注意：<strong>手动添加的 Skills 不会自动更新</strong>，需要你们自行跟进版本。</p>
+<hr />
+<h2 id="七-方式-c-dev-mcp-server-shopify-dev-mcp">七、方式 C：Dev MCP Server（<code>@shopify/dev-mcp</code>）</h2><p>通过 <strong>MCP（Model Context Protocol）</strong> 把本地或 IDE 里的助手接到 Shopify 开发者资源；官方说明该 <strong>MCP 在本地运行</strong>，且文档描述为 <strong>无需额外认证</strong>（以官方最新说明为准）。</p>
+<h3 id="通用思路">通用思路</h3><ul>
+<li>使用 <strong><code>npx -y @shopify/dev-mcp@latest</code></strong> 作为 MCP 子进程命令；</li>
+<li>在各客户端的 <strong>MCP 配置</strong> 里增加 <code>shopify-dev-mcp</code>（名称可自定）；</li>
+<li><strong>保存配置后重启</strong>对应客户端，使 MCP 生效。</li>
+</ul>
+<h3 id="cursor-配置示例">Cursor 配置示例</h3><p>在 <strong>Cursor → Settings → Cursor Settings → Tools and MCP → New MCP server</strong> 中增加类似配置（与 <a href="https://shopify.dev/docs/apps/build/ai-toolkit" target="_blank" rel="noreferrer">官方 Cursor 小节</a>  对齐）：</p>
+<pre><code>{
+  "mcpServers": {
+    "shopify-dev-mcp": {
+      "command": "npx",
+      "args": ["-y", "@shopify/dev-mcp@latest"]
+    }
+  }
+}
+</code></pre>
+<p>若 <strong>Windows</strong> 上出现连接错误，官方文档提供了改用 <code>cmd /k npx ...</code> 的替代写法，请在文档中复制最新片段。</p>
+<h3 id="claude-code-示例">Claude Code 示例</h3><p>官方建议通过 CLI 注册 MCP，例如：</p>
+<pre><code>claude mcp add --transport stdio shopify-dev-mcp -- npx -y @shopify/dev-mcp@latest
+</code></pre>
+<p>执行后 <strong>重启 Claude Code</strong>。</p>
+<h3 id="codex-cli">Codex CLI</h3><p>在 <code>~/.codex/config.toml</code> 中增加 <code>[mcp_servers.shopify-dev-mcp]</code> 段（<strong>注意 Codex 使用 snake_case 的 <code>mcp_servers</code></strong>，与部分 JSON 配置不同）。完整片段见 <a href="https://shopify.dev/docs/apps/build/ai-toolkit" target="_blank" rel="noreferrer">官方 Codex 说明</a> 。</p>
+<h3 id="gemini-cli-与-vs-code">Gemini CLI 与 VS Code</h3><ul>
+<li>Gemini CLI：在 <code>settings.json</code> 的 <code>mcpServers</code> 中增加与上文类似的 <code>command</code> / <code>args</code>；跨项目使用可加官方文档中的 <strong><code>--scope user</code></strong> 等参数。</li>
+<li>VS Code：命令面板打开 <strong>MCP: Open User Configuration</strong>，在用户级 <code>mcp.json</code> 的 <code>servers</code> 下添加 <code>shopify-dev-mcp</code> 条目（字段名以 VS Code 当前 MCP 规范为准）。</li>
+</ul>
+<hr />
+<h2 id="八-结合实际业务的-5-个工作流">八、结合实际业务的 5 个工作流</h2><h3 id="1-批量-seo-初稿-先生成-再抽样-再写入">1. 批量 SEO 初稿：先生成，再抽样，再写入</h3><p>适合处理：</p>
+<ul>
+<li>产品标题太短或不统一</li>
+<li>Meta title / description 缺失</li>
+<li>图片 alt 空白</li>
+<li>产品标签混乱</li>
+</ul>
+<p>推荐流程：</p>
+<ol>
+<li>先让 AI 读取产品结构，生成 <strong>字段清单与修改策略</strong></li>
+<li>只选 5 个产品做样本</li>
+<li>人工检查关键词、品牌语气、是否夸大功效</li>
+<li>再批量执行</li>
+<li>导出变更记录，方便回滚</li>
+</ol>
+<p>可以这样问：</p>
+<pre><code>请先不要修改店铺数据。
+帮我检查当前产品的 SEO 字段结构，列出缺失 meta title、meta description、image alt 的产品数量。
+然后抽取 5 个样本，给出建议修改前后对照表。
+</code></pre>
+<p>这样比「直接帮我优化全店 SEO」安全很多。WebSensePro 的文章里提到批量更新标签与 200+ 图片的效率案例，可以作为方向参考，但真实项目里建议先做抽样和回滚方案。</p>
+<h3 id="2-主题区块开发-先让-ai-写草稿-再用-theme-check-收口">2. 主题区块开发：先让 AI 写草稿，再用 Theme Check 收口</h3><p>适合让 AI 生成：</p>
+<ul>
+<li>before / after 图片对比模块</li>
+<li>FAQ 折叠区块</li>
+<li>trust badges 信任图标</li>
+<li>产品卖点卡片</li>
+<li>首页活动 banner</li>
+</ul>
+<p>推荐流程：</p>
+<ol>
+<li>先描述 section 的使用场景与设置项</li>
+<li>让 AI 生成 Liquid、schema、CSS 的第一版</li>
+<li>人工检查是否符合主题现有命名、布局和性能习惯</li>
+<li>跑 Theme Check</li>
+<li>在预览主题里测试移动端、空数据、图片缺失状态</li>
+</ol>
+<p>更好的提示词不是「帮我写一个漂亮 section」，而是：</p>
+<pre><code>请基于 Shopify Online Store 2.0 写一个可复用 section：
+- 用于首页展示 3 个产品卖点
+- 每个卖点包含图标、标题、描述
+- schema 支持最多 6 个 block
+- 不要依赖外部库
+- 输出前说明文件放在哪，以及需要我在主题编辑器里怎么配置
+</code></pre>
+<h3 id="3-app-extension-开发-减少字段名和配置错误">3. App / Extension 开发：减少字段名和配置错误</h3><p>做 Shopify App、Checkout UI Extension、Discount Function、Cart Transform 时，AI 最大价值不是「替你设计业务」，而是减少这些低级错误：</p>
+<ul>
+<li>GraphQL 字段名写错</li>
+<li>mutation 输入结构不对</li>
+<li>extension target 用错</li>
+<li>TOML 配置漏字段</li>
+<li>示例代码引用了过期 API 版本</li>
+</ul>
+<p>推荐做法：</p>
+<pre><code>请根据 Shopify 当前官方文档，帮我生成一个 Discount Function 的输入 query。
+规则是：买 A 赠 B，需要读取 cart lines 的 merchandise id、quantity、line attributes 和 cart subtotal。
+先输出 query，再解释每个字段为什么需要。
+</code></pre>
+<p>这类问题很适合 Toolkit / MCP，因为它能围绕官方 Schema 和文档回答，比普通聊天模型更少「看起来对、实际不能跑」。</p>
+<h3 id="4-运营数据整理-让-ai-做助理-不做裁判">4. 运营数据整理：让 AI 做助理，不做裁判</h3><p>你可以让 AI 帮忙：</p>
+<ul>
+<li>整理产品标签命名规范</li>
+<li>把供应商资料转成商品字段草稿</li>
+<li>分析哪些商品缺图、缺 alt、缺 SEO 字段</li>
+<li>给运营同事生成待办清单</li>
+</ul>
+<p>但不要让它直接决定：</p>
+<ul>
+<li>哪些商品必须下架</li>
+<li>哪些 SKU 应该涨价</li>
+<li>哪些客户应该被标记为高风险</li>
+<li>哪些承诺能写进商品页</li>
+</ul>
+<p>AI 适合做「整理和建议」，最终判断仍要看库存、利润、合规和品牌策略。</p>
+<h3 id="5-团队协作-把-ai-用法写成-sop">5. 团队协作：把 AI 用法写成 SOP</h3><p>如果团队里多人都用 AI Toolkit，建议建立一份很短的 SOP：</p>
+<ul>
+<li>哪些任务允许 AI 直接改文件</li>
+<li>哪些任务只能生成建议</li>
+<li>批量写入店铺前必须抽样多少条</li>
+<li>谁负责 review diff</li>
+<li>出问题如何回滚</li>
+</ul>
+<p>很多 AI 工具带来的混乱，不是因为工具不好，而是团队没有定义「能不能执行」和「谁来确认」。这点比安装方式更重要。</p>
+<hr />
+<h2 id="九-与日常开发流程如何配合">九、与日常开发流程如何配合</h2><ol>
+<li><strong>应用脚手架</strong>：仍使用 <code>shopify app init</code> 等 CLI 流程（参见 <a href="/guides/shopify-handbook/advanced/shopify-app-development/">Shopify 应用开发</a>）。</li>
+<li><strong>写 Admin API / GraphQL 前</strong>：让已连接 Toolkit / MCP 的助手 <strong>对照 Schema 生成查询</strong>，减少字段名错误。</li>
+<li><strong>合并前</strong>：继续跑你们团队的 <strong>Lint、单测、Theme Check</strong>（主题相关时），Toolkit 不替代 CI。</li>
+<li><strong>密钥与合规</strong>：Toolkit 提升的是「<strong>文档与接口正确性</strong>」；<strong>API Token、客户数据</strong> 仍须遵守 <a href="/guides/shopify-handbook/liquid/security/">安全最佳实践</a> 与公司政策，勿粘贴进不可信会话。</li>
+</ol>
+<p>可以把它理解成一条更稳的链路：</p>
+<pre><code>需求描述 → AI 生成计划 → AI 生成代码或批量操作草稿 → 人工 review → 小范围执行 → 记录结果 → 再扩大范围
+</code></pre>
+<hr />
+<h2 id="十-适合直接上手的提示词">十、适合直接上手的提示词</h2><h3 id="检查产品-seo-字段">检查产品 SEO 字段</h3><pre><code>请先读取产品字段结构，不要修改任何数据。
+统计哪些产品缺少 meta title、meta description、image alt 和产品标签。
+请按“问题类型、影响、建议处理方式、是否适合批量修复”输出。
+</code></pre>
+<p><img src="/assets/images/shopify-handbook/7018bcab8f0d2da5.png" alt="安装 Shopify-ai-toolkit 优化产品和SEO" loading="lazy" /></p>
+<h3 id="生成主题-section">生成主题 Section</h3><pre><code>请帮我为 Shopify OS 2.0 主题写一个 section 草稿。
+功能是首页活动横幅，包含桌面图、移动端图、标题、副标题、按钮文字和链接。
+请使用 Liquid schema，不依赖第三方库，并说明如何在主题编辑器里配置。
+</code></pre>
+<h3 id="生成-admin-graphql-查询">生成 Admin GraphQL 查询</h3><pre><code>请根据 Shopify Admin GraphQL 当前 Schema，生成一个查询：
+读取前 20 个产品的标题、handle、状态、标签、SEO title、SEO description、前 5 张图片的 altText。
+请先输出 query，再解释字段用途。
+</code></pre>
+<h3 id="批量修改前生成计划">批量修改前生成计划</h3><pre><code>我准备批量更新产品图片 alt。
+请先根据当前产品标题、产品类型和图片上下文生成 10 条样本建议。
+不要执行写入。
+请输出修改前字段、建议字段、风险说明。
+</code></pre>
+<hr />
+<h2 id="十一-延伸阅读与官方入口">十一、延伸阅读与官方入口</h2><ul>
+<li><strong>官方主文档</strong>：<a href="https://shopify.dev/docs/apps/build/ai-toolkit" target="_blank" rel="noreferrer">Shopify AI Toolkit</a> </li>
+<li><strong>案例参考</strong>：<a href="https://websensepro.com/blog/shopify-ai-toolkit-tutorial-build-themes-automate-seo-in-minutes/" target="_blank" rel="noreferrer">Shopify AI Toolkit Tutorial - Build Themes &amp; Automate SEO in Minutes</a> </li>
+<li><strong>相关</strong>： <a href="https://shopify.dev/docs/api/shopify-cli" target="_blank" rel="noreferrer">Shopify CLI</a>  · <a href="https://shopify.dev/docs/apps/build/scaffold-app" target="_blank" rel="noreferrer">Scaffold an app</a>  · <a href="https://shopify.dev/docs/apps/build/storefront-mcp" target="_blank" rel="noreferrer">Storefront MCP</a> </li>
+<li><strong>本站</strong>： <a href="/guides/shopify-handbook/advanced/shopify-app-development/">Shopify 应用开发</a> · <a href="/guides/shopify-handbook/liquid/ai-theme-engineering/">AI 辅助与主题工程化</a> · <a href="/guides/shopify-handbook/advanced/ai-hot-topics-independent-stores/">独立站与 AI：热点能力地图</a> · <a href="/guides/shopify-handbook/advanced/storefront-mcp-overview/">Storefront MCP 简介</a></li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>提示</strong>：Shopify 对插件市场、MCP 字段名与 VS Code 行为会迭代更新；若本文与 <a href="https://shopify.dev/docs/apps/build/ai-toolkit" target="_blank" rel="noreferrer">shopify.dev 当前页</a>  不一致，<strong>以官方页面为准</strong>。</p>
+</blockquote>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-agentic-storefronts/"><span>上一篇</span><strong>Shopify Agentic Storefronts 指南：让商品出现在 AI 对话里</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-app-development/"><span>下一篇</span><strong>Shopify App 开发完整指南</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

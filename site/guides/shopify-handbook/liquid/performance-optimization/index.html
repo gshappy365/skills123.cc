@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Liquid 性能优化 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Liquid 性能优化 优化 Liquid 模板性能对于提供良好的用户体验至关重要。本指南将详细介绍各种性能优化技巧和最佳实践。 性能监控和分析 1\. 性能指标测量 2\. 对象访问统计 数据预处理优化 1\. 减少重复计算 2\">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/performance-optimization/">
+  <meta property="og:title" content="Liquid 性能优化 · Shopify 独立站手册">
+  <meta property="og:description" content="Liquid 性能优化 优化 Liquid 模板性能对于提供良好的用户体验至关重要。本指南将详细介绍各种性能优化技巧和最佳实践。 性能监控和分析 1\. 性能指标测量 2\. 对象访问统计 数据预处理优化 1\. 减少重复计算 2\">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>Liquid 性能优化</h1>
+        <p>Liquid 性能优化 优化 Liquid 模板性能对于提供良好的用户体验至关重要。本指南将详细介绍各种性能优化技巧和最佳实践。 性能监控和分析 1\. 性能指标测量 2\. 对象访问统计 数据预处理优化 1\. 减少重复计算 2\</p>
+      </header>
+      <div class="article-content"><h2 id="liquid-性能优化">Liquid 性能优化</h2><p>优化 Liquid 模板性能对于提供良好的用户体验至关重要。本指南将详细介绍各种性能优化技巧和最佳实践。</p>
+<h2 id="性能监控和分析">性能监控和分析</h2><h3 id="1-性能指标测量">1. 性能指标测量</h3><pre><code>&lt;!-- 渲染时间监控 --&gt;
+{% assign start_time = 'now' | date: '%s' | plus: 0 %}
+ 
+&lt;!-- 主要内容渲染 --&gt;
+&lt;div class="main-content"&gt;
+  {% for product in collection.products limit: 20 %}
+    {% render 'product-card', product: product %}
+  {% endfor %}
+&lt;/div&gt;
+ 
+{% assign end_time = 'now' | date: '%s' | plus: 0 %}
+{% assign render_duration = end_time | minus: start_time %}
+ 
+{% if settings.show_debug_info %}
+  &lt;div class="debug-timing"&gt;
+    &lt;p&gt;页面渲染耗时: {{ render_duration }}秒&lt;/p&gt;
+    &lt;p&gt;处理商品数量: {{ collection.products.size }}&lt;/p&gt;
+    &lt;p&gt;平均每个商品: {{ render_duration | divided_by: collection.products.size | round: 3 }}秒&lt;/p&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="2-对象访问统计">2. 对象访问统计</h3><pre><code>&lt;!-- 统计复杂操作次数 --&gt;
+{% assign filter_operations = 0 %}
+{% assign sort_operations = 0 %}
+{% assign loop_iterations = 0 %}
+ 
+&lt;!-- 监控性能关键指标 --&gt;
+{% if settings.performance_monitoring %}
+  &lt;script&gt;
+    window.performanceMetrics = {
+      totalProducts: {{ collection.products.size }},
+      filteredProducts: {{ collection.products | where: 'available', true | size }},
+      renderStartTime: performance.now()
+    };
+  &lt;/script&gt;
+{% endif %}
+</code></pre>
+<h2 id="数据预处理优化">数据预处理优化</h2><h3 id="1-减少重复计算">1. 减少重复计算</h3><pre><code>&lt;!-- 不好的做法 - 重复计算 --&gt;
+{% for product in collection.products %}
+  {% if collection.products.size &gt; 20 %}
+    &lt;!-- 每次循环都计算 size --&gt;
+  {% endif %}
+  {% if collection.products | where: 'available', true | size &gt; 10 %}
+    &lt;!-- 每次循环都执行复杂过滤 --&gt;
+  {% endif %}
+{% endfor %}
+ 
+&lt;!-- 好的做法 - 预计算 --&gt;
+{% assign total_products = collection.products.size %}
+{% assign available_products = collection.products | where: 'available', true %}
+{% assign available_count = available_products.size %}
+{% assign large_collection = total_products &gt; 20 %}
+{% assign has_sufficient_stock = available_count &gt; 10 %}
+ 
+{% for product in collection.products %}
+  {% if large_collection %}
+    &lt;!-- 使用预计算的布尔值 --&gt;
+  {% endif %}
+  {% if has_sufficient_stock %}
+    &lt;!-- 使用预计算的结果 --&gt;
+  {% endif %}
+{% endfor %}
+</code></pre>
+<h3 id="2-智能数据分组">2. 智能数据分组</h3><pre><code>&lt;!-- 按需分组数据 --&gt;
+{% assign products_by_vendor = collection.products | group_by: 'vendor' %}
+{% assign products_by_type = collection.products | group_by: 'type' %}
+{% assign price_ranges = collection.products | group_by: 'price' %}
+ 
+&lt;!-- 使用分组数据进行高效渲染 --&gt;
+{% for vendor_group in products_by_vendor %}
+  &lt;div class="vendor-section"&gt;
+    &lt;h3&gt;{{ vendor_group.name }}&lt;/h3&gt;
+    &lt;div class="vendor-products"&gt;
+      {% for product in vendor_group.items limit: 8 %}
+        {% render 'product-card-minimal', product: product %}
+      {% endfor %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+{% endfor %}
+</code></pre>
+<h3 id="3-条件数据加载">3. 条件数据加载</h3><pre><code>&lt;!-- 根据页面上下文加载数据 --&gt;
+{% case template %}
+  {% when 'index' %}
+    {% assign featured_products = collections.featured.products | limit: 8 %}
+    {% assign new_products = collections.new.products | limit: 4 %}
+    &lt;!-- 首页只加载必要数据 --&gt;
+    
+  {% when 'collection' %}
+    {% assign all_products = collection.products %}
+    {% assign filter_options = collection.products | map: 'vendor' | uniq %}
+    &lt;!-- 集合页加载完整数据 --&gt;
+    
+  {% when 'product' %}
+    {% assign related_products = collections[product.type] | default: collections.all | limit: 4 %}
+    &lt;!-- 产品页只加载相关产品 --&gt;
+{% endcase %}
+</code></pre>
+<h2 id="循环和迭代优化">循环和迭代优化</h2><h3 id="1-限制循环次数">1. 限制循环次数</h3><pre><code>&lt;!-- 设置合理的限制 --&gt;
+{% assign max_products = 20 %}
+{% assign max_reviews = 5 %}
+{% assign max_images = 10 %}
+ 
+{% for product in collection.products limit: max_products %}
+  &lt;div class="product-item"&gt;
+    &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+    
+    &lt;!-- 限制嵌套循环 --&gt;
+    {% for image in product.images limit: max_images %}
+      &lt;img src="{{ image | image_url: width: 100, height: 100 }}" alt="{{ image.alt }}"&gt;
+    {% endfor %}
+  &lt;/div&gt;
+{% endfor %}
+</code></pre>
+<h3 id="2-早期跳出优化">2. 早期跳出优化</h3><pre><code>&lt;!-- 使用 break 和 continue 优化循环 --&gt;
+{% assign featured_count = 0 %}
+{% assign max_featured = 6 %}
+ 
+{% for product in collection.products %}
+  &lt;!-- 跳过不可用商品 --&gt;
+  {% unless product.available %}
+    {% continue %}
+  {% endunless %}
+  
+  &lt;!-- 达到目标数量后退出 --&gt;
+  {% if featured_count &gt;= max_featured %}
+    {% break %}
+  {% endif %}
+  
+  {% if product.tags contains 'featured' %}
+    {% render 'featured-product-card', product: product %}
+    {% assign featured_count = featured_count | plus: 1 %}
+  {% endif %}
+{% endfor %}
+</code></pre>
+<h3 id="3-批处理优化">3. 批处理优化</h3><pre><code>&lt;!-- 批量处理数据 --&gt;
+{% assign batch_size = 10 %}
+{% assign total_batches = collection.products.size | divided_by: batch_size | ceil %}
+ 
+{% for i in (0..total_batches) %}
+  {% assign start_index = i | times: batch_size %}
+  {% assign end_index = start_index | plus: batch_size | minus: 1 %}
+  
+  &lt;div class="product-batch" data-batch="{{ i }}"&gt;
+    {% for product in collection.products limit: batch_size offset: start_index %}
+      {% render 'product-card', product: product %}
+    {% endfor %}
+  &lt;/div&gt;
+{% endfor %}
+</code></pre>
+<h2 id="过滤器优化">过滤器优化</h2><h3 id="1-过滤器链优化">1. 过滤器链优化</h3><pre><code>&lt;!-- 优化过滤器顺序 - 先减少数据量 --&gt;
+{% assign optimized_products = collection.products 
+  | where: 'available', true          &lt;!-- 首先过滤可用性 --&gt;
+  | where: 'price', '&gt;', 0            &lt;!-- 过滤有效价格 --&gt;
+  | where: 'tags', 'featured'         &lt;!-- 然后过滤标签 --&gt;
+  | sort: 'created_at'                &lt;!-- 最后排序 --&gt;
+  | reverse                           &lt;!-- 反向排序 --&gt;
+  | limit: 12 %}                     &lt;!-- 最终限制数量 --&gt;
+ 
+&lt;!-- 避免反复过滤同一数据集 --&gt;
+{% assign base_products = collection.products | where: 'available', true %}
+{% assign featured_products = base_products | where: 'tags', 'featured' %}
+{% assign sale_products = base_products | where: 'compare_at_price_max', '&gt;', 0 %}
+</code></pre>
+<h3 id="2-条件过滤">2. 条件过滤</h3><pre><code>&lt;!-- 根据条件应用过滤 --&gt;
+{% assign filtered_products = collection.products %}
+ 
+{% if settings.show_only_available %}
+  {% assign filtered_products = filtered_products | where: 'available', true %}
+{% endif %}
+ 
+{% if settings.min_price &gt; 0 %}
+  {% assign filtered_products = filtered_products | where: 'price', '&gt;=', settings.min_price %}
+{% endif %}
+ 
+{% if settings.featured_only %}
+  {% assign filtered_products = filtered_products | where: 'tags', 'featured' %}
+{% endif %}
+ 
+&lt;!-- 最后应用排序和限制 --&gt;
+{% case settings.sort_order %}
+  {% when 'price_asc' %}
+    {% assign filtered_products = filtered_products | sort: 'price' %}
+  {% when 'price_desc' %}
+    {% assign filtered_products = filtered_products | sort: 'price' | reverse %}
+  {% when 'created_desc' %}
+    {% assign filtered_products = filtered_products | sort: 'created_at' | reverse %}
+{% endcase %}
+ 
+{% assign display_products = filtered_products | limit: settings.products_per_page %}
+</code></pre>
+<h3 id="3-缓存过滤结果">3. 缓存过滤结果</h3><pre><code>&lt;!-- 缓存复杂过滤操作的结果 --&gt;
+{% comment %} 概念性缓存 - 实际实现需要后端支持 {% endcomment %}
+{% assign cache_key = collection.handle | append: '_filtered_' | append: settings.filter_settings %}
+ 
+{% unless cache[cache_key] %}
+  {% assign expensive_filtered_data = collection.products 
+    | where: 'available', true 
+    | map: 'vendor' 
+    | uniq 
+    | sort %}
+  {% comment %} 存储到缓存 {% endcomment %}
+{% endunless %}
+ 
+{% assign vendor_list = cache[cache_key] | default: expensive_filtered_data %}
+</code></pre>
+<h2 id="对象访问优化">对象访问优化</h2><h3 id="1-缓存对象引用">1. 缓存对象引用</h3><pre><code>&lt;!-- 缓存深层对象访问 --&gt;
+{% assign selected_variant = product.selected_or_first_available_variant %}
+{% assign variant_image = selected_variant.featured_image %}
+{% assign variant_price = selected_variant.price %}
+{% assign variant_available = selected_variant.available %}
+ 
+&lt;!-- 使用缓存的引用 --&gt;
+&lt;div class="product-variant"&gt;
+  {% if variant_image %}
+    &lt;img src="{{ variant_image | image_url: width: 300, height: 300 }}" alt="{{ product.title }}"&gt;
+  {% endif %}
+  
+  &lt;div class="variant-info"&gt;
+    &lt;p class="price"&gt;{{ variant_price | money }}&lt;/p&gt;
+    &lt;p class="availability"&gt;
+      {% if variant_available %}有库存{% else %}缺货{% endif %}
+    &lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="2-避免重复对象查找">2. 避免重复对象查找</h3><pre><code>&lt;!-- 不好的做法 --&gt;
+{% for item in cart.items %}
+  {% if collections[item.product.type] %}
+    {% for related in collections[item.product.type].products limit: 3 %}
+      &lt;!-- 每次都查找集合 --&gt;
+    {% endfor %}
+  {% endif %}
+{% endfor %}
+ 
+&lt;!-- 好的做法 --&gt;
+{% assign product_collections = '' %}
+{% for item in cart.items %}
+  {% assign type_collection = collections[item.product.type] %}
+  {% if type_collection %}
+    {% assign collection_key = item.product.type %}
+    {% unless product_collections contains collection_key %}
+      {% assign product_collections = product_collections | append: collection_key | append: ',' %}
+      
+      &lt;!-- 处理集合数据 --&gt;
+      {% for related in type_collection.products limit: 3 %}
+        {% render 'related-product', product: related %}
+      {% endfor %}
+    {% endunless %}
+  {% endif %}
+{% endfor %}
+</code></pre>
+<h2 id="图片和媒体优化">图片和媒体优化</h2><h3 id="1-智能图片尺寸">1. 智能图片尺寸</h3><pre><code>&lt;!-- 响应式图片尺寸 --&gt;
+{% assign base_size = 400 %}
+{% if request.user_agent contains 'Mobile' %}
+  {% assign base_size = 300 %}
+{% endif %}
+ 
+{% assign srcset_sizes = '' %}
+ 
+&lt;!-- 使用 image_url 按宽度生成 srcset（单位 w） --&gt;
+{% for multiplier in (1..3) %}
+  {% assign size = base_size | times: multiplier %}
+  {% assign srcset_entry = product.featured_image | image_url: width: size | append: ' ' | append: size | append: 'w' %}
+  {% if srcset_sizes == '' %}
+    {% assign srcset_sizes = srcset_entry %}
+  {% else %}
+    {% assign srcset_sizes = srcset_sizes | append: ', ' | append: srcset_entry %}
+  {% endif %}
+{% endfor %}
+ 
+&lt;img src="{{ product.featured_image | image_url: width: base_size }}"
+     srcset="{{ srcset_sizes }}"
+     sizes="(max-width: 768px) 300px, 400px"
+     alt="{{ product.title }}"
+     loading="lazy"&gt;
+</code></pre>
+<h3 id="2-延迟加载实现">2. 延迟加载实现</h3><pre><code>&lt;!-- 使用 Intersection Observer 的延迟加载 --&gt;
+&lt;img class="lazy-load"
+     data-src="{{ product.featured_image | image_url: width: 400, height: 400 }}"
+     data-srcset="{{ product.featured_image | image_url: width: 400, height: 400 }} 1x, {{ product.featured_image | image_url: width: 800, height: 800 }} 2x"
+     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23f0f0f0'/%3E%3C/svg%3E"
+     alt="{{ product.title }}"
+     loading="lazy"&gt;
+ 
+&lt;script&gt;
+document.addEventListener('DOMContentLoaded', function() {
+  const lazyImages = document.querySelectorAll('.lazy-load');
+  
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          const img = entry.target;
+          img.src = img.dataset.src;
+          if (img.dataset.srcset) {
+            img.srcset = img.dataset.srcset;
+          }
+          img.classList.remove('lazy-load');
+          imageObserver.unobserve(img);
+        }
+      });
+    });
+    
+    lazyImages.forEach(function(img) {
+      imageObserver.observe(img);
+    });
+  } else {
+    // 降级处理
+    lazyImages.forEach(function(img) {
+      img.src = img.dataset.src;
+      if (img.dataset.srcset) {
+        img.srcset = img.dataset.srcset;
+      }
+    });
+  }
+});
+&lt;/script&gt;
+</code></pre>
+<h3 id="3-预加载关键资源">3. 预加载关键资源</h3><pre><code>&lt;!-- 预加载关键图片 --&gt;
+{% if product.featured_image %}
+  &lt;link rel="preload" 
+        as="image" 
+        href="{{ product.featured_image | image_url: width: 600, height: 600 }}"
+        imagesrcset="{{ product.featured_image | image_url: width: 300, height: 300 }} 300w,
+                     {{ product.featured_image | image_url: width: 600, height: 600 }} 600w,
+                     {{ product.featured_image | image_url: width: 1200, height: 1200 }} 1200w"&gt;
+{% endif %}
+ 
+&lt;!-- 预加载关键字体 --&gt;
+&lt;link rel="preload" href="{{ 'font-primary.woff2' | asset_url }}" as="font" type="font/woff2" crossorigin&gt;
+ 
+&lt;!-- 预连接到外部资源 --&gt;
+&lt;link rel="preconnect" href="https://cdn.shopify.com"&gt;
+&lt;link rel="dns-prefetch" href="https://monorail-edge.shopifysvc.com"&gt;
+</code></pre>
+<h2 id="代码分割和模块化">代码分割和模块化</h2><h3 id="1-条件加载组件">1. 条件加载组件</h3><pre><code>&lt;!-- 只在需要时加载复杂组件 --&gt;
+{% if template contains 'product' %}
+  {% render 'product-recommendations', product: product %}
+  {% render 'product-reviews', product: product %}
+{% endif %}
+ 
+{% if template contains 'cart' %}
+  {% render 'cart-upsells' %}
+  {% render 'shipping-calculator' %}
+{% endif %}
+ 
+{% if customer %}
+  {% render 'customer-dashboard' %}
+{% else %}
+  {% render 'guest-features' %}
+{% endif %}
+</code></pre>
+<h3 id="2-异步内容加载">2. 异步内容加载</h3><pre><code>&lt;!-- 标记异步加载区域 --&gt;
+&lt;div id="product-reviews" 
+     data-product-id="{{ product.id }}"
+     data-load-async="true"&gt;
+  &lt;div class="loading-skeleton"&gt;
+    &lt;div class="skeleton-text"&gt;&lt;/div&gt;
+    &lt;div class="skeleton-text"&gt;&lt;/div&gt;
+    &lt;div class="skeleton-text"&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;div id="related-products" 
+     data-collection="{{ product.type | handle }}"
+     data-load-async="true"&gt;
+  &lt;div class="loading-skeleton"&gt;
+    {% for i in (1..4) %}
+      &lt;div class="skeleton-product-card"&gt;&lt;/div&gt;
+    {% endfor %}
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+// 异步加载内容
+document.addEventListener('DOMContentLoaded', function() {
+  const asyncElements = document.querySelectorAll('[data-load-async]');
+  
+  asyncElements.forEach(function(element) {
+    // 使用 Intersection Observer 在元素进入视口时加载
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          loadAsyncContent(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+    
+    observer.observe(element);
+  });
+});
+&lt;/script&gt;
+</code></pre>
+<h3 id="3-渐进式渲染">3. 渐进式渲染</h3><pre><code>&lt;!-- 分批渲染大量内容 --&gt;
+{% assign total_products = collection.products.size %}
+{% assign batch_size = 12 %}
+{% assign initial_batch = batch_size %}
+ 
+&lt;!-- 首批内容立即渲染 --&gt;
+&lt;div class="products-initial"&gt;
+  {% for product in collection.products limit: initial_batch %}
+    {% render 'product-card', product: product %}
+  {% endfor %}
+&lt;/div&gt;
+ 
+&lt;!-- 剩余内容延迟渲染 --&gt;
+{% if total_products &gt; initial_batch %}
+  &lt;div class="products-lazy" style="display: none;"&gt;
+    {% for product in collection.products offset: initial_batch %}
+      {% render 'product-card', product: product %}
+    {% endfor %}
+  &lt;/div&gt;
+  
+  &lt;button id="load-more" class="btn btn-secondary"&gt;
+    加载更多 ({{ total_products | minus: initial_batch }} 个商品)
+  &lt;/button&gt;
+  
+  &lt;script&gt;
+  document.getElementById('load-more').addEventListener('click', function() {
+    const lazyProducts = document.querySelector('.products-lazy');
+    lazyProducts.style.display = 'block';
+    this.style.display = 'none';
+  });
+  &lt;/script&gt;
+{% endif %}
+</code></pre>
+<h2 id="缓存策略">缓存策略</h2><h3 id="1-模板级缓存">1. 模板级缓存</h3><pre><code>&lt;!-- 使用 metafields 进行简单缓存 --&gt;
+{% assign cache_key = 'expensive_calculation_' | append: collection.id %}
+{% assign cache_ttl = 3600 %} &lt;!-- 1小时 --&gt;
+{% assign current_time = 'now' | date: '%s' | plus: 0 %}
+ 
+{% assign cached_result = shop.metafields.cache[cache_key] %}
+{% assign cache_time = shop.metafields.cache[cache_key | append: '_time'] | plus: 0 %}
+ 
+{% if cached_result == blank or current_time | minus: cache_time &gt; cache_ttl %}
+  &lt;!-- 重新计算 --&gt;
+  {% assign expensive_result = collection.products 
+    | where: 'available', true 
+    | group_by: 'vendor' 
+    | map: 'name' 
+    | join: ',' %}
+  
+  {% comment %} 
+  在实际应用中，这里需要后端API来设置metafields
+  {% endcomment %}
+  
+  {% assign cached_result = expensive_result %}
+{% endif %}
+ 
+&lt;!-- 使用缓存的结果 --&gt;
+{{ cached_result }}
+</code></pre>
+<h3 id="2-浏览器缓存优化">2. 浏览器缓存优化</h3><pre><code>&lt;!-- 设置适当的缓存头 --&gt;
+&lt;script&gt;
+// 利用浏览器缓存存储计算结果
+const cacheKey = 'collection_{{ collection.id }}_filters';
+const cacheTime = 'collection_{{ collection.id }}_time';
+const maxAge = 1800000; // 30分钟
+ 
+let cachedData = localStorage.getItem(cacheKey);
+let cachedTime = localStorage.getItem(cacheTime);
+ 
+if (!cachedData || !cachedTime || Date.now() - parseInt(cachedTime) &gt; maxAge) {
+  // 重新计算并缓存
+  const freshData = calculateExpensiveData();
+  localStorage.setItem(cacheKey, JSON.stringify(freshData));
+  localStorage.setItem(cacheTime, Date.now().toString());
+  cachedData = freshData;
+} else {
+  cachedData = JSON.parse(cachedData);
+}
+&lt;/script&gt;
+</code></pre>
+<h2 id="性能监控和分析">性能监控和分析</h2><h3 id="1-实时性能监控">1. 实时性能监控</h3><pre><code>&lt;!-- 性能监控脚本 --&gt;
+&lt;script&gt;
+document.addEventListener('DOMContentLoaded', function() {
+  const perfData = {
+    // 页面加载性能
+    loadTime: performance.timing.loadEventEnd - performance.timing.navigationStart,
+    domReady: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart,
+    firstPaint: performance.getEntriesByType('paint')[0]?.startTime || 0,
+    
+    // Liquid 特定指标
+    liquidObjects: {
+      products: {{ collection.products.size | default: 0 }},
+      variants: {{ product.variants.size | default: 0 }},
+      images: {{ product.images.size | default: 0 }}
+    },
+    
+    // 页面类型
+    template: '{{ template }}',
+    pageType: '{{ request.page_type }}'
+  };
+  
+  // 发送性能数据到分析服务
+  if (window.gtag) {
+    gtag('event', 'page_performance', {
+      custom_parameter_1: perfData.loadTime,
+      custom_parameter_2: perfData.liquidObjects.products
+    });
+  }
+  
+  // 开发环境下显示性能信息
+  {% if settings.debug_mode %}
+  console.log('页面性能数据:', perfData);
+  {% endif %}
+});
+&lt;/script&gt;
+</code></pre>
+<h3 id="2-core-web-vitals-优化">2. Core Web Vitals 优化</h3><pre><code>&lt;!-- Core Web Vitals 优化 --&gt;
+&lt;script&gt;
+// 监控 LCP (Largest Contentful Paint)
+new PerformanceObserver((entryList) =&gt; {
+  const entries = entryList.getEntries();
+  const lastEntry = entries[entries.length - 1];
+  console.log('LCP:', lastEntry.startTime);
+}).observe({entryTypes: ['largest-contentful-paint']});
+ 
+// 监控 FID (First Input Delay)
+new PerformanceObserver((entryList) =&gt; {
+  const entries = entryList.getEntries();
+  entries.forEach((entry) =&gt; {
+    console.log('FID:', entry.processingStart - entry.startTime);
+  });
+}).observe({entryTypes: ['first-input']});
+ 
+// 监控 CLS (Cumulative Layout Shift)
+let clsValue = 0;
+new PerformanceObserver((entryList) =&gt; {
+  for (const entry of entryList.getEntries()) {
+    if (!entry.hadRecentInput) {
+      clsValue += entry.value;
+    }
+  }
+  console.log('CLS:', clsValue);
+}).observe({entryTypes: ['layout-shift']});
+&lt;/script&gt;
+</code></pre>
+<h2 id="移动端优化">移动端优化</h2><h3 id="1-移动端特定优化">1. 移动端特定优化</h3><pre><code>&lt;!-- 检测移动设备 --&gt;
+{% assign is_mobile = request.user_agent contains 'Mobile' %}
+{% assign is_tablet = request.user_agent contains 'Tablet' %}
+ 
+&lt;!-- 移动端优化的图片尺寸 --&gt;
+{% if is_mobile %}
+  {% assign image_width = 300 %}
+  {% assign products_per_row = 2 %}
+  {% assign max_products = 8 %}
+{% elsif is_tablet %}
+  {% assign image_width = 400 %}
+  {% assign products_per_row = 3 %}
+  {% assign max_products = 12 %}
+{% else %}
+  {% assign image_width = 500 %}
+  {% assign products_per_row = 4 %}
+  {% assign max_products = 16 %}
+{% endif %}
+ 
+&lt;!-- 移动端优化的布局 --&gt;
+&lt;div class="products-grid mobile-optimized" 
+     data-columns="{{ products_per_row }}"&gt;
+  {% for product in collection.products limit: max_products %}
+    &lt;div class="product-card"&gt;
+      &lt;img src="{{ product.featured_image | image_url: width: image_width }}" 
+           alt="{{ product.title }}"
+           loading="lazy"&gt;
+      &lt;h3&gt;{{ product.title | truncate: 30 }}&lt;/h3&gt;
+      &lt;p&gt;{{ product.price | money }}&lt;/p&gt;
+    &lt;/div&gt;
+  {% endfor %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="2-触摸优化">2. 触摸优化</h3><pre><code>&lt;!-- 为移动设备优化的交互元素 --&gt;
+{% if is_mobile %}
+&lt;style&gt;
+.product-card {
+  /* 增大触摸目标 */
+  min-height: 44px;
+  padding: 12px;
+}
+ 
+.btn {
+  /* 移动端按钮优化 */
+  min-height: 44px;
+  font-size: 16px; /* 防止iOS缩放 */
+}
+ 
+.touch-friendly {
+  /* 为触摸优化的间距 */
+  margin: 8px 0;
+  padding: 12px 16px;
+}
+&lt;/style&gt;
+{% endif %}
+</code></pre>
+<h2 id="总结和最佳实践">总结和最佳实践</h2><h3 id="性能优化清单">性能优化清单</h3><ol>
+<li><p><strong>数据预处理</strong></p>
+<ul>
+<li>缓存复杂计算结果</li>
+<li>减少重复过滤操作</li>
+<li>合理使用 limit 限制数据量</li>
+</ul>
+</li>
+<li><p><strong>循环优化</strong></p>
+<ul>
+<li>使用 break 和 continue</li>
+<li>避免深层嵌套循环</li>
+<li>批处理大量数据</li>
+</ul>
+</li>
+<li><p><strong>对象访问</strong></p>
+<ul>
+<li>缓存深层对象引用</li>
+<li>避免重复查找</li>
+<li>使用条件加载</li>
+</ul>
+</li>
+<li><p><strong>图片优化</strong></p>
+<ul>
+<li>响应式图片尺寸</li>
+<li>延迟加载</li>
+<li>预加载关键资源</li>
+</ul>
+</li>
+<li><p><strong>代码组织</strong></p>
+<ul>
+<li>模块化组件</li>
+<li>条件渲染</li>
+<li>异步加载</li>
+</ul>
+</li>
+</ol>
+<h2 id="下一步学习">下一步学习</h2><p>掌握性能优化后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/troubleshooting/">调试和故障排除</a> - 性能问题诊断</li>
+<li><a href="/guides/shopify-handbook/liquid/best-practices/">最佳实践</a> - 综合开发规范</li>
+<li><a href="/guides/shopify-handbook/liquid/theme-development-practices/">主题开发实战</a> - 实际项目应用</li>
+<li><a href="/guides/shopify-handbook/liquid/testing-deployment/">测试和质量保证</a> - 确保代码质量</li>
+</ol>
+<p>性能优化是一个持续的过程，需要在开发中不断监控、测试和改进！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/"><span>上一篇</span><strong>Liquid 模板语言指南</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/syntax/"><span>下一篇</span><strong>Liquid 语法详解</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

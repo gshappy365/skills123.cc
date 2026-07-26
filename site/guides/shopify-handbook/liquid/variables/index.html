@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Liquid 变量与对象访问 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Liquid 变量与对象访问 Shopify 主题里的「变量」是你用 {% assign %} 、 {% capture %} 或循环里自带的 名字 → 值 ；「对象」是平台注入的 product 、 cart 、 shop 等（见">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/variables/">
+  <meta property="og:title" content="Liquid 变量与对象访问 · Shopify 独立站手册">
+  <meta property="og:description" content="Liquid 变量与对象访问 Shopify 主题里的「变量」是你用 {% assign %} 、 {% capture %} 或循环里自带的 名字 → 值 ；「对象」是平台注入的 product 、 cart 、 shop 等（见">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>Liquid 变量与对象访问</h1>
+        <p>Liquid 变量与对象访问 Shopify 主题里的「变量」是你用 {% assign %} 、 {% capture %} 或循环里自带的 名字 → 值 ；「对象」是平台注入的 product 、 cart 、 shop 等（见</p>
+      </header>
+      <div class="article-content"><h2 id="liquid-变量与对象访问">Liquid 变量与对象访问</h2><p>Shopify 主题里的「变量」是你用 <code>{% assign %}</code>、<code>{% capture %}</code> 或循环里自带的 <strong>名字 → 值</strong>；「对象」是平台注入的 <code>product</code>、<code>cart</code>、<code>shop</code> 等（见 <a href="/guides/shopify-handbook/liquid/shopify-objects/">Shopify 对象参考</a>）。本篇只解决三件事：<strong>怎么存值、在哪能用、怎么安全读属性</strong>。</p>
+<p>官方标签说明：<a href="https://shopify.dev/docs/api/liquid/tags/assign" target="_blank" rel="noreferrer">assign</a> 、<a href="https://shopify.dev/docs/api/liquid/tags/capture" target="_blank" rel="noreferrer">capture</a> 、<a href="https://shopify.dev/docs/api/liquid/tags/increment" target="_blank" rel="noreferrer">increment / decrement</a> 。</p>
+<hr />
+<h2 id="1-assign-赋值与类型">1. <code>{% assign %}</code>：赋值与类型</h2><p>Liquid 里变量<strong>没有声明类型</strong>，值可以是字符串、数字、布尔或对象引用。</p>
+<pre><code>{% assign title = product.title %}
+{% assign discount = product.price | times: 0.9 %}
+{% assign show_vendor = true %}
+{% assign css = "product-card product-card--compact" %}
+ 
+&lt;h2 class="{{ css }}"&gt;{{ title }}&lt;/h2&gt;
+&lt;p&gt;{{ discount | money }}&lt;/p&gt;
+</code></pre>
+<p><strong>金额</strong>：<code>product.price</code> 等为 <strong>整数最小货币单位</strong>（多数币种为「分」），计算后再交给 <code>\| money</code> 格式化，避免按「元」心算又忘了乘除。</p>
+<hr />
+<h2 id="2-作用域-不要套用-块级局部变量">2. 作用域：不要套用「块级局部变量」</h2><p>与 JavaScript 不同，Liquid 里 <strong><code>{% assign %}</code> 没有块级作用域</strong>：在同一份模板（或同一 snippet 渲染进程）里，在 <code>for</code> / <code>if</code> 里赋的值，<strong>在外面仍能读到</strong>，后者会覆盖前者。</p>
+<pre><code>{% assign x = "before" %}
+{% for i in (1..2) %}
+  {% assign x = "in loop" %}
+{% endfor %}
+{{ x }}
+</code></pre>
+<p>上面最终会输出最后一次写入的 <code>x</code>。若需要在循环里「累计」，用循环变量或单独起名（如 <code>total_quantity</code>），不要假设「出了循环变量就销毁」。</p>
+<pre><code>{% assign total = 0 %}
+{% for line in cart.items %}
+  {% assign total = total | plus: line.quantity %}
+{% endfor %}
+</code></pre>
+<p>需要 <strong>独立计数器</strong>（不影响同名 assign）时，可用 <code>{% increment var %}</code> / <code>{% decrement var %}</code>（适用场景见官方文档）。</p>
+<hr />
+<h2 id="3-capture-拼一整段-html-或字符串">3. <code>{% capture %}</code>：拼一整段 HTML 或字符串</h2><p><code>capture</code> 会把标签之间的 <strong>渲染结果</strong>（含换行）存进变量，适合组装一大块 markup，再一次性输出。</p>
+<pre><code>{% capture greeting %}
+  {% if customer %}
+    你好，{{ customer.first_name | escape }}。
+  {% else %}
+    你好，访客。
+  {% endif %}
+{% endcapture %}
+ 
+&lt;p&gt;{{ greeting }}&lt;/p&gt;
+</code></pre>
+<p>注意：<code>capture</code> 里是 <strong>先执行 Liquid 再存字符串</strong>，中间若有未定义变量会得到空字符串；对外输出用户内容时仍要对动态片段做 <code>escape</code> 或交给过滤器。</p>
+<hr />
+<h2 id="4-真假值与-blank">4. 真假值与 <code>blank</code></h2><p>常用写法：</p>
+<table>
+<thead>
+<tr>
+<th>意图</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>是否有当前客户</td>
+<td>{% if customer %}</td>
+</tr>
+<tr>
+<td>字符串 / 数组是否有「实质内容」</td>
+<td>{% if thing != blank %}</td>
+</tr>
+<tr>
+<td>可选字段默认值</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>不要用其它语言里的 <code>!= null</code>：Liquid 里用 <strong><code>blank</code></strong>（Shopify 扩展）判断空字符串、空数组、nil 等更省事。</p>
+<pre><code>{% if product.description != blank %}
+  &lt;div class="rte"&gt;{{ product.description }}&lt;/div&gt;
+{% endif %}
+ 
+{{ product.metafields.custom.subtitle | default: product.title }}
+</code></pre>
+<hr />
+<h2 id="5-访问对象属性-点号与">5. 访问对象属性：点号与 <code>[]</code></h2><pre><code>{{ product.title }}
+{{ product['title'] }}
+ 
+{% assign key = 'vendor' %}
+{{ product[key] }}
+</code></pre>
+<p>嵌套时逐级判断，避免中间层为 nil 时连环报错：</p>
+<pre><code>{% if customer.default_address %}
+  {{ customer.default_address.city }}
+{% endif %}
+</code></pre>
+<p>数组：支持 <code>.first</code> / <code>.last</code>、按索引 <code>images[0]</code>，以及 <code>{% for %}</code>. 详见 <a href="/guides/shopify-handbook/liquid/data-types/">数据类型</a>。</p>
+<hr />
+<h2 id="6-与过滤器配合-不要把业务写太胖">6. 与过滤器配合（不要把业务写太胖）</h2><p>assign 常与过滤器连用；复杂逻辑建议拆给 <strong>snippet</strong> 或多步 assign，便于读和维护。</p>
+<pre><code>{% assign slug = product.title | handleize %}
+{% assign excerpt = product.description | strip_html | truncate: 160 %}
+</code></pre>
+<p><strong>易错</strong>：<code>where</code> 用于 <strong>数组里筛对象属性</strong>，语法为 <code>array | where: '属性名', 值</code>，不能当成 SQL 随意写比较运算符；不确定时查 <a href="/guides/shopify-handbook/liquid/filters/">过滤器</a> 与官方示例。</p>
+<hr />
+<h2 id="7-条件里-间接赋值">7. 条件里「间接赋值」</h2><p>Liquid 没有三元运算符，用 <code>if / else</code> 或 <code>assign</code> + <code>if</code> 组合：</p>
+<pre><code>{% if product.available %}
+  {% assign badge_class = 'in-stock' %}
+{% else %}
+  {% assign badge_class = 'sold-out' %}
+{% endif %}
+ 
+&lt;span class="{{ badge_class }}"&gt;
+  {% if product.available %}现货{% else %}售罄{% endif %}
+&lt;/span&gt;
+</code></pre>
+<hr />
+<h2 id="8-命名习惯-保持可读即可">8. 命名习惯（保持可读即可）</h2><ul>
+<li>用 <strong><code>snake_case</code></strong>：<code>featured_count</code>、<code>show_sale_badge</code>。</li>
+<li>避免单字母、<code>tmp1</code>，半年后只有自己认识。</li>
+<li>布尔含义用前缀：<code>is_</code>、<code>has_</code>、<code>show_</code>。</li>
+</ul>
+<hr />
+<h2 id="9-调试-仅开发-预览">9. 调试（仅开发 / 预览）</h2><pre><code>{% if request.design_mode %}
+  &lt;pre class="theme-debug"&gt;{{ product | json }}&lt;/pre&gt;
+{% endif %}
+</code></pre>
+<p>勿在生产页面长期输出完整 <code>json</code>，体积与敏感字段都不友好。</p>
+<hr />
+<h2 id="10-常见误区-对照检查">10. 常见误区（对照检查）</h2><ol>
+<li><strong>以为 for 里的 assign 外面看不见</strong> — 实际上会泄漏到外层，注意变量名冲突。</li>
+<li><strong><code>customer != null</code></strong> — 改用 <code>{% if customer %}</code> 或 <code>!= blank</code>。</li>
+<li><strong>在 Liquid 里硬算含税总价</strong> — 结账税费以结算为准，模板里演示类计算务必标注「展示用」。</li>
+<li><strong>一大段 HTML 用字符串 append</strong> — 优先 <code>capture</code> 或拆 snippet，否则引号与转义极易出错。</li>
+</ol>
+<hr />
+<h2 id="11-延伸阅读">11. 延伸阅读</h2><ul>
+<li><a href="/guides/shopify-handbook/liquid/data-types/">数据类型</a> — 字符串、数组、nil</li>
+<li><a href="/guides/shopify-handbook/liquid/filters/">Liquid 过滤器</a> — <code>default</code>、<code>money</code>、<code>where</code> 等</li>
+<li><a href="/guides/shopify-handbook/liquid/tags/">Liquid 标签与控制结构</a> — <code>if</code>、<code>for</code>、<code>case</code></li>
+<li><a href="/guides/shopify-handbook/liquid/shopify-objects/">Shopify 对象参考</a> — <code>product</code>、<code>cart</code> 等从哪来</li>
+</ul>
+<p>更细的语法以 <a href="https://shopify.dev/docs/api/liquid" target="_blank" rel="noreferrer">Shopify Liquid 参考</a>  为准。</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/ajax-liquid/"><span>上一篇</span><strong>Ajax 与 Liquid</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/troubleshooting/"><span>下一篇</span><strong>Liquid 调试和故障排除</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

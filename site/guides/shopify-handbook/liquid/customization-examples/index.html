@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>未命名文章 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/customization-examples/">
+  <meta property="og:title" content="未命名文章 · Shopify 独立站手册">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>未命名文章</h1>
+        <p></p>
+      </header>
+      <div class="article-content"><pre><code>&lt;!-- snippets/dynamic-pricing.liquid --&gt;
+{% comment %}
+  动态定价组件
+  
+  参数:
+  - product: 产品对象
+  - customer: 客户对象
+  - quantity: 购买数量 (默认: 1)
+{% endcomment %}
+ 
+{%- liquid
+  assign base_price = product.price
+  assign current_customer = customer
+  assign buy_quantity = quantity | default: 1
+  
+  # 获取客户等级
+  assign customer_tier = 'guest'
+  if current_customer
+    for tag in current_customer.tags
+      if tag contains 'tier:'
+        assign customer_tier = tag | remove: 'tier:'
+        break
+      endif
+    endfor
+  endif
+  
+  # 计算等级折扣
+  assign tier_discount = 0
+  case customer_tier
+    when 'vip'
+      assign tier_discount = 0.15
+    when 'premium' 
+      assign tier_discount = 0.10
+    when 'regular'
+      assign tier_discount = 0.05
+  endcase
+  
+  # 计算批量折扣
+  assign bulk_discount = 0
+  if buy_quantity &gt;= 100
+    assign bulk_discount = 0.20
+  elsif buy_quantity &gt;= 50
+    assign bulk_discount = 0.15
+  elsif buy_quantity &gt;= 20
+    assign bulk_discount = 0.10
+  elsif buy_quantity &gt;= 10
+    assign bulk_discount = 0.05
+  endif
+  
+  # 检查地区定价
+  assign region_multiplier = 1.0
+  if current_customer.default_address
+    assign country = current_customer.default_address.country_code
+    case country
+      when 'US'
+        assign region_multiplier = 1.0
+      when 'CA'
+        assign region_multiplier = 1.1
+      when 'AU'
+        assign region_multiplier = 1.15
+      when 'CN'
+        assign region_multiplier = 0.85
+    endcase
+  endif
+  
+  # 检查活动定价
+  assign promo_discount = 0
+  assign current_time = 'now' | date: '%s' | plus: 0
+  
+  # 黑色星期五促销
+  assign black_friday_start = '2024-11-29' | date: '%s'
+  assign black_friday_end = '2024-12-02' | date: '%s'
+  
+  if current_time &gt;= black_friday_start and current_time &lt;= black_friday_end
+    if product.tags contains 'black-friday'
+      assign promo_discount = 0.30
+    endif
+  endif
+  
+  # 计算最终价格
+  assign final_discount = tier_discount | plus: bulk_discount | plus: promo_discount
+  if final_discount &gt; 0.5
+    assign final_discount = 0.5
+  endif
+  
+  assign discounted_price = base_price | times: region_multiplier | times: 1 | minus: final_discount
+  assign total_price = discounted_price | times: buy_quantity
+  
+  assign savings = base_price | minus: discounted_price | times: buy_quantity
+-%}
+ 
+&lt;div class="dynamic-pricing" data-dynamic-pricing&gt;
+  &lt;div class="pricing-display"&gt;
+    &lt;div class="current-price"&gt;
+      {% if discounted_price &lt; base_price %}
+        &lt;span class="price--sale"&gt;{{ discounted_price | money }}&lt;/span&gt;
+        &lt;span class="price--original"&gt;{{ base_price | money }}&lt;/span&gt;
+      {% else %}
+        &lt;span class="price--regular"&gt;{{ discounted_price | money }}&lt;/span&gt;
+      {% endif %}
+    &lt;/div&gt;
+    
+    {% if savings &gt; 0 %}
+      &lt;div class="savings-info"&gt;
+        &lt;span class="savings-amount"&gt;节省 {{ savings | money }}&lt;/span&gt;
+        &lt;span class="savings-percentage"&gt;({{ final_discount | times: 100 | round }}% 折扣)&lt;/span&gt;
+      &lt;/div&gt;
+    {% endif %}
+  &lt;/div&gt;
+  
+  &lt;!-- 定价详情 --&gt;
+  &lt;div class="pricing-breakdown" data-pricing-details style="display: none;"&gt;
+    &lt;h4&gt;定价详情&lt;/h4&gt;
+    
+    &lt;div class="pricing-item"&gt;
+      &lt;span&gt;基础价格:&lt;/span&gt;
+      &lt;span&gt;{{ base_price | money }}&lt;/span&gt;
+    &lt;/div&gt;
+    
+    {% if tier_discount &gt; 0 %}
+      &lt;div class="pricing-item"&gt;
+        &lt;span&gt;{{ customer_tier | capitalize }} 会员折扣 ({{ tier_discount | times: 100 }}%):&lt;/span&gt;
+        &lt;span&gt;-{{ base_price | times: tier_discount | money }}&lt;/span&gt;
+      &lt;/div&gt;
+    {% endif %}
+    
+    {% if bulk_discount &gt; 0 %}
+      &lt;div class="pricing-item"&gt;
+        &lt;span&gt;批量购买折扣 ({{ bulk_discount | times: 100 }}%):&lt;/span&gt;
+        &lt;span&gt;-{{ base_price | times: bulk_discount | money }}&lt;/span&gt;
+      &lt;/div&gt;
+    {% endif %}
+    
+    {% if promo_discount &gt; 0 %}
+      &lt;div class="pricing-item"&gt;
+        &lt;span&gt;促销活动折扣 ({{ promo_discount | times: 100 }}%):&lt;/span&gt;
+        &lt;span&gt;-{{ base_price | times: promo_discount | money }}&lt;/span&gt;
+      &lt;/div&gt;
+    {% endif %}
+    
+    {% if region_multiplier != 1.0 %}
+      &lt;div class="pricing-item"&gt;
+        &lt;span&gt;地区调整:&lt;/span&gt;
+        &lt;span&gt;×{{ region_multiplier }}&lt;/span&gt;
+      &lt;/div&gt;
+    {% endif %}
+    
+    &lt;div class="pricing-item total"&gt;
+      &lt;span&gt;单价:&lt;/span&gt;
+      &lt;span&gt;{{ discounted_price | money }}&lt;/span&gt;
+    &lt;/div&gt;
+    
+    {% if buy_quantity &gt; 1 %}
+      &lt;div class="pricing-item total"&gt;
+        &lt;span&gt;总计 ({{ buy_quantity }} 件):&lt;/span&gt;
+        &lt;span&gt;{{ total_price | money }}&lt;/span&gt;
+      &lt;/div&gt;
+    {% endif %}
+  &lt;/div&gt;
+  
+  &lt;button class="pricing-toggle" data-pricing-toggle&gt;
+    查看定价详情
+  &lt;/button&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+class DynamicPricing {
+  constructor(element) {
+    this.container = element;
+    this.toggleBtn = element.querySelector('[data-pricing-toggle]');
+    this.details = element.querySelector('[data-pricing-details]');
+    
+    this.init();
+  }
+  
+  init() {
+    this.bindEvents();
+  }
+  
+  bindEvents() {
+    this.toggleBtn?.addEventListener('click', this.toggleDetails.bind(this));
+  }
+  
+  toggleDetails() {
+    const isVisible = this.details.style.display !== 'none';
+    
+    this.details.style.display = isVisible ? 'none' : 'block';
+    this.toggleBtn.textContent = isVisible ? '查看定价详情' : '隐藏定价详情';
+  }
+  
+  // 更新数量时重新计算价格
+  updateQuantity(newQuantity) {
+    // 这里可以通过AJAX重新获取定价信息
+    fetch(`/products/${this.productId}/pricing?quantity=${newQuantity}`, {
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response =&gt; response.json())
+    .then(data =&gt; {
+      this.updatePricingDisplay(data);
+    });
+  }
+  
+  updatePricingDisplay(pricingData) {
+    // 更新价格显示
+    this.container.innerHTML = pricingData.html;
+  }
+}
+ 
+// 初始化动态定价
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.querySelectorAll('[data-dynamic-pricing]').forEach(pricing =&gt; {
+    new DynamicPricing(pricing);
+  });
+});
+&lt;/script&gt;
+</code></pre>
+<pre><code>&lt;!-- snippets/advanced-inventory.liquid --&gt;
+{% comment %}
+  高级库存管理组件
+  
+  参数:
+  - variant: 产品变体
+  - show_warehouses: 是否显示仓库详情
+{% endcomment %}
+ 
+{%- liquid
+  assign current_variant = variant
+  assign total_inventory = current_variant.inventory_quantity
+  assign inventory_policy = current_variant.inventory_policy
+  assign inventory_management = current_variant.inventory_management
+  assign show_warehouses = show_warehouses | default: false
+  
+  # 获取仓库库存信息 (通过metafields)
+  assign warehouse_stock = current_variant.metafields.inventory.warehouses
+  
+  # 设置库存状态
+  assign stock_status = 'in_stock'
+  assign stock_message = '有库存'
+  assign stock_class = 'stock-good'
+  
+  if total_inventory &lt;= 0
+    if inventory_policy == 'continue'
+      assign stock_status = 'preorder'
+      assign stock_message = '可预订'
+      assign stock_class = 'stock-preorder'
+    else
+      assign stock_status = 'out_of_stock'
+      assign stock_message = '缺货'
+      assign stock_class = 'stock-out'
+    endif
+  elsif total_inventory &lt;= 5
+    assign stock_status = 'low_stock'
+    assign stock_message = '库存紧张'
+    assign stock_class = 'stock-low'
+  endif
+  
+  # 预计到货时间
+  assign estimated_delivery = current_variant.metafields.inventory.estimated_delivery
+  assign lead_time_days = current_variant.metafields.inventory.lead_time | default: 7
+-%}
+ 
+&lt;div class="advanced-inventory" data-inventory-manager data-variant-id="{{ current_variant.id }}"&gt;
+  &lt;div class="stock-status {{ stock_class }}"&gt;
+    &lt;span class="stock-indicator"&gt;&lt;/span&gt;
+    &lt;span class="stock-text"&gt;{{ stock_message }}&lt;/span&gt;
+    
+    {% if total_inventory &gt; 0 and total_inventory &lt;= 10 %}
+      &lt;span class="stock-count"&gt;(仅剩 {{ total_inventory }} 件)&lt;/span&gt;
+    {% endif %}
+  &lt;/div&gt;
+  
+  &lt;!-- 仓库库存详情 --&gt;
+  {% if show_warehouses and warehouse_stock %}
+    &lt;div class="warehouse-stock" data-warehouse-details&gt;
+      &lt;h4&gt;库存分布&lt;/h4&gt;
+      {% assign warehouses = warehouse_stock | split: ',' %}
+      {% for warehouse_info in warehouses %}
+        {% assign info_parts = warehouse_info | split: ':' %}
+        {% assign warehouse_name = info_parts[0] %}
+        {% assign warehouse_stock_count = info_parts[1] | plus: 0 %}
+        
+        &lt;div class="warehouse-item"&gt;
+          &lt;span class="warehouse-name"&gt;{{ warehouse_name }}&lt;/span&gt;
+          &lt;span class="warehouse-stock"&gt;{{ warehouse_stock_count }} 件&lt;/span&gt;
+        &lt;/div&gt;
+      {% endfor %}
+    &lt;/div&gt;
+  {% endif %}
+  
+  &lt;!-- 预售信息 --&gt;
+  {% if stock_status == 'preorder' %}
+    &lt;div class="preorder-info"&gt;
+      &lt;h4&gt;预售信息&lt;/h4&gt;
+      {% if estimated_delivery %}
+        &lt;p&gt;预计到货: {{ estimated_delivery | date: '%Y年%m月%d日' }}&lt;/p&gt;
+      {% else %}
+        &lt;p&gt;预计 {{ lead_time_days }} 个工作日内发货&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  {% endif %}
+  
+  &lt;!-- 库存通知 --&gt;
+  {% if stock_status == 'out_of_stock' %}
+    &lt;div class="stock-notification"&gt;
+      &lt;h4&gt;到货通知&lt;/h4&gt;
+      &lt;form class="notify-form" data-notify-form&gt;
+        &lt;input type="hidden" name="variant_id" value="{{ current_variant.id }}"&gt;
+        &lt;input type="email" 
+               name="email" 
+               placeholder="输入邮箱地址" 
+               required
+               class="notify-email"&gt;
+        &lt;button type="submit" class="notify-btn"&gt;到货通知我&lt;/button&gt;
+      &lt;/form&gt;
+      &lt;p class="notify-text"&gt;商品到货后我们会第一时间通知您&lt;/p&gt;
+    &lt;/div&gt;
+  {% endif %}
+  
+  &lt;!-- 库存图表 --&gt;
+  &lt;div class="stock-chart" data-stock-chart&gt;
+    &lt;div class="chart-container"&gt;
+      &lt;canvas id="stock-chart-{{ current_variant.id }}"&gt;&lt;/canvas&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+class AdvancedInventory {
+  constructor(element) {
+    this.container = element;
+    this.variantId = element.dataset.variantId;
+    this.notifyForm = element.querySelector('[data-notify-form]');
+    this.chartCanvas = element.querySelector(`#stock-chart-${this.variantId}`);
+    
+    this.init();
+  }
+  
+  init() {
+    this.bindEvents();
+    this.loadStockHistory();
+    this.setupRealTimeUpdates();
+  }
+  
+  bindEvents() {
+    // 到货通知表单
+    this.notifyForm?.addEventListener('submit', this.handleNotifySubmit.bind(this));
+    
+    // 库存变化监听
+    document.addEventListener('variant:changed', (e) =&gt; {
+      if (e.detail.variantId === this.variantId) {
+        this.updateInventoryDisplay(e.detail.inventory);
+      }
+    });
+  }
+  
+  async handleNotifySubmit(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(this.notifyForm);
+    const email = formData.get('email');
+    
+    try {
+      const response = await fetch('/api/stock-notifications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          variant_id: this.variantId,
+          email: email
+        })
+      });
+      
+      if (response.ok) {
+        this.showNotification('通知设置成功！', 'success');
+        this.notifyForm.reset();
+      } else {
+        throw new Error('设置失败');
+      }
+    } catch (error) {
+      this.showNotification('设置失败，请稍后重试', 'error');
+    }
+  }
+  
+  async loadStockHistory() {
+    try {
+      const response = await fetch(`/api/variants/${this.variantId}/stock-history`);
+      const stockData = await response.json();
+      
+      this.renderStockChart(stockData);
+    } catch (error) {
+      console.warn('Failed to load stock history:', error);
+    }
+  }
+  
+  renderStockChart(stockData) {
+    if (!this.chartCanvas || !window.Chart) return;
+    
+    const ctx = this.chartCanvas.getContext('2d');
+    
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: stockData.dates,
+        datasets: [{
+          label: '库存数量',
+          data: stockData.quantities,
+          borderColor: '#1a73e8',
+          backgroundColor: 'rgba(26, 115, 232, 0.1)',
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: '库存变化趋势'
+          },
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: '库存数量'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: '日期'
+            }
+          }
+        }
+      }
+    });
+  }
+  
+  setupRealTimeUpdates() {
+    // 使用 WebSocket 或 Server-Sent Events 实现实时库存更新
+    if (window.EventSource) {
+      const eventSource = new EventSource(`/api/variants/${this.variantId}/stock-updates`);
+      
+      eventSource.onmessage = (event) =&gt; {
+        const stockUpdate = JSON.parse(event.data);
+        this.updateInventoryDisplay(stockUpdate);
+      };
+      
+      eventSource.onerror = () =&gt; {
+        console.warn('Stock update connection lost, falling back to polling');
+        this.setupPolling();
+      };
+    } else {
+      this.setupPolling();
+    }
+  }
+  
+  setupPolling() {
+    // 降级到轮询方式
+    setInterval(async () =&gt; {
+      try {
+        const response = await fetch(`/api/variants/${this.variantId}/stock`);
+        const stockData = await response.json();
+        this.updateInventoryDisplay(stockData);
+      } catch (error) {
+        console.warn('Failed to poll stock data:', error);
+      }
+    }, 30000); // 30秒轮询一次
+  }
+  
+  updateInventoryDisplay(inventoryData) {
+    const stockStatus = this.container.querySelector('.stock-status');
+    const stockText = stockStatus.querySelector('.stock-text');
+    const stockCount = stockStatus.querySelector('.stock-count');
+    
+    // 更新库存状态
+    stockStatus.className = `stock-status ${inventoryData.stock_class}`;
+    stockText.textContent = inventoryData.stock_message;
+    
+    if (stockCount) {
+      if (inventoryData.quantity &gt; 0 &amp;&amp; inventoryData.quantity &lt;= 10) {
+        stockCount.textContent = `(仅剩 ${inventoryData.quantity} 件)`;
+        stockCount.style.display = 'inline';
+      } else {
+        stockCount.style.display = 'none';
+      }
+    }
+    
+    // 触发库存变化事件
+    this.container.dispatchEvent(new CustomEvent('inventory:updated', {
+      detail: inventoryData
+    }));
+  }
+  
+  showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification notification--${type}`;
+    notification.textContent = message;
+    
+    this.container.appendChild(notification);
+    
+    setTimeout(() =&gt; {
+      notification.remove();
+    }, 3000);
+  }
+}
+ 
+// 初始化高级库存管理
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.querySelectorAll('[data-inventory-manager]').forEach(inventory =&gt; {
+    new AdvancedInventory(inventory);
+  });
+});
+&lt;/script&gt;
+</code></pre>
+<pre><code>&lt;!-- sections/personalized-recommendations.liquid --&gt;
+&lt;div class="personalized-recommendations" 
+     data-recommendations
+     data-customer-id="{{ customer.id | default: 'guest' }}"
+     data-current-product="{{ product.id | default: '' }}"&gt;
+  
+  &lt;div class="recommendations-header"&gt;
+    &lt;h2&gt;{{ section.settings.heading | default: '为您推荐' }}&lt;/h2&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="recommendations-container"&gt;
+    &lt;!-- 加载状态 --&gt;
+    &lt;div class="recommendations-loading" data-loading&gt;
+      &lt;div class="loading-spinner"&gt;&lt;/div&gt;
+      &lt;p&gt;正在为您精选商品...&lt;/p&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- 推荐商品 --&gt;
+    &lt;div class="recommendations-grid" data-recommendations-grid style="display: none;"&gt;
+      &lt;!-- 动态加载的推荐商品 --&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- 无推荐时的降级内容 --&gt;
+    &lt;div class="recommendations-fallback" data-fallback style="display: none;"&gt;
+      &lt;h3&gt;精选商品&lt;/h3&gt;
+      &lt;div class="fallback-products"&gt;
+        {% for product in collections.featured.products limit: 4 %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+class PersonalizedRecommendations {
+  constructor(element) {
+    this.container = element;
+    this.customerId = element.dataset.customerId;
+    this.currentProduct = element.dataset.currentProduct;
+    this.loading = element.querySelector('[data-loading]');
+    this.grid = element.querySelector('[data-recommendations-grid]');
+    this.fallback = element.querySelector('[data-fallback]');
+    
+    this.recommendationTypes = [
+      'viewed_together',    // 一起浏览的商品
+      'bought_together',    // 一起购买的商品  
+      'similar_products',   // 相似商品
+      'user_behavior',      // 基于用户行为
+      'trending',          // 热门商品
+      'category_based'     // 基于分类
+    ];
+    
+    this.init();
+  }
+  
+  async init() {
+    await this.loadRecommendations();
+    this.trackUserBehavior();
+  }
+  
+  async loadRecommendations() {
+    try {
+      const recommendations = await this.fetchRecommendations();
+      
+      if (recommendations &amp;&amp; recommendations.length &gt; 0) {
+        this.renderRecommendations(recommendations);
+      } else {
+        this.showFallback();
+      }
+    } catch (error) {
+      console.error('Failed to load recommendations:', error);
+      this.showFallback();
+    }
+  }
+  
+  async fetchRecommendations() {
+    const params = new URLSearchParams({
+      customer_id: this.customerId,
+      current_product: this.currentProduct,
+      limit: 8,
+      types: this.recommendationTypes.join(',')
+    });
+    
+    const response = await fetch(`/api/recommendations?${params}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    
+    return response.json();
+  }
+  
+  renderRecommendations(recommendations) {
+    let html = '';
+    
+    recommendations.forEach((item, index) =&gt; {
+      html += this.createProductHTML(item, index);
+    });
+    
+    this.grid.innerHTML = html;
+    this.hideLoading();
+    this.grid.style.display = 'grid';
+    
+    // 懒加载图片
+    this.setupLazyLoading();
+    
+    // 跟踪推荐展示
+    this.trackRecommendationViews(recommendations);
+  }
+  
+  createProductHTML(product, index) {
+    const reasonText = this.getRecommendationReason(product.reason);
+    
+    return `
+      &lt;div class="recommendation-item" data-product-id="${product.id}" data-index="${index}"&gt;
+        &lt;div class="recommendation-reason"&gt;
+          &lt;span class="reason-badge"&gt;${reasonText}&lt;/span&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="product-image"&gt;
+          &lt;img data-src="${product.featured_image}&amp;width=300" 
+               alt="${product.title}"
+               class="lazy-image"&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="product-info"&gt;
+          &lt;h4 class="product-title"&gt;
+            &lt;a href="${product.url}"&gt;${product.title}&lt;/a&gt;
+          &lt;/h4&gt;
+          
+          &lt;div class="product-price"&gt;
+            ${product.compare_at_price &gt; product.price ? 
+              `&lt;span class="price--sale"&gt;${this.formatMoney(product.price)}&lt;/span&gt;
+               &lt;span class="price--compare"&gt;${this.formatMoney(product.compare_at_price)}&lt;/span&gt;` :
+              `&lt;span class="price--regular"&gt;${this.formatMoney(product.price)}&lt;/span&gt;`
+            }
+          &lt;/div&gt;
+          
+          &lt;div class="product-rating" data-rating="${product.rating}"&gt;
+            ${this.createStarRating(product.rating)}
+            &lt;span class="rating-count"&gt;(${product.review_count})&lt;/span&gt;
+          &lt;/div&gt;
+          
+          &lt;button class="quick-add-btn" 
+                  data-product-id="${product.id}"
+                  data-variant-id="${product.default_variant_id}"&gt;
+            快速加入购物车
+          &lt;/button&gt;
+        &lt;/div&gt;
+        
+        &lt;!-- A/B测试标记 --&gt;
+        &lt;div class="ab-test-marker" data-test-variant="${product.test_variant}" style="display: none;"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    `;
+  }
+  
+  getRecommendationReason(reason) {
+    const reasons = {
+      'viewed_together': '一起浏览',
+      'bought_together': '一起购买', 
+      'similar_products': '相似商品',
+      'user_behavior': '为您推荐',
+      'trending': '热门商品',
+      'category_based': '同类推荐'
+    };
+    
+    return reasons[reason] || '推荐';
+  }
+  
+  createStarRating(rating) {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+    
+    let html = '';
+    
+    // 满星
+    for (let i = 0; i &lt; fullStars; i++) {
+      html += '&lt;span class="star star--full"&gt;★&lt;/span&gt;';
+    }
+    
+    // 半星
+    if (hasHalfStar) {
+      html += '&lt;span class="star star--half"&gt;☆&lt;/span&gt;';
+    }
+    
+    // 空星
+    for (let i = 0; i &lt; emptyStars; i++) {
+      html += '&lt;span class="star star--empty"&gt;☆&lt;/span&gt;';
+    }
+    
+    return html;
+  }
+  
+  formatMoney(cents) {
+    return new Intl.NumberFormat('zh-CN', {
+      style: 'currency',
+      currency: 'CNY'
+    }).format(cents / 100);
+  }
+  
+  setupLazyLoading() {
+    const images = this.grid.querySelectorAll('.lazy-image');
+    
+    if ('IntersectionObserver' in window) {
+      const imageObserver = new IntersectionObserver((entries) =&gt; {
+        entries.forEach(entry =&gt; {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.classList.remove('lazy-image');
+            imageObserver.unobserve(img);
+          }
+        });
+      });
+      
+      images.forEach(img =&gt; imageObserver.observe(img));
+    } else {
+      // 降级处理
+      images.forEach(img =&gt; {
+        img.src = img.dataset.src;
+      });
+    }
+  }
+  
+  trackRecommendationViews(recommendations) {
+    // 跟踪推荐商品的展示
+    const viewData = {
+      customer_id: this.customerId,
+      recommendations: recommendations.map((item, index) =&gt; ({
+        product_id: item.id,
+        position: index,
+        reason: item.reason,
+        test_variant: item.test_variant
+      })),
+      context: {
+        page: window.location.pathname,
+        current_product: this.currentProduct
+      }
+    };
+    
+    fetch('/api/analytics/recommendation-views', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(viewData)
+    }).catch(error =&gt; {
+      console.warn('Failed to track recommendation views:', error);
+    });
+  }
+  
+  trackUserBehavior() {
+    // 跟踪用户行为以改善推荐
+    document.addEventListener('click', (e) =&gt; {
+      const productCard = e.target.closest('.recommendation-item');
+      
+      if (productCard) {
+        const productId = productCard.dataset.productId;
+        const index = productCard.dataset.index;
+        const testVariant = productCard.querySelector('[data-test-variant]')?.dataset.testVariant;
+        
+        this.trackClick(productId, index, testVariant);
+      }
+    });
+    
+    // 跟踪滚动行为
+    let scrollTimeout;
+    window.addEventListener('scroll', () =&gt; {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() =&gt; {
+        this.trackScrollBehavior();
+      }, 500);
+    });
+  }
+  
+  trackClick(productId, position, testVariant) {
+    const clickData = {
+      customer_id: this.customerId,
+      product_id: productId,
+      position: parseInt(position),
+      test_variant: testVariant,
+      timestamp: Date.now()
+    };
+    
+    fetch('/api/analytics/recommendation-clicks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(clickData)
+    }).catch(error =&gt; {
+      console.warn('Failed to track recommendation click:', error);
+    });
+  }
+  
+  trackScrollBehavior() {
+    const visibleItems = this.getVisibleRecommendations();
+    
+    if (visibleItems.length &gt; 0) {
+      const scrollData = {
+        customer_id: this.customerId,
+        visible_products: visibleItems,
+        scroll_position: window.scrollY,
+        timestamp: Date.now()
+      };
+      
+      fetch('/api/analytics/scroll-behavior', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(scrollData)
+      }).catch(error =&gt; {
+        console.warn('Failed to track scroll behavior:', error);
+      });
+    }
+  }
+  
+  getVisibleRecommendations() {
+    const items = this.grid.querySelectorAll('.recommendation-item');
+    const visibleItems = [];
+    
+    items.forEach(item =&gt; {
+      const rect = item.getBoundingClientRect();
+      const isVisible = rect.top &lt; window.innerHeight &amp;&amp; rect.bottom &gt; 0;
+      
+      if (isVisible) {
+        visibleItems.push({
+          product_id: item.dataset.productId,
+          position: item.dataset.index,
+          visibility_ratio: this.calculateVisibilityRatio(rect)
+        });
+      }
+    });
+    
+    return visibleItems;
+  }
+  
+  calculateVisibilityRatio(rect) {
+    const windowHeight = window.innerHeight;
+    const elementHeight = rect.height;
+    
+    let visibleHeight = elementHeight;
+    
+    if (rect.top &lt; 0) {
+      visibleHeight += rect.top;
+    }
+    
+    if (rect.bottom &gt; windowHeight) {
+      visibleHeight -= (rect.bottom - windowHeight);
+    }
+    
+    return Math.max(0, visibleHeight / elementHeight);
+  }
+  
+  hideLoading() {
+    this.loading.style.display = 'none';
+  }
+  
+  showFallback() {
+    this.hideLoading();
+    this.fallback.style.display = 'block';
+  }
+}
+ 
+// 初始化个性化推荐
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.querySelectorAll('[data-recommendations]').forEach(recommendations =&gt; {
+    new PersonalizedRecommendations(recommendations);
+  });
+});
+&lt;/script&gt;
+ 
+{% schema %}
+{
+  "name": "个性化推荐",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "标题",
+      "default": "为您推荐"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "推荐商品数量",
+      "min": 4,
+      "max": 12,
+      "step": 2,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_ab_testing",
+      "label": "启用A/B测试",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "个性化推荐",
+      "category": "产品"
+    }
+  ]
+}
+{% endschema %}
+</code></pre>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/data-types/"><span>上一篇</span><strong>数据类型详解</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/responsive-design/"><span>下一篇</span><strong>响应式设计实现</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

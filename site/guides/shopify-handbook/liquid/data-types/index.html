@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>数据类型详解 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="数据类型详解 Liquid 支持多种数据类型，每种类型都有特定的用法和特性。深入理解这些数据类型对于编写高效的 Liquid 代码至关重要。 字符串 (String) 字符串字面量 字符串包含特殊字符 字符串操作 字符串检查 数字 ">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/data-types/">
+  <meta property="og:title" content="数据类型详解 · Shopify 独立站手册">
+  <meta property="og:description" content="数据类型详解 Liquid 支持多种数据类型，每种类型都有特定的用法和特性。深入理解这些数据类型对于编写高效的 Liquid 代码至关重要。 字符串 (String) 字符串字面量 字符串包含特殊字符 字符串操作 字符串检查 数字 ">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>数据类型详解</h1>
+        <p>数据类型详解 Liquid 支持多种数据类型，每种类型都有特定的用法和特性。深入理解这些数据类型对于编写高效的 Liquid 代码至关重要。 字符串 (String) 字符串字面量 字符串包含特殊字符 字符串操作 字符串检查 数字 </p>
+      </header>
+      <div class="article-content"><h2 id="数据类型详解">数据类型详解</h2><p>Liquid 支持多种数据类型，每种类型都有特定的用法和特性。深入理解这些数据类型对于编写高效的 Liquid 代码至关重要。</p>
+<h2 id="字符串-string">字符串 (String)</h2><h3 id="字符串字面量">字符串字面量</h3><pre><code>&lt;!-- 双引号字符串 --&gt;
+{% assign message = "Hello, World!" %}
+{% assign product_name = "iPhone 15 Pro" %}
+ 
+&lt;!-- 单引号字符串 --&gt;
+{% assign description = 'This is a great product' %}
+{% assign note = 'Customer\'s favorite item' %}
+ 
+&lt;!-- 空字符串 --&gt;
+{% assign empty_string = "" %}
+{% assign blank_value = '' %}
+</code></pre>
+<h3 id="字符串包含特殊字符">字符串包含特殊字符</h3><pre><code>&lt;!-- 包含引号的字符串 --&gt;
+{% assign quote_text = 'He said "Hello" to everyone' %}
+{% assign apostrophe_text = "It's a beautiful day" %}
+ 
+&lt;!-- 包含换行符的字符串 --&gt;
+{% assign multiline = "第一行
+第二行
+第三行" %}
+ 
+&lt;!-- 包含变量的字符串 --&gt;
+{% assign welcome = "欢迎, " | append: customer.first_name | append: "!" %}
+</code></pre>
+<h3 id="字符串操作">字符串操作</h3><pre><code>&lt;!-- 字符串连接 --&gt;
+{% assign full_name = customer.first_name | append: " " | append: customer.last_name %}
+{% assign product_url = "/products/" | append: product.handle %}
+ 
+&lt;!-- 字符串转换 --&gt;
+{% assign upper_title = product.title | upcase %}
+{% assign lower_title = product.title | downcase %}
+{% assign capitalized = product.title | capitalize %}
+ 
+&lt;!-- 字符串处理 --&gt;
+{% assign clean_title = product.title | strip %}
+{% assign short_desc = product.description | truncate: 100 %}
+{% assign no_html = product.description | strip_html %}
+</code></pre>
+<h3 id="字符串检查">字符串检查</h3><pre><code>&lt;!-- 检查字符串是否为空 --&gt;
+{% if product.description != blank %}
+  &lt;p&gt;{{ product.description }}&lt;/p&gt;
+{% endif %}
+ 
+&lt;!-- 检查字符串包含 --&gt;
+{% if product.title contains "iPhone" %}
+  &lt;span class="apple-badge"&gt;Apple 产品&lt;/span&gt;
+{% endif %}
+ 
+&lt;!-- 字符串比较 --&gt;
+{% if product.vendor == "Apple" %}
+  &lt;div class="apple-section"&gt;Apple 官方产品&lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="数字-number">数字 (Number)</h2><h3 id="整数">整数</h3><pre><code>&lt;!-- 正整数 --&gt;
+{% assign quantity = 5 %}
+{% assign max_items = 100 %}
+ 
+&lt;!-- 负整数 --&gt;
+{% assign discount = -10 %}
+{% assign adjustment = -500 %}
+ 
+&lt;!-- 零 --&gt;
+{% assign starting_point = 0 %}
+</code></pre>
+<h3 id="浮点数">浮点数</h3><pre><code>&lt;!-- 小数 --&gt;
+{% assign price = 99.99 %}
+{% assign tax_rate = 0.08 %}
+{% assign discount_rate = 0.15 %}
+ 
+&lt;!-- 科学计数法 --&gt;
+{% assign large_number = 1.5e6 %}
+</code></pre>
+<h3 id="数字运算">数字运算</h3><pre><code>&lt;!-- 基本运算 --&gt;
+{% assign total_price = product.price | plus: shipping_cost %}
+{% assign discounted_price = product.price | minus: discount_amount %}
+{% assign bulk_price = product.price | times: quantity %}
+{% assign unit_price = total_cost | divided_by: quantity %}
+ 
+&lt;!-- 高级运算 --&gt;
+{% assign remainder = total_items | modulo: items_per_page %}
+{% assign rounded_price = calculated_price | round: 2 %}
+{% assign ceiling_value = price_per_unit | ceil %}
+{% assign floor_value = price_per_unit | floor %}
+ 
+&lt;!-- 绝对值 --&gt;
+{% assign absolute_value = negative_number | abs %}
+</code></pre>
+<h3 id="数字比较">数字比较</h3><pre><code>&lt;!-- 大小比较 --&gt;
+{% if product.price &gt; 10000 %}
+  &lt;span class="high-price"&gt;高价商品&lt;/span&gt;
+{% elsif product.price &lt; 1000 %}
+  &lt;span class="low-price"&gt;特惠商品&lt;/span&gt;
+{% endif %}
+ 
+&lt;!-- 等于比较 --&gt;
+{% if cart.item_count == 0 %}
+  &lt;p&gt;购物车为空&lt;/p&gt;
+{% endif %}
+ 
+&lt;!-- 范围检查 --&gt;
+{% if product.price &gt;= 5000 and product.price &lt;= 15000 %}
+  &lt;span class="mid-range"&gt;中档商品&lt;/span&gt;
+{% endif %}
+</code></pre>
+<h3 id="数字格式化">数字格式化</h3><pre><code>&lt;!-- 货币格式 --&gt;
+{{ product.price | money }}
+{{ product.price | money_without_currency }}
+{{ product.price | money_with_currency }}
+ 
+&lt;!-- 数字格式 --&gt;
+{{ large_number | number_with_delimiter }}
+{{ percentage | number_to_percentage }}
+{{ file_size | number_to_human_size }}
+</code></pre>
+<h2 id="布尔值-boolean">布尔值 (Boolean)</h2><h3 id="布尔字面量">布尔字面量</h3><pre><code>&lt;!-- true 值 --&gt;
+{% assign is_available = true %}
+{% assign show_price = true %}
+ 
+&lt;!-- false 值 --&gt;
+{% assign is_hidden = false %}
+{% assign hide_description = false %}
+</code></pre>
+<h3 id="布尔表达式">布尔表达式</h3><pre><code>&lt;!-- 比较结果 --&gt;
+{% assign is_expensive = product.price &gt; 10000 %}
+{% assign has_discount = product.compare_at_price &gt; product.price %}
+{% assign is_new_customer = customer.orders_count == 0 %}
+ 
+&lt;!-- 存在性检查 --&gt;
+{% assign has_image = product.featured_image != blank %}
+{% assign has_description = product.description != blank %}
+{% assign is_logged_in = customer != blank %}
+</code></pre>
+<h3 id="布尔运算">布尔运算</h3><pre><code>&lt;!-- AND 运算 --&gt;
+{% assign show_add_to_cart = product.available and customer %}
+{% assign eligible_for_discount = is_member and order_total &gt; 5000 %}
+ 
+&lt;!-- OR 运算 --&gt;
+{% assign show_badge = product.featured or product.bestseller %}
+{% assign can_view = is_admin or is_owner %}
+ 
+&lt;!-- NOT 运算 (使用 unless) --&gt;
+{% unless product.available %}
+  &lt;span class="out-of-stock"&gt;缺货&lt;/span&gt;
+{% endunless %}
+</code></pre>
+<h3 id="真值和假值">真值和假值</h3><pre><code>&lt;!-- Liquid 中的假值 --&gt;
+&lt;!-- false, nil, empty, blank --&gt;
+ 
+&lt;!-- 检查假值 --&gt;
+{% if customer %}
+  &lt;!-- customer 存在 --&gt;
+{% else %}
+  &lt;!-- customer 为 nil --&gt;
+{% endif %}
+ 
+&lt;!-- 检查空值 --&gt;
+{% if product.description != blank %}
+  &lt;!-- 描述不为空 --&gt;
+{% endif %}
+ 
+&lt;!-- 检查存在性 --&gt;
+{% if product.images.size &gt; 0 %}
+  &lt;!-- 有图片 --&gt;
+{% endif %}
+</code></pre>
+<h2 id="数组-array">数组 (Array)</h2><h3 id="数组访问">数组访问</h3><pre><code>&lt;!-- 索引访问 --&gt;
+{% assign first_image = product.images[0] %}
+{% assign second_image = product.images[1] %}
+{% assign last_image = product.images[-1] %}
+ 
+&lt;!-- 数组方法 --&gt;
+{% assign first_product = collection.products.first %}
+{% assign last_product = collection.products.last %}
+{% assign product_count = collection.products.size %}
+</code></pre>
+<h3 id="数组遍历">数组遍历</h3><pre><code>&lt;!-- 基本遍历 --&gt;
+{% for image in product.images %}
+  &lt;img src="{{ image | image_url: width: 300, height: 300 }}" alt="{{ image.alt }}"&gt;
+{% endfor %}
+ 
+&lt;!-- 带索引遍历 --&gt;
+{% for tag in product.tags %}
+  &lt;span class="tag tag-{{ forloop.index }}"&gt;{{ tag }}&lt;/span&gt;
+{% endfor %}
+ 
+&lt;!-- 限制数量遍历 --&gt;
+{% for product in collection.products limit: 4 %}
+  {% render 'product-card', product: product %}
+{% endfor %}
+</code></pre>
+<h3 id="数组操作">数组操作</h3><pre><code>&lt;!-- 过滤数组 --&gt;
+{% assign available_products = collection.products | where: 'available', true %}
+{% assign featured_products = collection.products | where: 'tags', 'featured' %}
+ 
+&lt;!-- 排序数组 --&gt;
+{% assign sorted_products = collection.products | sort: 'title' %}
+{% assign price_sorted = collection.products | sort: 'price' %}
+ 
+&lt;!-- 数组转换 --&gt;
+{% assign product_titles = collection.products | map: 'title' %}
+{% assign unique_vendors = collection.products | map: 'vendor' | uniq %}
+ 
+&lt;!-- 数组连接 --&gt;
+{% assign tag_string = product.tags | join: ', ' %}
+{% assign breadcrumbs = breadcrumb_items | join: ' &gt; ' %}
+</code></pre>
+<h3 id="数组创建">数组创建</h3><pre><code>&lt;!-- 从字符串创建数组 --&gt;
+{% assign color_options = "红色,蓝色,绿色,黄色" | split: ',' %}
+{% assign size_options = "S,M,L,XL" | split: ',' %}
+ 
+&lt;!-- 空数组检查 --&gt;
+{% if product.images.size == 0 %}
+  &lt;div class="no-images"&gt;暂无图片&lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 数组合并 (通过循环) --&gt;
+{% assign all_tags = "" %}
+{% for product in collection.products %}
+  {% for tag in product.tags %}
+    {% unless all_tags contains tag %}
+      {% if all_tags == "" %}
+        {% assign all_tags = tag %}
+      {% else %}
+        {% assign all_tags = all_tags | append: "," | append: tag %}
+      {% endif %}
+    {% endunless %}
+  {% endfor %}
+{% endfor %}
+{% assign unique_tags = all_tags | split: "," %}
+</code></pre>
+<h2 id="对象-object">对象 (Object)</h2><h3 id="对象属性访问">对象属性访问</h3><pre><code>&lt;!-- 点号访问 --&gt;
+{{ product.title }}
+{{ customer.first_name }}
+{{ order.created_at }}
+ 
+&lt;!-- 方括号访问 --&gt;
+{{ product['title'] }}
+{{ customer['first_name'] }}
+{{ order['created_at'] }}
+ 
+&lt;!-- 动态属性访问 --&gt;
+{% assign property_name = 'title' %}
+{{ product[property_name] }}
+</code></pre>
+<h3 id="嵌套对象">嵌套对象</h3><pre><code>&lt;!-- 深层访问 --&gt;
+{{ product.selected_or_first_available_variant.title }}
+{{ customer.default_address.city }}
+{{ order.shipping_address.country }}
+ 
+&lt;!-- 安全访问 --&gt;
+{% if product.featured_image %}
+  {{ product.featured_image.alt }}
+{% endif %}
+ 
+&lt;!-- 链式访问 --&gt;
+{{ blog.articles.first.author }}
+{{ cart.items.last.product.vendor }}
+</code></pre>
+<h3 id="对象方法">对象方法</h3><pre><code>&lt;!-- 集合方法 --&gt;
+{{ collection.products.size }}
+{{ product.images.first }}
+{{ customer.orders.last }}
+ 
+&lt;!-- 字符串方法 --&gt;
+{{ product.title.size }}
+{{ customer.email.downcase }}
+ 
+&lt;!-- 数组方法 --&gt;
+{{ product.tags.first }}
+{{ product.variants.last }}
+</code></pre>
+<h3 id="对象检查">对象检查</h3><pre><code>&lt;!-- 检查对象存在 --&gt;
+{% if customer %}
+  &lt;p&gt;已登录: {{ customer.email }}&lt;/p&gt;
+{% endif %}
+ 
+&lt;!-- 检查属性存在 --&gt;
+{% if product.description %}
+  &lt;div class="description"&gt;{{ product.description }}&lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 检查对象类型 --&gt;
+{% if template contains 'product' %}
+  &lt;!-- 在产品页面 --&gt;
+{% elsif template contains 'collection' %}
+  &lt;!-- 在集合页面 --&gt;
+{% endif %}
+</code></pre>
+<h2 id="nil-和-empty">nil 和 empty</h2><h3 id="nil-值">nil 值</h3><pre><code>&lt;!-- nil 表示不存在 --&gt;
+{% if customer == nil %}
+  &lt;p&gt;用户未登录&lt;/p&gt;
+{% endif %}
+ 
+&lt;!-- 等同于 --&gt;
+{% unless customer %}
+  &lt;p&gt;用户未登录&lt;/p&gt;
+{% endunless %}
+ 
+&lt;!-- 检查属性是否为 nil --&gt;
+{% if product.featured_image == nil %}
+  &lt;div class="no-image-placeholder"&gt;&lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="empty-和-blank">empty 和 blank</h3><pre><code>&lt;!-- empty: 数组为空 --&gt;
+{% if product.images == empty %}
+  &lt;p&gt;没有产品图片&lt;/p&gt;
+{% endif %}
+ 
+&lt;!-- blank: 字符串为空或只有空白 --&gt;
+{% if product.description == blank %}
+  &lt;p&gt;暂无产品描述&lt;/p&gt;
+{% endif %}
+ 
+&lt;!-- 区别示例 --&gt;
+{% assign empty_array = "" | split: "," %}
+{% assign blank_string = "   " %}
+ 
+{% if empty_array == empty %}
+  &lt;!-- true: 数组为空 --&gt;
+{% endif %}
+ 
+{% if blank_string == blank %}
+  &lt;!-- true: 字符串为空白 --&gt;
+{% endif %}
+</code></pre>
+<h2 id="数据类型转换">数据类型转换</h2><h3 id="隐式转换">隐式转换</h3><pre><code>&lt;!-- 字符串到数字 --&gt;
+{% assign string_number = "123" %}
+{% assign result = string_number | plus: 10 %}
+&lt;!-- result 为 133 --&gt;
+ 
+&lt;!-- 数字到字符串 --&gt;
+{% assign number = 456 %}
+{% assign text = "Product " | append: number %}
+&lt;!-- text 为 "Product 456" --&gt;
+</code></pre>
+<h3 id="显式转换">显式转换</h3><pre><code>&lt;!-- 强制转换为数字 --&gt;
+{% assign price_string = "99.99" %}
+{% assign price_number = price_string | plus: 0 %}
+ 
+&lt;!-- 强制转换为字符串 --&gt;
+{% assign number = 123 %}
+{% assign number_string = number | append: "" %}
+ 
+&lt;!-- 布尔值转换 --&gt;
+{% assign is_true = "true" %}
+{% if is_true == "true" %}
+  &lt;!-- 字符串比较 --&gt;
+{% endif %}
+</code></pre>
+<h2 id="类型检查技巧">类型检查技巧</h2><h3 id="判断数据类型">判断数据类型</h3><pre><code>&lt;!-- 检查是否为数字 --&gt;
+{% assign test_value = "123" %}
+{% assign is_number = test_value | plus: 0 %}
+{% if is_number != 0 or test_value == "0" %}
+  &lt;!-- 是数字 --&gt;
+{% endif %}
+ 
+&lt;!-- 检查是否为数组 --&gt;
+{% if product.images.size %}
+  &lt;!-- product.images 是数组 --&gt;
+{% endif %}
+ 
+&lt;!-- 检查是否为字符串 --&gt;
+{% if product.title.size %}
+  &lt;!-- product.title 是字符串 --&gt;
+{% endif %}
+</code></pre>
+<h3 id="调试数据类型">调试数据类型</h3><pre><code>&lt;!-- 输出变量信息 --&gt;
+{% if settings.debug_mode %}
+  &lt;div class="debug-info"&gt;
+    &lt;h4&gt;变量调试&lt;/h4&gt;
+    &lt;p&gt;product.price: {{ product.price }} ({{ product.price.class }})&lt;/p&gt;
+    &lt;p&gt;product.title: {{ product.title }} ({{ product.title.class }})&lt;/p&gt;
+    &lt;p&gt;product.available: {{ product.available }} ({{ product.available.class }})&lt;/p&gt;
+    &lt;p&gt;product.images: {{ product.images.size }} items&lt;/p&gt;
+    
+    &lt;!-- JSON 输出 --&gt;
+    &lt;pre&gt;{{ product | json }}&lt;/pre&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="复杂数据类型示例">复杂数据类型示例</h2><h3 id="购物车数据处理">购物车数据处理</h3><pre><code>&lt;!-- 复杂的购物车分析 --&gt;
+{% assign total_items = 0 %}
+{% assign total_value = 0 %}
+{% assign unique_vendors = "" %}
+{% assign product_types = "" %}
+ 
+{% for item in cart.items %}
+  &lt;!-- 数量统计 (数字) --&gt;
+  {% assign total_items = total_items | plus: item.quantity %}
+  
+  &lt;!-- 价值计算 (数字) --&gt;
+  {% assign line_total = item.quantity | times: item.price %}
+  {% assign total_value = total_value | plus: line_total %}
+  
+  &lt;!-- 供应商收集 (字符串数组) --&gt;
+  {% unless unique_vendors contains item.vendor %}
+    {% if unique_vendors == "" %}
+      {% assign unique_vendors = item.vendor %}
+    {% else %}
+      {% assign unique_vendors = unique_vendors | append: "," | append: item.vendor %}
+    {% endif %}
+  {% endunless %}
+  
+  &lt;!-- 产品类型统计 (字符串处理) --&gt;
+  {% unless product_types contains item.product.type %}
+    {% if product_types == "" %}
+      {% assign product_types = item.product.type %}
+    {% else %}
+      {% assign product_types = product_types | append: "," | append: item.product.type %}
+    {% endif %}
+  {% endunless %}
+{% endfor %}
+ 
+&lt;!-- 结果显示 --&gt;
+&lt;div class="cart-analysis"&gt;
+  &lt;p&gt;总商品数: {{ total_items }}&lt;/p&gt;
+  &lt;p&gt;总价值: {{ total_value | money }}&lt;/p&gt;
+  &lt;p&gt;供应商数: {{ unique_vendors | split: "," | size }}&lt;/p&gt;
+  &lt;p&gt;产品类型: {{ product_types | split: "," | join: ", " }}&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="最佳实践">最佳实践</h2><h3 id="1-类型安全">1. 类型安全</h3><pre><code>&lt;!-- 安全的数字操作 --&gt;
+{% if product.price and product.price &gt; 0 %}
+  {% assign discounted_price = product.price | times: 0.9 %}
+{% endif %}
+ 
+&lt;!-- 安全的字符串操作 --&gt;
+{% if product.title and product.title != blank %}
+  {% assign url_slug = product.title | handleize %}
+{% endif %}
+ 
+&lt;!-- 安全的数组操作 --&gt;
+{% if product.images and product.images.size &gt; 0 %}
+  {% assign first_image = product.images[0] %}
+{% endif %}
+</code></pre>
+<h3 id="2-性能考虑">2. 性能考虑</h3><pre><code>&lt;!-- 缓存复杂计算 --&gt;
+{% assign is_sale_item = product.compare_at_price &gt; product.price %}
+{% assign has_multiple_variants = product.variants.size &gt; 1 %}
+ 
+{% if is_sale_item and has_multiple_variants %}
+  &lt;!-- 使用缓存的布尔值 --&gt;
+{% endif %}
+</code></pre>
+<h3 id="3-可读性">3. 可读性</h3><pre><code>&lt;!-- 使用有意义的变量名 --&gt;
+{% assign customer_is_vip = customer.tags contains 'vip' %}
+{% assign product_is_available = product.available %}
+{% assign order_qualifies_for_free_shipping = order.total_price &gt; 50000 %}
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>了解数据类型后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/objects/">对象和属性</a> - 深入了解对象系统</li>
+<li><a href="/guides/shopify-handbook/liquid/operators/">运算符和表达式</a> - 学习操作符使用</li>
+<li><a href="/guides/shopify-handbook/liquid/filters/">过滤器完全指南</a> - 掌握数据转换</li>
+<li><a href="/guides/shopify-handbook/liquid/shopify-objects/">Shopify 对象参考</a> - 了解特定对象</li>
+</ol>
+<p>掌握数据类型是编写高效 Liquid 代码的基础，它们是所有高级功能的基石！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/examples/"><span>上一篇</span><strong>实际应用示例</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/customization-examples/"><span>下一篇</span><strong>未命名文章</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

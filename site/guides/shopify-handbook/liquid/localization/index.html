@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>多语言和本地化 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="多语言和本地化 在全球化的电商环境中，多语言支持是必不可少的功能。Shopify 提供了强大的多语言和本地化功能，让您能够为不同地区的客户提供本地化的购物体验。 基础多语言设置 语言检测 文本翻译 货币本地化 货币格式 价格格式化 ">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/localization/">
+  <meta property="og:title" content="多语言和本地化 · Shopify 独立站手册">
+  <meta property="og:description" content="多语言和本地化 在全球化的电商环境中，多语言支持是必不可少的功能。Shopify 提供了强大的多语言和本地化功能，让您能够为不同地区的客户提供本地化的购物体验。 基础多语言设置 语言检测 文本翻译 货币本地化 货币格式 价格格式化 ">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>多语言和本地化</h1>
+        <p>多语言和本地化 在全球化的电商环境中，多语言支持是必不可少的功能。Shopify 提供了强大的多语言和本地化功能，让您能够为不同地区的客户提供本地化的购物体验。 基础多语言设置 语言检测 文本翻译 货币本地化 货币格式 价格格式化 </p>
+      </header>
+      <div class="article-content"><h2 id="多语言和本地化">多语言和本地化</h2><p>在全球化的电商环境中，多语言支持是必不可少的功能。Shopify 提供了强大的多语言和本地化功能，让您能够为不同地区的客户提供本地化的购物体验。</p>
+<h2 id="基础多语言设置">基础多语言设置</h2><h3 id="语言检测">语言检测</h3><pre><code>&lt;!-- 当前语言信息 --&gt;
+&lt;div class="language-info" data-current-locale="{{ request.locale.iso_code }}"&gt;
+  &lt;p&gt;当前语言: {{ request.locale.name }}&lt;/p&gt;
+  &lt;p&gt;语言代码: {{ request.locale.iso_code }}&lt;/p&gt;
+  &lt;p&gt;根URL: {{ request.locale.root_url }}&lt;/p&gt;
+&lt;/div&gt;
+ 
+&lt;!-- 语言切换器 --&gt;
+&lt;div class="language-switcher"&gt;
+  &lt;label for="language-select"&gt;选择语言:&lt;/label&gt;
+  &lt;select id="language-select" onchange="switchLanguage(this.value)"&gt;
+    {% for locale in shop.published_locales %}
+      &lt;option value="{{ locale.iso_code }}" 
+              {% if locale.iso_code == request.locale.iso_code %}selected{% endif %}&gt;
+        {{ locale.name }}
+      &lt;/option&gt;
+    {% endfor %}
+  &lt;/select&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+function switchLanguage(localeCode) {
+  const currentUrl = window.location.pathname + window.location.search
+  window.location.href = `/${localeCode}${currentUrl}`
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="文本翻译">文本翻译</h3><pre><code>&lt;!-- 基本文本翻译 --&gt;
+&lt;div class="site-navigation"&gt;
+  &lt;a href="{{ routes.root_url }}"&gt;{{ 'general.navigation.home' | t }}&lt;/a&gt;
+  &lt;a href="{{ routes.all_products_collection_url }}"&gt;{{ 'general.navigation.catalog' | t }}&lt;/a&gt;
+  &lt;a href="{{ routes.cart_url }}"&gt;
+    {{ 'general.navigation.cart' | t }} ({{ cart.item_count }})
+  &lt;/a&gt;
+  &lt;a href="/pages/about"&gt;{{ 'general.navigation.about' | t }}&lt;/a&gt;
+  &lt;a href="/pages/contact"&gt;{{ 'general.navigation.contact' | t }}&lt;/a&gt;
+&lt;/div&gt;
+ 
+&lt;!-- 带参数的翻译 --&gt;
+&lt;div class="product-price"&gt;
+  {% assign discount_percentage = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price %}
+  
+  &lt;span class="original-price"&gt;
+    {{ 'products.product.original_price' | t: price: product.compare_at_price | money }}
+  &lt;/span&gt;
+  
+  &lt;span class="sale-price"&gt;
+    {{ 'products.product.sale_price' | t: price: product.price | money }}
+  &lt;/span&gt;
+  
+  &lt;span class="discount"&gt;
+    {{ 'products.product.save_percentage' | t: percentage: discount_percentage }}
+  &lt;/span&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="货币本地化">货币本地化</h2><h3 id="货币格式">货币格式</h3><pre><code>&lt;!-- 货币显示 --&gt;
+&lt;div class="currency-display"&gt;
+  &lt;div class="price-primary"&gt;
+    {{ product.price | money_with_currency }}
+  &lt;/div&gt;
+  
+  &lt;div class="price-local"&gt;
+    {{ product.price | money: request.locale.currency.symbol }}
+  &lt;/div&gt;
+  
+  &lt;!-- 多货币支持 --&gt;
+  {% if shop.enabled_currencies.size &gt; 1 %}
+    &lt;div class="currency-selector"&gt;
+      &lt;select onchange="changeCurrency(this.value)"&gt;
+        {% for currency in shop.enabled_currencies %}
+          &lt;option value="{{ currency.iso_code }}" 
+                  {% if currency.iso_code == cart.currency.iso_code %}selected{% endif %}&gt;
+            {{ currency.name }} ({{ currency.symbol }})
+          &lt;/option&gt;
+        {% endfor %}
+      &lt;/select&gt;
+    &lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;
+ 
+&lt;script&gt;
+function changeCurrency(currencyCode) {
+  fetch('/cart/update.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      currency: currencyCode
+    })
+  }).then(() =&gt; {
+    location.reload()
+  })
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="价格格式化">价格格式化</h3><pre><code>&lt;!-- 自定义价格格式 --&gt;
+{% capture price_format %}
+  {% case request.locale.iso_code %}
+    {% when 'zh-CN' %}
+      ¥{{ price | divided_by: 100.0 | round: 2 }}
+    {% when 'ja' %}
+      ¥{{ price | divided_by: 100.0 | round: 0 }}
+    {% when 'en-US' %}
+      ${{ price | divided_by: 100.0 | round: 2 }}
+    {% when 'en-GB' %}
+      £{{ price | divided_by: 100.0 | round: 2 }}
+    {% else %}
+      {{ price | money }}
+  {% endcase %}
+{% endcapture %}
+ 
+&lt;div class="localized-price"&gt;{{ price_format }}&lt;/div&gt;
+</code></pre>
+<h2 id="日期和时间本地化">日期和时间本地化</h2><h3 id="日期格式">日期格式</h3><pre><code>&lt;!-- 本地化日期显示 --&gt;
+&lt;div class="date-display"&gt;
+  {% case request.locale.iso_code %}
+    {% when 'zh-CN' %}
+      &lt;time&gt;{{ article.published_at | date: '%Y年%m月%d日' }}&lt;/time&gt;
+    {% when 'en-US' %}
+      &lt;time&gt;{{ article.published_at | date: '%B %d, %Y' }}&lt;/time&gt;
+    {% when 'en-GB' %}
+      &lt;time&gt;{{ article.published_at | date: '%d %B %Y' }}&lt;/time&gt;
+    {% when 'ja' %}
+      &lt;time&gt;{{ article.published_at | date: '%Y年%m月%d日' }}&lt;/time&gt;
+    {% else %}
+      &lt;time&gt;{{ article.published_at | date: '%Y-%m-%d' }}&lt;/time&gt;
+  {% endcase %}
+&lt;/div&gt;
+ 
+&lt;!-- 相对时间 --&gt;
+&lt;div class="relative-time"&gt;
+  {% assign days_ago = 'now' | date: '%s' | minus: article.published_at | date: '%s' | divided_by: 86400 %}
+  
+  {% if days_ago == 0 %}
+    {{ 'general.date.today' | t }}
+  {% elsif days_ago == 1 %}
+    {{ 'general.date.yesterday' | t }}
+  {% elsif days_ago &lt; 7 %}
+    {{ 'general.date.days_ago' | t: count: days_ago }}
+  {% else %}
+    {{ article.published_at | date: '%Y-%m-%d' }}
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h2 id="地址格式化">地址格式化</h2><h3 id="本地化地址">本地化地址</h3><pre><code>&lt;!-- 地址格式本地化 --&gt;
+&lt;address class="localized-address"&gt;
+  {% case request.locale.iso_code %}
+    {% when 'zh-CN' %}
+      &lt;!-- 中文地址格式 --&gt;
+      &lt;div class="address-country"&gt;{{ address.country }}&lt;/div&gt;
+      &lt;div class="address-province"&gt;{{ address.province }}&lt;/div&gt;
+      &lt;div class="address-city"&gt;{{ address.city }}&lt;/div&gt;
+      &lt;div class="address-street"&gt;{{ address.address1 }}&lt;/div&gt;
+      {% if address.address2 %}
+        &lt;div class="address-street2"&gt;{{ address.address2 }}&lt;/div&gt;
+      {% endif %}
+      &lt;div class="address-zip"&gt;{{ address.zip }}&lt;/div&gt;
+      &lt;div class="address-name"&gt;{{ address.first_name }} {{ address.last_name }}&lt;/div&gt;
+      
+    {% when 'ja' %}
+      &lt;!-- 日文地址格式 --&gt;
+      &lt;div class="address-zip"&gt;〒{{ address.zip }}&lt;/div&gt;
+      &lt;div class="address-country"&gt;{{ address.country }}&lt;/div&gt;
+      &lt;div class="address-province"&gt;{{ address.province }}&lt;/div&gt;
+      &lt;div class="address-city"&gt;{{ address.city }}&lt;/div&gt;
+      &lt;div class="address-street"&gt;{{ address.address1 }}&lt;/div&gt;
+      {% if address.address2 %}
+        &lt;div class="address-street2"&gt;{{ address.address2 }}&lt;/div&gt;
+      {% endif %}
+      &lt;div class="address-name"&gt;{{ address.last_name }} {{ address.first_name }}&lt;/div&gt;
+      
+    {% else %}
+      &lt;!-- 西方地址格式 --&gt;
+      &lt;div class="address-name"&gt;{{ address.first_name }} {{ address.last_name }}&lt;/div&gt;
+      &lt;div class="address-street"&gt;{{ address.address1 }}&lt;/div&gt;
+      {% if address.address2 %}
+        &lt;div class="address-street2"&gt;{{ address.address2 }}&lt;/div&gt;
+      {% endif %}
+      &lt;div class="address-city-state"&gt;
+        {{ address.city }}, {{ address.province }} {{ address.zip }}
+      &lt;/div&gt;
+      &lt;div class="address-country"&gt;{{ address.country }}&lt;/div&gt;
+  {% endcase %}
+&lt;/address&gt;
+</code></pre>
+<h2 id="内容本地化">内容本地化</h2><h3 id="产品信息本地化">产品信息本地化</h3><pre><code>&lt;!-- 本地化产品内容 --&gt;
+&lt;div class="product-info"&gt;
+  &lt;h1&gt;{{ product.title }}&lt;/h1&gt;
+  
+  &lt;!-- 本地化描述 --&gt;
+  {% assign localized_description = product.metafields.translations[request.locale.iso_code].description %}
+  {% if localized_description %}
+    &lt;div class="product-description"&gt;{{ localized_description }}&lt;/div&gt;
+  {% else %}
+    &lt;div class="product-description"&gt;{{ product.description }}&lt;/div&gt;
+  {% endif %}
+  
+  &lt;!-- 本地化特性列表 --&gt;
+  {% assign features_key = 'features_' | append: request.locale.iso_code %}
+  {% assign localized_features = product.metafields.custom[features_key] %}
+  
+  {% if localized_features %}
+    &lt;div class="product-features"&gt;
+      &lt;h3&gt;{{ 'products.product.features' | t }}&lt;/h3&gt;
+      &lt;ul&gt;
+        {% for feature in localized_features %}
+          &lt;li&gt;{{ feature }}&lt;/li&gt;
+        {% endfor %}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="集合本地化">集合本地化</h3><pre><code>&lt;!-- 本地化集合信息 --&gt;
+&lt;div class="collection-header"&gt;
+  {% assign localized_title = collection.metafields.translations[request.locale.iso_code].title %}
+  &lt;h1&gt;{% if localized_title %}{{ localized_title }}{% else %}{{ collection.title }}{% endif %}&lt;/h1&gt;
+  
+  {% assign localized_description = collection.metafields.translations[request.locale.iso_code].description %}
+  {% if localized_description %}
+    &lt;div class="collection-description"&gt;{{ localized_description }}&lt;/div&gt;
+  {% elsif collection.description %}
+    &lt;div class="collection-description"&gt;{{ collection.description }}&lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h2 id="seo-本地化">SEO 本地化</h2><h3 id="hreflang-标签">hreflang 标签</h3><pre><code>&lt;!-- hreflang 实现 --&gt;
+&lt;head&gt;
+  {% for locale in shop.published_locales %}
+    &lt;link rel="alternate" 
+          hreflang="{{ locale.iso_code }}" 
+          href="{{ locale.root_url }}{{ request.path }}"&gt;
+  {% endfor %}
+  
+  &lt;!-- 默认语言 --&gt;
+  &lt;link rel="alternate" 
+        hreflang="x-default" 
+        href="{{ shop.primary_locale.root_url }}{{ request.path }}"&gt;
+&lt;/head&gt;
+</code></pre>
+<h3 id="本地化-meta-标签">本地化 meta 标签</h3><pre><code>&lt;!-- 本地化 SEO 标签 --&gt;
+&lt;head&gt;
+  {% assign page_title_key = 'meta.title.' | append: template %}
+  {% assign page_description_key = 'meta.description.' | append: template %}
+  
+  &lt;title&gt;
+    {% if page_title_key != blank %}
+      {{ page_title_key | t: shop_name: shop.name, page_title: page_title }}
+    {% else %}
+      {{ page_title }}{% unless page_title contains shop.name %} - {{ shop.name }}{% endunless %}
+    {% endif %}
+  &lt;/title&gt;
+  
+  &lt;meta name="description" content="{{ page_description_key | t | default: page_description | truncate: 160 }}"&gt;
+  
+  &lt;!-- Open Graph 本地化 --&gt;
+  &lt;meta property="og:locale" content="{{ request.locale.iso_code | replace: '-', '_' }}"&gt;
+  {% for locale in shop.published_locales %}
+    {% unless locale.iso_code == request.locale.iso_code %}
+      &lt;meta property="og:locale:alternate" content="{{ locale.iso_code | replace: '-', '_' }}"&gt;
+    {% endunless %}
+  {% endfor %}
+&lt;/head&gt;
+</code></pre>
+<h2 id="rtl-支持">RTL 支持</h2><h3 id="右到左语言支持">右到左语言支持</h3><pre><code>&lt;!-- RTL 语言支持 --&gt;
+{% assign rtl_languages = 'ar,he,fa,ur' | split: ',' %}
+{% assign is_rtl = false %}
+{% for rtl_lang in rtl_languages %}
+  {% if request.locale.iso_code contains rtl_lang %}
+    {% assign is_rtl = true %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+ 
+&lt;html dir="{% if is_rtl %}rtl{% else %}ltr{% endif %}" lang="{{ request.locale.iso_code }}"&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    {% if is_rtl %}
+      body {
+        direction: rtl;
+        text-align: right;
+      }
+      
+      .container {
+        padding-right: 20px;
+        padding-left: 20px;
+      }
+      
+      .navigation {
+        float: right;
+      }
+      
+      .breadcrumbs {
+        direction: rtl;
+      }
+      
+      .breadcrumbs::before {
+        content: "←";
+        margin-left: 5px;
+        margin-right: 0;
+      }
+    {% endif %}
+  &lt;/style&gt;
+&lt;/head&gt;
+</code></pre>
+<h2 id="表单本地化">表单本地化</h2><h3 id="多语言表单">多语言表单</h3><pre><code>&lt;!-- 本地化表单 --&gt;
+&lt;form action="/contact" method="post" class="contact-form"&gt;
+  &lt;div class="form-group"&gt;
+    &lt;label for="contact-name"&gt;{{ 'contact.form.name' | t }}&lt;/label&gt;
+    &lt;input type="text" 
+           id="contact-name" 
+           name="contact[name]" 
+           placeholder="{{ 'contact.form.name_placeholder' | t }}"
+           required&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="form-group"&gt;
+    &lt;label for="contact-email"&gt;{{ 'contact.form.email' | t }}&lt;/label&gt;
+    &lt;input type="email" 
+           id="contact-email" 
+           name="contact[email]" 
+           placeholder="{{ 'contact.form.email_placeholder' | t }}"
+           required&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="form-group"&gt;
+    &lt;label for="contact-subject"&gt;{{ 'contact.form.subject' | t }}&lt;/label&gt;
+    &lt;select id="contact-subject" name="contact[subject]"&gt;
+      &lt;option value=""&gt;{{ 'contact.form.subject_choose' | t }}&lt;/option&gt;
+      &lt;option value="general"&gt;{{ 'contact.form.subject_general' | t }}&lt;/option&gt;
+      &lt;option value="support"&gt;{{ 'contact.form.subject_support' | t }}&lt;/option&gt;
+      &lt;option value="wholesale"&gt;{{ 'contact.form.subject_wholesale' | t }}&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="form-group"&gt;
+    &lt;label for="contact-message"&gt;{{ 'contact.form.message' | t }}&lt;/label&gt;
+    &lt;textarea id="contact-message" 
+              name="contact[body]" 
+              placeholder="{{ 'contact.form.message_placeholder' | t }}"
+              required&gt;&lt;/textarea&gt;
+  &lt;/div&gt;
+  
+  &lt;button type="submit" class="btn btn-primary"&gt;
+    {{ 'contact.form.send' | t }}
+  &lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+<h2 id="本地化工具">本地化工具</h2><h3 id="翻译文件结构">翻译文件结构</h3><pre><code>&lt;!-- 翻译文件路径检查 --&gt;
+{% comment %}
+翻译文件位置：
+/locales/en.default.json
+/locales/zh-CN.json
+/locales/ja.json
+/locales/fr.json
+{% endcomment %}
+ 
+&lt;!-- 翻译键检查 --&gt;
+&lt;div class="translation-debug" style="display: none;"&gt;
+  {% assign test_keys = 'general.navigation.home,products.product.add_to_cart,cart.general.title' | split: ',' %}
+  
+  {% for key in test_keys %}
+    &lt;p&gt;{{ key }}: "{{ key | t }}"&lt;/p&gt;
+  {% endfor %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="翻译管理">翻译管理</h3><pre><code>&lt;!-- 翻译管理助手 --&gt;
+{% if request.design_mode %}
+  &lt;div class="translation-helper" style="position: fixed; top: 10px; right: 10px; background: #fff; padding: 10px; border: 1px solid #ccc; z-index: 9999;"&gt;
+    &lt;h4&gt;翻译助手&lt;/h4&gt;
+    &lt;p&gt;&lt;strong&gt;当前语言:&lt;/strong&gt; {{ request.locale.name }} ({{ request.locale.iso_code }})&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;可用语言:&lt;/strong&gt;&lt;/p&gt;
+    &lt;ul&gt;
+      {% for locale in shop.published_locales %}
+        &lt;li&gt;
+          &lt;a href="{{ locale.root_url }}{{ request.path }}"&gt;
+            {{ locale.name }} ({{ locale.iso_code }})
+          &lt;/a&gt;
+        &lt;/li&gt;
+      {% endfor %}
+    &lt;/ul&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="性能优化">性能优化</h2><h3 id="本地化缓存">本地化缓存</h3><pre><code>&lt;script&gt;
+// 翻译缓存
+const TranslationCache = {
+  cache: {},
+  
+  get: function(key, locale = null) {
+    const currentLocale = locale || document.documentElement.lang
+    const cacheKey = `${currentLocale}.${key}`
+    
+    if (this.cache[cacheKey]) {
+      return this.cache[cacheKey]
+    }
+    
+    // 从服务器获取翻译
+    return this.fetch(key, currentLocale)
+  },
+  
+  fetch: function(key, locale) {
+    return fetch(`/locales/${locale}.json`)
+      .then(response =&gt; response.json())
+      .then(translations =&gt; {
+        const value = this.getNestedValue(translations, key)
+        this.cache[`${locale}.${key}`] = value
+        return value
+      })
+  },
+  
+  getNestedValue: function(obj, path) {
+    return path.split('.').reduce((o, p) =&gt; o &amp;&amp; o[p], obj)
+  }
+}
+ 
+// 动态翻译
+function t(key, params = {}) {
+  return TranslationCache.get(key).then(translation =&gt; {
+    if (typeof translation === 'string') {
+      // 替换参数
+      Object.keys(params).forEach(param =&gt; {
+        translation = translation.replace(new RegExp(`{{\\s*${param}\\s*}}`, 'g'), params[param])
+      })
+    }
+    return translation || key
+  })
+}
+&lt;/script&gt;
+</code></pre>
+<h2 id="测试和调试">测试和调试</h2><h3 id="本地化测试">本地化测试</h3><pre><code>&lt;!-- 本地化测试工具 --&gt;
+{% if request.design_mode %}
+  &lt;div class="localization-test" style="margin: 20px 0; padding: 20px; background: #f8f9fa; border: 1px solid #dee2e6;"&gt;
+    &lt;h3&gt;本地化测试&lt;/h3&gt;
+    
+    &lt;div class="test-section"&gt;
+      &lt;h4&gt;语言信息&lt;/h4&gt;
+      &lt;ul&gt;
+        &lt;li&gt;当前语言: {{ request.locale.name }} ({{ request.locale.iso_code }})&lt;/li&gt;
+        &lt;li&gt;默认语言: {{ shop.primary_locale.name }} ({{ shop.primary_locale.iso_code }})&lt;/li&gt;
+        &lt;li&gt;可用语言数: {{ shop.published_locales.size }}&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="test-section"&gt;
+      &lt;h4&gt;货币信息&lt;/h4&gt;
+      &lt;ul&gt;
+        &lt;li&gt;当前货币: {{ cart.currency.iso_code }}&lt;/li&gt;
+        &lt;li&gt;货币符号: {{ cart.currency.symbol }}&lt;/li&gt;
+        &lt;li&gt;可用货币数: {{ shop.enabled_currencies.size }}&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="test-section"&gt;
+      &lt;h4&gt;翻译测试&lt;/h4&gt;
+      &lt;p&gt;导航.首页: {{ 'general.navigation.home' | t }}&lt;/p&gt;
+      &lt;p&gt;产品.加入购物车: {{ 'products.product.add_to_cart' | t }}&lt;/p&gt;
+      &lt;p&gt;购物车.标题: {{ 'cart.general.title' | t }}&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>现在您已经掌握了多语言和本地化功能，建议继续学习：</p>
+<ul>
+<li><a href="/guides/shopify-handbook/liquid/ajax-liquid/">Ajax 与 Liquid</a> - 学习动态内容加载</li>
+<li><a href="/guides/shopify-handbook/liquid/advanced-liquid/">高级 Liquid 技巧</a> - 学习更高级的模板技巧</li>
+<li><a href="/guides/shopify-handbook/liquid/performance-optimization/">性能优化</a> - 优化多语言站点性能</li>
+<li><a href="/guides/shopify-handbook/liquid/best-practices/">最佳实践</a> - 了解本地化最佳实践</li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/objects/"><span>上一篇</span><strong>对象和属性</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/advanced-liquid/"><span>下一篇</span><strong>高级 Liquid 技巧</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

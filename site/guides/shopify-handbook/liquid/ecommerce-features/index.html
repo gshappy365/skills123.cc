@@ -1,0 +1,1122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>电商功能实现 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="电商功能实现 本指南将详细介绍如何在 Shopify 主题中实现高级电商功能，提升用户购买体验和转化率。 高级购物车功能 1\. 智能购物车抽屉 2\. 动态购物车更新 产品变体选择器 1\. 智能变体选择器 高级搜索功能 1\. ">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/ecommerce-features/">
+  <meta property="og:title" content="电商功能实现 · Shopify 独立站手册">
+  <meta property="og:description" content="电商功能实现 本指南将详细介绍如何在 Shopify 主题中实现高级电商功能，提升用户购买体验和转化率。 高级购物车功能 1\. 智能购物车抽屉 2\. 动态购物车更新 产品变体选择器 1\. 智能变体选择器 高级搜索功能 1\. ">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>电商功能实现</h1>
+        <p>电商功能实现 本指南将详细介绍如何在 Shopify 主题中实现高级电商功能，提升用户购买体验和转化率。 高级购物车功能 1\. 智能购物车抽屉 2\. 动态购物车更新 产品变体选择器 1\. 智能变体选择器 高级搜索功能 1\. </p>
+      </header>
+      <div class="article-content"><h2 id="电商功能实现">电商功能实现</h2><p>本指南将详细介绍如何在 Shopify 主题中实现高级电商功能，提升用户购买体验和转化率。</p>
+<h2 id="高级购物车功能">高级购物车功能</h2><h3 id="1-智能购物车抽屉">1. 智能购物车抽屉</h3><pre><code>&lt;!-- snippets/smart-cart-drawer.liquid --&gt;
+&lt;div class="cart-drawer" data-cart-drawer&gt;
+  &lt;div class="cart-drawer__overlay" data-cart-overlay&gt;&lt;/div&gt;
+  
+  &lt;div class="cart-drawer__content"&gt;
+    &lt;div class="cart-drawer__header"&gt;
+      &lt;h2 class="cart-drawer__title"&gt;
+        购物车 (&lt;span data-cart-count&gt;{{ cart.item_count }}&lt;/span&gt;)
+      &lt;/h2&gt;
+      &lt;button class="cart-drawer__close" data-cart-close&gt;
+        {% render 'icon-close' %}
+      &lt;/button&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="cart-drawer__body"&gt;
+      {% if cart.item_count &gt; 0 %}
+        &lt;div class="cart-items" data-cart-items&gt;
+          {% for item in cart.items %}
+            {% render 'cart-item', item: item %}
+          {% endfor %}
+        &lt;/div&gt;
+        
+        &lt;!-- 免费配送进度条 --&gt;
+        {% if settings.free_shipping_threshold &gt; 0 %}
+          {% render 'shipping-progress-bar' %}
+        {% endif %}
+        
+        &lt;!-- 购物车总计 --&gt;
+        &lt;div class="cart-summary"&gt;
+          &lt;div class="cart-subtotal"&gt;
+            &lt;span&gt;小计:&lt;/span&gt;
+            &lt;span data-cart-subtotal&gt;{{ cart.total_price | money }}&lt;/span&gt;
+          &lt;/div&gt;
+          
+          {% if cart.total_discounts &gt; 0 %}
+            &lt;div class="cart-discounts"&gt;
+              &lt;span&gt;折扣:&lt;/span&gt;
+              &lt;span&gt;-{{ cart.total_discounts | money }}&lt;/span&gt;
+            &lt;/div&gt;
+          {% endif %}
+        &lt;/div&gt;
+        
+        &lt;!-- 结账按钮 --&gt;
+        &lt;div class="cart-actions"&gt;
+          &lt;button class="btn btn--primary btn--full" data-cart-checkout&gt;
+            立即结账 - {{ cart.total_price | money }}
+          &lt;/button&gt;
+          &lt;a href="/cart" class="btn btn--secondary btn--full"&gt;
+            查看完整购物车
+          &lt;/a&gt;
+        &lt;/div&gt;
+        
+        &lt;!-- 相关推荐 --&gt;
+        {% render 'cart-recommendations' %}
+        
+      {% else %}
+        &lt;div class="cart-empty"&gt;
+          {% render 'cart-empty-state' %}
+        &lt;/div&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="2-动态购物车更新">2. 动态购物车更新</h3><pre><code>// assets/cart-manager.js
+class CartManager {
+  constructor() {
+    this.cart = null
+    this.listeners = []
+    this.init()
+  }
+  
+  init() {
+    this.fetchCart()
+    this.bindEvents()
+  }
+  
+  async fetchCart() {
+    try {
+      const response = await fetch('/cart.js')
+      this.cart = await response.json()
+      this.notifyListeners('cart:updated', this.cart)
+      return this.cart
+    } catch (error) {
+      console.error('获取购物车失败:', error)
+    }
+  }
+  
+  async addItem(variantId, quantity = 1, properties = {}) {
+    try {
+      this.notifyListeners('cart:adding', { variantId, quantity })
+      
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: variantId,
+          quantity: quantity,
+          properties: properties
+        })
+      })
+      
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.message || '添加到购物车失败')
+      }
+      
+      await this.fetchCart()
+      this.notifyListeners('cart:added', { variantId, quantity })
+      
+    } catch (error) {
+      this.notifyListeners('cart:error', error.message)
+      throw error
+    }
+  }
+  
+  async updateItem(key, quantity) {
+    try {
+      this.notifyListeners('cart:updating', { key, quantity })
+      
+      const response = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: key, quantity: quantity })
+      })
+      
+      this.cart = await response.json()
+      this.notifyListeners('cart:updated', this.cart)
+      
+    } catch (error) {
+      this.notifyListeners('cart:error', '更新购物车失败')
+      throw error
+    }
+  }
+  
+  async removeItem(key) {
+    return this.updateItem(key, 0)
+  }
+  
+  on(event, callback) {
+    this.listeners.push({ event, callback })
+  }
+  
+  notifyListeners(event, data) {
+    this.listeners
+      .filter(listener =&gt; listener.event === event)
+      .forEach(listener =&gt; listener.callback(data))
+  }
+  
+  getShippingProgress() {
+    const threshold = window.theme.freeShippingThreshold || 0
+    const progress = Math.min((this.cart.total_price / threshold) * 100, 100)
+    const remaining = Math.max(threshold - this.cart.total_price, 0)
+    
+    return { progress, remaining, qualified: remaining === 0 }
+  }
+}
+ 
+// 全局购物车管理器
+window.CartManager = new CartManager()
+</code></pre>
+<h2 id="产品变体选择器">产品变体选择器</h2><h3 id="1-智能变体选择器">1. 智能变体选择器</h3><pre><code>&lt;!-- snippets/variant-selector-smart.liquid --&gt;
+&lt;div class="variant-selector" data-variant-selector data-product-id="{{ product.id }}"&gt;
+  {% for option in product.options_with_values %}
+    &lt;div class="option-group" data-option-index="{{ forloop.index0 }}"&gt;
+      &lt;label class="option-label"&gt;{{ option.name }}&lt;/label&gt;
+      
+      {% assign option_name = option.name | downcase %}
+      
+      {% if option_name contains 'color' or option_name contains '颜色' %}
+        &lt;!-- 颜色选择器 --&gt;
+        &lt;div class="color-options"&gt;
+          {% for value in option.values %}
+            {% assign color_class = value | handle %}
+            &lt;label class="color-option"&gt;
+              &lt;input type="radio" 
+                     name="option-{{ forloop.parentloop.index0 }}"
+                     value="{{ value }}"
+                     data-option-value
+                     {% if forloop.first %}checked{% endif %}&gt;
+              &lt;span class="color-swatch color-swatch--{{ color_class }}"
+                    style="background-color: {{ value | handle }};"
+                    title="{{ value }}"&gt;
+                &lt;span class="sr-only"&gt;{{ value }}&lt;/span&gt;
+              &lt;/span&gt;
+            &lt;/label&gt;
+          {% endfor %}
+        &lt;/div&gt;
+        
+      {% elsif option_name contains 'size' or option_name contains '尺寸' %}
+        &lt;!-- 尺寸选择器 --&gt;
+        &lt;div class="size-options"&gt;
+          {% for value in option.values %}
+            &lt;label class="size-option"&gt;
+              &lt;input type="radio" 
+                     name="option-{{ forloop.parentloop.index0 }}"
+                     value="{{ value }}"
+                     data-option-value
+                     {% if forloop.first %}checked{% endif %}&gt;
+              &lt;span class="size-label"&gt;{{ value }}&lt;/span&gt;
+            &lt;/label&gt;
+          {% endfor %}
+        &lt;/div&gt;
+        
+      {% else %}
+        &lt;!-- 下拉选择器 --&gt;
+        &lt;select class="option-select" data-option-value&gt;
+          {% for value in option.values %}
+            &lt;option value="{{ value }}" {% if forloop.first %}selected{% endif %}&gt;
+              {{ value }}
+            &lt;/option&gt;
+          {% endfor %}
+        &lt;/select&gt;
+      {% endif %}
+    &lt;/div&gt;
+  {% endfor %}
+  
+  &lt;!-- 变体信息显示 --&gt;
+  &lt;div class="variant-info" data-variant-info&gt;
+    &lt;div class="variant-price" data-variant-price&gt;
+      {{ product.price | money }}
+    &lt;/div&gt;
+    
+    &lt;div class="variant-availability" data-variant-availability&gt;
+      {% if product.available %}
+        &lt;span class="in-stock"&gt;有库存&lt;/span&gt;
+      {% else %}
+        &lt;span class="out-of-stock"&gt;缺货&lt;/span&gt;
+      {% endif %}
+    &lt;/div&gt;
+    
+    &lt;div class="variant-sku" data-variant-sku style="display: none;"&gt;
+      SKU: &lt;span&gt;&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;input type="hidden" name="id" data-variant-id value="{{ product.selected_or_first_available_variant.id }}"&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+// 变体选择器
+class VariantSelector {
+  constructor(element) {
+    this.container = element
+    this.productId = element.dataset.productId
+    this.options = element.querySelectorAll('[data-option-value]')
+    this.variantIdInput = element.querySelector('[data-variant-id]')
+    this.priceElement = element.querySelector('[data-variant-price]')
+    this.availabilityElement = element.querySelector('[data-variant-availability]')
+    this.skuElement = element.querySelector('[data-variant-sku]')
+    
+    this.variants = window.productVariants || []
+    this.currentVariant = this.variants[0]
+    
+    this.init()
+  }
+  
+  init() {
+    this.options.forEach(option =&gt; {
+      option.addEventListener('change', () =&gt; this.onOptionChange())
+    })
+    
+    this.updateVariantInfo()
+  }
+  
+  onOptionChange() {
+    const selectedOptions = this.getSelectedOptions()
+    const variant = this.findVariant(selectedOptions)
+    
+    if (variant) {
+      this.currentVariant = variant
+      this.updateVariantInfo()
+      this.updateAvailableOptions()
+    }
+    
+    this.dispatchVariantChange()
+  }
+  
+  getSelectedOptions() {
+    return Array.from(this.options).map(option =&gt; {
+      if (option.type === 'radio') {
+        const checked = this.container.querySelector(`input[name="${option.name}"]:checked`)
+        return checked ? checked.value : null
+      }
+      return option.value
+    })
+  }
+  
+  findVariant(selectedOptions) {
+    return this.variants.find(variant =&gt; {
+      return variant.options.every((option, index) =&gt; {
+        return option === selectedOptions[index]
+      })
+    })
+  }
+  
+  updateVariantInfo() {
+    if (!this.currentVariant) return
+    
+    // 更新价格
+    if (this.priceElement) {
+      let priceHtml = this.formatMoney(this.currentVariant.price)
+      
+      if (this.currentVariant.compare_at_price &gt; this.currentVariant.price) {
+        priceHtml = `
+          &lt;span class="sale-price"&gt;${this.formatMoney(this.currentVariant.price)}&lt;/span&gt;
+          &lt;span class="compare-price"&gt;${this.formatMoney(this.currentVariant.compare_at_price)}&lt;/span&gt;
+        `
+      }
+      
+      this.priceElement.innerHTML = priceHtml
+    }
+    
+    // 更新库存状态
+    if (this.availabilityElement) {
+      const available = this.currentVariant.available
+      this.availabilityElement.innerHTML = available 
+        ? '&lt;span class="in-stock"&gt;有库存&lt;/span&gt;'
+        : '&lt;span class="out-of-stock"&gt;缺货&lt;/span&gt;'
+    }
+    
+    // 更新SKU
+    if (this.skuElement &amp;&amp; this.currentVariant.sku) {
+      this.skuElement.querySelector('span').textContent = this.currentVariant.sku
+      this.skuElement.style.display = 'block'
+    }
+    
+    // 更新隐藏的变体ID
+    if (this.variantIdInput) {
+      this.variantIdInput.value = this.currentVariant.id
+    }
+  }
+  
+  updateAvailableOptions() {
+    // 禁用不可用的选项组合
+    this.options.forEach((option, optionIndex) =&gt; {
+      const optionValues = option.type === 'radio' 
+        ? this.container.querySelectorAll(`input[name="${option.name}"]`)
+        : [option]
+      
+      optionValues.forEach(optionValue =&gt; {
+        const testOptions = this.getSelectedOptions()
+        testOptions[optionIndex] = optionValue.value
+        
+        const hasAvailableVariant = this.variants.some(variant =&gt; {
+          return variant.available &amp;&amp; variant.options.every((opt, idx) =&gt; {
+            return idx === optionIndex || opt === testOptions[idx]
+          })
+        })
+        
+        optionValue.disabled = !hasAvailableVariant
+        
+        if (option.type === 'radio') {
+          optionValue.closest('label').classList.toggle('disabled', !hasAvailableVariant)
+        }
+      })
+    })
+  }
+  
+  formatMoney(cents) {
+    return (cents / 100).toLocaleString('zh-CN', {
+      style: 'currency',
+      currency: 'CNY'
+    })
+  }
+  
+  dispatchVariantChange() {
+    const event = new CustomEvent('variant:changed', {
+      detail: { variant: this.currentVariant }
+    })
+    this.container.dispatchEvent(event)
+  }
+}
+ 
+// 初始化变体选择器
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.querySelectorAll('[data-variant-selector]').forEach(selector =&gt; {
+    new VariantSelector(selector)
+  })
+})
+&lt;/script&gt;
+</code></pre>
+<h2 id="高级搜索功能">高级搜索功能</h2><h3 id="1-实时搜索系统">1. 实时搜索系统</h3><pre><code>&lt;!-- snippets/instant-search.liquid --&gt;
+&lt;div class="instant-search" data-instant-search&gt;
+  &lt;form class="search-form" data-search-form&gt;
+    &lt;div class="search-input-wrapper"&gt;
+      &lt;input type="search" 
+             class="search-input"
+             placeholder="搜索商品..."
+             data-search-input
+             autocomplete="off"&gt;
+      &lt;button type="submit" class="search-submit"&gt;
+        {% render 'icon-search' %}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+  
+  &lt;div class="search-results" data-search-results style="display: none;"&gt;
+    &lt;div class="search-loading" data-search-loading&gt;
+      &lt;div class="loading-spinner"&gt;&lt;/div&gt;
+      &lt;span&gt;搜索中...&lt;/span&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="search-content" data-search-content&gt;&lt;/div&gt;
+    
+    &lt;div class="search-footer" data-search-footer style="display: none;"&gt;
+      &lt;a href="#" class="search-view-all" data-search-view-all&gt;
+        查看所有结果
+      &lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+class InstantSearch {
+  constructor(element) {
+    this.container = element
+    this.form = element.querySelector('[data-search-form]')
+    this.input = element.querySelector('[data-search-input]')
+    this.results = element.querySelector('[data-search-results]')
+    this.loading = element.querySelector('[data-search-loading]')
+    this.content = element.querySelector('[data-search-content]')
+    this.footer = element.querySelector('[data-search-footer]')
+    this.viewAllLink = element.querySelector('[data-search-view-all]')
+    
+    this.debounceTimer = null
+    this.currentQuery = ''
+    this.cache = new Map()
+    
+    this.init()
+  }
+  
+  init() {
+    this.input.addEventListener('input', (e) =&gt; {
+      this.handleInput(e.target.value)
+    })
+    
+    this.input.addEventListener('focus', () =&gt; {
+      if (this.currentQuery) {
+        this.showResults()
+      }
+    })
+    
+    this.input.addEventListener('blur', () =&gt; {
+      setTimeout(() =&gt; this.hideResults(), 200)
+    })
+    
+    this.form.addEventListener('submit', (e) =&gt; {
+      e.preventDefault()
+      this.redirectToSearch()
+    })
+    
+    // 键盘导航
+    this.input.addEventListener('keydown', (e) =&gt; {
+      this.handleKeydown(e)
+    })
+  }
+  
+  handleInput(query) {
+    clearTimeout(this.debounceTimer)
+    
+    this.currentQuery = query.trim()
+    
+    if (this.currentQuery.length &lt; 2) {
+      this.hideResults()
+      return
+    }
+    
+    this.debounceTimer = setTimeout(() =&gt; {
+      this.performSearch(this.currentQuery)
+    }, 300)
+  }
+  
+  async performSearch(query) {
+    if (this.cache.has(query)) {
+      this.displayResults(this.cache.get(query), query)
+      return
+    }
+    
+    this.showLoading()
+    
+    try {
+      const response = await fetch(
+        `/search/suggest.json?q=${encodeURIComponent(query)}&amp;resources[type]=product&amp;resources[limit]=8`
+      )
+      
+      const data = await response.json()
+      const results = data.resources.results
+      
+      this.cache.set(query, results)
+      this.displayResults(results, query)
+      
+    } catch (error) {
+      console.error('搜索失败:', error)
+      this.hideResults()
+    }
+  }
+  
+  displayResults(results, query) {
+    this.hideLoading()
+    
+    if (!results.products || results.products.length === 0) {
+      this.content.innerHTML = `
+        &lt;div class="search-empty"&gt;
+          &lt;p&gt;没有找到相关商品&lt;/p&gt;
+        &lt;/div&gt;
+      `
+    } else {
+      const productsHtml = results.products.map(product =&gt; `
+        &lt;a href="${product.url}" class="search-result-item"&gt;
+          &lt;img src="${product.featured_image ? product.featured_image.url + '&amp;width=60' : ''}" 
+               alt="${product.title}" 
+               class="search-result-image"
+               loading="lazy"&gt;
+          &lt;div class="search-result-info"&gt;
+            &lt;h4 class="search-result-title"&gt;${this.highlightQuery(product.title, query)}&lt;/h4&gt;
+            &lt;p class="search-result-price"&gt;${this.formatMoney(product.price)}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/a&gt;
+      `).join('')
+      
+      this.content.innerHTML = `
+        &lt;div class="search-results-grid"&gt;
+          ${productsHtml}
+        &lt;/div&gt;
+      `
+    }
+    
+    // 更新查看全部链接
+    this.viewAllLink.href = `/search?q=${encodeURIComponent(query)}`
+    this.footer.style.display = 'block'
+    
+    this.showResults()
+  }
+  
+  highlightQuery(text, query) {
+    const regex = new RegExp(`(${query})`, 'gi')
+    return text.replace(regex, '&lt;mark&gt;$1&lt;/mark&gt;')
+  }
+  
+  formatMoney(cents) {
+    return (cents / 100).toLocaleString('zh-CN', {
+      style: 'currency',
+      currency: 'CNY'
+    })
+  }
+  
+  showLoading() {
+    this.loading.style.display = 'flex'
+    this.content.style.display = 'none'
+    this.footer.style.display = 'none'
+    this.showResults()
+  }
+  
+  hideLoading() {
+    this.loading.style.display = 'none'
+    this.content.style.display = 'block'
+  }
+  
+  showResults() {
+    this.results.style.display = 'block'
+  }
+  
+  hideResults() {
+    this.results.style.display = 'none'
+  }
+  
+  redirectToSearch() {
+    if (this.currentQuery) {
+      window.location.href = `/search?q=${encodeURIComponent(this.currentQuery)}`
+    }
+  }
+  
+  handleKeydown(e) {
+    if (e.key === 'Escape') {
+      this.hideResults()
+    } else if (e.key === 'Enter') {
+      e.preventDefault()
+      this.redirectToSearch()
+    }
+  }
+}
+ 
+// 初始化即时搜索
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.querySelectorAll('[data-instant-search]').forEach(search =&gt; {
+    new InstantSearch(search)
+  })
+})
+&lt;/script&gt;
+</code></pre>
+<h2 id="愿望清单功能">愿望清单功能</h2><h3 id="1-本地存储愿望清单">1. 本地存储愿望清单</h3><pre><code>// assets/wishlist.js
+class Wishlist {
+  constructor() {
+    this.items = this.load()
+    this.listeners = []
+    this.init()
+  }
+  
+  init() {
+    this.bindEvents()
+    this.updateUI()
+  }
+  
+  bindEvents() {
+    document.addEventListener('click', (e) =&gt; {
+      if (e.target.matches('[data-wishlist-add]')) {
+        e.preventDefault()
+        const productId = e.target.dataset.wishlistAdd
+        this.add(productId)
+      }
+      
+      if (e.target.matches('[data-wishlist-remove]')) {
+        e.preventDefault()
+        const productId = e.target.dataset.wishlistRemove
+        this.remove(productId)
+      }
+      
+      if (e.target.matches('[data-wishlist-toggle]')) {
+        e.preventDefault()
+        const productId = e.target.dataset.wishlistToggle
+        this.toggle(productId)
+      }
+    })
+  }
+  
+  add(productId) {
+    if (!this.items.includes(productId)) {
+      this.items.push(productId)
+      this.save()
+      this.updateUI()
+      this.notify('added', productId)
+      this.showNotification('已添加到愿望清单')
+    }
+  }
+  
+  remove(productId) {
+    const index = this.items.indexOf(productId)
+    if (index &gt; -1) {
+      this.items.splice(index, 1)
+      this.save()
+      this.updateUI()
+      this.notify('removed', productId)
+      this.showNotification('已从愿望清单移除')
+    }
+  }
+  
+  toggle(productId) {
+    if (this.has(productId)) {
+      this.remove(productId)
+    } else {
+      this.add(productId)
+    }
+  }
+  
+  has(productId) {
+    return this.items.includes(productId)
+  }
+  
+  count() {
+    return this.items.length
+  }
+  
+  clear() {
+    this.items = []
+    this.save()
+    this.updateUI()
+    this.notify('cleared')
+  }
+  
+  load() {
+    try {
+      const stored = localStorage.getItem('shopify_wishlist')
+      return stored ? JSON.parse(stored) : []
+    } catch {
+      return []
+    }
+  }
+  
+  save() {
+    localStorage.setItem('shopify_wishlist', JSON.stringify(this.items))
+  }
+  
+  updateUI() {
+    // 更新愿望清单计数
+    document.querySelectorAll('[data-wishlist-count]').forEach(el =&gt; {
+      el.textContent = this.count()
+    })
+    
+    // 更新按钮状态
+    document.querySelectorAll('[data-wishlist-toggle]').forEach(btn =&gt; {
+      const productId = btn.dataset.wishlistToggle
+      const isInWishlist = this.has(productId)
+      
+      btn.classList.toggle('active', isInWishlist)
+      btn.setAttribute('aria-pressed', isInWishlist)
+      
+      const text = btn.querySelector('[data-wishlist-text]')
+      if (text) {
+        text.textContent = isInWishlist ? '已收藏' : '收藏'
+      }
+    })
+    
+    // 更新愿望清单页面
+    this.updateWishlistPage()
+  }
+  
+  async updateWishlistPage() {
+    const container = document.querySelector('[data-wishlist-products]')
+    if (!container) return
+    
+    if (this.items.length === 0) {
+      container.innerHTML = `
+        &lt;div class="wishlist-empty"&gt;
+          &lt;h3&gt;愿望清单是空的&lt;/h3&gt;
+          &lt;p&gt;添加一些商品到愿望清单吧&lt;/p&gt;
+          &lt;a href="/collections" class="btn btn--primary"&gt;继续购物&lt;/a&gt;
+        &lt;/div&gt;
+      `
+      return
+    }
+    
+    try {
+      const productPromises = this.items.map(id =&gt; 
+        fetch(`/products/${id}.js`).then(r =&gt; r.json())
+      )
+      
+      const products = await Promise.all(productPromises)
+      
+      container.innerHTML = `
+        &lt;div class="wishlist-grid"&gt;
+          ${products.map(product =&gt; this.renderWishlistItem(product)).join('')}
+        &lt;/div&gt;
+      `
+      
+    } catch (error) {
+      console.error('加载愿望清单商品失败:', error)
+    }
+  }
+  
+  renderWishlistItem(product) {
+    return `
+      &lt;div class="wishlist-item"&gt;
+        &lt;a href="/products/${product.handle}" class="wishlist-item__image"&gt;
+          &lt;img src="${product.featured_image}" alt="${product.title}" loading="lazy"&gt;
+        &lt;/a&gt;
+        &lt;div class="wishlist-item__info"&gt;
+          &lt;h4 class="wishlist-item__title"&gt;
+            &lt;a href="/products/${product.handle}"&gt;${product.title}&lt;/a&gt;
+          &lt;/h4&gt;
+          &lt;p class="wishlist-item__price"&gt;${this.formatMoney(product.price)}&lt;/p&gt;
+          &lt;div class="wishlist-item__actions"&gt;
+            &lt;button class="btn btn--primary" onclick="CartManager.addItem(${product.variants[0].id})"&gt;
+              加入购物车
+            &lt;/button&gt;
+            &lt;button class="btn btn--outline" data-wishlist-remove="${product.id}"&gt;
+              移除
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    `
+  }
+  
+  formatMoney(cents) {
+    return (cents / 100).toLocaleString('zh-CN', {
+      style: 'currency',
+      currency: 'CNY'
+    })
+  }
+  
+  notify(action, productId) {
+    this.listeners.forEach(listener =&gt; {
+      listener({ action, productId, items: this.items })
+    })
+  }
+  
+  on(callback) {
+    this.listeners.push(callback)
+  }
+  
+  showNotification(message) {
+    const notification = document.createElement('div')
+    notification.className = 'notification notification--success'
+    notification.textContent = message
+    
+    document.body.appendChild(notification)
+    
+    setTimeout(() =&gt; {
+      notification.classList.add('notification--show')
+    }, 100)
+    
+    setTimeout(() =&gt; {
+      notification.classList.remove('notification--show')
+      setTimeout(() =&gt; notification.remove(), 300)
+    }, 3000)
+  }
+}
+ 
+// 全局愿望清单
+window.Wishlist = new Wishlist()
+</code></pre>
+<h2 id="客户评价系统">客户评价系统</h2><h3 id="1-评价显示组件">1. 评价显示组件</h3><pre><code>&lt;!-- snippets/product-reviews.liquid --&gt;
+&lt;div class="product-reviews" data-product-reviews data-product-id="{{ product.id }}"&gt;
+  &lt;div class="reviews-summary"&gt;
+    &lt;div class="reviews-rating"&gt;
+      &lt;div class="rating-stars"&gt;
+        {% assign rating = product.metafields.reviews.rating | default: 0 %}
+        {% render 'star-rating', rating: rating %}
+      &lt;/div&gt;
+      &lt;span class="rating-average"&gt;{{ rating | round: 1 }}&lt;/span&gt;
+      &lt;span class="rating-count"&gt;({{ product.metafields.reviews.count | default: 0 }} 条评价)&lt;/span&gt;
+    &lt;/div&gt;
+    
+    &lt;button class="btn btn--outline" data-write-review&gt;
+      写评价
+    &lt;/button&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="reviews-list" data-reviews-list&gt;
+    &lt;!-- 评价列表将通过JavaScript加载 --&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="reviews-pagination" data-reviews-pagination style="display: none;"&gt;
+    &lt;!-- 分页控件 --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;!-- 评价表单模态框 --&gt;
+&lt;div class="review-modal" data-review-modal style="display: none;"&gt;
+  &lt;div class="review-modal__overlay"&gt;&lt;/div&gt;
+  &lt;div class="review-modal__content"&gt;
+    &lt;div class="review-modal__header"&gt;
+      &lt;h3&gt;写评价&lt;/h3&gt;
+      &lt;button class="review-modal__close" data-review-modal-close&gt;
+        {% render 'icon-close' %}
+      &lt;/button&gt;
+    &lt;/div&gt;
+    
+    &lt;form class="review-form" data-review-form&gt;
+      &lt;div class="form-group"&gt;
+        &lt;label&gt;评分&lt;/label&gt;
+        &lt;div class="rating-input" data-rating-input&gt;
+          {% for i in (1..5) %}
+            &lt;button type="button" class="rating-star" data-rating="{{ i }}"&gt;
+              ★
+            &lt;/button&gt;
+          {% endfor %}
+        &lt;/div&gt;
+        &lt;input type="hidden" name="rating" data-rating-value required&gt;
+      &lt;/div&gt;
+      
+      &lt;div class="form-group"&gt;
+        &lt;label for="review-title"&gt;评价标题&lt;/label&gt;
+        &lt;input type="text" id="review-title" name="title" required&gt;
+      &lt;/div&gt;
+      
+      &lt;div class="form-group"&gt;
+        &lt;label for="review-content"&gt;评价内容&lt;/label&gt;
+        &lt;textarea id="review-content" name="content" rows="4" required&gt;&lt;/textarea&gt;
+      &lt;/div&gt;
+      
+      &lt;div class="form-group"&gt;
+        &lt;label for="reviewer-name"&gt;您的姓名&lt;/label&gt;
+        &lt;input type="text" id="reviewer-name" name="name" required&gt;
+      &lt;/div&gt;
+      
+      &lt;div class="form-group"&gt;
+        &lt;label for="reviewer-email"&gt;邮箱&lt;/label&gt;
+        &lt;input type="email" id="reviewer-email" name="email" required&gt;
+      &lt;/div&gt;
+      
+      &lt;div class="form-actions"&gt;
+        &lt;button type="submit" class="btn btn--primary"&gt;
+          提交评价
+        &lt;/button&gt;
+        &lt;button type="button" class="btn btn--secondary" data-review-modal-close&gt;
+          取消
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/form&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+class ProductReviews {
+  constructor(element) {
+    this.container = element
+    this.productId = element.dataset.productId
+    this.reviewsList = element.querySelector('[data-reviews-list]')
+    this.writeReviewBtn = element.querySelector('[data-write-review]')
+    this.modal = document.querySelector('[data-review-modal]')
+    this.form = document.querySelector('[data-review-form]')
+    
+    this.currentPage = 1
+    this.reviews = []
+    
+    this.init()
+  }
+  
+  init() {
+    this.loadReviews()
+    this.bindEvents()
+  }
+  
+  bindEvents() {
+    this.writeReviewBtn?.addEventListener('click', () =&gt; {
+      this.openReviewModal()
+    })
+    
+    this.modal?.querySelector('[data-review-modal-close]').addEventListener('click', () =&gt; {
+      this.closeReviewModal()
+    })
+    
+    this.modal?.querySelector('.review-modal__overlay').addEventListener('click', () =&gt; {
+      this.closeReviewModal()
+    })
+    
+    // 评分输入
+    this.modal?.querySelectorAll('[data-rating]').forEach(star =&gt; {
+      star.addEventListener('click', (e) =&gt; {
+        this.setRating(parseInt(e.target.dataset.rating))
+      })
+    })
+    
+    this.form?.addEventListener('submit', (e) =&gt; {
+      e.preventDefault()
+      this.submitReview()
+    })
+  }
+  
+  async loadReviews() {
+    try {
+      // 这里需要集成您选择的评价系统API
+      // 例如：Judge.me, Yotpo, 或自定义评价系统
+      const response = await fetch(`/apps/reviews/api/products/${this.productId}/reviews`)
+      const data = await response.json()
+      
+      this.reviews = data.reviews
+      this.renderReviews()
+      
+    } catch (error) {
+      console.error('加载评价失败:', error)
+    }
+  }
+  
+  renderReviews() {
+    if (this.reviews.length === 0) {
+      this.reviewsList.innerHTML = `
+        &lt;div class="reviews-empty"&gt;
+          &lt;p&gt;暂无评价，成为第一个评价的用户吧！&lt;/p&gt;
+        &lt;/div&gt;
+      `
+      return
+    }
+    
+    const reviewsHtml = this.reviews.map(review =&gt; `
+      &lt;div class="review-item"&gt;
+        &lt;div class="review-header"&gt;
+          &lt;div class="review-rating"&gt;
+            ${this.renderStars(review.rating)}
+          &lt;/div&gt;
+          &lt;div class="review-meta"&gt;
+            &lt;span class="review-author"&gt;${review.author}&lt;/span&gt;
+            &lt;span class="review-date"&gt;${this.formatDate(review.created_at)}&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="review-content"&gt;
+          &lt;h4 class="review-title"&gt;${review.title}&lt;/h4&gt;
+          &lt;p class="review-text"&gt;${review.content}&lt;/p&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="review-actions"&gt;
+          &lt;button class="review-helpful" data-review-helpful="${review.id}"&gt;
+            有帮助 (${review.helpful_count || 0})
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    `).join('')
+    
+    this.reviewsList.innerHTML = reviewsHtml
+  }
+  
+  renderStars(rating) {
+    let stars = ''
+    for (let i = 1; i &lt;= 5; i++) {
+      stars += `&lt;span class="star ${i &lt;= rating ? 'filled' : ''}"&gt;★&lt;/span&gt;`
+    }
+    return stars
+  }
+  
+  openReviewModal() {
+    this.modal.style.display = 'block'
+    document.body.style.overflow = 'hidden'
+  }
+  
+  closeReviewModal() {
+    this.modal.style.display = 'none'
+    document.body.style.overflow = ''
+    this.form.reset()
+    this.resetRating()
+  }
+  
+  setRating(rating) {
+    const stars = this.modal.querySelectorAll('[data-rating]')
+    const ratingInput = this.modal.querySelector('[data-rating-value]')
+    
+    stars.forEach((star, index) =&gt; {
+      star.classList.toggle('active', index &lt; rating)
+    })
+    
+    ratingInput.value = rating
+  }
+  
+  resetRating() {
+    const stars = this.modal.querySelectorAll('[data-rating]')
+    stars.forEach(star =&gt; star.classList.remove('active'))
+    this.modal.querySelector('[data-rating-value]').value = ''
+  }
+  
+  async submitReview() {
+    const formData = new FormData(this.form)
+    
+    try {
+      const response = await fetch('/apps/reviews/api/reviews', {
+        method: 'POST',
+        body: formData
+      })
+      
+      if (response.ok) {
+        this.closeReviewModal()
+        this.showNotification('评价提交成功，审核后将显示')
+        // 重新加载评价
+        this.loadReviews()
+      } else {
+        throw new Error('提交失败')
+      }
+      
+    } catch (error) {
+      this.showNotification('提交失败，请重试', 'error')
+    }
+  }
+  
+  formatDate(dateString) {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('zh-CN')
+  }
+  
+  showNotification(message, type = 'success') {
+    // 显示通知的实现
+    console.log(`${type}: ${message}`)
+  }
+}
+ 
+// 初始化产品评价
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.querySelectorAll('[data-product-reviews]').forEach(reviews =&gt; {
+    new ProductReviews(reviews)
+  })
+})
+&lt;/script&gt;
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>掌握电商功能实现后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/third-party-integrations/">第三方集成</a> - 外部服务集成</li>
+<li><a href="/guides/shopify-handbook/liquid/testing-deployment/">测试和部署</a> - 质量保证流程</li>
+</ol>
+<p>高级电商功能是提升用户体验和转化率的关键！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/code-organization/"><span>上一篇</span><strong>代码组织和结构</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/objects/"><span>下一篇</span><strong>对象和属性</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

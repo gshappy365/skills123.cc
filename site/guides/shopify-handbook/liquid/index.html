@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Liquid 模板语言指南 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Liquid 开发 Liquid 开发指南 Liquid 模板语言指南 本专栏面向 Shopify 主题与分区开发者 ，从环境搭建到上线与排错，覆盖 Liquid 语法、Shopify 对象、OS 2.0 分区架构、性能与安全。示例">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/">
+  <meta property="og:title" content="Liquid 模板语言指南 · Shopify 独立站手册">
+  <meta property="og:description" content="Liquid 开发 Liquid 开发指南 Liquid 模板语言指南 本专栏面向 Shopify 主题与分区开发者 ，从环境搭建到上线与排错，覆盖 Liquid 语法、Shopify 对象、OS 2.0 分区架构、性能与安全。示例">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>Liquid 模板语言指南</h1>
+        <p>Liquid 开发 Liquid 开发指南 Liquid 模板语言指南 本专栏面向 Shopify 主题与分区开发者 ，从环境搭建到上线与排错，覆盖 Liquid 语法、Shopify 对象、OS 2.0 分区架构、性能与安全。示例</p>
+      </header>
+      <div class="article-content"><p>Liquid 开发</p>
+<p>Liquid 开发指南</p>
+<h2 id="liquid-模板语言指南">Liquid 模板语言指南</h2><p><img src="/assets/images/shopify-handbook/4a2200fee2dc26fd.png" alt="Shopify Liquid 模板语言指南" loading="lazy" /></p>
+<p>本专栏面向 <strong>Shopify 主题与分区开发者</strong>，从环境搭建到上线与排错，覆盖 Liquid 语法、Shopify 对象、OS 2.0 分区架构、性能与安全。示例默认面向 <strong>Online Store 2.0</strong>（JSON 模板 + Section），旧版 <code>img_url</code> 等写法会在对应章节标注迁移方式。</p>
+<h2 id="本专栏约定">本专栏约定</h2><table>
+<thead>
+<tr>
+<th>约定项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Shopify Liquid</td>
+<td>在 Shopify 中运行的 Liquid 含官方扩展过滤器与对象，与纯开源 Liquid 文档略有差异，以 shopify.dev Liquid 参考  为准</td>
+</tr>
+<tr>
+<td>图片 URL</td>
+<td>新代码统一使用 image_url（width / height / format），避免使用已弃用的 img_url</td>
+</tr>
+<tr>
+<td>可运行性</td>
+<td>文中代码需在对应模板上下文存在（如 product 仅在产品页、section 仅在 section 内）</td>
+</tr>
+<tr>
+<td>Theme Check</td>
+<td>建议本地启用 Theme Check ，与文档中的规范（如 render 参数、翻译键）对齐</td>
+</tr>
+</tbody></table>
+<h2 id="什么是-liquid">什么是 Liquid？</h2><p>Liquid 由 Shopify 开源，用于在 HTML 中安全地输出数据与控制逻辑：<strong>对象</strong> <code>{{ }}</code>、<strong>标签</strong> <code>{% %}</code>、<strong>过滤器</strong> <code>|</code>。主题中几乎所有 <code>.liquid</code> 文件都依赖它。</p>
+<ul>
+<li><strong>易学</strong>：语法集中，设计师与开发者都能参与</li>
+<li><strong>沙箱</strong>：不能直接执行任意服务端代码，降低模板注入风险</li>
+<li><strong>生态</strong>：除 Shopify 外，也被 Jekyll 等工具使用；本专栏仅讨论 <strong>Shopify 主题场景</strong></li>
+</ul>
+<p><strong>必读官方入口：</strong> <a href="https://shopify.dev/docs/api/liquid/basics" target="_blank" rel="noreferrer">Liquid 基础（Shopify）</a> </p>
+<h2 id="全章导航-按学习顺序">全章导航（按学习顺序）</h2><table>
+<thead>
+<tr>
+<th>模块</th>
+<th>文章</th>
+<th>你将掌握</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>环境与工作流</td>
+<td>开发环境搭建、Shopify CLI、主题开发工作流程、开发工具</td>
+<td>本地跑店、拉主题、调试与协作</td>
+</tr>
+<tr>
+<td>AI 与工程化</td>
+<td>AI 辅助与主题工程化、主题工程化：目录与 npm 脚本</td>
+<td>AI 与流程；scripts/、脱敏 package.json、Husky / Theme Check</td>
+</tr>
+<tr>
+<td>Liquid 基础</td>
+<td>快速入门、语法基础、变量、数据类型、运算符</td>
+<td>输出、条件、循环、赋值与类型</td>
+</tr>
+<tr>
+<td>核心概念</td>
+<td>对象、过滤器、标签</td>
+<td>对象图、常用过滤器、控制流</td>
+</tr>
+<tr>
+<td>Shopify 对象</td>
+<td>Shopify 对象、全局对象、产品、客户、购物车</td>
+<td>各模板可用对象与典型字段</td>
+</tr>
+<tr>
+<td>主题实战</td>
+<td>布局与模板、自定义分区、片段、主题设置、响应式</td>
+<td>layout、section schema、snippet 参数</td>
+</tr>
+<tr>
+<td>进阶与性能</td>
+<td>高级技巧、Ajax 与 Liquid、性能优化、本地化</td>
+<td>片段性能、Section Rendering、图片与 CLS</td>
+</tr>
+<tr>
+<td>电商与集成</td>
+<td>电商功能、第三方集成</td>
+<td>购物车、结账周边、脚本与 App 块注意点</td>
+</tr>
+<tr>
+<td>规范与交付</td>
+<td>最佳实践、主题开发实践、代码组织、安全、测试与部署</td>
+<td>可维护结构、XSS、上线检查清单</td>
+</tr>
+<tr>
+<td>示例与总结</td>
+<td>代码示例、常用模式、定制案例、项目实战总结</td>
+<td>可复制模式与踩坑记录</td>
+</tr>
+<tr>
+<td>排错与资源</td>
+<td>问题排查、学习资源</td>
+<td>调试手法与外链索引</td>
+</tr>
+</tbody></table>
+<h2 id="推荐学习路径">推荐学习路径</h2><ol>
+<li><strong>第 1 周</strong>：环境 + CLI + <a href="/guides/shopify-handbook/liquid/getting-started/">快速入门</a> + <a href="/guides/shopify-handbook/liquid/syntax/">语法基础</a></li>
+<li><strong>第 2 周</strong>：<a href="/guides/shopify-handbook/liquid/filters/">过滤器</a> + <a href="/guides/shopify-handbook/liquid/tags/">标签</a> + <a href="/guides/shopify-handbook/liquid/shopify-objects/">Shopify 对象</a></li>
+<li><strong>第 3 周起</strong>：<a href="/guides/shopify-handbook/liquid/custom-sections/">自定义分区</a> + <a href="/guides/shopify-handbook/liquid/theme-settings/">主题设置</a> + <a href="/guides/shopify-handbook/liquid/performance-optimization/">性能优化</a>，并行 <a href="/guides/shopify-handbook/liquid/best-practices/">最佳实践</a> 与 <a href="/guides/shopify-handbook/liquid/ai-theme-engineering/">AI 辅助与主题工程化</a></li>
+</ol>
+<h2 id="为什么学-liquid">为什么学 Liquid？</h2><p>Shopify storefront 的页面由主题渲染：商家改装修、开发者做定制，都离不开 Liquid 与 JSON 模板。掌握 Liquid + Section Schema，才能稳定交付 <strong>可配置、可升级、可审查</strong> 的主题。</p>
+<h2 id="核心语法速览">核心语法速览</h2><p><strong>对象（输出）</strong></p>
+<pre><code>{{ product.title }}
+</code></pre>
+<p><strong>标签（逻辑）</strong></p>
+<pre><code>{% if product.available %}
+  &lt;span&gt;有货&lt;/span&gt;
+{% endif %}
+</code></pre>
+<p><strong>过滤器（加工输出）</strong></p>
+<pre><code>{{ product.price | money }}
+{{ product.featured_image | image_url: width: 600 | image_tag: loading: "lazy", alt: product.title }}
+</code></pre>
+<h2 id="开始学习">开始学习</h2><p>建议从 <a href="/guides/shopify-handbook/liquid/getting-started/">Liquid 快速入门</a> 进入，按上表顺序阅读；遇到具体对象字段时查阅 <a href="/guides/shopify-handbook/liquid/shopify-objects/">Shopify 对象</a> 与各业务对象章节。</p>
+<h2 id="外部参考">外部参考</h2><ul>
+<li><a href="https://shopify.dev/docs/api/liquid" target="_blank" rel="noreferrer">Shopify Liquid 文档</a> </li>
+<li><a href="https://shopify.github.io/liquid/" target="_blank" rel="noreferrer">Liquid 语法参考（开源版）</a> </li>
+<li><a href="https://shopify.dev/docs/themes" target="_blank" rel="noreferrer">主题开发</a> </li>
+<li><a href="https://shopify.dev/docs/themes/tools/theme-check" target="_blank" rel="noreferrer">Theme Check</a></li>
+</ul>
+<p> </p>
+<h2 id="反馈">反馈</h2><p>欢迎通过仓库 Issue 或内部渠道反馈错漏、希望补充的章节标题，便于持续修订本专栏与示例代码。</p>
+<p>最后更新时间：</p>
+<p>2026年6月27日</p>
+<p><a href="/guides/shopify-handbook/liquid/environment-setup/">开发环境搭建</a></p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/getting-started/"><span>上一篇</span><strong>Liquid 快速入门</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/performance-optimization/"><span>下一篇</span><strong>Liquid 性能优化</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

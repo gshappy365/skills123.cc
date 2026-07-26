@@ -1,0 +1,945 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>自定义代码片段开发 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="自定义代码片段开发 代码片段 (Snippets) 是 Shopify 主题开发中创建可复用组件的核心机制。本指南将详细介绍如何开发高质量、可维护的自定义代码片段。 基础组件开发 1\. 产品卡片组件 2\. 价格显示组件 3\. ">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/custom-snippets/">
+  <meta property="og:title" content="自定义代码片段开发 · Shopify 独立站手册">
+  <meta property="og:description" content="自定义代码片段开发 代码片段 (Snippets) 是 Shopify 主题开发中创建可复用组件的核心机制。本指南将详细介绍如何开发高质量、可维护的自定义代码片段。 基础组件开发 1\. 产品卡片组件 2\. 价格显示组件 3\. ">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>自定义代码片段开发</h1>
+        <p>自定义代码片段开发 代码片段 (Snippets) 是 Shopify 主题开发中创建可复用组件的核心机制。本指南将详细介绍如何开发高质量、可维护的自定义代码片段。 基础组件开发 1\. 产品卡片组件 2\. 价格显示组件 3\. </p>
+      </header>
+      <div class="article-content"><h2 id="自定义代码片段开发">自定义代码片段开发</h2><p>代码片段 (Snippets) 是 Shopify 主题开发中创建可复用组件的核心机制。本指南将详细介绍如何开发高质量、可维护的自定义代码片段。</p>
+<h2 id="基础组件开发">基础组件开发</h2><h3 id="1-产品卡片组件">1. 产品卡片组件</h3><pre><code>&lt;!-- snippets/product-card.liquid --&gt;
+{% comment %}
+  产品卡片组件
+  
+  参数:
+  - product: 产品对象 (必需)
+  - card_style: 卡片样式 (可选: 'default', 'minimal', 'detailed')
+  - image_ratio: 图片比例 (可选: 'square', 'portrait', 'landscape')
+  - show_vendor: 是否显示品牌 (可选: true/false)
+  - show_badge: 是否显示标签 (可选: true/false)
+  - lazy_load: 是否懒加载 (可选: true/false)
+{% endcomment %}
+ 
+{% assign card_style = card_style | default: 'default' %}
+{% assign image_ratio = image_ratio | default: 'square' %}
+{% assign show_vendor = show_vendor | default: false %}
+{% assign show_badge = show_badge | default: true %}
+{% assign lazy_load = lazy_load | default: true %}
+ 
+&lt;article class="product-card product-card--{{ card_style }}" data-product-id="{{ product.id }}"&gt;
+  &lt;div class="product-card__image-wrapper"&gt;
+    &lt;a href="{{ product.url }}" class="product-card__link" aria-label="{{ product.title }}"&gt;
+      {% if product.featured_image %}
+        &lt;div class="product-card__image product-card__image--{{ image_ratio }}"&gt;
+          {% if lazy_load %}
+            &lt;img data-src="{{ product.featured_image | image_url: width: 400, height: 400 }}"
+                 alt="{{ product.featured_image.alt | default: product.title }}"
+                 class="product-card__img lazyload"&gt;
+          {% else %}
+            &lt;img src="{{ product.featured_image | image_url: width: 400, height: 400 }}"
+                 alt="{{ product.featured_image.alt | default: product.title }}"
+                 class="product-card__img"&gt;
+          {% endif %}
+          
+          &lt;!-- 悬停图片 --&gt;
+          {% if product.images[1] and card_style != 'minimal' %}
+            &lt;img src="{{ product.images[1] | image_url: width: 400, height: 400 }}"
+                 alt="{{ product.title }}"
+                 class="product-card__img product-card__img--hover"&gt;
+          {% endif %}
+        &lt;/div&gt;
+      {% else %}
+        &lt;div class="product-card__placeholder"&gt;
+          {% render 'icon-placeholder' %}
+        &lt;/div&gt;
+      {% endif %}
+      
+      &lt;!-- 产品标签 --&gt;
+      {% if show_badge %}
+        {% render 'product-badges', product: product %}
+      {% endif %}
+    &lt;/a&gt;
+    
+    &lt;!-- 快速操作 --&gt;
+    {% unless card_style == 'minimal' %}
+      &lt;div class="product-card__actions"&gt;
+        {% if product.available and product.variants.size == 1 %}
+          &lt;button type="button" 
+                  class="quick-add-btn"
+                  data-variant-id="{{ product.first_available_variant.id }}"&gt;
+            {% render 'icon-cart' %}
+          &lt;/button&gt;
+        {% endif %}
+        
+        &lt;button type="button" 
+                class="wishlist-btn"
+                data-product-id="{{ product.id }}"&gt;
+          {% render 'icon-heart' %}
+        &lt;/button&gt;
+      &lt;/div&gt;
+    {% endunless %}
+  &lt;/div&gt;
+  
+  &lt;div class="product-card__info"&gt;
+    {% if show_vendor and product.vendor %}
+      &lt;p class="product-card__vendor"&gt;{{ product.vendor }}&lt;/p&gt;
+    {% endif %}
+    
+    &lt;h3 class="product-card__title"&gt;
+      &lt;a href="{{ product.url }}"&gt;{{ product.title }}&lt;/a&gt;
+    &lt;/h3&gt;
+    
+    &lt;!-- 价格显示 --&gt;
+    &lt;div class="product-card__price"&gt;
+      {% render 'price', product: product %}
+    &lt;/div&gt;
+    
+    &lt;!-- 变体选项 --&gt;
+    {% if card_style == 'detailed' and product.variants.size &gt; 1 %}
+      {% render 'product-variant-pills', product: product %}
+    {% endif %}
+    
+    &lt;!-- 评分 --&gt;
+    {% if product.metafields.reviews.rating and card_style != 'minimal' %}
+      {% render 'star-rating', rating: product.metafields.reviews.rating %}
+    {% endif %}
+  &lt;/div&gt;
+&lt;/article&gt;
+</code></pre>
+<h3 id="2-价格显示组件">2. 价格显示组件</h3><pre><code>&lt;!-- snippets/price.liquid --&gt;
+{% comment %}
+  价格显示组件
+  
+  参数:
+  - product: 产品对象 (必需)
+  - variant: 变体对象 (可选，优先于产品价格)
+  - size: 显示尺寸 (可选: 'small', 'medium', 'large')
+  - show_currency: 是否显示货币符号 (可选: true/false)
+{% endcomment %}
+ 
+{% assign target = variant | default: product %}
+{% assign size = size | default: 'medium' %}
+{% assign show_currency = show_currency | default: true %}
+ 
+&lt;div class="price price--{{ size }}" data-price-container&gt;
+  {% if target.compare_at_price &gt; target.price %}
+    &lt;!-- 促销价格 --&gt;
+    &lt;span class="price__sale"&gt;
+      {% if show_currency %}
+        {{ target.price | money }}
+      {% else %}
+        {{ target.price | money_without_currency }}
+      {% endif %}
+    &lt;/span&gt;
+    &lt;span class="price__compare"&gt;
+      {% if show_currency %}
+        {{ target.compare_at_price | money }}
+      {% else %}
+        {{ target.compare_at_price | money_without_currency }}
+      {% endif %}
+    &lt;/span&gt;
+    
+    &lt;!-- 折扣百分比 --&gt;
+    {% assign discount = target.compare_at_price | minus: target.price %}
+    {% assign discount_percent = discount | times: 100 | divided_by: target.compare_at_price | round %}
+    &lt;span class="price__badge"&gt;-{{ discount_percent }}%&lt;/span&gt;
+  {% else %}
+    &lt;!-- 常规价格 --&gt;
+    &lt;span class="price__regular"&gt;
+      {% if show_currency %}
+        {{ target.price | money }}
+      {% else %}
+        {{ target.price | money_without_currency }}
+      {% endif %}
+    &lt;/span&gt;
+  {% endif %}
+  
+  &lt;!-- 单位价格 --&gt;
+  {% if target.unit_price_measurement %}
+    &lt;div class="price__unit"&gt;
+      &lt;span class="price__unit-price"&gt;
+        {{ target.unit_price | money }}
+      &lt;/span&gt;
+      &lt;span class="price__unit-measure"&gt;
+        / {{ target.unit_price_measurement.reference_value }}{{ target.unit_price_measurement.reference_unit }}
+      &lt;/span&gt;
+    &lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="3-星级评分组件">3. 星级评分组件</h3><pre><code>&lt;!-- snippets/star-rating.liquid --&gt;
+{% comment %}
+  星级评分组件
+  
+  参数:
+  - rating: 评分值 (必需, 0-5)
+  - max_rating: 最大评分 (可选, 默认: 5)
+  - show_text: 是否显示文字 (可选: true/false)
+  - size: 显示尺寸 (可选: 'small', 'medium', 'large')
+  - color: 星星颜色 (可选: 'gold', 'red', 'blue')
+{% endcomment %}
+ 
+{% assign rating = rating | default: 0 %}
+{% assign max_rating = max_rating | default: 5 %}
+{% assign show_text = show_text | default: false %}
+{% assign size = size | default: 'medium' %}
+{% assign color = color | default: 'gold' %}
+ 
+&lt;div class="star-rating star-rating--{{ size }} star-rating--{{ color }}" 
+     role="img" 
+     aria-label="评分 {{ rating }} 星，满分 {{ max_rating }} 星"&gt;
+  
+  &lt;div class="star-rating__stars" aria-hidden="true"&gt;
+    {% for i in (1..max_rating) %}
+      {% if rating &gt;= i %}
+        &lt;span class="star star--filled"&gt;★&lt;/span&gt;
+      {% elsif rating &gt; i | minus: 1 %}
+        &lt;span class="star star--half"&gt;★&lt;/span&gt;
+      {% else %}
+        &lt;span class="star star--empty"&gt;☆&lt;/span&gt;
+      {% endif %}
+    {% endfor %}
+  &lt;/div&gt;
+  
+  {% if show_text %}
+    &lt;span class="star-rating__text"&gt;
+      {{ rating | round: 1 }}/{{ max_rating }}
+    &lt;/span&gt;
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h2 id="交互式组件">交互式组件</h2><h3 id="1-变体选择器">1. 变体选择器</h3><pre><code>&lt;!-- snippets/variant-selector.liquid --&gt;
+{% comment %}
+  产品变体选择器
+  
+  参数:
+  - product: 产品对象 (必需)
+  - option: 选项对象 (必需)
+  - option_index: 选项索引 (必需)
+  - selector_type: 选择器类型 (可选: 'dropdown', 'buttons', 'swatches')
+{% endcomment %}
+ 
+{% assign selector_type = selector_type | default: 'buttons' %}
+ 
+&lt;div class="variant-selector" data-option-index="{{ option_index }}"&gt;
+  &lt;label class="variant-selector__label"&gt;{{ option.name }}&lt;/label&gt;
+  
+  {% case selector_type %}
+    {% when 'dropdown' %}
+      &lt;select class="variant-selector__dropdown" data-option-selector&gt;
+        {% for value in option.values %}
+          &lt;option value="{{ value }}" 
+                  {% if option.selected_value == value %}selected{% endif %}&gt;
+            {{ value }}
+          &lt;/option&gt;
+        {% endfor %}
+      &lt;/select&gt;
+      
+    {% when 'buttons' %}
+      &lt;div class="variant-selector__buttons"&gt;
+        {% for value in option.values %}
+          &lt;button type="button" 
+                  class="variant-selector__button {% if option.selected_value == value %}active{% endif %}"
+                  data-option-value="{{ value }}"
+                  data-option-selector&gt;
+            {{ value }}
+          &lt;/button&gt;
+        {% endfor %}
+      &lt;/div&gt;
+      
+    {% when 'swatches' %}
+      &lt;div class="variant-selector__swatches"&gt;
+        {% for value in option.values %}
+          {% assign color_image = value | handle | append: '.png' %}
+          &lt;label class="variant-selector__swatch"&gt;
+            &lt;input type="radio" 
+                   name="option-{{ option_index }}"
+                   value="{{ value }}"
+                   {% if option.selected_value == value %}checked{% endif %}
+                   data-option-selector&gt;
+            &lt;span class="variant-selector__swatch-display"
+                  style="background-color: {{ value | handle }}; background-image: url('{{ color_image | asset_img_url: '50x50' }}');"
+                  title="{{ value }}"&gt;
+              &lt;span class="visually-hidden"&gt;{{ value }}&lt;/span&gt;
+            &lt;/span&gt;
+          &lt;/label&gt;
+        {% endfor %}
+      &lt;/div&gt;
+  {% endcase %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="2-数量选择器">2. 数量选择器</h3><pre><code>&lt;!-- snippets/quantity-selector.liquid --&gt;
+{% comment %}
+  数量选择器组件
+  
+  参数:
+  - quantity: 初始数量 (可选, 默认: 1)
+  - min: 最小数量 (可选, 默认: 1)
+  - max: 最大数量 (可选)
+  - step: 步长 (可选, 默认: 1)
+  - variant_id: 变体ID (可选，用于库存检查)
+{% endcomment %}
+ 
+{% assign quantity = quantity | default: 1 %}
+{% assign min = min | default: 1 %}
+{% assign step = step | default: 1 %}
+ 
+&lt;div class="quantity-selector" data-quantity-selector&gt;
+  &lt;label for="quantity-{{ section.id }}" class="quantity-selector__label"&gt;
+    数量
+  &lt;/label&gt;
+  
+  &lt;div class="quantity-selector__input-wrapper"&gt;
+    &lt;button type="button" 
+            class="quantity-selector__button quantity-selector__button--minus"
+            data-quantity-change="decrease"
+            aria-label="减少数量"&gt;
+      {% render 'icon-minus' %}
+    &lt;/button&gt;
+    
+    &lt;input type="number" 
+           id="quantity-{{ section.id }}"
+           class="quantity-selector__input"
+           name="quantity"
+           value="{{ quantity }}"
+           min="{{ min }}"
+           {% if max %}max="{{ max }}"{% endif %}
+           step="{{ step }}"
+           data-quantity-input
+           aria-label="商品数量"&gt;
+    
+    &lt;button type="button" 
+            class="quantity-selector__button quantity-selector__button--plus"
+            data-quantity-change="increase"
+            aria-label="增加数量"&gt;
+      {% render 'icon-plus' %}
+    &lt;/button&gt;
+  &lt;/div&gt;
+  
+  {% if variant_id %}
+    &lt;div class="quantity-selector__stock" data-stock-info="{{ variant_id }}"&gt;&lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;
+ 
+&lt;script&gt;
+// 数量选择器功能
+class QuantitySelector {
+  constructor(element) {
+    this.container = element
+    this.input = element.querySelector('[data-quantity-input]')
+    this.decreaseBtn = element.querySelector('[data-quantity-change="decrease"]')
+    this.increaseBtn = element.querySelector('[data-quantity-change="increase"]')
+    
+    this.init()
+  }
+  
+  init() {
+    this.decreaseBtn?.addEventListener('click', () =&gt; this.decrease())
+    this.increaseBtn?.addEventListener('click', () =&gt; this.increase())
+    this.input?.addEventListener('change', () =&gt; this.validate())
+  }
+  
+  decrease() {
+    const currentValue = parseInt(this.input.value)
+    const minValue = parseInt(this.input.min)
+    const step = parseInt(this.input.step) || 1
+    
+    if (currentValue &gt; minValue) {
+      this.input.value = Math.max(currentValue - step, minValue)
+      this.input.dispatchEvent(new Event('change'))
+    }
+  }
+  
+  increase() {
+    const currentValue = parseInt(this.input.value)
+    const maxValue = this.input.max ? parseInt(this.input.max) : Infinity
+    const step = parseInt(this.input.step) || 1
+    
+    if (currentValue &lt; maxValue) {
+      this.input.value = Math.min(currentValue + step, maxValue)
+      this.input.dispatchEvent(new Event('change'))
+    }
+  }
+  
+  validate() {
+    const value = parseInt(this.input.value)
+    const min = parseInt(this.input.min)
+    const max = this.input.max ? parseInt(this.input.max) : Infinity
+    
+    if (value &lt; min) {
+      this.input.value = min
+    } else if (value &gt; max) {
+      this.input.value = max
+    }
+    
+    this.updateButtons()
+  }
+  
+  updateButtons() {
+    const value = parseInt(this.input.value)
+    const min = parseInt(this.input.min)
+    const max = this.input.max ? parseInt(this.input.max) : Infinity
+    
+    this.decreaseBtn.disabled = value &lt;= min
+    this.increaseBtn.disabled = value &gt;= max
+  }
+}
+ 
+// 初始化所有数量选择器
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.querySelectorAll('[data-quantity-selector]').forEach(selector =&gt; {
+    new QuantitySelector(selector)
+  })
+})
+&lt;/script&gt;
+</code></pre>
+<h3 id="3-图片画廊组件">3. 图片画廊组件</h3><pre><code>&lt;!-- snippets/product-gallery.liquid --&gt;
+{% comment %}
+  产品图片画廊组件
+  
+  参数:
+  - product: 产品对象 (必需)
+  - featured_media: 特色媒体 (可选)
+  - enable_zoom: 是否启用放大 (可选: true/false)
+  - thumbnail_position: 缩略图位置 (可选: 'bottom', 'left', 'right')
+{% endcomment %}
+ 
+{% assign enable_zoom = enable_zoom | default: true %}
+{% assign thumbnail_position = thumbnail_position | default: 'bottom' %}
+ 
+&lt;div class="product-gallery" data-product-gallery&gt;
+  &lt;!-- 主图显示区域 --&gt;
+  &lt;div class="product-gallery__main"&gt;
+    {% if product.featured_media %}
+      &lt;div class="product-gallery__media" data-media-container&gt;
+        {% case product.featured_media.media_type %}
+          {% when 'image' %}
+            &lt;img src="{{ product.featured_media | image_url: width: 800, height: 800 }}"
+                 alt="{{ product.featured_media.alt | default: product.title }}"
+                 class="product-gallery__image"
+                 data-main-image
+                 {% if enable_zoom %}data-zoom="{{ product.featured_media | image_url: width: 1600, height: 1600 }}"{% endif %}&gt;
+          
+          {% when 'video' %}
+            &lt;video class="product-gallery__video"
+                   controls
+                   data-main-video&gt;
+              &lt;source src="{{ product.featured_media.sources[0].url }}" type="{{ product.featured_media.sources[0].mime_type }}"&gt;
+            &lt;/video&gt;
+          
+          {% when 'external_video' %}
+            &lt;div class="product-gallery__external-video"&gt;
+              {{ product.featured_media | external_video_tag }}
+            &lt;/div&gt;
+          
+          {% when 'model' %}
+            &lt;div class="product-gallery__model"&gt;
+              {{ product.featured_media | model_viewer_tag }}
+            &lt;/div&gt;
+        {% endcase %}
+      &lt;/div&gt;
+    {% endif %}
+    
+    &lt;!-- 放大镜功能 --&gt;
+    {% if enable_zoom %}
+      &lt;div class="product-gallery__zoom-container" data-zoom-container style="display: none;"&gt;&lt;/div&gt;
+    {% endif %}
+  &lt;/div&gt;
+  
+  &lt;!-- 缩略图 --&gt;
+  {% if product.media.size &gt; 1 %}
+    &lt;div class="product-gallery__thumbnails product-gallery__thumbnails--{{ thumbnail_position }}"&gt;
+      {% for media in product.media %}
+        &lt;button type="button" 
+                class="product-gallery__thumbnail {% if forloop.first %}active{% endif %}"
+                data-media-index="{{ forloop.index0 }}"
+                data-media-type="{{ media.media_type }}"
+                aria-label="查看 {{ media.alt | default: product.title }}"&gt;
+          
+          {% case media.media_type %}
+            {% when 'image' %}
+              &lt;img src="{{ media.preview_image | image_url: width: 100, height: 100 }}"
+                   alt="{{ media.alt | default: product.title }}"
+                   class="product-gallery__thumbnail-image"&gt;
+            
+            {% when 'video' %}
+              &lt;img src="{{ media.preview_image | image_url: width: 100, height: 100 }}"
+                   alt="{{ media.alt | default: product.title }}"
+                   class="product-gallery__thumbnail-image"&gt;
+              &lt;span class="product-gallery__media-icon"&gt;{% render 'icon-play' %}&lt;/span&gt;
+            
+            {% when 'external_video' %}
+              &lt;img src="{{ media.preview_image | image_url: width: 100, height: 100 }}"
+                   alt="{{ media.alt | default: product.title }}"
+                   class="product-gallery__thumbnail-image"&gt;
+              &lt;span class="product-gallery__media-icon"&gt;{% render 'icon-play' %}&lt;/span&gt;
+            
+            {% when 'model' %}
+              &lt;img src="{{ media.preview_image | image_url: width: 100, height: 100 }}"
+                   alt="{{ media.alt | default: product.title }}"
+                   class="product-gallery__thumbnail-image"&gt;
+              &lt;span class="product-gallery__media-icon"&gt;{% render 'icon-3d' %}&lt;/span&gt;
+          {% endcase %}
+        &lt;/button&gt;
+      {% endfor %}
+    &lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;
+ 
+&lt;script&gt;
+// 产品画廊功能
+class ProductGallery {
+  constructor(element) {
+    this.gallery = element
+    this.mediaContainer = element.querySelector('[data-media-container]')
+    this.thumbnails = element.querySelectorAll('[data-media-index]')
+    this.currentMediaIndex = 0
+    
+    this.init()
+  }
+  
+  init() {
+    this.thumbnails.forEach((thumbnail, index) =&gt; {
+      thumbnail.addEventListener('click', () =&gt; this.switchMedia(index))
+    })
+    
+    // 键盘导航
+    this.gallery.addEventListener('keydown', (e) =&gt; {
+      if (e.key === 'ArrowLeft') {
+        this.previousMedia()
+      } else if (e.key === 'ArrowRight') {
+        this.nextMedia()
+      }
+    })
+  }
+  
+  switchMedia(index) {
+    if (index === this.currentMediaIndex) return
+    
+    const thumbnail = this.thumbnails[index]
+    const mediaType = thumbnail.dataset.mediaType
+    
+    // 更新活跃缩略图
+    this.thumbnails.forEach(thumb =&gt; thumb.classList.remove('active'))
+    thumbnail.classList.add('active')
+    
+    // 更新主媒体
+    this.updateMainMedia(index, mediaType)
+    this.currentMediaIndex = index
+  }
+  
+  updateMainMedia(index, mediaType) {
+    // 这里需要根据媒体类型更新主显示区域
+    // 实际实现会更复杂，包括图片切换动画等
+    const mediaData = window.productMedia[index]
+    
+    switch(mediaType) {
+      case 'image':
+        this.displayImage(mediaData)
+        break
+      case 'video':
+        this.displayVideo(mediaData)
+        break
+      case 'external_video':
+        this.displayExternalVideo(mediaData)
+        break
+      case 'model':
+        this.displayModel(mediaData)
+        break
+    }
+  }
+  
+  previousMedia() {
+    const newIndex = this.currentMediaIndex &gt; 0 ? 
+      this.currentMediaIndex - 1 : 
+      this.thumbnails.length - 1
+    this.switchMedia(newIndex)
+  }
+  
+  nextMedia() {
+    const newIndex = this.currentMediaIndex &lt; this.thumbnails.length - 1 ? 
+      this.currentMediaIndex + 1 : 
+      0
+    this.switchMedia(newIndex)
+  }
+}
+ 
+// 初始化产品画廊
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.querySelectorAll('[data-product-gallery]').forEach(gallery =&gt; {
+    new ProductGallery(gallery)
+  })
+})
+&lt;/script&gt;
+</code></pre>
+<h2 id="功能性组件">功能性组件</h2><h3 id="1-搜索建议组件">1. 搜索建议组件</h3><pre><code>&lt;!-- snippets/search-suggestions.liquid --&gt;
+{% comment %}
+  搜索建议组件
+  
+  参数:
+  - max_suggestions: 最大建议数量 (可选, 默认: 6)
+  - show_products: 是否显示产品建议 (可选: true/false)
+  - show_collections: 是否显示集合建议 (可选: true/false)
+  - show_pages: 是否显示页面建议 (可选: true/false)
+{% endcomment %}
+ 
+{% assign max_suggestions = max_suggestions | default: 6 %}
+{% assign show_products = show_products | default: true %}
+{% assign show_collections = show_collections | default: true %}
+{% assign show_pages = show_pages | default: false %}
+ 
+&lt;div class="search-suggestions" data-search-suggestions&gt;
+  &lt;div class="search-suggestions__content" data-suggestions-content&gt;
+    &lt;!-- 搜索建议内容将通过 JavaScript 动态加载 --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+class SearchSuggestions {
+  constructor(element) {
+    this.container = element
+    this.content = element.querySelector('[data-suggestions-content]')
+    this.searchInput = null
+    this.debounceTimer = null
+    
+    this.init()
+  }
+  
+  init() {
+    // 查找关联的搜索输入框
+    this.searchInput = document.querySelector('[data-search-input]')
+    
+    if (this.searchInput) {
+      this.searchInput.addEventListener('input', (e) =&gt; {
+        this.handleInput(e.target.value)
+      })
+      
+      this.searchInput.addEventListener('focus', () =&gt; {
+        this.show()
+      })
+      
+      this.searchInput.addEventListener('blur', () =&gt; {
+        setTimeout(() =&gt; this.hide(), 200)
+      })
+    }
+  }
+  
+  handleInput(query) {
+    clearTimeout(this.debounceTimer)
+    
+    if (query.length &lt; 2) {
+      this.hide()
+      return
+    }
+    
+    this.debounceTimer = setTimeout(() =&gt; {
+      this.fetchSuggestions(query)
+    }, 300)
+  }
+  
+  async fetchSuggestions(query) {
+    try {
+      const response = await fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&amp;resources[type]=product,collection,page&amp;resources[limit]={{ max_suggestions }}`)
+      const data = await response.json()
+      
+      this.renderSuggestions(data.resources.results)
+      this.show()
+      
+    } catch (error) {
+      console.error('获取搜索建议失败:', error)
+    }
+  }
+  
+  renderSuggestions(results) {
+    let html = ''
+    
+    {% if show_products %}
+    if (results.products &amp;&amp; results.products.length &gt; 0) {
+      html += '&lt;div class="suggestions-section"&gt;'
+      html += '&lt;h4 class="suggestions-title"&gt;产品&lt;/h4&gt;'
+      html += '&lt;ul class="suggestions-list"&gt;'
+      
+      results.products.forEach(product =&gt; {
+        html += `
+          &lt;li class="suggestions-item"&gt;
+            &lt;a href="${product.url}" class="suggestions-link"&gt;
+              ${product.featured_image ? `&lt;img src="${product.featured_image.url}&amp;width=50" alt="${product.title}" class="suggestions-image"&gt;` : ''}
+              &lt;div class="suggestions-info"&gt;
+                &lt;span class="suggestions-text"&gt;${product.title}&lt;/span&gt;
+                &lt;span class="suggestions-price"&gt;${this.formatPrice(product.price)}&lt;/span&gt;
+              &lt;/div&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+        `
+      })
+      
+      html += '&lt;/ul&gt;&lt;/div&gt;'
+    }
+    {% endif %}
+    
+    {% if show_collections %}
+    if (results.collections &amp;&amp; results.collections.length &gt; 0) {
+      html += '&lt;div class="suggestions-section"&gt;'
+      html += '&lt;h4 class="suggestions-title"&gt;分类&lt;/h4&gt;'
+      html += '&lt;ul class="suggestions-list"&gt;'
+      
+      results.collections.forEach(collection =&gt; {
+        html += `
+          &lt;li class="suggestions-item"&gt;
+            &lt;a href="${collection.url}" class="suggestions-link"&gt;
+              ${collection.featured_image ? `&lt;img src="${collection.featured_image.url}&amp;width=50" alt="${collection.title}" class="suggestions-image"&gt;` : ''}
+              &lt;span class="suggestions-text"&gt;${collection.title}&lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+        `
+      })
+      
+      html += '&lt;/ul&gt;&lt;/div&gt;'
+    }
+    {% endif %}
+    
+    {% if show_pages %}
+    if (results.pages &amp;&amp; results.pages.length &gt; 0) {
+      html += '&lt;div class="suggestions-section"&gt;'
+      html += '&lt;h4 class="suggestions-title"&gt;页面&lt;/h4&gt;'
+      html += '&lt;ul class="suggestions-list"&gt;'
+      
+      results.pages.forEach(page =&gt; {
+        html += `
+          &lt;li class="suggestions-item"&gt;
+            &lt;a href="${page.url}" class="suggestions-link"&gt;
+              &lt;span class="suggestions-text"&gt;${page.title}&lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+        `
+      })
+      
+      html += '&lt;/ul&gt;&lt;/div&gt;'
+    }
+    {% endif %}
+    
+    this.content.innerHTML = html
+  }
+  
+  formatPrice(priceInCents) {
+    return new Intl.NumberFormat('zh-CN', {
+      style: 'currency',
+      currency: 'CNY'
+    }).format(priceInCents / 100)
+  }
+  
+  show() {
+    this.container.classList.add('active')
+  }
+  
+  hide() {
+    this.container.classList.remove('active')
+  }
+}
+ 
+// 初始化搜索建议
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  const suggestions = document.querySelector('[data-search-suggestions]')
+  if (suggestions) {
+    new SearchSuggestions(suggestions)
+  }
+})
+&lt;/script&gt;
+</code></pre>
+<h3 id="2-愿望清单组件">2. 愿望清单组件</h3><pre><code>&lt;!-- snippets/wishlist-button.liquid --&gt;
+{% comment %}
+  愿望清单按钮组件
+  
+  参数:
+  - product: 产品对象 (必需)
+  - style: 按钮样式 (可选: 'icon', 'text', 'both')
+  - size: 按钮尺寸 (可选: 'small', 'medium', 'large')
+{% endcomment %}
+ 
+{% assign style = style | default: 'icon' %}
+{% assign size = size | default: 'medium' %}
+ 
+&lt;button type="button" 
+        class="wishlist-btn wishlist-btn--{{ style }} wishlist-btn--{{ size }}"
+        data-wishlist-toggle="{{ product.id }}"
+        data-product-handle="{{ product.handle }}"
+        aria-label="{% if style == 'icon' %}添加到愿望清单{% endif %}"&gt;
+  
+  &lt;span class="wishlist-btn__icon" data-wishlist-icon&gt;
+    {% render 'icon-heart' %}
+  &lt;/span&gt;
+  
+  {% if style == 'text' or style == 'both' %}
+    &lt;span class="wishlist-btn__text" data-wishlist-text&gt;
+      收藏
+    &lt;/span&gt;
+  {% endif %}
+&lt;/button&gt;
+ 
+&lt;script&gt;
+class WishlistButton {
+  constructor(element) {
+    this.button = element
+    this.productId = element.dataset.wishlistToggle
+    this.productHandle = element.dataset.productHandle
+    this.icon = element.querySelector('[data-wishlist-icon]')
+    this.text = element.querySelector('[data-wishlist-text]')
+    
+    this.init()
+  }
+  
+  init() {
+    this.button.addEventListener('click', () =&gt; {
+      this.toggle()
+    })
+    
+    // 检查初始状态
+    this.updateState()
+  }
+  
+  toggle() {
+    const wishlist = this.getWishlist()
+    const isInWishlist = wishlist.includes(this.productId)
+    
+    if (isInWishlist) {
+      this.removeFromWishlist()
+    } else {
+      this.addToWishlist()
+    }
+  }
+  
+  addToWishlist() {
+    const wishlist = this.getWishlist()
+    wishlist.push(this.productId)
+    this.saveWishlist(wishlist)
+    this.updateState()
+    
+    // 触发自定义事件
+    this.dispatchEvent('wishlist:added', {
+      productId: this.productId,
+      productHandle: this.productHandle
+    })
+    
+    this.showNotification('已添加到愿望清单')
+  }
+  
+  removeFromWishlist() {
+    let wishlist = this.getWishlist()
+    wishlist = wishlist.filter(id =&gt; id !== this.productId)
+    this.saveWishlist(wishlist)
+    this.updateState()
+    
+    // 触发自定义事件
+    this.dispatchEvent('wishlist:removed', {
+      productId: this.productId,
+      productHandle: this.productHandle
+    })
+    
+    this.showNotification('已从愿望清单移除')
+  }
+  
+  updateState() {
+    const wishlist = this.getWishlist()
+    const isInWishlist = wishlist.includes(this.productId)
+    
+    this.button.classList.toggle('active', isInWishlist)
+    this.button.setAttribute('aria-pressed', isInWishlist)
+    
+    if (this.text) {
+      this.text.textContent = isInWishlist ? '已收藏' : '收藏'
+    }
+  }
+  
+  getWishlist() {
+    try {
+      return JSON.parse(localStorage.getItem('shopify_wishlist') || '[]')
+    } catch {
+      return []
+    }
+  }
+  
+  saveWishlist(wishlist) {
+    localStorage.setItem('shopify_wishlist', JSON.stringify(wishlist))
+  }
+  
+  dispatchEvent(eventName, detail) {
+    const event = new CustomEvent(eventName, { detail })
+    document.dispatchEvent(event)
+  }
+  
+  showNotification(message) {
+    // 这里可以集成您的通知系统
+    console.log(message)
+  }
+}
+ 
+// 初始化所有愿望清单按钮
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.querySelectorAll('[data-wishlist-toggle]').forEach(button =&gt; {
+    new WishlistButton(button)
+  })
+})
+ 
+// 监听愿望清单事件
+document.addEventListener('wishlist:added', (e) =&gt; {
+  console.log('产品已添加到愿望清单:', e.detail)
+})
+ 
+document.addEventListener('wishlist:removed', (e) =&gt; {
+  console.log('产品已从愿望清单移除:', e.detail)
+})
+&lt;/script&gt;
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>掌握自定义代码片段开发后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/theme-settings/">主题设置配置</a> - 全局主题配置</li>
+<li><a href="/guides/shopify-handbook/liquid/responsive-design/">响应式设计实现</a> - 移动优先设计</li>
+<li><a href="/guides/shopify-handbook/liquid/ecommerce-features/">电商功能实现</a> - 高级电商功能</li>
+<li><a href="/guides/shopify-handbook/liquid/third-party-integrations/">第三方集成</a> - 外部服务集成</li>
+<li><a href="/guides/shopify-handbook/liquid/testing-deployment/">测试和部署</a> - 质量保证流程</li>
+</ol>
+<p>代码片段是构建模块化、可维护主题的基础！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/theme-settings/"><span>上一篇</span><strong>主题设置配置</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/custom-sections/"><span>下一篇</span><strong>自定义分区开发</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

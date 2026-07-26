@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify LINE 到货通知实现指南 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify LINE 到货通知实现指南 LINE 到货通知 （Back in Stock via LINE）在台湾、日本、泰国市场是显著高于 Email 转化的渠道——LINE 消息打开率通常 70%+，Email 在同区段仅 ">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/shopify-line-restock-notification/">
+  <meta property="og:title" content="Shopify LINE 到货通知实现指南 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify LINE 到货通知实现指南 LINE 到货通知 （Back in Stock via LINE）在台湾、日本、泰国市场是显著高于 Email 转化的渠道——LINE 消息打开率通常 70%+，Email 在同区段仅 ">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>Shopify LINE 到货通知实现指南</h1>
+        <p>Shopify LINE 到货通知实现指南 LINE 到货通知 （Back in Stock via LINE）在台湾、日本、泰国市场是显著高于 Email 转化的渠道——LINE 消息打开率通常 70%+，Email 在同区段仅 </p>
+      </header>
+      <div class="article-content"><h2 id="shopify-line-到货通知实现指南">Shopify LINE 到货通知实现指南</h2><p><strong>LINE 到货通知</strong>（Back in Stock via LINE）在台湾、日本、泰国市场是显著高于 Email 转化的渠道——LINE 消息打开率通常 70%+，Email 在同区段仅 20–30%。但 Shopify 官方没有原生 LINE 集成，需要自行接入 LINE Messaging API + 库存监听。</p>
+<p>本文给出一个<strong>完整可落地</strong>的实现方案：前端订阅表单 → 数据存储 → 库存监听 → LINE 推送 → 防骚扰。代码示例可直接复制改造。</p>
+<blockquote>
+<p><strong>写在前面</strong>：如果你<strong>面向欧美市场</strong>，建议先评估 Email / SMS 渠道（Klaviyo、Postscript），LINE 在欧美几乎没有用户基数。LINE 路径<strong>只在亚太特定市场才值得投入开发</strong>。</p>
+</blockquote>
+<h3 id="渠道对比速查">渠道对比速查</h3><table>
+<thead>
+<tr>
+<th>渠道</th>
+<th>适合市场</th>
+<th>打开率</th>
+<th>实现难度</th>
+<th>单次成本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LINE</td>
+<td>台湾、日本、泰国、印尼</td>
+<td>70–85%</td>
+<td>中（需 Messaging API）</td>
+<td>按消息计费，月活 $0.X</td>
+</tr>
+<tr>
+<td>Email</td>
+<td>全球通用</td>
+<td>20–35%</td>
+<td>低（Shopify 自带 + Klaviyo）</td>
+<td>接近 0</td>
+</tr>
+<tr>
+<td>SMS</td>
+<td>北美、东南亚</td>
+<td>90%+</td>
+<td>中</td>
+<td>较高（$0.01–$0.05 / 条）</td>
+</tr>
+<tr>
+<td>WhatsApp</td>
+<td>拉美、中东、印度</td>
+<td>80%+</td>
+<td>中（需 Business API）</td>
+<td>按对话计费</td>
+</tr>
+<tr>
+<td>Web Push</td>
+<td>全球</td>
+<td>5–15%</td>
+<td>低（Shopify App）</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p><strong>LINE 不是万能解</strong>——在面向多市场的店铺里，<strong>优先按访客地区分流</strong>：台日访客显示 LINE 订阅，其他地区显示 Email。</p>
+<hr />
+<h2 id="目标功能">✅ 目标功能</h2><p>让客户在商品售罄时，输入 LINE ID 或授权 LINE Login，当商品补货时，自动通过 LINE 消息通知客户。</p>
+<hr />
+<h2 id="方案实现流程">方案实现流程</h2><h3 id="一-准备工具和条件">一、准备工具和条件</h3><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>工具或服务</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>客户订阅表单</td>
+<td>Shopify前端自定义代码</td>
+</tr>
+<tr>
+<td>通知发送</td>
+<td>LINE 官方账号（Messaging API）</td>
+</tr>
+<tr>
+<td>数据存储</td>
+<td>Shopify metafield / Shopify app / 外部数据库</td>
+</tr>
+<tr>
+<td>通知触发</td>
+<td>Shopify Flow / Shopify App / 自建Webhook逻辑</td>
+</tr>
+</tbody></table>
+<hr />
+<h2 id="二-设置-line-官方账号-messaging-api">二、设置 LINE 官方账号 &amp; Messaging API</h2><h3 id="1-创建-line-官方账号">1. 创建 LINE 官方账号</h3><ol>
+<li>访问 <a href="https://manager.line.biz/" target="_blank" rel="noreferrer">LINE Business Manager</a> </li>
+<li>创建新的商业账号</li>
+<li>完成账号验证</li>
+</ol>
+<h3 id="2-设置-messaging-api">2. 设置 Messaging API</h3><ol>
+<li>在 LINE Developers Console 创建新的 Provider</li>
+<li>创建”Messaging API”频道</li>
+<li>获取重要信息：<ul>
+<li><strong>Channel ID</strong></li>
+<li><strong>Channel Secret</strong></li>
+<li><strong>Access Token</strong></li>
+</ul>
+</li>
+</ol>
+<h3 id="3-配置-webhook">3. 配置 Webhook</h3><pre><code># Webhook URL 示例
+https://your-app.herokuapp.com/webhook/line
+</code></pre>
+<hr />
+<h3 id="1-添加订阅表单到商品页面">1. 添加订阅表单到商品页面</h3><p>在 <code>sections/product-form.liquid</code> 或相关模板中添加：</p>
+<pre><code>&lt;!-- 缺货时显示的 LINE 订阅表单 --&gt;
+{% unless current_variant.available %}
+&lt;div id="line-restock-notification" class="restock-form"&gt;
+  &lt;h3&gt;📢 商品补货通知&lt;/h3&gt;
+  &lt;p&gt;此商品暂时缺货，订阅 LINE 通知，补货时第一时间告知您！&lt;/p&gt;
+ 
+  &lt;div class="line-subscription-form"&gt;
+    &lt;input
+      type="text"
+      id="line-id-input"
+      placeholder="请输入您的 LINE ID"
+      class="form-input"
+    /&gt;
+    &lt;button
+      onclick="subscribeLine()"
+      class="btn btn-primary"
+      id="subscribe-btn"
+    &gt;
+      订阅到货通知
+    &lt;/button&gt;
+  &lt;/div&gt;
+ 
+  &lt;div id="line-result-msg" class="notification-msg"&gt;&lt;/div&gt;
+ 
+  &lt;!-- 或者使用 LINE 登录按钮 --&gt;
+  &lt;div class="line-login-option"&gt;
+    &lt;p&gt;或者使用 LINE 账号快速订阅：&lt;/p&gt;
+    &lt;div
+      id="line-login-btn"
+      data-client-id="{{ settings.line_login_channel_id }}"
+      data-redirect-uri="{{ shop.secure_url }}/apps/line-auth"
+    &gt;
+      &lt;img src="https://d.line-scdn.net/r/devcenter/downloadables/login_button/login_btn_base.png" alt="LINE登录"&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;style&gt;
+.restock-form {
+  border: 2px solid #00C300;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  background: #f8fff8;
+}
+ 
+.line-subscription-form {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+ 
+.form-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+ 
+.notification-msg {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 4px;
+}
+ 
+.notification-msg.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+ 
+.notification-msg.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+&lt;/style&gt;
+{% endunless %}
+</code></pre>
+<h3 id="2-javascript-订阅逻辑">2. JavaScript 订阅逻辑</h3><pre><code>// assets/line-restock-notification.js
+ 
+function subscribeLine() {
+  const lineId = document.getElementById("line-id-input").value.trim();
+  const subscribeBtn = document.getElementById("subscribe-btn");
+  const resultMsg = document.getElementById("line-result-msg");
+ 
+  // 验证输入
+  if (!lineId) {
+    showMessage("请输入您的 LINE ID", "error");
+    return;
+  }
+ 
+  // 获取当前商品变体信息
+  const variantId = getSelectedVariantId();
+  const productId = {{ product.id }};
+ 
+  // 禁用按钮，防止重复提交
+  subscribeBtn.disabled = true;
+  subscribeBtn.textContent = "订阅中...";
+ 
+  // 发送订阅请求
+  fetch("/apps/line-restock/subscribe", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Shopify-Web-Token": "{{ form.authenticity_token }}"
+    },
+    body: JSON.stringify({
+      lineId: lineId,
+      variantId: variantId,
+      productId: productId,
+      productTitle: "{{ product.title | escape }}",
+      variantTitle: getSelectedVariantTitle()
+    })
+  })
+  .then(response =&gt; response.json())
+  .then(data =&gt; {
+    if (data.success) {
+      showMessage("订阅成功！商品补货时我们会立即通知您", "success");
+      document.getElementById("line-id-input").value = "";
+    } else {
+      showMessage("订阅失败：" + (data.message || "请稍后重试"), "error");
+    }
+  })
+  .catch(error =&gt; {
+    console.error("订阅错误:", error);
+    showMessage("网络错误，请稍后重试", "error");
+  })
+  .finally(() =&gt; {
+    subscribeBtn.disabled = false;
+    subscribeBtn.textContent = "订阅到货通知";
+  });
+}
+ 
+function getSelectedVariantId() {
+  // 获取当前选中的变体ID
+  const variantSelect = document.querySelector('[name="id"]');
+  return variantSelect ? variantSelect.value : {{ product.selected_or_first_available_variant.id }};
+}
+ 
+function getSelectedVariantTitle() {
+  const variantSelect = document.querySelector('[name="id"]');
+  if (variantSelect) {
+    const selectedOption = variantSelect.options[variantSelect.selectedIndex];
+    return selectedOption.textContent;
+  }
+  return "{{ product.selected_or_first_available_variant.title | escape }}";
+}
+ 
+function showMessage(message, type) {
+  const resultMsg = document.getElementById("line-result-msg");
+  resultMsg.textContent = message;
+  resultMsg.className = `notification-msg ${type}`;
+ 
+  // 3秒后自动清除消息
+  setTimeout(() =&gt; {
+    resultMsg.textContent = "";
+    resultMsg.className = "notification-msg";
+  }, 3000);
+}
+ 
+// LINE 登录功能
+function initLineLogin() {
+  const lineLoginBtn = document.getElementById("line-login-btn");
+  if (lineLoginBtn) {
+    lineLoginBtn.addEventListener("click", function() {
+      const clientId = this.dataset.clientId;
+      const redirectUri = this.dataset.redirectUri;
+      const state = generateRandomString(32);
+ 
+      const loginUrl = `https://access.line.me/oauth2/v2.1/authorize?` +
+        `response_type=code&amp;` +
+        `client_id=${clientId}&amp;` +
+        `redirect_uri=${encodeURIComponent(redirectUri)}&amp;` +
+        `state=${state}&amp;` +
+        `scope=profile%20openid`;
+ 
+      window.location.href = loginUrl;
+    });
+  }
+}
+ 
+function generateRandomString(length) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i &lt; length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+ 
+// 页面加载时初始化
+document.addEventListener('DOMContentLoaded', function() {
+  initLineLogin();
+});
+</code></pre>
+<hr />
+<h2 id="四-后端-api-实现">四、后端 API 实现</h2><h3 id="1-shopify-app-proxy-设置">1. Shopify App Proxy 设置</h3><p>在 Shopify 合作伙伴后台设置 App Proxy：</p>
+<pre><code>Subpath prefix: apps
+Subpath: line-restock
+URL: https://your-server.com/shopify/proxy
+</code></pre>
+<h3 id="2-订阅-api-端点">2. 订阅 API 端点</h3><pre><code>// server.js (Node.js + Express 示例)
+const express = require('express');
+const axios = require('axios');
+const crypto = require('crypto');
+const app = express();
+ 
+app.use(express.json());
+ 
+// LINE API 配置
+const LINE_CHANNEL_ACCESS_TOKEN = process.env.LINE_CHANNEL_ACCESS_TOKEN;
+const LINE_CHANNEL_SECRET = process.env.LINE_CHANNEL_SECRET;
+ 
+// 数据库配置 (示例使用 MongoDB)
+const mongoose = require('mongoose');
+ 
+// 订阅记录模型
+const RestockSubscription = mongoose.model('RestockSubscription', {
+  shopDomain: String,
+  lineUserId: String,
+  variantId: String,
+  productId: String,
+  productTitle: String,
+  variantTitle: String,
+  isActive: { type: Boolean, default: true },
+  createdAt: { type: Date, default: Date.now }
+});
+ 
+// 处理订阅请求
+app.post('/shopify/proxy/subscribe', async (req, res) =&gt; {
+  try {
+    const { lineId, variantId, productId, productTitle, variantTitle } = req.body;
+    const shopDomain = req.get('X-Shopify-Shop-Domain');
+ 
+    // 验证 LINE ID 格式
+    if (!lineId || lineId.length &lt; 3) {
+      return res.json({ success: false, message: 'LINE ID 格式不正确' });
+    }
+ 
+    // 检查是否已经订阅
+    const existingSubscription = await RestockSubscription.findOne({
+      shopDomain,
+      lineUserId: lineId,
+      variantId,
+      isActive: true
+    });
+ 
+    if (existingSubscription) {
+      return res.json({ success: false, message: '您已经订阅了此商品的到货通知' });
+    }
+ 
+    // 创建新的订阅记录
+    const subscription = new RestockSubscription({
+      shopDomain,
+      lineUserId: lineId,
+      variantId,
+      productId,
+      productTitle,
+      variantTitle
+    });
+ 
+    await subscription.save();
+ 
+    // 发送确认消息到 LINE
+    await sendLineMessage(lineId, `订阅成功！\n\n商品：${productTitle}\n规格：${variantTitle}\n\n补货时我们会立即通知您！`);
+ 
+    res.json({ success: true, message: '订阅成功' });
+ 
+  } catch (error) {
+    console.error('订阅失败:', error);
+    res.json({ success: false, message: '系统错误，请稍后重试' });
+  }
+});
+ 
+// 发送 LINE 消息
+async function sendLineMessage(userId, message) {
+  try {
+    await axios.post('https://api.line.me/v2/bot/message/push', {
+      to: userId,
+      messages: [{
+        type: 'text',
+        text: message
+      }]
+    }, {
+      headers: {
+        'Authorization': `Bearer ${LINE_CHANNEL_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json'
+      }
+    });
+  } catch (error) {
+    console.error('LINE 消息发送失败:', error.response?.data || error.message);
+  }
+}
+</code></pre>
+<hr />
+<h2 id="五-库存变更监听与通知发送">五、库存变更监听与通知发送</h2><h3 id="1-设置-shopify-webhook">1. 设置 Shopify Webhook</h3><p>在 Shopify 后台或通过 API 设置库存更新 Webhook：</p>
+<pre><code>// 注册 Webhook
+app.post('/webhooks/inventory/update', async (req, res) =&gt; {
+  try {
+    // 验证 Webhook 签名
+    const hmac = req.get('X-Shopify-Hmac-Sha256');
+    const body = JSON.stringify(req.body);
+    const hash = crypto.createHmac('sha256', process.env.SHOPIFY_WEBHOOK_SECRET)
+                      .update(body, 'utf8')
+                      .digest('base64');
+ 
+    if (hash !== hmac) {
+      return res.status(401).send('Unauthorized');
+    }
+ 
+    const inventoryLevel = req.body;
+    const variantId = inventoryLevel.inventory_item_id;
+ 
+    // 检查库存是否从0变为有库存
+    if (inventoryLevel.available &gt; 0) {
+      await processRestockNotification(variantId);
+    }
+ 
+    res.status(200).send('OK');
+ 
+  } catch (error) {
+    console.error('Webhook 处理错误:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+</code></pre>
+<h3 id="2-补货通知处理">2. 补货通知处理</h3><pre><code>async function processRestockNotification(variantId) {
+  try {
+    // 查找所有订阅此变体的用户
+    const subscriptions = await RestockSubscription.find({
+      variantId: variantId,
+      isActive: true
+    });
+ 
+    if (subscriptions.length === 0) {
+      return;
+    }
+ 
+    // 获取商品信息
+    const variant = await getShopifyVariant(subscriptions[0].shopDomain, variantId);
+    if (!variant) {
+      console.error('无法获取变体信息:', variantId);
+      return;
+    }
+ 
+    // 构建通知消息
+    const message = `🎉 好消息！您订阅的商品已经补货了！\n\n` +
+                   `商品：${subscriptions[0].productTitle}\n` +
+                   `规格：${subscriptions[0].variantTitle}\n` +
+                   `价格：${variant.price}\n\n` +
+                   `立即购买：${getProductUrl(subscriptions[0].shopDomain, subscriptions[0].productId, variantId)}\n\n` +
+                   `数量有限，先到先得！`;
+ 
+    // 发送通知给所有订阅用户
+    const notifications = subscriptions.map(subscription =&gt;
+      sendRestockNotification(subscription, message)
+    );
+ 
+    await Promise.all(notifications);
+ 
+    // 将订阅标记为已通知
+    await RestockSubscription.updateMany(
+      { variantId: variantId, isActive: true },
+      { isActive: false, notifiedAt: new Date() }
+    );
+ 
+    console.log(`补货通知已发送给 ${subscriptions.length} 位用户`);
+ 
+  } catch (error) {
+    console.error('补货通知处理错误:', error);
+  }
+}
+ 
+async function sendRestockNotification(subscription, message) {
+  try {
+    await sendLineMessage(subscription.lineUserId, message);
+ 
+    // 记录通知发送日志
+    console.log(`通知已发送: ${subscription.lineUserId} - ${subscription.productTitle}`);
+ 
+  } catch (error) {
+    console.error(`通知发送失败: ${subscription.lineUserId}`, error);
+  }
+}
+ 
+function getProductUrl(shopDomain, productId, variantId) {
+  return `https://${shopDomain}/products/${productId}?variant=${variantId}`;
+}
+</code></pre>
+<hr />
+<h2 id="六-高级功能增强">六、高级功能增强</h2><h3 id="1-line-rich-menu-集成">1. LINE Rich Menu 集成</h3><pre><code>// 创建 Rich Menu
+async function createLineRichMenu() {
+  const richMenu = {
+    size: {
+      width: 2500,
+      height: 1686
+    },
+    selected: true,
+    name: "购物助手菜单",
+    chatBarText: "购物助手",
+    areas: [
+      {
+        bounds: {
+          x: 0,
+          y: 0,
+          width: 1250,
+          height: 843
+        },
+        action: {
+          type: "postback",
+          data: "action=view_subscriptions"
+        }
+      },
+      {
+        bounds: {
+          x: 1250,
+          y: 0,
+          width: 1250,
+          height: 843
+        },
+        action: {
+          type: "uri",
+          uri: "https://yourshop.com"
+        }
+      }
+    ]
+  };
+ 
+  try {
+    const response = await axios.post('https://api.line.me/v2/bot/richmenu', richMenu, {
+      headers: {
+        'Authorization': `Bearer ${LINE_CHANNEL_ACCESS_TOKEN}`,
+        'Content-Type': 'application/json'
+      }
+    });
+ 
+    console.log('Rich Menu 创建成功:', response.data);
+    return response.data.richMenuId;
+ 
+  } catch (error) {
+    console.error('Rich Menu 创建失败:', error.response?.data);
+  }
+}
+</code></pre>
+<h3 id="2-取消订阅功能">2. 取消订阅功能</h3><pre><code>// 处理 LINE Postback 事件
+app.post('/webhook/line', (req, res) =&gt; {
+  const events = req.body.events;
+ 
+  events.forEach(async (event) =&gt; {
+    if (event.type === 'postback') {
+      const userId = event.source.userId;
+      const data = new URLSearchParams(event.postback.data);
+      const action = data.get('action');
+ 
+      switch (action) {
+        case 'view_subscriptions':
+          await handleViewSubscriptions(userId);
+          break;
+        case 'cancel_subscription':
+          const variantId = data.get('variantId');
+          await handleCancelSubscription(userId, variantId);
+          break;
+      }
+    }
+  });
+ 
+  res.status(200).send('OK');
+});
+ 
+async function handleViewSubscriptions(userId) {
+  try {
+    const subscriptions = await RestockSubscription.find({
+      lineUserId: userId,
+      isActive: true
+    });
+ 
+    if (subscriptions.length === 0) {
+      await sendLineMessage(userId, '您目前没有任何商品订阅');
+      return;
+    }
+ 
+    let message = '📋 您的订阅列表：\n\n';
+    subscriptions.forEach((sub, index) =&gt; {
+      message += `${index + 1}. ${sub.productTitle}\n`;
+      message += `   规格：${sub.variantTitle}\n\n`;
+    });
+ 
+    // 创建取消订阅的快捷回复
+    const quickReply = {
+      items: subscriptions.map(sub =&gt; ({
+        type: 'action',
+        action: {
+          type: 'postback',
+          label: `取消 ${sub.productTitle}`,
+          data: `action=cancel_subscription&amp;variantId=${sub.variantId}`
+        }
+      }))
+    };
+ 
+    await sendLineMessage(userId, message, quickReply);
+ 
+  } catch (error) {
+    console.error('查看订阅失败:', error);
+  }
+}
+</code></pre>
+<hr />
+<h2 id="七-技术选项总结">七、技术选项总结</h2><table>
+<thead>
+<tr>
+<th>目标</th>
+<th>实现方式</th>
+<th>推荐工具</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>客户授权/获取 Line ID</td>
+<td>LINE 登录 / 表单输入</td>
+<td>LINE Login API</td>
+</tr>
+<tr>
+<td>储存订阅数据</td>
+<td>Metafields / 外部数据库</td>
+<td>MongoDB / PostgreSQL</td>
+</tr>
+<tr>
+<td>自动检测库存变化</td>
+<td>Shopify Webhook</td>
+<td>Inventory Levels Update</td>
+</tr>
+<tr>
+<td>发送 LINE 消息</td>
+<td>LINE Messaging API</td>
+<td>Node.js/Express API</td>
+</tr>
+<tr>
+<td>服务器部署</td>
+<td>云服务</td>
+<td>Heroku / Vercel / AWS</td>
+</tr>
+</tbody></table>
+<hr />
+<h2 id="八-部署清单">八、部署清单</h2><h3 id="环境变量配置">环境变量配置</h3><pre><code># .env
+LINE_CHANNEL_ACCESS_TOKEN=your_line_channel_access_token
+LINE_CHANNEL_SECRET=your_line_channel_secret
+LINE_LOGIN_CHANNEL_ID=your_line_login_channel_id
+SHOPIFY_API_KEY=your_shopify_api_key
+SHOPIFY_API_SECRET=your_shopify_api_secret
+SHOPIFY_WEBHOOK_SECRET=your_webhook_secret
+MONGODB_URI=your_mongodb_connection_string
+</code></pre>
+<h3 id="shopify-主题设置">Shopify 主题设置</h3><p>在 <code>config/settings_schema.json</code> 中添加：</p>
+<pre><code>{
+  "name": "LINE 通知设置",
+  "settings": [
+    {
+      "type": "text",
+      "id": "line_login_channel_id",
+      "label": "LINE Login Channel ID"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_line_restock_notification",
+      "label": "启用 LINE 到货通知",
+      "default": true
+    }
+  ]
+}
+</code></pre>
+<hr />
+<h2 id="九-测试验证">九、测试验证</h2><h3 id="1-功能测试步骤">1. 功能测试步骤</h3><ol>
+<li><strong>订阅测试</strong>：在缺货商品页面测试订阅功能</li>
+<li><strong>通知测试</strong>：手动触发库存更新，验证通知发送</li>
+<li><strong>取消订阅测试</strong>：通过 LINE 消息测试取消订阅</li>
+<li><strong>错误处理测试</strong>：测试各种异常情况的处理</li>
+</ol>
+<h3 id="2-监控和日志">2. 监控和日志</h3><pre><code>// 添加日志记录
+const winston = require('winston');
+ 
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.File({ filename: 'line-notifications.log' })
+  ]
+});
+ 
+// 在关键操作中添加日志
+logger.info('订阅创建', {
+  userId: lineId,
+  variantId,
+  timestamp: new Date()
+});
+</code></pre>
+<hr />
+<h2 id="十-优化建议">十、优化建议</h2><h3 id="1-性能优化">1. 性能优化</h3><ul>
+<li>使用消息队列（如 BullMQ、SQS）处理大量通知，避免 Webhook 超时</li>
+<li>实现通知发送的批量处理（LINE Messaging API 支持 multicast，最多 500 收件人 / 次）</li>
+<li>添加 Redis 缓存减少数据库查询</li>
+</ul>
+<h3 id="2-用户体验优化">2. 用户体验优化</h3><ul>
+<li>支持多语言通知消息（按 <code>customer.locale</code> 渲染）</li>
+<li>在通知里附商品图片（LINE Rich Message）</li>
+<li>加 “立即购买”按钮（Quick Reply）直接跳回 Shopify 商品页</li>
+</ul>
+<h3 id="3-业务功能扩展">3. 业务功能扩展</h3><ul>
+<li>价格下降通知（监听 <code>products/update</code> Webhook 的 <code>variants.price</code> 字段）</li>
+<li>VIP 用户优先通知（提前 N 分钟推送）</li>
+<li>限时抢购提醒（与 Launchpad 联动）</li>
+</ul>
+<hr />
+<h2 id="上线前检查清单">上线前检查清单</h2><ul>
+<li><strong>LINE Messaging API</strong> 配置完成，Channel Access Token 安全存储（不要硬编码到主题）</li>
+<li><strong>Webhook URL</strong> 用 HTTPS，且<strong>校验 LINE Signature</strong>（防伪造请求）</li>
+<li><strong>数据库</strong>字段加索引：<code>product_id + variant_id + status</code>（高并发查询用）</li>
+<li><strong>库存 Webhook</strong>：在 Shopify Admin → Notifications → Webhooks 注册 <code>inventory_levels/update</code></li>
+<li><strong>重复通知防护</strong>：同一用户同一 SKU <strong>30 天内最多 1 次</strong>通知</li>
+<li><strong>退订机制</strong>：消息底部带”停止接收”链接（合规必备）</li>
+<li><strong>消息频率限制</strong>：单店铺 &lt; 1000 条 / 分钟，避免触发 LINE 风控</li>
+<li><strong>降级方案</strong>：LINE API 故障时回退到 Email</li>
+<li><strong>审计日志</strong>：保留每次通知的发送记录至少 90 天</li>
+</ul>
+<hr />
+<h2 id="常见问题-faq">常见问题（FAQ）</h2><p><strong>Q：用户必须有 LINE 账号才能订阅吗？</strong> A：是。但<strong>不一定要让用户先注册</strong>——可以让用户<strong>先用 Email 订阅</strong>，到货时同时尝试 LINE（如绑定过）与 Email。亚太市场建议默认 LINE Login，欧美用户走 Email。</p>
+<p><strong>Q：LINE Messaging API 收费吗？</strong> A：免费额度内（<strong>500 条 / 月</strong> 推送 + 无限接收），超出后按阶梯收费。中小店铺通常不超出。详见 LINE 官方价格页。</p>
+<p><strong>Q：能用 Shopify 自带的”Back in Stock”功能吗？</strong> A：Shopify 没有原生”到货通知”功能。需要装 App（如 Back in Stock by Swym、Restock Rocket）或自建。<strong>App 大多只支持 Email + SMS</strong>，不支持 LINE——这正是本文方案存在的理由。</p>
+<p><strong>Q：库存变更的判定逻辑是什么？</strong> A：监听 <code>inventory_levels/update</code> Webhook。判断条件：<code>(previous.available &lt;= 0) &amp;&amp; (current.available &gt; 0)</code>。注意：<strong>直接监听 <code>products/update</code> 不够准</strong>，因为价格 / 描述更新也会触发。</p>
+<p><strong>Q：怎么防止通知风暴（一个 SKU 一夜补货 100 个，触发 100 条推送）？</strong> A：核心做法——（1）<strong>每个用户每个 SKU 只发一次</strong>；（2）发送后立刻把订阅状态改为 <code>sent</code>；（3）批量推送时用 multicast 而非循环 push。</p>
+<p><strong>Q：用户在主题编辑器中能看到这个 Section 吗？</strong> A：建议把订阅表单<strong>封装成 Section</strong>（参考 <a href="/guides/shopify-handbook/advanced/add-section/">Shopify Section 开发指南</a>），让运营能控制是否启用、文案是什么。比硬编码到 product-form.liquid 灵活。</p>
+<p><strong>Q：合规上要注意什么？</strong> A：（1）订阅前明确告知<strong>发送频率与停止方式</strong>；（2）日本市场需符合 <strong>特定電子メール法</strong>，台湾市场参考 <strong>個人資料保護法</strong>；（3）保留用户同意的时间戳；（4）退订请求 48 小时内生效。</p>
+<p><strong>Q：能用 AI 做更智能的通知吗？</strong> A：可以——基于用户浏览历史推送”你关注的 XX 类商品已上架”。但<strong>先把基础流跑稳</strong>再扩展 AI 个性化。AI 个性化收益通常在月推送 &gt; 1 万条后才显著。</p>
+<hr />
+<h2 id="延伸阅读">延伸阅读</h2><ul>
+<li><a href="/guides/shopify-handbook/advanced/shopify-webhooks-guide/">Shopify Webhooks 完整指南</a> — Webhook 重试、HMAC 校验、幂等性设计</li>
+<li><a href="/guides/shopify-handbook/advanced/add-section/">Shopify Section 开发指南</a> — 把订阅表单封装为可配置 Section</li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-app-development/">Shopify App 开发</a> — 把本方案打包成可复用 App</li>
+<li><a href="/guides/shopify-handbook/advanced/marketing-automation/">营销自动化实践</a> — 与 Email / SMS / EDM 流程联动</li>
+<li><a href="/guides/shopify-handbook/advanced/cross-border-advanced/">跨境电商进阶</a> — 不同市场的渠道选择策略</li>
+<li><a href="/guides/shopify-handbook/advanced/gdpr-compliance-guide/">GDPR 合规实施指南</a> — 欧盟用户参考（虽然 LINE 主要在亚太）</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>小结</strong>：LINE 到货通知是<strong>亚太市场 ROI 极高的获客 / 转化挽留工具</strong>——但实现复杂度也实实在在。建议<strong>先 MVP</strong>：只做”Email 订阅 + LINE 二次绑定”，跑两个月看转化率与单条成本，再决定要不要扩到更多营销场景（价格降价提醒、限时活动等）。</p>
+</blockquote>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-headless-intro/"><span>上一篇</span><strong>Shopify Headless 架构入门</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-metafields-metaobjects/"><span>下一篇</span><strong>Shopify Metafields 与 Metaobjects 完整指南</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

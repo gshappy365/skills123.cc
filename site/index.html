@@ -17,7 +17,8 @@
     <header class="site-header">
       <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
       <nav class="nav" aria-label="主导航">
-        <strong>技能包</strong>
+        <strong id="skill-packages">技能包</strong>
+        <a href="/guides/shopify-handbook/">专题知识库</a>
         <span>学习路径</span>
         <span>关于</span>
       </nav>
@@ -45,6 +46,7 @@
         </div>
         <div id="package-results"></div>
         <div id="skill-results"></div>
+        <div id="guide-results"></div>
         <div class="catalogue-no-results" id="catalogue-no-results" hidden>
           <strong>没有找到匹配内容</strong>
           <p>尝试更短的名称、用途关键词或 slash command。</p>
@@ -53,10 +55,23 @@
       </section>
 
       <div class="package-group-index" id="package-group-index" aria-busy="true"></div>
+      <section class="topic-guide-index" id="topic-guides" aria-labelledby="topic-guides-title">
+        <header>
+          <div><span>05</span><h2 id="topic-guides-title">专题知识库</h2></div>
+          <p>围绕一个主题持续阅读、检索和查阅的长篇知识集合。</p>
+          <small>1 个专题</small>
+        </header>
+        <a class="topic-guide-row" href="/guides/shopify-handbook/">
+          <div><span>整理与归档</span><h3>Shopify 独立站手册</h3></div>
+          <p>从开店基础、增长运营到 Liquid 主题开发，一份可检索、可直达的中文实践手册。</p>
+          <span class="package-metrics">157 ARTICLES<br>4 TOPICS</span>
+          <strong>进入专题 →</strong>
+        </a>
+      </section>
     </main>
 
     <footer class="site-footer">Skills123 · 以技能包组织可连续使用的 AI 工作技能</footer>
   </div>
-  <script type="module" src="/assets/js/package-navigation.js?v=20260726-2"></script>
+  <script type="module" src="/assets/js/package-navigation.js?v=20260726-3"></script>
 </body>
 </html>

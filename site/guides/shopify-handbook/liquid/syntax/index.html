@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Liquid 语法详解 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Liquid 语法详解 Liquid 是一种安全、易学的模板语言，本指南将深入介绍 Liquid 的语法规则、标记类型和高级用法。 语法基础 Liquid 标记类型 Liquid 有三种主要的标记类型： 空白控制 使用连字符 来控制">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/syntax/">
+  <meta property="og:title" content="Liquid 语法详解 · Shopify 独立站手册">
+  <meta property="og:description" content="Liquid 语法详解 Liquid 是一种安全、易学的模板语言，本指南将深入介绍 Liquid 的语法规则、标记类型和高级用法。 语法基础 Liquid 标记类型 Liquid 有三种主要的标记类型： 空白控制 使用连字符 来控制">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>Liquid 语法详解</h1>
+        <p>Liquid 语法详解 Liquid 是一种安全、易学的模板语言，本指南将深入介绍 Liquid 的语法规则、标记类型和高级用法。 语法基础 Liquid 标记类型 Liquid 有三种主要的标记类型： 空白控制 使用连字符 来控制</p>
+      </header>
+      <div class="article-content"><h2 id="liquid-语法详解">Liquid 语法详解</h2><p>Liquid 是一种安全、易学的模板语言，本指南将深入介绍 Liquid 的语法规则、标记类型和高级用法。</p>
+<h2 id="语法基础">语法基础</h2><h3 id="liquid-标记类型">Liquid 标记类型</h3><p>Liquid 有三种主要的标记类型：</p>
+<pre><code>&lt;!-- 1. 输出标记 - 输出内容 --&gt;
+{{ variable }}
+ 
+&lt;!-- 2. 逻辑标记 - 创建逻辑 --&gt;
+{% if condition %}
+{% endif %}
+ 
+&lt;!-- 3. 注释标记 - 添加注释 --&gt;
+{% comment %}这是注释{% endcomment %}
+</code></pre>
+<h3 id="空白控制">空白控制</h3><p>使用连字符 <code>-</code> 来控制输出中的空白：</p>
+<pre><code>&lt;!-- 标准输出 --&gt;
+{{ product.title }}
+{{ product.price }}
+ 
+&lt;!-- 控制空白 --&gt;
+{{- product.title -}}
+{{- product.price -}}
+ 
+&lt;!-- 在标签中控制空白 --&gt;
+{%- if product.available -%}
+  有库存
+{%- endif -%}
+</code></pre>
+<p><strong>示例对比:</strong></p>
+<pre><code>&lt;!-- 带空白 --&gt;
+&lt;ul&gt;
+  {% for item in cart.items %}
+    &lt;li&gt;{{ item.title }}&lt;/li&gt;
+  {% endfor %}
+&lt;/ul&gt;
+ 
+&lt;!-- 控制空白 --&gt;
+&lt;ul&gt;
+  {%- for item in cart.items -%}
+    &lt;li&gt;{{ item.title }}&lt;/li&gt;
+  {%- endfor -%}
+&lt;/ul&gt;
+</code></pre>
+<h2 id="变量和赋值">变量和赋值</h2><h3 id="基本变量赋值">基本变量赋值</h3><pre><code>&lt;!-- 简单赋值 --&gt;
+{% assign product_title = product.title %}
+{% assign sale_price = product.price | times: 0.8 %}
+ 
+&lt;!-- 字符串赋值 --&gt;
+{% assign greeting = "欢迎来到我们的商店" %}
+{% assign css_class = "product-card featured" %}
+ 
+&lt;!-- 使用变量 --&gt;
+&lt;h1&gt;{{ product_title }}&lt;/h1&gt;
+&lt;p class="{{ css_class }}"&gt;特价: {{ sale_price | money }}&lt;/p&gt;
+</code></pre>
+<h3 id="捕获变量">捕获变量</h3><p>使用 <code>capture</code> 标签创建复杂的变量：</p>
+<pre><code>&lt;!-- 捕获 HTML 内容 --&gt;
+{% capture product_badge %}
+  {% if product.compare_at_price &gt; product.price %}
+    &lt;span class="sale-badge"&gt;促销&lt;/span&gt;
+  {% elsif product.tags contains 'new' %}
+    &lt;span class="new-badge"&gt;新品&lt;/span&gt;
+  {% endif %}
+{% endcapture %}
+ 
+&lt;!-- 捕获计算结果 --&gt;
+{% capture discount_text %}
+  {% assign discount = product.compare_at_price | minus: product.price %}
+  {% assign discount_percent = discount | times: 100 | divided_by: product.compare_at_price | round %}
+  节省 {{ discount | money }} ({{ discount_percent }}%)
+{% endcapture %}
+ 
+&lt;!-- 使用捕获的变量 --&gt;
+&lt;div class="product-info"&gt;
+  {{ product_badge }}
+  {{ discount_text }}
+&lt;/div&gt;
+</code></pre>
+<h2 id="数据类型">数据类型</h2><h3 id="字符串">字符串</h3><pre><code>&lt;!-- 字符串字面量 --&gt;
+{% assign message = "Hello World" %}
+{% assign single_quotes = 'Hello World' %}
+ 
+&lt;!-- 字符串连接 --&gt;
+{% assign full_name = customer.first_name | append: ' ' | append: customer.last_name %}
+ 
+&lt;!-- 字符串包含检查 --&gt;
+{% if product.title contains "iPhone" %}
+  &lt;span class="apple-product"&gt;Apple 产品&lt;/span&gt;
+{% endif %}
+</code></pre>
+<h3 id="数字">数字</h3><pre><code>&lt;!-- 整数 --&gt;
+{% assign quantity = 5 %}
+{% assign max_items = 10 %}
+ 
+&lt;!-- 浮点数 --&gt;
+{% assign discount_rate = 0.15 %}
+{% assign tax_rate = 0.08 %}
+ 
+&lt;!-- 数字运算 --&gt;
+{% assign total = quantity | times: product.price %}
+{% assign discounted_price = product.price | times: discount_rate %}
+</code></pre>
+<h3 id="布尔值">布尔值</h3><pre><code>&lt;!-- 布尔字面量 --&gt;
+{% assign is_sale = true %}
+{% assign hide_price = false %}
+ 
+&lt;!-- 布尔表达式 --&gt;
+{% assign is_available = product.available %}
+{% assign has_variants = product.variants.size &gt; 1 %}
+{% assign is_featured = product.tags contains "featured" %}
+</code></pre>
+<h3 id="数组">数组</h3><pre><code>&lt;!-- 数组访问 --&gt;
+{% assign first_image = product.images[0] %}
+{% assign last_image = product.images.last %}
+ 
+&lt;!-- 数组操作 --&gt;
+{% assign sorted_products = collection.products | sort: 'title' %}
+{% assign featured_products = collection.products | where: 'featured', true %}
+ 
+&lt;!-- 数组创建 --&gt;
+{% assign color_options = "红色,蓝色,绿色" | split: "," %}
+</code></pre>
+<h3 id="对象">对象</h3><pre><code>&lt;!-- 对象属性访问 --&gt;
+{{ product.title }}
+{{ product['title'] }}
+{{ product.variants[0].price }}
+ 
+&lt;!-- 嵌套对象访问 --&gt;
+{{ product.selected_or_first_available_variant.title }}
+{{ customer.default_address.city }}
+{{ blog.articles.first.author }}
+</code></pre>
+<h2 id="操作符">操作符</h2><h3 id="比较操作符">比较操作符</h3><pre><code>&lt;!-- 相等比较 --&gt;
+{% if product.price == 100 %}
+  特价商品
+{% endif %}
+ 
+{% if customer.email != blank %}
+  已登录用户
+{% endif %}
+ 
+&lt;!-- 大小比较 --&gt;
+{% if product.price &gt; 50 %}
+  高价商品
+{% elsif product.price &lt; 20 %}
+  低价商品
+{% else %}
+  中等价位
+{% endif %}
+ 
+&lt;!-- 包含检查 --&gt;
+{% if product.tags contains "sale" %}
+  促销商品
+{% endif %}
+</code></pre>
+<h3 id="逻辑操作符">逻辑操作符</h3><pre><code>&lt;!-- AND 操作 --&gt;
+{% if product.available and product.price &lt; 100 %}
+  便宜且有库存
+{% endif %}
+ 
+&lt;!-- OR 操作 --&gt;
+{% if product.tags contains "featured" or product.tags contains "bestseller" %}
+  推荐商品
+{% endif %}
+ 
+&lt;!-- 组合逻辑 --&gt;
+{% if product.available and (product.price &lt; 50 or product.tags contains "sale") %}
+  优惠商品
+{% endif %}
+</code></pre>
+<h3 id="存在性检查">存在性检查</h3><pre><code>&lt;!-- 检查是否存在 --&gt;
+{% if product.description %}
+  &lt;p&gt;{{ product.description }}&lt;/p&gt;
+{% endif %}
+ 
+&lt;!-- 检查是否为空 --&gt;
+{% if product.description != blank %}
+  &lt;p&gt;{{ product.description }}&lt;/p&gt;
+{% endif %}
+ 
+{% unless product.description == blank %}
+  &lt;p&gt;{{ product.description }}&lt;/p&gt;
+{% endunless %}
+</code></pre>
+<h2 id="条件语句">条件语句</h2><h3 id="if-elsif-else">if/elsif/else</h3><pre><code>&lt;!-- 基本条件 --&gt;
+{% if product.available %}
+  &lt;button type="submit"&gt;加入购物车&lt;/button&gt;
+{% else %}
+  &lt;button disabled&gt;缺货&lt;/button&gt;
+{% endif %}
+ 
+&lt;!-- 多重条件 --&gt;
+{% if product.price &gt; 100 %}
+  &lt;span class="high-price"&gt;高端商品&lt;/span&gt;
+{% elsif product.price &gt; 50 %}
+  &lt;span class="medium-price"&gt;中档商品&lt;/span&gt;
+{% else %}
+  &lt;span class="low-price"&gt;经济实惠&lt;/span&gt;
+{% endif %}
+ 
+&lt;!-- 复杂条件 --&gt;
+{% if product.available %}
+  {% if product.variants.size &gt; 1 %}
+    &lt;select name="id"&gt;
+      {% for variant in product.variants %}
+        &lt;option value="{{ variant.id }}"&gt;{{ variant.title }}&lt;/option&gt;
+      {% endfor %}
+    &lt;/select&gt;
+  {% else %}
+    &lt;input type="hidden" name="id" value="{{ product.first_available_variant.id }}"&gt;
+  {% endif %}
+  &lt;button type="submit"&gt;加入购物车&lt;/button&gt;
+{% endif %}
+</code></pre>
+<h3 id="unless">unless</h3><pre><code>&lt;!-- unless 语句 --&gt;
+{% unless product.available %}
+  &lt;p class="out-of-stock"&gt;商品缺货&lt;/p&gt;
+{% endunless %}
+ 
+&lt;!-- 等同于 --&gt;
+{% if product.available == false %}
+  &lt;p class="out-of-stock"&gt;商品缺货&lt;/p&gt;
+{% endif %}
+</code></pre>
+<h3 id="case-when">case/when</h3><pre><code>&lt;!-- case 语句 --&gt;
+{% case product.type %}
+  {% when 'Electronics' %}
+    &lt;span class="icon-electronics"&gt;📱&lt;/span&gt;
+  {% when 'Clothing' %}
+    &lt;span class="icon-clothing"&gt;👕&lt;/span&gt;
+  {% when 'Books' %}
+    &lt;span class="icon-books"&gt;📚&lt;/span&gt;
+  {% else %}
+    &lt;span class="icon-other"&gt;🎁&lt;/span&gt;
+{% endcase %}
+ 
+&lt;!-- 多值匹配 --&gt;
+{% case product.vendor %}
+  {% when 'Apple', 'Samsung', 'Google' %}
+    &lt;span class="tech-brand"&gt;科技品牌&lt;/span&gt;
+  {% when 'Nike', 'Adidas', 'Puma' %}
+    &lt;span class="sports-brand"&gt;运动品牌&lt;/span&gt;
+  {% else %}
+    &lt;span class="other-brand"&gt;其他品牌&lt;/span&gt;
+{% endcase %}
+</code></pre>
+<h2 id="循环语句">循环语句</h2><h3 id="for-循环">for 循环</h3><pre><code>&lt;!-- 基本循环 --&gt;
+{% for product in collection.products %}
+  &lt;div class="product-item"&gt;
+    &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+    &lt;p&gt;{{ product.price | money }}&lt;/p&gt;
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- 带索引的循环 --&gt;
+{% for product in collection.products %}
+  &lt;div class="product-item product-{{ forloop.index }}"&gt;
+    &lt;span class="position"&gt;第 {{ forloop.index }} 位&lt;/span&gt;
+    &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- 限制循环次数 --&gt;
+{% for product in collection.products limit: 4 %}
+  &lt;div class="featured-product"&gt;{{ product.title }}&lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- 跳过元素 --&gt;
+{% for product in collection.products offset: 2 limit: 4 %}
+  &lt;div class="product"&gt;{{ product.title }}&lt;/div&gt;
+{% endfor %}
+</code></pre>
+<h3 id="forloop-对象">forloop 对象</h3><pre><code>{% for item in cart.items %}
+  &lt;tr class="cart-item"&gt;
+    &lt;td&gt;{{ forloop.index }}&lt;/td&gt;  &lt;!-- 当前索引 (1开始) --&gt;
+    &lt;td&gt;{{ item.title }}&lt;/td&gt;
+    &lt;td&gt;
+      {% if forloop.first %}
+        第一个商品
+      {% elsif forloop.last %}
+        最后一个商品
+      {% endif %}
+    &lt;/td&gt;
+    &lt;td&gt;{{ forloop.length }}&lt;/td&gt;  &lt;!-- 总数量 --&gt;
+    &lt;td&gt;{{ forloop.rindex }}&lt;/td&gt;  &lt;!-- 反向索引 --&gt;
+  &lt;/tr&gt;
+{% endfor %}
+</code></pre>
+<h3 id="循环控制">循环控制</h3><pre><code>&lt;!-- continue - 跳过当前迭代 --&gt;
+{% for product in collection.products %}
+  {% unless product.available %}
+    {% continue %}
+  {% endunless %}
+  
+  &lt;div class="available-product"&gt;
+    {{ product.title }}
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- break - 退出循环 --&gt;
+{% for product in collection.products %}
+  {% if forloop.index &gt; 5 %}
+    {% break %}
+  {% endif %}
+  
+  &lt;div class="top-product"&gt;
+    {{ product.title }}
+  &lt;/div&gt;
+{% endfor %}
+</code></pre>
+<h3 id="else-子句">else 子句</h3><pre><code>&lt;!-- 循环为空时的处理 --&gt;
+{% for product in collection.products %}
+  &lt;div class="product"&gt;{{ product.title }}&lt;/div&gt;
+{% else %}
+  &lt;p&gt;此集合暂无商品&lt;/p&gt;
+{% endfor %}
+</code></pre>
+<h3 id="范围循环">范围循环</h3><pre><code>&lt;!-- 数字范围 --&gt;
+{% for i in (1..5) %}
+  &lt;span class="rating-star"&gt;⭐&lt;/span&gt;
+{% endfor %}
+ 
+&lt;!-- 变量范围 --&gt;
+{% assign max_pages = paginate.pages %}
+{% for i in (1..max_pages) %}
+  &lt;a href="{{ blog.url }}?page={{ i }}" 
+     {% if i == paginate.current_page %}class="current"{% endif %}&gt;
+    {{ i }}
+  &lt;/a&gt;
+{% endfor %}
+</code></pre>
+<h2 id="包含和渲染">包含和渲染</h2><h3 id="render-标签">render 标签</h3><pre><code>&lt;!-- 基本渲染 --&gt;
+{% render 'product-card' %}
+ 
+&lt;!-- 传递变量 --&gt;
+{% render 'product-card', product: product %}
+ 
+&lt;!-- 传递多个变量 --&gt;
+{% render 'product-card', 
+    product: product, 
+    show_vendor: true, 
+    css_class: 'featured' %}
+ 
+&lt;!-- 在循环中渲染 --&gt;
+{% for product in collection.products %}
+  {% render 'product-card', product: product %}
+{% endfor %}
+</code></pre>
+<h3 id="include-标签-已废弃">include 标签 (已废弃)</h3><pre><code>&lt;!-- 旧式包含 (不推荐) --&gt;
+{% include 'product-card' %}
+ 
+&lt;!-- 应该使用 render 代替 --&gt;
+{% render 'product-card' %}
+</code></pre>
+<h2 id="注释">注释</h2><h3 id="单行注释">单行注释</h3><pre><code>{% # 这是单行注释 %}
+ 
+{% assign price = product.price %} {% # 获取价格 %}
+</code></pre>
+<h3 id="多行注释">多行注释</h3><pre><code>{% comment %}
+这是多行注释
+可以包含多行内容
+不会在输出中显示
+{% endcomment %}
+ 
+{% comment %}
+TODO: 优化这个section的性能
+- 减少循环次数
+- 使用更高效的过滤器
+{% endcomment %}
+</code></pre>
+<h3 id="html-注释">HTML 注释</h3><pre><code>&lt;!-- 这是 HTML 注释，会出现在输出中 --&gt;
+ 
+&lt;!-- 调试信息: {{ product.id }} --&gt;
+</code></pre>
+<h2 id="原始内容">原始内容</h2><h3 id="raw-标签">raw 标签</h3><pre><code>&lt;!-- 阻止 Liquid 处理内容 --&gt;
+{% raw %}
+  这里的 {{ product.title }} 不会被处理
+  {% if true %} 这也不会被处理 {% endif %}
+{% endraw %}
+ 
+&lt;!-- 用于显示 Liquid 代码示例 --&gt;
+{% raw %}
+  &lt;p&gt;使用方法: {{ product.title | upcase }}&lt;/p&gt;
+{% endraw %}
+</code></pre>
+<h2 id="液体对象作用域">液体对象作用域</h2><h3 id="全局作用域">全局作用域</h3><pre><code>&lt;!-- 这些变量在整个模板中可用 --&gt;
+{{ shop.name }}
+{{ cart.item_count }}
+{{ customer.first_name }}
+</code></pre>
+<h3 id="局部作用域">局部作用域</h3><pre><code>&lt;!-- assign 创建的变量在当前模板中可用 --&gt;
+{% assign local_var = "局部变量" %}
+ 
+&lt;!-- for 循环变量只在循环内可用 --&gt;
+{% for product in collection.products %}
+  &lt;!-- product 只在这个循环内可用 --&gt;
+  {{ product.title }}
+{% endfor %}
+</code></pre>
+<h3 id="snippet-作用域">snippet 作用域</h3><pre><code>&lt;!-- snippets/my-snippet.liquid --&gt;
+&lt;!-- snippet 内的变量不会污染父作用域 --&gt;
+{% assign snippet_var = "只在snippet内可用" %}
+ 
+&lt;!-- 通过 render 传递的变量 --&gt;
+&lt;div class="product-card"&gt;
+  {{ product.title }}  &lt;!-- 从外部传入 --&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="错误处理">错误处理</h2><h3 id="安全导航">安全导航</h3><pre><code>&lt;!-- 安全访问可能不存在的属性 --&gt;
+{{ product.featured_image.alt | default: product.title }}
+ 
+&lt;!-- 检查对象是否存在 --&gt;
+{% if product.featured_image %}
+  &lt;img src="{{ product.featured_image | image_url: width: 300, height: 300 }}" 
+       alt="{{ product.featured_image.alt | escape }}"&gt;
+{% endif %}
+</code></pre>
+<h3 id="默认值处理">默认值处理</h3><pre><code>&lt;!-- 使用 default 过滤器 --&gt;
+{{ product.description | default: "暂无描述" }}
+{{ customer.first_name | default: "访客" }}
+ 
+&lt;!-- 使用 or 操作符 --&gt;
+{% assign display_name = customer.first_name | default: "访客" %}
+</code></pre>
+<h2 id="性能最佳实践">性能最佳实践</h2><h3 id="避免重复计算">避免重复计算</h3><pre><code>&lt;!-- 好的做法 --&gt;
+{% assign available_products = collection.products | where: 'available', true %}
+{% for product in available_products %}
+  {{ product.title }}
+{% endfor %}
+ 
+&lt;!-- 避免的做法 --&gt;
+{% for product in collection.products %}
+  {% if product.available %}
+    {{ product.title }}
+  {% endif %}
+{% endfor %}
+</code></pre>
+<h3 id="合理使用过滤器">合理使用过滤器</h3><pre><code>&lt;!-- 在循环外预处理 --&gt;
+{% assign sorted_tags = product.tags | sort %}
+{% for tag in sorted_tags %}
+  &lt;span class="tag"&gt;{{ tag }}&lt;/span&gt;
+{% endfor %}
+ 
+&lt;!-- 避免重复的字符串操作 --&gt;
+{% assign base_url = shop.url | append: "/products/" %}
+{% for product in collection.products %}
+  &lt;a href="{{ base_url }}{{ product.handle }}"&gt;{{ product.title }}&lt;/a&gt;
+{% endfor %}
+</code></pre>
+<h2 id="调试技巧">调试技巧</h2><h3 id="输出调试信息">输出调试信息</h3><pre><code>&lt;!-- 查看变量内容 --&gt;
+&lt;pre&gt;{{ product | json }}&lt;/pre&gt;
+ 
+&lt;!-- 查看变量类型 --&gt;
+{{ product.price.class }}
+ 
+&lt;!-- 条件调试 --&gt;
+{% if settings.debug_mode %}
+  &lt;div class="debug"&gt;
+    &lt;p&gt;Product ID: {{ product.id }}&lt;/p&gt;
+    &lt;p&gt;Available: {{ product.available }}&lt;/p&gt;
+    &lt;p&gt;Price: {{ product.price }}&lt;/p&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="性能监控">性能监控</h3><pre><code>&lt;!-- 记录处理时间 --&gt;
+{% assign start_time = 'now' | date: '%s' %}
+ 
+&lt;!-- 复杂操作 --&gt;
+{% for product in collection.products %}
+  &lt;!-- 处理产品 --&gt;
+{% endfor %}
+ 
+{% assign end_time = 'now' | date: '%s' %}
+{% assign processing_time = end_time | minus: start_time %}
+ 
+{% if settings.debug_mode %}
+  &lt;p&gt;处理时间: {{ processing_time }}秒&lt;/p&gt;
+{% endif %}
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>掌握了 Liquid 语法后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/variables/">变量和对象</a> - 深入了解变量使用</li>
+<li><a href="/guides/shopify-handbook/liquid/filters/">过滤器完全指南</a> - 掌握数据处理</li>
+<li><a href="/guides/shopify-handbook/liquid/tags/">标签和控制结构</a> - 学习高级标签</li>
+<li><a href="/guides/shopify-handbook/liquid/shopify-objects/">Shopify 对象参考</a> - 了解特定对象</li>
+</ol>
+<p>通过理解这些语法规则，您将能够创建更加复杂和强大的 Shopify 主题！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/performance-optimization/"><span>上一篇</span><strong>Liquid 性能优化</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/shopify-cli/"><span>下一篇</span><strong>Shopify CLI 安装与配置</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify 主题 Section 开发完整指南 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify 主题 Section 开发完整指南 Section（分区） 是 Shopify 主题最重要的复用单元——商家在 Theme Editor 里看到的每一块（hero、特色商品、推荐评价、FAQ 等）背后都对应一个 se">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/add-section/">
+  <meta property="og:title" content="Shopify 主题 Section 开发完整指南 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify 主题 Section 开发完整指南 Section（分区） 是 Shopify 主题最重要的复用单元——商家在 Theme Editor 里看到的每一块（hero、特色商品、推荐评价、FAQ 等）背后都对应一个 se">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>Shopify 主题 Section 开发完整指南</h1>
+        <p>Shopify 主题 Section 开发完整指南 Section（分区） 是 Shopify 主题最重要的复用单元——商家在 Theme Editor 里看到的每一块（hero、特色商品、推荐评价、FAQ 等）背后都对应一个 se</p>
+      </header>
+      <div class="article-content"><h2 id="shopify-主题-section-开发完整指南">Shopify 主题 Section 开发完整指南</h2><p><strong>Section（分区）</strong> 是 Shopify 主题最重要的复用单元——商家在 Theme Editor 里看到的每一块（hero、特色商品、推荐评价、FAQ 等）背后都对应一个 <code>sections/*.liquid</code> 文件。掌握 Section 开发是从”会改主题”到”会做主题”的核心台阶。</p>
+<p>本文用一个<strong>完整可复制的”系列商品展示”</strong> Section 示例，带你走通从文件创建到 Theme Editor 接入的全流程。完成后你将会：</p>
+<ul>
+<li>理解 <code>{% schema %}</code> 与 settings 的关系</li>
+<li>知道 <code>presets</code> 何时填、何时不填</li>
+<li>能给运营留出合理的可视化配置项</li>
+</ul>
+<h3 id="section-vs-block-vs-snippet-先理解差异">Section vs Block vs Snippet：先理解差异</h3><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>文件位置</th>
+<th>何时用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Section</td>
+<td>sections/*.liquid</td>
+<td>一整块独立功能区，可在 Theme Editor 中整体添加 / 移动 / 删除</td>
+</tr>
+<tr>
+<td>Block</td>
+<td>写在 Section 的 schema 里</td>
+<td>Section 内部可重复添加的小单元（如 FAQ 里的每个问答项）</td>
+</tr>
+<tr>
+<td>Snippet</td>
+<td>snippets/*.liquid</td>
+<td>纯代码复用，不出现在 Theme Editor，靠 Liquid {% render %} 调用</td>
+</tr>
+</tbody></table>
+<p><strong>判断顺序</strong>：需要运营配置 → Section；Section 内重复元素 → Block；纯代码工具函数 → Snippet。</p>
+<blockquote>
+<p><strong>配套阅读</strong>：</p>
+<ul>
+<li>主题架构全貌：<a href="/guides/shopify-handbook/advanced/shopify-theme-development-guide/">Shopify 主题开发指南</a></li>
+<li>本地开发环境：<a href="/guides/shopify-handbook/advanced/shopify-local-theme-development/">Shopify 主题本地开发</a></li>
+<li>Liquid 进阶：<a href="/guides/shopify-handbook/advanced/advanced-liquid-techniques/">Liquid 进阶技巧</a></li>
+</ul>
+</blockquote>
+<p><img src="/assets/images/shopify-handbook/6767707ced42539d.png" alt="Shopify Theme怎么开发一个分区" loading="lazy" /></p>
+<h3 id="第一步-创建自定义-section-文件">第一步：创建自定义 Section 文件</h3><p>在你的 Shopify 主题目录下的 <code>sections</code> 文件夹中新建一个文件，例如 <code>section-name.liquid</code>。</p>
+<p><img src="/assets/images/shopify-handbook/00b2351fbb75f412.png" alt="Shopify Theme增加一个分区" loading="lazy" /></p>
+<p>随后你看到该文件的默认代码, <code>Section name</code>, 是这个模块的名字, 你可以改成其他。</p>
+<p>section-name.liquid</p>
+<pre><code>{% schema %}
+{
+    "name": "Section name",
+    "settings": []
+}
+{% endschema %}
+</code></pre>
+<h3 id="添加-liquid-代码">添加 liquid 代码</h3><p>例如: 咱们添加一个展示商品的 Collection section，区块名称叫做<code>系列商品展示</code></p>
+<p>section-name.liquid</p>
+<pre><code> 
+{% schema %}
+{
+    "name": "Collection Products",
+    "tag": "section",
+    "settings": [
+        {
+            "type": "collection",
+            "id": "collection",
+            "label": "选择系列"
+        },
+        {
+            "type": "number",
+            "id": "products_to_show",
+            "label": "显示商品数量",
+            "default": 4,
+        }
+    ],
+    "presets": [
+        {
+            "name": "系列商品展示",
+            "category": "产品"
+        }
+    ]
+}
+{% endschema %}
+ 
+{% if section.settings.collection != blank %}
+{% assign collection = collections[section.settings.collection] %}
+&lt;div class="collection-products-section"&gt;
+    &lt;h2&gt;{{ collection.title }}&lt;/h2&gt;
+    &lt;div class="products-grid"&gt;
+        {% for product in collection.products limit: section.settings.products_to_show %}
+        &lt;div class="product-card"&gt;
+            &lt;a href="{{ product.url }}"&gt;
+                &lt;img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}"&gt;
+                    &lt;p&gt;{{ product.title }}&lt;/p&gt;
+                    &lt;p&gt;{{ product.price | money }}&lt;/p&gt;
+            &lt;/a&gt;
+        &lt;/div&gt;
+        {% endfor %}
+    &lt;/div&gt;
+&lt;/div&gt;
+{% else %}
+&lt;p&gt;请在主题编辑器中选择一个系列。&lt;/p&gt;
+{% endif %}
+ 
+</code></pre>
+<h3 id="添加样式-可选">添加样式（可选）</h3><p>你可以在 assets 文件夹的 CSS 文件中添加自定义样式，比如 base.css 或 theme.css：</p>
+<p>base.css</p>
+<pre><code>.collection-products-section {
+    padding: 40px 0;
+}
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+.product-card {
+    text-align: center;
+}
+.product-card img {
+    max-width: 100%;
+    height: auto;
+}
+</code></pre>
+<h3 id="在-theme-editor-中添加该-section">在 Theme Editor 中添加该 Section</h3><ol>
+<li><p>进入 Shopify 后台的主题编辑器（Customize Theme）：</p>
+</li>
+<li><p>找到你想添加该模块的页面（如主页）。</p>
+</li>
+<li><p>点击 “<code>添加分区</code>”（“<code>Add section</code>”）。</p>
+</li>
+<li><p>找到你新建的 系列商品展示（<code>Collection Products</code>）模块并添加。</p>
+</li>
+<li><p>在右侧设置栏中选择你想展示的系列。</p>
+</li>
+</ol>
+<p><img src="/assets/images/shopify-handbook/773e1eaddef2462f.png" alt="Shopify 在 Theme Editor 中添加该 Section" loading="lazy" /><img src="/assets/images/shopify-handbook/58daaecf91f6d0c7.png" alt="Shopify 在 Theme Editor 中添加该 Section" loading="lazy" /></p>
+<p>到这里我们已经完成了 Section 的添加，接下来你可以根据品牌风格修改或美化这个 Section。</p>
+<hr />
+<h2 id="常用-schema-字段类型速查">常用 schema 字段类型速查</h2><p><code>settings</code> 数组里每一项的 <code>type</code> 决定运营能看到什么控件。常用类型：</p>
+<table>
+<thead>
+<tr>
+<th>type</th>
+<th>控件形态</th>
+<th>典型用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>text / textarea</td>
+<td>单行 / 多行文本</td>
+<td>标题、副标题、简介</td>
+</tr>
+<tr>
+<td>richtext</td>
+<td>富文本编辑器</td>
+<td>含格式的描述</td>
+</tr>
+<tr>
+<td>image_picker</td>
+<td>图片选择器</td>
+<td>hero 图、icon</td>
+</tr>
+<tr>
+<td>video / video_url</td>
+<td>视频选择器</td>
+<td>banner 视频</td>
+</tr>
+<tr>
+<td>url</td>
+<td>URL 输入</td>
+<td>按钮链接</td>
+</tr>
+<tr>
+<td>color</td>
+<td>颜色拾色器</td>
+<td>背景色、文字色</td>
+</tr>
+<tr>
+<td>range</td>
+<td>滑块</td>
+<td>圆角、间距、字号</td>
+</tr>
+<tr>
+<td>select / radio</td>
+<td>下拉 / 单选</td>
+<td>布局选项</td>
+</tr>
+<tr>
+<td>checkbox</td>
+<td>开关</td>
+<td>显示 / 隐藏某元素</td>
+</tr>
+<tr>
+<td>collection / product</td>
+<td>Shopify 资源选择器</td>
+<td>关联系列 / 商品</td>
+</tr>
+<tr>
+<td>number</td>
+<td>数字输入</td>
+<td>显示数量</td>
+</tr>
+<tr>
+<td>header / paragraph</td>
+<td>分组标题 / 说明</td>
+<td>设置面板排版用</td>
+</tr>
+</tbody></table>
+<p>完整字段类型见 <a href="https://shopify.dev/docs/themes/architecture/sections/section-schema" target="_blank" rel="noreferrer">Shopify 官方 Section schema 文档</a> 。</p>
+<hr />
+<h2 id="进阶-用-blocks-让-section-支持重复元素">进阶：用 Blocks 让 Section 支持重复元素</h2><p>如果你的 Section 内有”用户想加几个就加几个”的元素（如 FAQ 项、特色卡片、Logo 列表），用 <strong>blocks</strong> 而不是固定 settings：</p>
+<p>section-name.liquid</p>
+<pre><code>{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "标题", "default": "常见问题" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "问答项",
+      "settings": [
+        { "type": "text", "id": "q", "label": "问题" },
+        { "type": "richtext", "id": "a", "label": "答案" }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    { "name": "FAQ", "category": "内容" }
+  ]
+}
+{% endschema %}
+ 
+&lt;section class="faq"&gt;
+  &lt;h2&gt;{{ section.settings.heading }}&lt;/h2&gt;
+  {% for block in section.blocks %}
+    &lt;details {{ block.shopify_attributes }}&gt;
+      &lt;summary&gt;{{ block.settings.q }}&lt;/summary&gt;
+      &lt;div&gt;{{ block.settings.a }}&lt;/div&gt;
+    &lt;/details&gt;
+  {% endfor %}
+&lt;/section&gt;
+</code></pre>
+<p><strong>注意 <code>{{ block.shopify_attributes }}</code></strong>——这是 Theme Editor 让运营点击 block 时能定位到对应 DOM 元素的关键。漏写就无法在编辑器里直观编辑。</p>
+<hr />
+<h2 id="常见问题-faq">常见问题（FAQ）</h2><p><strong>Q：为什么新建的 Section 在 Theme Editor 里看不到？</strong> A：90% 是因为 schema 里<strong>漏了 <code>presets</code></strong>。只有声明了 <code>presets</code> 的 Section 才会出现在”添加分区”列表里。如果 Section 只用于特定模板（如 <code>templates/product.json</code> 里固定引用），可以不写 presets。</p>
+<p><strong>Q：Section 文件里能写多个 <code>{% schema %}</code> 吗？</strong> A：<strong>不能</strong>。一个 Section 文件只能有一个 schema 标签。需要”多个变体”时，用 <code>select</code> 类型的 setting 在 Liquid 里做条件渲染。</p>
+<p><strong>Q：<code>tag</code> 字段（如 <code>"tag": "section"</code>）有什么作用？</strong> A：决定 Section 渲染时的外层标签元素（默认是 <code>&lt;div&gt;</code>，可以设为 <code>section</code> / <code>article</code> / <code>aside</code> 等）。<strong>建议显式设置为 <code>section</code></strong>，对 SEO 与无障碍都更友好。</p>
+<p><strong>Q：Section 的 settings 默认值会被覆盖吗？</strong> A：会。<code>default</code> 只在<strong>第一次添加</strong> Section 时生效，之后运营修改的值会持久化到 <code>config/settings_data.json</code>。改 <code>default</code> 不会影响已添加的实例。</p>
+<p><strong>Q：怎么限制一个 Section 只能在某些模板里使用？</strong> A：在 schema 里加 <code>"enabled_on": { "templates": ["product"] }</code> 或 <code>"disabled_on": { ... }</code>。OS 2.0 主题必备能力，常见于产品页专属 Section。</p>
+<p><strong>Q：Section 和 App Block 的关系是什么？</strong> A：App Block 是<strong>应用方</strong>注入的 block，主题开发者只需要在 Section 里加 <code>{ "type": "@app" }</code> 即可允许 App 注入内容。<strong>这是 Online Store 2.0 主题的标志特性</strong>，是否支持 App Block 是商家选主题的硬指标。</p>
+<p><strong>Q：可以让 AI 帮我写 Section schema 吗？</strong> A：可以但<strong>需要 <a href="/guides/shopify-handbook/advanced/shopify-ai-toolkit/">Shopify AI Toolkit</a> 加持</strong>——直接让通用 AI 写 schema 经常会出现字段名错误或不存在的 type。AI Toolkit 让 AI 对照官方 Schema 文档生成，更稳。</p>
+<hr />
+<h2 id="延伸阅读">延伸阅读</h2><ul>
+<li><a href="/guides/shopify-handbook/advanced/shopify-theme-development-guide/">Shopify 主题开发指南</a> — OS 2.0、Section / Block 系统全貌</li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-local-theme-development/">Shopify 主题本地开发</a> — CLI + Hot Reload 工作流</li>
+<li><a href="/guides/shopify-handbook/advanced/advanced-liquid-techniques/">Liquid 进阶技巧</a> — 数据处理、性能、组件化</li>
+<li><a href="/guides/shopify-handbook/advanced/wave-animation/">水波浪动画 Section 示例</a> — 一个完整可复制的视觉 Section</li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-theme-bg-music/">背景音乐播放器 Section 示例</a> — 含多媒体 + 多 settings 的完整示例</li>
+<li><a href="/guides/shopify-handbook/liquid/ai-theme-engineering/">AI 辅助与主题工程化</a> — AI 写主题的协作流</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>小结</strong>：Section 是 Shopify 主题开发的<strong>最小有效抓手</strong>——只要会写一个完整的 Section，你就有了把任何设计稿”转成可运营配置的复用模块”的能力。<strong>先掌握 settings 字段类型 + presets 配置 + blocks 用法</strong>，复杂的主题项目就是这些基础块的组合。</p>
+</blockquote>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/advanced-analytics/"><span>上一篇</span><strong>Shopify 数据复盘实战：用 Analytics + GA4 搭一套真正有用的分析流程</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/conversion-optimization/"><span>下一篇</span><strong>Shopify 转化率优化（CRO）实战</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

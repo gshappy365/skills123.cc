@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>全局对象详解 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="全局对象详解 全局对象是在所有 Liquid 模板中都可以访问的对象，它们提供了关于商店、请求、页面等重要信息。理解这些全局对象对于构建动态和响应式的 Shopify 主题至关重要。 核心全局对象 shop 对象 shop 对象包含">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/global-objects/">
+  <meta property="og:title" content="全局对象详解 · Shopify 独立站手册">
+  <meta property="og:description" content="全局对象详解 全局对象是在所有 Liquid 模板中都可以访问的对象，它们提供了关于商店、请求、页面等重要信息。理解这些全局对象对于构建动态和响应式的 Shopify 主题至关重要。 核心全局对象 shop 对象 shop 对象包含">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>全局对象详解</h1>
+        <p>全局对象详解 全局对象是在所有 Liquid 模板中都可以访问的对象，它们提供了关于商店、请求、页面等重要信息。理解这些全局对象对于构建动态和响应式的 Shopify 主题至关重要。 核心全局对象 shop 对象 shop 对象包含</p>
+      </header>
+      <div class="article-content"><h2 id="全局对象详解">全局对象详解</h2><p>全局对象是在所有 Liquid 模板中都可以访问的对象，它们提供了关于商店、请求、页面等重要信息。理解这些全局对象对于构建动态和响应式的 Shopify 主题至关重要。</p>
+<h2 id="核心全局对象">核心全局对象</h2><h3 id="shop-对象">shop 对象</h3><p><code>shop</code> 对象包含商店的基本信息和设置。</p>
+<h4 id="基本属性">基本属性</h4><pre><code>&lt;!-- 商店基本信息 --&gt;
+&lt;h1&gt;{{ shop.name }}&lt;/h1&gt;
+&lt;p&gt;{{ shop.description }}&lt;/p&gt;
+ 
+&lt;!-- 商店URL和域名 --&gt;
+&lt;a href="{{ shop.url }}"&gt;{{ shop.domain }}&lt;/a&gt;
+&lt;link rel="canonical" href="{{ shop.secure_url }}{{ request.path }}" /&gt;
+ 
+&lt;!-- 商店ID和句柄 --&gt;
+&lt;div data-shop-id="{{ shop.id }}" data-shop-handle="{{ shop.handle }}"&gt;
+  &lt;!-- 内容 --&gt;
+&lt;/div&gt;
+</code></pre>
+<h4 id="联系信息">联系信息</h4><pre><code>&lt;!-- 商店联系方式 --&gt;
+&lt;div class="contact-info"&gt;
+  {% if shop.email %}
+    &lt;p&gt;邮箱: &lt;a href="mailto:{{ shop.email }}"&gt;{{ shop.email }}&lt;/a&gt;&lt;/p&gt;
+  {% endif %}
+  
+  {% if shop.phone %}
+    &lt;p&gt;电话: &lt;a href="tel:{{ shop.phone }}"&gt;{{ shop.phone }}&lt;/a&gt;&lt;/p&gt;
+  {% endif %}
+  
+  {% if shop.address %}
+    &lt;address&gt;
+      {{ shop.address.company }}&lt;br&gt;
+      {{ shop.address.address1 }}&lt;br&gt;
+      {% if shop.address.address2 %}{{ shop.address.address2 }}&lt;br&gt;{% endif %}
+      {{ shop.address.city }}, {{ shop.address.province }} {{ shop.address.zip }}&lt;br&gt;
+      {{ shop.address.country }}
+    &lt;/address&gt;
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h4 id="货币和税务设置">货币和税务设置</h4><pre><code>&lt;!-- 货币信息 --&gt;
+&lt;div class="currency-info" data-currency="{{ shop.currency }}"&gt;
+  &lt;span class="currency-symbol"&gt;{{ shop.money_format }}&lt;/span&gt;
+  &lt;span class="currency-code"&gt;{{ shop.currency }}&lt;/span&gt;
+&lt;/div&gt;
+ 
+&lt;!-- 多货币支持 --&gt;
+{% if shop.enabled_currencies.size &gt; 1 %}
+  &lt;select name="currency" class="currency-selector"&gt;
+    {% for currency in shop.enabled_currencies %}
+      &lt;option value="{{ currency.iso_code }}" 
+              {% if currency.iso_code == shop.currency %}selected{% endif %}&gt;
+        {{ currency.name }} ({{ currency.symbol }})
+      &lt;/option&gt;
+    {% endfor %}
+  &lt;/select&gt;
+{% endif %}
+ 
+&lt;!-- 税务设置 --&gt;
+{% if shop.taxes_included %}
+  &lt;p class="tax-notice"&gt;价格含税&lt;/p&gt;
+{% else %}
+  &lt;p class="tax-notice"&gt;价格不含税&lt;/p&gt;
+{% endif %}
+</code></pre>
+<h4 id="政策页面">政策页面</h4><pre><code>&lt;!-- 商店政策链接 --&gt;
+&lt;div class="policy-links"&gt;
+  {% if shop.privacy_policy %}
+    &lt;a href="{{ shop.privacy_policy.url }}"&gt;{{ shop.privacy_policy.title }}&lt;/a&gt;
+  {% endif %}
+  
+  {% if shop.terms_of_service %}
+    &lt;a href="{{ shop.terms_of_service.url }}"&gt;{{ shop.terms_of_service.title }}&lt;/a&gt;
+  {% endif %}
+  
+  {% if shop.refund_policy %}
+    &lt;a href="{{ shop.refund_policy.url }}"&gt;{{ shop.refund_policy.title }}&lt;/a&gt;
+  {% endif %}
+  
+  {% if shop.shipping_policy %}
+    &lt;a href="{{ shop.shipping_policy.url }}"&gt;{{ shop.shipping_policy.title }}&lt;/a&gt;
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="request-对象">request 对象</h3><p><code>request</code> 对象包含当前 HTTP 请求的信息。</p>
+<h4 id="url-和路径信息">URL 和路径信息</h4><pre><code>&lt;!-- 当前页面信息 --&gt;
+&lt;div class="page-info"&gt;
+  &lt;p&gt;当前路径: {{ request.path }}&lt;/p&gt;
+  &lt;p&gt;完整URL: {{ request.origin }}{{ request.path }}&lt;/p&gt;
+  &lt;p&gt;页面类型: {{ request.page_type }}&lt;/p&gt;
+&lt;/div&gt;
+ 
+&lt;!-- 构建动态URL --&gt;
+{% assign current_url = request.origin | append: request.path %}
+{% if request.query %}
+  {% assign current_url = current_url | append: '?' | append: request.query %}
+{% endif %}
+ 
+&lt;link rel="canonical" href="{{ current_url }}" /&gt;
+</code></pre>
+<h4 id="设备和用户代理信息">设备和用户代理信息</h4><pre><code>&lt;!-- 设备检测 --&gt;
+{% if request.design_mode %}
+  &lt;div class="admin-notice"&gt;当前为主题编辑模式&lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 用户代理信息 --&gt;
+&lt;div class="user-agent" data-user-agent="{{ request.user_agent }}"&gt;
+  {% comment %} 可用于JavaScript中的设备检测 {% endcomment %}
+&lt;/div&gt;
+ 
+&lt;!-- 主机信息 --&gt;
+&lt;div class="host-info" data-host="{{ request.host }}"&gt;
+  {% if request.host contains 'myshopify.com' %}
+    &lt;div class="dev-notice"&gt;开发环境&lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h4 id="查询参数处理">查询参数处理</h4><pre><code>&lt;!-- 处理查询参数 --&gt;
+{% assign sort_by = request.query.sort_by | default: 'best-selling' %}
+{% assign view = request.query.view | default: 'grid' %}
+{% assign filter_color = request.query.filter.p.product_type %}
+ 
+&lt;div class="filters" data-sort="{{ sort_by }}" data-view="{{ view }}"&gt;
+  &lt;!-- 排序选项 --&gt;
+  &lt;select name="sort_by"&gt;
+    &lt;option value="best-selling" {% if sort_by == 'best-selling' %}selected{% endif %}&gt;
+      最畅销
+    &lt;/option&gt;
+    &lt;option value="price-ascending" {% if sort_by == 'price-ascending' %}selected{% endif %}&gt;
+      价格由低到高
+    &lt;/option&gt;
+    &lt;option value="price-descending" {% if sort_by == 'price-descending' %}selected{% endif %}&gt;
+      价格由高到低
+    &lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="page-title-对象">page_title 对象</h3><p>动态页面标题，根据当前页面类型自动生成。</p>
+<pre><code>&lt;!-- 基本页面标题 --&gt;
+&lt;title&gt;{{ page_title }}{% unless page_title contains shop.name %} - {{ shop.name }}{% endunless %}&lt;/title&gt;
+ 
+&lt;!-- 自定义页面标题逻辑 --&gt;
+{% capture custom_title %}
+  {% case request.page_type %}
+    {% when 'index' %}
+      {{ shop.name }} - {{ shop.description | truncate: 100 }}
+    {% when 'product' %}
+      {{ product.title }} - {{ product.vendor }} | {{ shop.name }}
+    {% when 'collection' %}
+      {{ collection.title }} 系列 | {{ shop.name }}
+    {% when 'blog' %}
+      {{ blog.title }} 博客 | {{ shop.name }}
+    {% when 'article' %}
+      {{ article.title }} - {{ blog.title }} | {{ shop.name }}
+    {% when 'page' %}
+      {{ page.title }} | {{ shop.name }}
+    {% when 'search' %}
+      {% if search.performed %}
+        "{{ search.terms }}" 搜索结果 | {{ shop.name }}
+      {% else %}
+        搜索 | {{ shop.name }}
+      {% endif %}
+    {% when '404' %}
+      页面未找到 | {{ shop.name }}
+    {% else %}
+      {{ page_title }} | {{ shop.name }}
+  {% endcase %}
+{% endcapture %}
+ 
+&lt;title&gt;{{ custom_title | strip }}&lt;/title&gt;
+</code></pre>
+<h3 id="canonical-url-对象">canonical_url 对象</h3><p>规范URL，用于SEO优化。</p>
+<pre><code>&lt;!-- 基本规范URL --&gt;
+&lt;link rel="canonical" href="{{ canonical_url }}" /&gt;
+ 
+&lt;!-- 处理分页的规范URL --&gt;
+{% if paginate.current_page &gt; 1 %}
+  &lt;link rel="canonical" href="{{ canonical_url | append: '?page=' | append: paginate.current_page }}" /&gt;
+  &lt;link rel="prev" href="{% if paginate.previous %}{{ canonical_url }}{% if paginate.previous.url != canonical_url %}{{ paginate.previous.url }}{% endif %}{% endif %}" /&gt;
+  &lt;link rel="next" href="{% if paginate.next %}{{ canonical_url }}{{ paginate.next.url }}{% endif %}" /&gt;
+{% else %}
+  &lt;link rel="canonical" href="{{ canonical_url }}" /&gt;
+  {% if paginate.next %}
+    &lt;link rel="next" href="{{ canonical_url }}{{ paginate.next.url }}" /&gt;
+  {% endif %}
+{% endif %}
+</code></pre>
+<h2 id="主题相关全局对象">主题相关全局对象</h2><h3 id="settings-对象">settings 对象</h3><p>访问主题设置中定义的配置。</p>
+<pre><code>&lt;!-- 主题颜色设置 --&gt;
+&lt;style&gt;
+  :root {
+    --primary-color: {{ settings.primary_color | default: '#000000' }};
+    --secondary-color: {{ settings.secondary_color | default: '#ffffff' }};
+    --accent-color: {{ settings.accent_color | default: '#007bff' }};
+    --text-color: {{ settings.text_color | default: '#333333' }};
+    --background-color: {{ settings.background_color | default: '#ffffff' }};
+  }
+&lt;/style&gt;
+ 
+&lt;!-- 主题布局设置 --&gt;
+&lt;div class="container" style="max-width: {{ settings.container_width | default: 1200 }}px;"&gt;
+  &lt;!-- 内容 --&gt;
+&lt;/div&gt;
+ 
+&lt;!-- 功能开关 --&gt;
+{% if settings.enable_newsletter %}
+  &lt;div class="newsletter-signup"&gt;
+    &lt;!-- 邮件订阅表单 --&gt;
+  &lt;/div&gt;
+{% endif %}
+ 
+{% if settings.enable_cart_drawer %}
+  &lt;div class="cart-drawer"&gt;
+    &lt;!-- 购物车抽屉 --&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="theme-对象">theme 对象</h3><p>获取当前主题信息。</p>
+<pre><code>&lt;!-- 主题信息 --&gt;
+&lt;div class="theme-info" 
+     data-theme-id="{{ theme.id }}" 
+     data-theme-name="{{ theme.name }}"
+     data-theme-role="{{ theme.role }}"&gt;
+  {% if theme.role == 'development' %}
+    &lt;div class="dev-theme-notice"&gt;开发主题&lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;
+ 
+&lt;!-- 主题版本控制 --&gt;
+{% comment %}
+主题: {{ theme.name }}
+ID: {{ theme.id }}
+角色: {{ theme.role }}
+{% endcomment %}
+</code></pre>
+<h2 id="高级全局对象使用">高级全局对象使用</h2><h3 id="组合使用示例">组合使用示例</h3><pre><code>&lt;!-- 智能导航系统 --&gt;
+&lt;nav class="main-navigation" 
+     data-page-type="{{ request.page_type }}"
+     data-current-url="{{ request.path }}"&gt;
+  
+  {% for link in linklists.main-menu.links %}
+    {% assign is_current = false %}
+    {% assign is_parent = false %}
+    
+    {% comment %} 检查当前页面匹配 {% endcomment %}
+    {% if link.url == request.path %}
+      {% assign is_current = true %}
+    {% endif %}
+    
+    {% comment %} 检查子页面匹配 {% endcomment %}
+    {% for child_link in link.links %}
+      {% if child_link.url == request.path %}
+        {% assign is_parent = true %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+    
+    &lt;a href="{{ link.url }}" 
+       class="nav-link {% if is_current %}current{% endif %} {% if is_parent %}parent-current{% endif %}"
+       {% if is_current %}aria-current="page"{% endif %}&gt;
+      {{ link.title }}
+    &lt;/a&gt;
+  {% endfor %}
+&lt;/nav&gt;
+</code></pre>
+<h3 id="动态内容生成">动态内容生成</h3><pre><code>&lt;!-- 基于页面类型的动态内容 --&gt;
+&lt;div class="page-header" data-page-type="{{ request.page_type }}"&gt;
+  {% case request.page_type %}
+    {% when 'index' %}
+      &lt;h1&gt;欢迎来到 {{ shop.name }}&lt;/h1&gt;
+      &lt;p&gt;{{ shop.description }}&lt;/p&gt;
+      
+    {% when 'collection' %}
+      &lt;h1&gt;{{ collection.title }}&lt;/h1&gt;
+      {% if collection.description != blank %}
+        &lt;p&gt;{{ collection.description }}&lt;/p&gt;
+      {% endif %}
+      &lt;p&gt;共 {{ collection.products_count }} 件商品&lt;/p&gt;
+      
+    {% when 'product' %}
+      &lt;nav aria-label="面包屑"&gt;
+        &lt;a href="{{ routes.root_url }}"&gt;首页&lt;/a&gt;
+        {% if collection %}
+          &lt;a href="{{ collection.url }}"&gt;{{ collection.title }}&lt;/a&gt;
+        {% endif %}
+        &lt;span&gt;{{ product.title }}&lt;/span&gt;
+      &lt;/nav&gt;
+      
+    {% when 'blog' %}
+      &lt;h1&gt;{{ blog.title }}&lt;/h1&gt;
+      {% if blog.summary != blank %}
+        &lt;p&gt;{{ blog.summary }}&lt;/p&gt;
+      {% endif %}
+      
+    {% when 'search' %}
+      {% if search.performed %}
+        &lt;h1&gt;"{{ search.terms }}" 的搜索结果&lt;/h1&gt;
+        &lt;p&gt;找到 {{ search.results_count }} 个结果&lt;/p&gt;
+      {% else %}
+        &lt;h1&gt;搜索商品&lt;/h1&gt;
+        &lt;p&gt;在 {{ shop.name }} 中搜索您需要的商品&lt;/p&gt;
+      {% endif %}
+  {% endcase %}
+&lt;/div&gt;
+</code></pre>
+<h2 id="性能优化技巧">性能优化技巧</h2><h3 id="缓存全局数据">缓存全局数据</h3><pre><code>&lt;!-- 缓存重要的全局数据 --&gt;
+{% liquid
+  assign shop_data = shop | json
+  assign request_data = request | json
+%}
+ 
+&lt;script&gt;
+  window.shopData = {{ shop_data }};
+  window.requestData = {{ request_data }};
+  window.themeSettings = {
+    primaryColor: '{{ settings.primary_color }}',
+    enableCartDrawer: {{ settings.enable_cart_drawer | json }},
+    currencyFormat: '{{ shop.money_format }}'
+  };
+&lt;/script&gt;
+</code></pre>
+<h3 id="条件加载">条件加载</h3><pre><code>&lt;!-- 仅在需要时加载重型组件 --&gt;
+{% unless request.design_mode %}
+  {% if settings.enable_analytics %}
+    &lt;!-- 分析代码 --&gt;
+  {% endif %}
+  
+  {% if settings.enable_chat_widget %}
+    &lt;!-- 聊天组件 --&gt;
+  {% endif %}
+{% endunless %}
+ 
+&lt;!-- 开发模式专用功能 --&gt;
+{% if request.design_mode %}
+  &lt;div class="admin-tools"&gt;
+    &lt;p&gt;主题: {{ theme.name }} ({{ theme.role }})&lt;/p&gt;
+    &lt;p&gt;页面类型: {{ request.page_type }}&lt;/p&gt;
+    &lt;p&gt;当前路径: {{ request.path }}&lt;/p&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="调试技巧">调试技巧</h2><h3 id="全局对象调试">全局对象调试</h3><pre><code>&lt;!-- 开发环境下的调试信息 --&gt;
+{% if request.host contains 'myshopify.com' %}
+  &lt;div class="debug-panel" style="position: fixed; bottom: 0; right: 0; background: #333; color: #fff; padding: 10px; font-size: 12px; z-index: 9999;"&gt;
+    &lt;h4&gt;调试信息&lt;/h4&gt;
+    &lt;p&gt;&lt;strong&gt;页面类型:&lt;/strong&gt; {{ request.page_type }}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;当前路径:&lt;/strong&gt; {{ request.path }}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;主题:&lt;/strong&gt; {{ theme.name }} ({{ theme.role }})&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;用户代理:&lt;/strong&gt; {{ request.user_agent | truncate: 50 }}&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;设计模式:&lt;/strong&gt; {{ request.design_mode }}&lt;/p&gt;
+    
+    {% if request.query %}
+      &lt;p&gt;&lt;strong&gt;查询参数:&lt;/strong&gt;&lt;/p&gt;
+      &lt;ul&gt;
+        {% for param in request.query %}
+          &lt;li&gt;{{ param[0] }}: {{ param[1] }}&lt;/li&gt;
+        {% endfor %}
+      &lt;/ul&gt;
+    {% endif %}
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="安全最佳实践">安全最佳实践</h2><h3 id="输出转义">输出转义</h3><pre><code>&lt;!-- 安全输出用户提供的内容 --&gt;
+&lt;h1&gt;{{ page_title | escape }}&lt;/h1&gt;
+&lt;meta name="description" content="{{ page_description | escape | truncate: 160 }}"&gt;
+ 
+&lt;!-- 安全处理URL参数 --&gt;
+{% assign search_term = request.query.q | escape %}
+&lt;input type="search" name="q" value="{{ search_term }}" placeholder="搜索..."&gt;
+</code></pre>
+<h3 id="数据验证">数据验证</h3><pre><code>&lt;!-- 验证和清理数据 --&gt;
+{% assign valid_currencies = 'USD,EUR,GBP,CAD,AUD,JPY,CNY' | split: ',' %}
+{% assign current_currency = request.query.currency | upcase %}
+ 
+{% if valid_currencies contains current_currency %}
+  {% comment %} 处理有效的货币代码 {% endcomment %}
+  &lt;span class="currency"&gt;{{ current_currency }}&lt;/span&gt;
+{% else %}
+  {% comment %} 使用默认货币 {% endcomment %}
+  &lt;span class="currency"&gt;{{ shop.currency }}&lt;/span&gt;
+{% endif %}
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>现在您已经掌握了全局对象的使用，建议继续学习：</p>
+<ul>
+<li><a href="/guides/shopify-handbook/liquid/product-objects/">产品对象详解</a> - 深入了解产品相关对象</li>
+<li><a href="/guides/shopify-handbook/liquid/customer-objects/">客户对象详解</a> - 学习客户账户和认证</li>
+<li><a href="/guides/shopify-handbook/liquid/cart-objects/">购物车对象详解</a> - 掌握购物车功能实现</li>
+<li><a href="/guides/shopify-handbook/liquid/advanced-liquid/">高级 Liquid 技巧</a> - 学习更高级的模板技巧</li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/customer-objects/"><span>上一篇</span><strong>客户对象详解</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/examples/"><span>下一篇</span><strong>实际应用示例</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

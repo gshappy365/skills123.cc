@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>对象和属性 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="对象和属性 在 Liquid 中，对象是包含属性的数据结构。理解对象系统对于有效使用 Shopify 主题开发至关重要。 对象基础概念 什么是对象 对象层次结构 对象属性访问 点号访问 方括号访问 动态属性访问示例 对象存在性检查 ">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/objects/">
+  <meta property="og:title" content="对象和属性 · Shopify 独立站手册">
+  <meta property="og:description" content="对象和属性 在 Liquid 中，对象是包含属性的数据结构。理解对象系统对于有效使用 Shopify 主题开发至关重要。 对象基础概念 什么是对象 对象层次结构 对象属性访问 点号访问 方括号访问 动态属性访问示例 对象存在性检查 ">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>对象和属性</h1>
+        <p>对象和属性 在 Liquid 中，对象是包含属性的数据结构。理解对象系统对于有效使用 Shopify 主题开发至关重要。 对象基础概念 什么是对象 对象层次结构 对象属性访问 点号访问 方括号访问 动态属性访问示例 对象存在性检查 </p>
+      </header>
+      <div class="article-content"><h2 id="对象和属性">对象和属性</h2><p>在 Liquid 中，对象是包含属性的数据结构。理解对象系统对于有效使用 Shopify 主题开发至关重要。</p>
+<h2 id="对象基础概念">对象基础概念</h2><h3 id="什么是对象">什么是对象</h3><pre><code>&lt;!-- 对象是具有属性的数据结构 --&gt;
+{{ product.title }}        &lt;!-- product 是对象，title 是属性 --&gt;
+{{ customer.first_name }}  &lt;!-- customer 是对象，first_name 是属性 --&gt;
+{{ shop.name }}            &lt;!-- shop 是对象，name 是属性 --&gt;
+</code></pre>
+<h3 id="对象层次结构">对象层次结构</h3><pre><code>&lt;!-- Shopify 对象层次结构示例 --&gt;
+全局对象
+├── shop (商店对象)
+├── cart (购物车对象)
+├── customer (客户对象)
+└── request (请求对象)
+ 
+页面特定对象
+├── product (产品对象)
+├── collection (集合对象)
+├── blog (博客对象)
+└── article (文章对象)
+</code></pre>
+<h2 id="对象属性访问">对象属性访问</h2><h3 id="点号访问">点号访问</h3><pre><code>&lt;!-- 基本属性访问 --&gt;
+{{ product.title }}
+{{ product.price }}
+{{ product.description }}
+ 
+&lt;!-- 嵌套属性访问 --&gt;
+{{ product.featured_image.alt }}
+{{ customer.default_address.city }}
+{{ order.shipping_address.country }}
+ 
+&lt;!-- 深层嵌套访问 --&gt;
+{{ product.selected_or_first_available_variant.title }}
+{{ blog.articles.first.author }}
+{{ cart.items.last.product.vendor }}
+</code></pre>
+<h3 id="方括号访问">方括号访问</h3><pre><code>&lt;!-- 使用方括号访问属性 --&gt;
+{{ product['title'] }}
+{{ customer['first_name'] }}
+{{ order['created_at'] }}
+ 
+&lt;!-- 动态属性访问 --&gt;
+{% assign property_name = 'title' %}
+{{ product[property_name] }}
+ 
+{% assign field = 'first_name' %}
+{{ customer[field] }}
+</code></pre>
+<h3 id="动态属性访问示例">动态属性访问示例</h3><pre><code>&lt;!-- 根据用户选择显示不同属性 --&gt;
+{% assign display_field = settings.product_display_field %}
+{% case display_field %}
+  {% when 'title' %}
+    {{ product.title }}
+  {% when 'vendor' %}
+    {{ product.vendor }}
+  {% when 'type' %}
+    {{ product.type }}
+  {% else %}
+    {{ product[display_field] }}
+{% endcase %}
+ 
+&lt;!-- 循环显示多个属性 --&gt;
+{% assign product_fields = 'title,vendor,type,price' | split: ',' %}
+&lt;dl class="product-details"&gt;
+  {% for field in product_fields %}
+    &lt;dt&gt;{{ field | capitalize }}:&lt;/dt&gt;
+    &lt;dd&gt;{{ product[field] }}&lt;/dd&gt;
+  {% endfor %}
+&lt;/dl&gt;
+</code></pre>
+<h2 id="对象存在性检查">对象存在性检查</h2><h3 id="检查对象是否存在">检查对象是否存在</h3><pre><code>&lt;!-- 检查对象本身是否存在 --&gt;
+{% if customer %}
+  &lt;p&gt;用户已登录: {{ customer.email }}&lt;/p&gt;
+{% else %}
+  &lt;p&gt;用户未登录&lt;/p&gt;
+{% endif %}
+ 
+&lt;!-- 检查嵌套对象是否存在 --&gt;
+{% if product.featured_image %}
+  &lt;img src="{{ product.featured_image | image_url: width: 400, height: 400 }}" 
+       alt="{{ product.featured_image.alt }}"&gt;
+{% else %}
+  &lt;div class="no-image-placeholder"&gt;暂无图片&lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="检查属性是否存在">检查属性是否存在</h3><pre><code>&lt;!-- 检查属性是否存在且不为空 --&gt;
+{% if product.description %}
+  &lt;div class="product-description"&gt;
+    {{ product.description }}
+  &lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 检查属性是否不为 blank --&gt;
+{% if product.description != blank %}
+  &lt;div class="product-description"&gt;
+    {{ product.description }}
+  &lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 检查数组属性是否有内容 --&gt;
+{% if product.images.size &gt; 0 %}
+  &lt;div class="product-gallery"&gt;
+    {% for image in product.images %}
+      &lt;img src="{{ image | image_url: width: 300, height: 300 }}" alt="{{ image.alt }}"&gt;
+    {% endfor %}
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="安全访问模式">安全访问模式</h3><pre><code>&lt;!-- 使用 default 过滤器提供默认值 --&gt;
+{{ product.description | default: "暂无描述" }}
+{{ customer.first_name | default: "访客" }}
+{{ product.featured_image.alt | default: product.title }}
+ 
+&lt;!-- 链式安全访问 --&gt;
+{% assign image_alt = product.featured_image.alt %}
+{% if image_alt == blank %}
+  {% assign image_alt = product.title %}
+{% endif %}
+{{ image_alt }}
+ 
+&lt;!-- 三级安全访问 --&gt;
+{% if product.featured_image and product.featured_image.alt %}
+  {{ product.featured_image.alt }}
+{% elsif product.featured_image %}
+  {{ product.title }}
+{% else %}
+  默认图片描述
+{% endif %}
+</code></pre>
+<h2 id="对象方法和属性">对象方法和属性</h2><h3 id="数组对象方法">数组对象方法</h3><pre><code>&lt;!-- 数组长度 --&gt;
+{{ product.images.size }}
+{{ collection.products.size }}
+{{ customer.addresses.size }}
+ 
+&lt;!-- 第一个和最后一个元素 --&gt;
+{{ product.images.first }}
+{{ product.images.last }}
+{{ collection.products.first }}
+{{ collection.products.last }}
+ 
+&lt;!-- 数组索引访问 --&gt;
+{{ product.images[0] }}
+{{ product.images[1] }}
+{{ product.images[-1] }}  &lt;!-- 最后一个元素 --&gt;
+{{ product.images[-2] }}  &lt;!-- 倒数第二个元素 --&gt;
+</code></pre>
+<h3 id="字符串对象方法">字符串对象方法</h3><pre><code>&lt;!-- 字符串长度 --&gt;
+{{ product.title.size }}
+{{ customer.first_name.size }}
+ 
+&lt;!-- 字符串检查 --&gt;
+{% if product.title.size &gt; 20 %}
+  &lt;h3 title="{{ product.title }}"&gt;{{ product.title | truncate: 20 }}&lt;/h3&gt;
+{% else %}
+  &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+{% endif %}
+</code></pre>
+<h3 id="日期对象方法">日期对象方法</h3><pre><code>&lt;!-- 日期格式化 --&gt;
+{{ order.created_at | date: '%Y-%m-%d' }}
+{{ article.published_at | date: '%B %d, %Y' }}
+ 
+&lt;!-- 日期比较 --&gt;
+{% assign today = 'now' | date: '%Y-%m-%d' %}
+{% assign order_date = order.created_at | date: '%Y-%m-%d' %}
+{% if order_date == today %}
+  &lt;span class="today-order"&gt;今日订单&lt;/span&gt;
+{% endif %}
+</code></pre>
+<h2 id="对象遍历">对象遍历</h2><h3 id="遍历数组对象">遍历数组对象</h3><pre><code>&lt;!-- 遍历产品图片 --&gt;
+{% for image in product.images %}
+  &lt;div class="image-item"&gt;
+    &lt;img src="{{ image | image_url: width: 400, height: 400 }}" 
+         alt="{{ image.alt | escape }}"
+         data-index="{{ forloop.index0 }}"&gt;
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- 遍历购物车商品 --&gt;
+{% for item in cart.items %}
+  &lt;div class="cart-item"&gt;
+    &lt;h4&gt;{{ item.title }}&lt;/h4&gt;
+    &lt;p&gt;数量: {{ item.quantity }}&lt;/p&gt;
+    &lt;p&gt;价格: {{ item.price | money }}&lt;/p&gt;
+    &lt;p&gt;小计: {{ item.line_price | money }}&lt;/p&gt;
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- 遍历客户地址 --&gt;
+{% for address in customer.addresses %}
+  &lt;div class="address-card"&gt;
+    &lt;h4&gt;{{ address.first_name }} {{ address.last_name }}&lt;/h4&gt;
+    &lt;p&gt;{{ address.address1 }}&lt;/p&gt;
+    {% if address.address2 != blank %}
+      &lt;p&gt;{{ address.address2 }}&lt;/p&gt;
+    {% endif %}
+    &lt;p&gt;{{ address.city }}, {{ address.province }} {{ address.zip }}&lt;/p&gt;
+    &lt;p&gt;{{ address.country }}&lt;/p&gt;
+  &lt;/div&gt;
+{% endfor %}
+</code></pre>
+<h3 id="有条件的遍历">有条件的遍历</h3><pre><code>&lt;!-- 只遍历可用的产品变体 --&gt;
+{% for variant in product.variants %}
+  {% if variant.available %}
+    &lt;option value="{{ variant.id }}"&gt;
+      {{ variant.title }} - {{ variant.price | money }}
+    &lt;/option&gt;
+  {% endif %}
+{% endfor %}
+ 
+&lt;!-- 遍历特定标签的文章 --&gt;
+{% for article in blog.articles %}
+  {% if article.tags contains 'featured' %}
+    &lt;article class="featured-article"&gt;
+      &lt;h2&gt;{{ article.title }}&lt;/h2&gt;
+      &lt;p&gt;{{ article.excerpt }}&lt;/p&gt;
+    &lt;/article&gt;
+  {% endif %}
+{% endfor %}
+</code></pre>
+<h2 id="对象过滤和操作">对象过滤和操作</h2><h3 id="使用-where-过滤器">使用 where 过滤器</h3><pre><code>&lt;!-- 过滤可用产品 --&gt;
+{% assign available_products = collection.products | where: 'available', true %}
+ 
+&lt;!-- 过滤特定供应商的产品 --&gt;
+{% assign apple_products = collection.products | where: 'vendor', 'Apple' %}
+ 
+&lt;!-- 过滤包含特定标签的产品 --&gt;
+{% assign featured_products = collection.products | where: 'tags', 'featured' %}
+ 
+&lt;!-- 显示过滤结果 --&gt;
+&lt;div class="filtered-products"&gt;
+  {% for product in featured_products %}
+    {% render 'product-card', product: product %}
+  {% endfor %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="使用-map-提取属性">使用 map 提取属性</h3><pre><code>&lt;!-- 提取所有产品标题 --&gt;
+{% assign product_titles = collection.products | map: 'title' %}
+ 
+&lt;!-- 提取所有供应商 --&gt;
+{% assign vendors = collection.products | map: 'vendor' | uniq %}
+ 
+&lt;!-- 提取所有价格 --&gt;
+{% assign prices = collection.products | map: 'price' %}
+ 
+&lt;!-- 显示提取的信息 --&gt;
+&lt;div class="vendors-list"&gt;
+  &lt;h3&gt;品牌列表:&lt;/h3&gt;
+  {% for vendor in vendors %}
+    &lt;span class="vendor-tag"&gt;{{ vendor }}&lt;/span&gt;
+  {% endfor %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="对象排序">对象排序</h3><pre><code>&lt;!-- 按标题排序 --&gt;
+{% assign sorted_products = collection.products | sort: 'title' %}
+ 
+&lt;!-- 按价格排序 --&gt;
+{% assign price_sorted = collection.products | sort: 'price' %}
+ 
+&lt;!-- 按创建时间排序 --&gt;
+{% assign newest_first = collection.products | sort: 'created_at' | reverse %}
+ 
+&lt;!-- 显示排序结果 --&gt;
+&lt;div class="sorted-products"&gt;
+  {% for product in price_sorted %}
+    &lt;div class="product-item"&gt;
+      &lt;h4&gt;{{ product.title }}&lt;/h4&gt;
+      &lt;p&gt;{{ product.price | money }}&lt;/p&gt;
+    &lt;/div&gt;
+  {% endfor %}
+&lt;/div&gt;
+</code></pre>
+<h2 id="复杂对象操作">复杂对象操作</h2><h3 id="对象聚合统计">对象聚合统计</h3><pre><code>&lt;!-- 统计不同类型的产品数量 --&gt;
+{% assign electronics_count = 0 %}
+{% assign clothing_count = 0 %}
+{% assign books_count = 0 %}
+{% assign other_count = 0 %}
+ 
+{% for product in collection.products %}
+  {% case product.type %}
+    {% when 'Electronics' %}
+      {% assign electronics_count = electronics_count | plus: 1 %}
+    {% when 'Clothing' %}
+      {% assign clothing_count = clothing_count | plus: 1 %}
+    {% when 'Books' %}
+      {% assign books_count = books_count | plus: 1 %}
+    {% else %}
+      {% assign other_count = other_count | plus: 1 %}
+  {% endcase %}
+{% endfor %}
+ 
+&lt;div class="category-stats"&gt;
+  &lt;h3&gt;产品分类统计&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;电子产品: {{ electronics_count }}&lt;/li&gt;
+    &lt;li&gt;服装: {{ clothing_count }}&lt;/li&gt;
+    &lt;li&gt;图书: {{ books_count }}&lt;/li&gt;
+    &lt;li&gt;其他: {{ other_count }}&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="对象关系分析">对象关系分析</h3><pre><code>&lt;!-- 分析购物车中的产品关系 --&gt;
+{% assign cart_vendors = "" %}
+{% assign cart_types = "" %}
+{% assign total_value = 0 %}
+ 
+{% for item in cart.items %}
+  &lt;!-- 收集供应商 --&gt;
+  {% unless cart_vendors contains item.vendor %}
+    {% if cart_vendors == "" %}
+      {% assign cart_vendors = item.vendor %}
+    {% else %}
+      {% assign cart_vendors = cart_vendors | append: "," | append: item.vendor %}
+    {% endif %}
+  {% endunless %}
+  
+  &lt;!-- 收集产品类型 --&gt;
+  {% unless cart_types contains item.product.type %}
+    {% if cart_types == "" %}
+      {% assign cart_types = item.product.type %}
+    {% else %}
+      {% assign cart_types = cart_types | append: "," | append: item.product.type %}
+    {% endif %}
+  {% endunless %}
+  
+  &lt;!-- 计算总价值 --&gt;
+  {% assign line_total = item.quantity | times: item.price %}
+  {% assign total_value = total_value | plus: line_total %}
+{% endfor %}
+ 
+&lt;div class="cart-analysis"&gt;
+  &lt;h3&gt;购物车分析&lt;/h3&gt;
+  &lt;p&gt;涉及品牌: {{ cart_vendors | split: "," | size }}&lt;/p&gt;
+  &lt;p&gt;产品类型: {{ cart_types | split: "," | size }}&lt;/p&gt;
+  &lt;p&gt;总价值: {{ total_value | money }}&lt;/p&gt;
+  &lt;p&gt;平均单价: {{ total_value | divided_by: cart.item_count | money }}&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="对象数据转换">对象数据转换</h3><pre><code>&lt;!-- 将产品数据转换为 JSON --&gt;
+{% assign product_data = "" %}
+{% capture product_json %}
+{
+  "id": {{ product.id }},
+  "title": "{{ product.title | escape }}",
+  "price": {{ product.price }},
+  "available": {{ product.available }},
+  "images": [
+    {% for image in product.images %}
+      {
+        "src": "{{ image | image_url: width: 400, height: 400 }}",
+        "alt": "{{ image.alt | escape | default: product.title }}"
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ],
+  "variants": [
+    {% for variant in product.variants %}
+      {
+        "id": {{ variant.id }},
+        "title": "{{ variant.title | escape }}",
+        "price": {{ variant.price }},
+        "available": {{ variant.available }}
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}
+{% endcapture %}
+ 
+&lt;script&gt;
+  window.productData = {{ product_json }};
+&lt;/script&gt;
+</code></pre>
+<h2 id="对象调试技巧">对象调试技巧</h2><h3 id="输出对象结构">输出对象结构</h3><pre><code>&lt;!-- 查看完整对象结构 --&gt;
+{% if settings.debug_mode %}
+  &lt;div class="debug-panel"&gt;
+    &lt;h4&gt;产品对象调试&lt;/h4&gt;
+    &lt;pre&gt;{{ product | json }}&lt;/pre&gt;
+  &lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 查看特定对象的属性 --&gt;
+{% if settings.debug_mode %}
+  &lt;div class="debug-info"&gt;
+    &lt;h4&gt;客户对象属性&lt;/h4&gt;
+    &lt;ul&gt;
+      &lt;li&gt;ID: {{ customer.id }}&lt;/li&gt;
+      &lt;li&gt;邮箱: {{ customer.email }}&lt;/li&gt;
+      &lt;li&gt;名字: {{ customer.first_name }}&lt;/li&gt;
+      &lt;li&gt;姓氏: {{ customer.last_name }}&lt;/li&gt;
+      &lt;li&gt;订单数: {{ customer.orders_count }}&lt;/li&gt;
+      &lt;li&gt;总消费: {{ customer.total_spent | money }}&lt;/li&gt;
+      &lt;li&gt;标签: {{ customer.tags | join: ", " }}&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="检查对象类型">检查对象类型</h3><pre><code>&lt;!-- 检查变量类型 --&gt;
+{% if settings.debug_mode %}
+  &lt;div class="type-info"&gt;
+    &lt;p&gt;product.id 类型: {{ product.id.class }}&lt;/p&gt;
+    &lt;p&gt;product.title 类型: {{ product.title.class }}&lt;/p&gt;
+    &lt;p&gt;product.price 类型: {{ product.price.class }}&lt;/p&gt;
+    &lt;p&gt;product.available 类型: {{ product.available.class }}&lt;/p&gt;
+    &lt;p&gt;product.images 类型: {{ product.images.class }}&lt;/p&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="性能优化技巧">性能优化技巧</h2><h3 id="避免重复对象访问">避免重复对象访问</h3><pre><code>&lt;!-- 不好的做法 --&gt;
+{% for i in (1..10) %}
+  {{ collection.products.size }}  &lt;!-- 每次都访问 --&gt;
+{% endfor %}
+ 
+&lt;!-- 好的做法 --&gt;
+{% assign product_count = collection.products.size %}
+{% for i in (1..10) %}
+  {{ product_count }}  &lt;!-- 使用缓存的值 --&gt;
+{% endfor %}
+</code></pre>
+<h3 id="预处理复杂对象">预处理复杂对象</h3><pre><code>&lt;!-- 预处理可用产品 --&gt;
+{% assign available_products = collection.products | where: 'available', true %}
+ 
+&lt;!-- 预计算价格范围 --&gt;
+{% assign min_price = collection.products | map: 'price' | sort | first %}
+{% assign max_price = collection.products | map: 'price' | sort | last %}
+ 
+&lt;!-- 使用预处理的数据 --&gt;
+&lt;div class="collection-info"&gt;
+  &lt;p&gt;可用商品: {{ available_products.size }}&lt;/p&gt;
+  &lt;p&gt;价格范围: {{ min_price | money }} - {{ max_price | money }}&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="最佳实践">最佳实践</h2><h3 id="1-安全访问">1. 安全访问</h3><pre><code>&lt;!-- 始终检查对象存在性 --&gt;
+{% if product and product.featured_image %}
+  &lt;img src="{{ product.featured_image | image_url: width: 400, height: 400 }}" 
+       alt="{{ product.featured_image.alt | default: product.title }}"&gt;
+{% endif %}
+</code></pre>
+<h3 id="2-使用有意义的变量名">2. 使用有意义的变量名</h3><pre><code>&lt;!-- 好的变量命名 --&gt;
+{% assign featured_products = collection.products | where: 'featured', true %}
+{% assign customer_is_vip = customer.tags contains 'vip' %}
+{% assign product_has_variants = product.variants.size &gt; 1 %}
+</code></pre>
+<h3 id="3-避免深度嵌套">3. 避免深度嵌套</h3><pre><code>&lt;!-- 将深度嵌套分解为步骤 --&gt;
+{% assign selected_variant = product.selected_or_first_available_variant %}
+{% if selected_variant %}
+  {% assign variant_title = selected_variant.title %}
+  {% assign variant_price = selected_variant.price %}
+{% endif %}
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>掌握对象和属性后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/operators/">运算符和表达式</a> - 学习对象比较和操作</li>
+<li><a href="/guides/shopify-handbook/liquid/shopify-objects/">Shopify 对象参考</a> - 了解所有可用对象</li>
+<li><a href="/guides/shopify-handbook/liquid/advanced-liquid/">高级 Liquid 技巧</a> - 进阶对象操作</li>
+<li><a href="/guides/shopify-handbook/liquid/performance-optimization/">性能优化</a> - 对象使用优化</li>
+</ol>
+<p>理解对象系统是掌握 Liquid 的关键，它为动态内容提供了强大的数据访问能力！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/ecommerce-features/"><span>上一篇</span><strong>电商功能实现</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/localization/"><span>下一篇</span><strong>多语言和本地化</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

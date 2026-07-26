@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>订单状态概览 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="在Shopify平台经营店铺的过程中，准确理解订单状态对高效运营至关重要。从客户下单到最终收货，Shopify通过四大类状态标识（支付状态、物流状态、配送状态和退货状态）全方位追踪订单流转过程。本文将深入剖析各状态背后的具体含义，帮">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/basic/order-status/">
+  <meta property="og:title" content="订单状态概览 · Shopify 独立站手册">
+  <meta property="og:description" content="在Shopify平台经营店铺的过程中，准确理解订单状态对高效运营至关重要。从客户下单到最终收货，Shopify通过四大类状态标识（支付状态、物流状态、配送状态和退货状态）全方位追踪订单流转过程。本文将深入剖析各状态背后的具体含义，帮">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/basic/">入门基础</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">入门基础 · 整理与归档</p>
+        <h1>订单状态概览</h1>
+        <p>在Shopify平台经营店铺的过程中，准确理解订单状态对高效运营至关重要。从客户下单到最终收货，Shopify通过四大类状态标识（支付状态、物流状态、配送状态和退货状态）全方位追踪订单流转过程。本文将深入剖析各状态背后的具体含义，帮</p>
+      </header>
+      <div class="article-content"><p>在Shopify平台经营店铺的过程中，准确理解订单状态对高效运营至关重要。从客户下单到最终收货，Shopify通过四大类状态标识（支付状态、物流状态、配送状态和退货状态）全方位追踪订单流转过程。本文将深入剖析各状态背后的具体含义，帮助您快速识别异常订单并提升整体订单处理效率。</p>
+<h2 id="订单状态概览">订单状态概览</h2><p>登录Shopify管理后台，点击左侧导航栏的订单选项，即可看到所有订单及其对应状态信息：</p>
+<p><img src="/assets/images/shopify-handbook/e3dbe3694f325b6b.png" alt="Shopify订单状态总览" loading="lazy" /></p>
+<h2 id="支付状态解析-资金流向的实时反映">支付状态解析：资金流向的实时反映</h2><p>支付状态是订单管理中最关键的环节之一，它直接关系到资金是否已安全到账。根据不同场景，订单可能呈现以下支付状态：</p>
+<table>
+<thead>
+<tr>
+<th>状态名称</th>
+<th>资金状态</th>
+<th>详细解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>已付款（Paid）</td>
+<td>✅ 资金已到账</td>
+<td>系统已自动/手动成功获取款项，或订单已手动标记为已付款状态</td>
+</tr>
+<tr>
+<td>部分付款（Partially Paid）</td>
+<td>⚠️ 部分已到账</td>
+<td>订单总金额仅部分收到，常见于分期付款或预付款情况</td>
+</tr>
+<tr>
+<td>已退款（Refunded）</td>
+<td>🔄 款项已返还</td>
+<td>订单款项已全额退回客户原支付渠道，交易已完成取消</td>
+</tr>
+<tr>
+<td>部分退款（Partially refunded）</td>
+<td>🔄 部分已返还</td>
+<td>仅退还部分金额，如客户保留部分商品或获得部分补偿</td>
+</tr>
+<tr>
+<td>待处理（Pending）</td>
+<td>❓ 处理中</td>
+<td>支付已发起但尚未确认完成，资金在处理通道中流转</td>
+</tr>
+<tr>
+<td>已授权（Authorized）</td>
+<td>⏳ 已冻结待获取</td>
+<td>银行已核准并预留资金，但商家尚未手动获取款项</td>
+</tr>
+<tr>
+<td>即将过期（Expiring）</td>
+<td>⚠️ 授权即将失效</td>
+<td>系统提醒：已授权但未获取的款项即将过期（通常提前2天提醒）</td>
+</tr>
+<tr>
+<td>应付款（Due）</td>
+<td>📅 待按期支付</td>
+<td>设置了付款期限的订单已到期或即将到期，需客户履行付款</td>
+</tr>
+<tr>
+<td>已过期（Expired）</td>
+<td>❌ 授权已失效</td>
+<td>支付授权已超出有效期，无法再获取款项</td>
+</tr>
+<tr>
+<td>已作废（Voided）</td>
+<td>❌ 交易已取消</td>
+<td>订单已手动取消，不再有效</td>
+</tr>
+<tr>
+<td>未付款（Unpaid）</td>
+<td>❌ 款项未收到</td>
+<td>综合状态，包含各种未完成付款的情形</td>
+</tr>
+</tbody></table>
+<p>以下两种支付状态在日常运营中尤为常见，需要特别关注：</p>
+<h3 id="待付款状态详解">待付款状态详解</h3><p>当系统显示订单为<strong>待付款</strong>状态时，意味着客户下单成功但支付尚未完成时。具体表现如下图：</p>
+<p><img src="/assets/images/shopify-handbook/7e6d92271615b511.png" alt="待付款状态" loading="lazy" /></p>
+<p>出现<strong>待付款</strong>状态的常见原因：</p>
+<ul>
+<li><strong>非即时确认支付方式</strong>：客户选择了需要处理时间的支付方式（如银行转账、某些第三方支付服务等），支付确认存在延迟</li>
+<li><strong>自建订单延期付款</strong>：商家创建订单时主动设置了延后付款选项，等待客户按指定时间完成支付</li>
+<li><strong>特殊支付场景</strong>：如货到付款(COD)订单，系统标记为待付款直至收到线下款项确认</li>
+<li><strong>支付网关延迟</strong>：支付服务商或银行处理系统出现延迟，导致支付状态暂时未能更新</li>
+</ul>
+<blockquote>
+<p><strong>运营提示</strong>：对于<strong>待付款</strong>状态的订单，应谨慎操作，确认款项真实到账后再安排发货，避免造成不必要的资金风险和物流成本损失。</p>
+</blockquote>
+<h3 id="已授权状态解析">已授权状态解析</h3><p>Shopify提供三种款项获取方式，默认为自动获取，而选择手动获取选项后，系统会出现<strong>已授权</strong>状态：</p>
+<p><img src="/assets/images/shopify-handbook/f7edb9001cc2d3cf.png" alt="款项获取设置" loading="lazy" /></p>
+<p><strong>已授权</strong>状态表示支付机构已确认客户具备支付能力并暂时冻结相应金额，但商家尚未实际接收款项：</p>
+<p><img src="/assets/images/shopify-handbook/a6b31f4c8bc94284.png" alt="已授权状态界面" loading="lazy" /></p>
+<p>这种设置特别适用于：</p>
+<ul>
+<li><strong>大额订单</strong>：需要额外审核确认的高价值订单</li>
+<li><strong>定制商品</strong>：需确认生产可行性后再接受付款</li>
+<li><strong>高风险区域</strong>：来自欺诈高发地区的订单，需进一步核实</li>
+<li><strong>特殊商品</strong>：受限商品或需要额外资质审核的产品</li>
+</ul>
+<h2 id="物流状态-订单履行进度追踪">物流状态：订单履行进度追踪</h2><p><strong>物流状态</strong>（也称发货状态）反映商品从仓库出库到交付物流商的全过程，可通过手动更新或与第三方系统自动同步：</p>
+<p><img src="/assets/images/shopify-handbook/eda796a611afd486.png" alt="物流状态界面" loading="lazy" /></p>
+<p>物流状态主要包括五种类型：</p>
+<ul>
+<li><strong>等待处理</strong>（Unfulfilled）：新订单默认状态，表示订单尚未开始拣货包装流程</li>
+<li><strong>部分发货</strong>（Partially Fulfilled）：订单中部分商品已完成出库，其余商品仍在处理中，常见于多SKU订单或缺货补发情况</li>
+<li><strong>已发货</strong>（Fulfilled）：订单中所有商品均已完成拣货、包装并交付物流服务商，运单号已成功录入系统</li>
+<li><strong>已计划</strong>（Scheduled）：已为订单设定了未来的发货时间，系统将按计划自动处理或提醒手动处理</li>
+<li><strong>暂停处理</strong>（On Hold）：订单因特殊原因（如地址问题、库存短缺、付款异常等）被暂时搁置，需人工介入解决后继续处理</li>
+</ul>
+<h2 id="配送追踪-物流实时动态掌控">配送追踪：物流实时动态掌控</h2><p><strong>配送状态</strong>是对包裹离开仓库后物流配送过程的实时追踪，这些信息通常由物流服务商API自动同步更新：</p>
+<p><img src="/assets/images/shopify-handbook/eda796a611afd486.png" alt="配送状态界面" loading="lazy" /></p>
+<p>完整的配送状态流程通常包括：</p>
+<ul>
+<li><strong>Pending（待处理）</strong>：订单刚刚生成，系统正在处理，尚未进入仓库打包流程。通常是订单刚提交，还没进入物流系统</li>
+<li><strong>Ordered（已下单）</strong>：客户已成功下单，订单已记录在系统中，但还未处理或打包</li>
+<li><strong>Order Ready（订单已备货）</strong>：商品已打包好，等待物流公司揽收或分拣</li>
+<li><strong>In Transit（运输途中）</strong>：包裹已离开仓库，正在运往收货地址途中，可能已被多次中转</li>
+<li><strong>Out for Delivery（派送中）</strong>：快递员正在派送，包裹很快就会到达收件人手中</li>
+<li><strong>Delivered（已送达）</strong>：收件人已成功收到包裹，物流流程结束</li>
+<li><strong>Delivery Failed（配送失败）</strong>：包裹因地址错误、无人签收或其他原因导致配送未成功，通常会进入重新派送或退回流程</li>
+</ul>
+<h2 id="退货管理-售后流程状态跟踪">退货管理：售后流程状态跟踪</h2><p>随着电商业务发展，高效的退货管理同样重要。Shopify提供专门的<strong>退货状态</strong>追踪功能：</p>
+<p><img src="/assets/images/shopify-handbook/8cd1e81a68baf7c1.png" alt="退货状态界面" loading="lazy" /></p>
+<p>退货流程主要涉及两个关键状态：</p>
+<ul>
+<li><strong>退货申请中</strong>：客户已通过店铺或联系客服发起退货请求，等待商家审核处理</li>
+<li><strong>退货处理中</strong>：商家已批准退货申请，客户正在安排退回商品，商家等待收到退回的商品以完成退款流程</li>
+</ul>
+<h2 id="实用建议-优化订单状态管理">实用建议：优化订单状态管理</h2><p>基于多年Shopify平台运营经验，我们建议商家：</p>
+<ol>
+<li><strong>建立订单监控机制</strong>：定期检查异常状态订单，特别关注长时间处于待付款、已授权但未获取款项的订单</li>
+<li><strong>自动化工作流</strong>：利用Shopify应用市场的自动化工具，设置状态变更触发相应操作，如自动发送通知邮件</li>
+<li><strong>集成ERP系统</strong>：对于订单量大的商家，推荐集成专业ERP系统，实现订单状态实时同步与自动处理</li>
+<li><strong>优化异常处理</strong>：针对Delivery Failed、未付款等状态，制定标准化处理流程，提升客户满意度</li>
+<li><strong>定期数据分析</strong>：通过订单状态数据分析，找出运营瓶颈，持续优化订单处理流程</li>
+</ol>
+<h2 id="小结">小结</h2><p>掌握Shopify订单状态体系不仅能够帮助您高效管理日常订单处理流程，还能够在订单异常情况发生时快速识别并解决问题。建议将本文作为工作参考指南，帮助您的团队更好地理解和应对各种订单状态变化，最终提升整体运营效率和客户满意度。</p>
+<p>最后更新时间：</p>
+<p>2026年6月27日</p>
+<p><a href="/guides/shopify-handbook/basic/payment-setup/">设置店铺的收款方式</a><a href="/guides/shopify-handbook/basic/shopify-discount-codes-guide/">Shopify折扣码创建与管理指南</a></p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/store-security-setup/"><span>上一篇</span><strong>安全优先级速查</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/multi-market-tax/"><span>下一篇</span><strong>多市场税务管理指南</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

@@ -140,6 +140,83 @@ a.package-index-row:hover {
   min-height: 78px;
 }
 
+.topic-guide-index {
+  margin-top: 52px;
+  border-top: 2px solid #153f34;
+}
+
+.topic-guide-index > header {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.8fr) 1.4fr auto;
+  gap: 28px;
+  align-items: center;
+  min-height: 92px;
+}
+
+.topic-guide-index > header > div {
+  display: flex;
+  gap: 18px;
+  align-items: baseline;
+}
+
+.topic-guide-index > header span,
+.topic-guide-row > div > span {
+  color: #da6e51;
+  font: 700 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.topic-guide-index h2,
+.topic-guide-row h3 {
+  margin: 0;
+  color: #153f34;
+  font-family: Georgia, "Songti SC", serif;
+}
+
+.topic-guide-index > header p,
+.topic-guide-index > header small,
+.topic-guide-row p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.topic-guide-row {
+  display: grid;
+  grid-template-columns: 1.15fr 1.75fr 110px 120px;
+  gap: 18px;
+  align-items: center;
+  min-height: 132px;
+  padding: 20px;
+  border: 1px solid rgba(21, 63, 52, 0.28);
+  background: #f4f0e6;
+}
+
+.topic-guide-row:hover {
+  background: #153f34;
+  color: #f4f0e6;
+}
+
+.topic-guide-row:hover h3,
+.topic-guide-row:hover p,
+.topic-guide-row:hover .package-metrics {
+  color: inherit;
+}
+
+.topic-guide-row h3 {
+  margin-top: 9px;
+  font-size: 21px;
+}
+
+.topic-guide-row > strong {
+  color: #153f34;
+  font-size: 12px;
+  text-align: right;
+}
+
+.topic-guide-row:hover > strong {
+  color: #f4f0e6;
+}
+
 .result-heading {
   display: flex;
   gap: 24px;
@@ -284,6 +361,23 @@ a.package-index-row:hover {
 
   .package-index-row {
     grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .topic-guide-index > header,
+  .topic-guide-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .topic-guide-index > header p,
+  .topic-guide-row p,
+  .topic-guide-row .package-metrics {
+    grid-column: 1;
+  }
+
+  .topic-guide-index > header small,
+  .topic-guide-row > strong {
+    grid-column: 2;
+    grid-row: 1;
   }
 
   .package-index-row p,

@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>未命名文章 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/shopify-theme-bg-music/">
+  <meta property="og:title" content="未命名文章 · Shopify 独立站手册">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>未命名文章</h1>
+        <p></p>
+      </header>
+      <div class="article-content"><pre><code>{
+  "name": "背景音乐播放器",
+  "tag": "section",
+  "class": "bg-music-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "播放器设置"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_music",
+      "label": "启用背景音乐",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_play",
+      "label": "自动播放",
+      "default": false,
+      "info": "受浏览器政策限制，需要用户首次交互后才能播放"
+    },
+    {
+      "type": "select",
+      "id": "play_mode",
+      "label": "播放模式",
+      "default": "loop",
+      "options": [
+        { "value": "loop", "label": "循环播放" },
+        { "value": "random", "label": "随机播放" },
+        { "value": "single", "label": "单曲循环" },
+        { "value": "once", "label": "播放一次" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "default_volume",
+      "label": "默认音量",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "播放器外观"
+    },
+    {
+      "type": "select",
+      "id": "player_theme",
+      "label": "播放器主题",
+      "default": "dark",
+      "options": [
+        { "value": "dark", "label": "深色主题" },
+        { "value": "light", "label": "浅色主题" },
+        { "value": "gradient", "label": "渐变主题" },
+        { "value": "brand", "label": "品牌色主题" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "player_position",
+      "label": "播放器位置",
+      "default": "bottom-left",
+      "options": [
+        { "value": "bottom-left", "label": "左下角" },
+        { "value": "bottom-right", "label": "右下角" },
+        { "value": "top-left", "label": "左上角" },
+        { "value": "top-right", "label": "右上角" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "player_size",
+      "label": "播放器大小",
+      "default": "medium",
+      "options": [
+        { "value": "small", "label": "小" },
+        { "value": "medium", "label": "中" },
+        { "value": "large", "label": "大" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress",
+      "label": "显示播放进度",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_volume_control",
+      "label": "显示音量控制",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "music_track",
+      "name": "音乐曲目",
+      "settings": [
+        {
+          "type": "text",
+          "id": "track_name",
+          "label": "曲目名称",
+          "placeholder": "例如：品牌主题曲"
+        },
+        {
+          "type": "text",
+          "id": "artist_name",
+          "label": "艺术家",
+          "placeholder": "例如：XXXX"
+        },
+        {
+          "type": "url",
+          "id": "audio_url",
+          "label": "音频文件链接",
+          "info": "支持 MP3、OGG、AAC 格式，建议文件小于 5MB"
+        },
+        {
+          "type": "image_picker",
+          "id": "cover_image",
+          "label": "封面图片（可选）"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "背景音乐播放器",
+      "blocks": [
+        {
+          "type": "music_track",
+    ...
+</code></pre>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/data-driven-decision/"><span>上一篇</span><strong>数据驱动的运营决策体系</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-diy-vs-done-for-you/"><span>下一篇</span><strong>先看结论</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

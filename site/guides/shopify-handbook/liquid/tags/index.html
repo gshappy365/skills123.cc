@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>标签和控制结构 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="标签和控制结构 Liquid 标签是模板语言的核心，用于创建逻辑和控制流。本指南将详细介绍所有可用的标签和它们的高级用法。 标签基础 标签语法 空白控制 控制流标签 if/elsif/else unless case/when 循环">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/tags/">
+  <meta property="og:title" content="标签和控制结构 · Shopify 独立站手册">
+  <meta property="og:description" content="标签和控制结构 Liquid 标签是模板语言的核心，用于创建逻辑和控制流。本指南将详细介绍所有可用的标签和它们的高级用法。 标签基础 标签语法 空白控制 控制流标签 if/elsif/else unless case/when 循环">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>标签和控制结构</h1>
+        <p>标签和控制结构 Liquid 标签是模板语言的核心，用于创建逻辑和控制流。本指南将详细介绍所有可用的标签和它们的高级用法。 标签基础 标签语法 空白控制 控制流标签 if/elsif/else unless case/when 循环</p>
+      </header>
+      <div class="article-content"><h2 id="标签和控制结构">标签和控制结构</h2><p>Liquid 标签是模板语言的核心，用于创建逻辑和控制流。本指南将详细介绍所有可用的标签和它们的高级用法。</p>
+<h2 id="标签基础">标签基础</h2><h3 id="标签语法">标签语法</h3><pre><code>&lt;!-- 基本标签语法 --&gt;
+{% tag_name %}
+ 
+&lt;!-- 带参数的标签 --&gt;
+{% tag_name parameter %}
+ 
+&lt;!-- 标签块 --&gt;
+{% tag_name %}
+  内容
+{% endtag_name %}
+ 
+&lt;!-- 自闭合标签 --&gt;
+{% tag_name parameter %}
+</code></pre>
+<h3 id="空白控制">空白控制</h3><pre><code>&lt;!-- 控制标签周围的空白 --&gt;
+{%- if condition -%}
+  内容
+{%- endif -%}
+ 
+&lt;!-- 只控制左侧空白 --&gt;
+{%- assign var = value %}
+ 
+&lt;!-- 只控制右侧空白 --&gt;
+{% assign var = value -%}
+</code></pre>
+<h2 id="控制流标签">控制流标签</h2><h3 id="if-elsif-else">if/elsif/else</h3><pre><code>&lt;!-- 基本条件判断 --&gt;
+{% if product.available %}
+  &lt;button class="add-to-cart"&gt;加入购物车&lt;/button&gt;
+{% endif %}
+ 
+&lt;!-- 多重条件 --&gt;
+{% if customer.tags contains 'vip' %}
+  &lt;span class="vip-badge"&gt;VIP 客户&lt;/span&gt;
+{% elsif customer.tags contains 'member' %}
+  &lt;span class="member-badge"&gt;会员&lt;/span&gt;
+{% else %}
+  &lt;span class="guest-badge"&gt;访客&lt;/span&gt;
+{% endif %}
+ 
+&lt;!-- 复杂条件表达式 --&gt;
+{% if product.available and product.price &lt; 10000 %}
+  &lt;span class="affordable-available"&gt;经济实惠，现货供应&lt;/span&gt;
+{% elsif product.available and product.price &gt;= 10000 %}
+  &lt;span class="premium-available"&gt;高端商品，现货供应&lt;/span&gt;
+{% elsif product.price &lt; 10000 %}
+  &lt;span class="affordable-unavailable"&gt;经济实惠，暂时缺货&lt;/span&gt;
+{% else %}
+  &lt;span class="premium-unavailable"&gt;高端商品，暂时缺货&lt;/span&gt;
+{% endif %}
+</code></pre>
+<h3 id="unless">unless</h3><pre><code>&lt;!-- unless 是 if 的否定形式 --&gt;
+{% unless product.available %}
+  &lt;div class="out-of-stock-notice"&gt;
+    &lt;p&gt;此商品暂时缺货&lt;/p&gt;
+    &lt;button class="notify-btn"&gt;到货通知&lt;/button&gt;
+  &lt;/div&gt;
+{% endunless %}
+ 
+&lt;!-- 等同于 --&gt;
+{% if product.available == false %}
+  &lt;div class="out-of-stock-notice"&gt;
+    &lt;p&gt;此商品暂时缺货&lt;/p&gt;
+    &lt;button class="notify-btn"&gt;到货通知&lt;/button&gt;
+  &lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- unless 与 else 组合 --&gt;
+{% unless customer %}
+  &lt;div class="login-prompt"&gt;
+    &lt;p&gt;请登录以享受会员价格&lt;/p&gt;
+    &lt;a href="/account/login"&gt;立即登录&lt;/a&gt;
+  &lt;/div&gt;
+{% else %}
+  &lt;div class="welcome-back"&gt;
+    &lt;p&gt;欢迎回来，{{ customer.first_name }}！&lt;/p&gt;
+  &lt;/div&gt;
+{% endunless %}
+</code></pre>
+<h3 id="case-when">case/when</h3><pre><code>&lt;!-- case 语句用于多分支选择 --&gt;
+{% case product.type %}
+  {% when 'Electronics' %}
+    &lt;div class="electronics-info"&gt;
+      &lt;span class="icon"&gt;📱&lt;/span&gt;
+      &lt;p&gt;电子产品 - 1年保修&lt;/p&gt;
+    &lt;/div&gt;
+  {% when 'Clothing' %}
+    &lt;div class="clothing-info"&gt;
+      &lt;span class="icon"&gt;👕&lt;/span&gt;
+      &lt;p&gt;服装 - 7天无理由退换&lt;/p&gt;
+    &lt;/div&gt;
+  {% when 'Books' %}
+    &lt;div class="books-info"&gt;
+      &lt;span class="icon"&gt;📚&lt;/span&gt;
+      &lt;p&gt;图书 - 正版保证&lt;/p&gt;
+    &lt;/div&gt;
+  {% else %}
+    &lt;div class="general-info"&gt;
+      &lt;span class="icon"&gt;🎁&lt;/span&gt;
+      &lt;p&gt;其他商品 - 质量保证&lt;/p&gt;
+    &lt;/div&gt;
+{% endcase %}
+ 
+&lt;!-- 多值匹配 --&gt;
+{% case customer.tags %}
+  {% when 'vip', 'premium', 'gold' %}
+    &lt;div class="premium-service"&gt;
+      &lt;h3&gt;尊享服务&lt;/h3&gt;
+      &lt;ul&gt;
+        &lt;li&gt;免费配送&lt;/li&gt;
+        &lt;li&gt;优先客服&lt;/li&gt;
+        &lt;li&gt;专属折扣&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  {% when 'member', 'silver' %}
+    &lt;div class="member-service"&gt;
+      &lt;h3&gt;会员服务&lt;/h3&gt;
+      &lt;ul&gt;
+        &lt;li&gt;会员折扣&lt;/li&gt;
+        &lt;li&gt;积分奖励&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  {% else %}
+    &lt;div class="standard-service"&gt;
+      &lt;h3&gt;标准服务&lt;/h3&gt;
+      &lt;p&gt;注册成为会员，享受更多优惠！&lt;/p&gt;
+    &lt;/div&gt;
+{% endcase %}
+</code></pre>
+<h2 id="循环标签">循环标签</h2><h3 id="for-循环">for 循环</h3><pre><code>&lt;!-- 基本循环 --&gt;
+{% for product in collection.products %}
+  &lt;div class="product-item"&gt;
+    &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+    &lt;p&gt;{{ product.price | money }}&lt;/p&gt;
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- 带限制的循环 --&gt;
+{% for product in collection.products limit: 8 %}
+  &lt;div class="featured-product"&gt;
+    {{ product.title }}
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- 跳过元素的循环 --&gt;
+{% for product in collection.products offset: 4 limit: 8 %}
+  &lt;div class="product-item"&gt;
+    {{ product.title }}
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- 反向循环 --&gt;
+{% for product in collection.products reversed %}
+  &lt;div class="product-item"&gt;
+    &lt;span class="position"&gt;{{ forloop.rindex }}&lt;/span&gt;
+    {{ product.title }}
+  &lt;/div&gt;
+{% endfor %}
+</code></pre>
+<h3 id="forloop-对象">forloop 对象</h3><pre><code>{% for item in cart.items %}
+  &lt;div class="cart-item" data-index="{{ forloop.index }}"&gt;
+    &lt;!-- forloop.index: 当前索引 (从1开始) --&gt;
+    &lt;span class="item-number"&gt;{{ forloop.index }}&lt;/span&gt;
+    
+    &lt;!-- forloop.index0: 当前索引 (从0开始) --&gt;
+    &lt;span class="item-id"&gt;item-{{ forloop.index0 }}&lt;/span&gt;
+    
+    &lt;!-- forloop.rindex: 反向索引 (从末尾开始) --&gt;
+    &lt;span class="remaining"&gt;还有 {{ forloop.rindex }} 项&lt;/span&gt;
+    
+    &lt;!-- forloop.length: 总长度 --&gt;
+    &lt;span class="total"&gt;共 {{ forloop.length }} 项&lt;/span&gt;
+    
+    &lt;!-- forloop.first: 是否为第一项 --&gt;
+    {% if forloop.first %}
+      &lt;span class="first-item"&gt;首项&lt;/span&gt;
+    {% endif %}
+    
+    &lt;!-- forloop.last: 是否为最后一项 --&gt;
+    {% if forloop.last %}
+      &lt;span class="last-item"&gt;末项&lt;/span&gt;
+    {% endif %}
+    
+    &lt;div class="item-content"&gt;{{ item.title }}&lt;/div&gt;
+  &lt;/div&gt;
+{% endfor %}
+</code></pre>
+<h3 id="高级循环控制">高级循环控制</h3><pre><code>&lt;!-- continue - 跳过当前迭代 --&gt;
+{% for product in collection.products %}
+  {% if product.available == false %}
+    {% continue %}
+  {% endif %}
+  
+  {% if product.price &gt; 100000 %}
+    {% continue %}
+  {% endif %}
+  
+  &lt;div class="available-affordable-product"&gt;
+    &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+    &lt;p&gt;{{ product.price | money }}&lt;/p&gt;
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- break - 提前退出循环 --&gt;
+{% for product in collection.products %}
+  {% if forloop.index &gt; 6 %}
+    {% break %}
+  {% endif %}
+  
+  &lt;div class="top-product"&gt;
+    &lt;span class="rank"&gt;第{{ forloop.index }}名&lt;/span&gt;
+    &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- 在break后显示"更多"链接 --&gt;
+{% assign remaining_count = collection.products.size | minus: 6 %}
+{% if remaining_count &gt; 0 %}
+  &lt;div class="more-products"&gt;
+    &lt;a href="{{ collection.url }}"&gt;
+      查看更多 {{ remaining_count }} 个商品
+    &lt;/a&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="循环的-else-子句">循环的 else 子句</h3><pre><code>&lt;!-- 当循环为空时执行else --&gt;
+{% for product in collection.products %}
+  &lt;div class="product-card"&gt;
+    &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+    &lt;p&gt;{{ product.price | money }}&lt;/p&gt;
+  &lt;/div&gt;
+{% else %}
+  &lt;div class="empty-collection"&gt;
+    &lt;h3&gt;暂无商品&lt;/h3&gt;
+    &lt;p&gt;该分类下还没有商品，请稍后再来查看。&lt;/p&gt;
+    &lt;a href="/collections" class="browse-all"&gt;浏览所有分类&lt;/a&gt;
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- 条件性空状态 --&gt;
+{% assign available_products = collection.products | where: 'available', true %}
+{% for product in available_products %}
+  &lt;div class="available-product"&gt;{{ product.title }}&lt;/div&gt;
+{% else %}
+  &lt;div class="no-available-products"&gt;
+    &lt;p&gt;该分类下的商品暂时都缺货了&lt;/p&gt;
+    &lt;button class="notify-btn"&gt;到货通知&lt;/button&gt;
+  &lt;/div&gt;
+{% endfor %}
+</code></pre>
+<h3 id="范围循环">范围循环</h3><pre><code>&lt;!-- 数字范围循环 --&gt;
+{% for i in (1..5) %}
+  &lt;span class="rating-star" data-rating="{{ i }}"&gt;⭐&lt;/span&gt;
+{% endfor %}
+ 
+&lt;!-- 变量范围循环 --&gt;
+{% assign start_year = 2020 %}
+{% assign end_year = 2024 %}
+{% for year in (start_year..end_year) %}
+  &lt;option value="{{ year }}"&gt;{{ year }}年&lt;/option&gt;
+{% endfor %}
+ 
+&lt;!-- 动态范围 --&gt;
+{% assign max_quantity = product.selected_or_first_available_variant.inventory_quantity | at_most: 10 %}
+&lt;select name="quantity"&gt;
+  {% for qty in (1..max_quantity) %}
+    &lt;option value="{{ qty }}"&gt;{{ qty }}&lt;/option&gt;
+  {% endfor %}
+&lt;/select&gt;
+ 
+&lt;!-- 分页范围 --&gt;
+{% if paginate.pages &gt; 1 %}
+  &lt;div class="pagination"&gt;
+    {% for page in (1..paginate.pages) %}
+      &lt;a href="{{ blog.url }}?page={{ page }}" 
+         {% if page == paginate.current_page %}class="current"{% endif %}&gt;
+        {{ page }}
+      &lt;/a&gt;
+    {% endfor %}
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="变量标签">变量标签</h2><h3 id="assign">assign</h3><pre><code>&lt;!-- 基本赋值 --&gt;
+{% assign product_title = product.title %}
+{% assign sale_price = product.price | times: 0.8 %}
+ 
+&lt;!-- 字符串操作 --&gt;
+{% assign product_url = shop.url | append: product.url %}
+{% assign css_classes = "product-card" | append: " featured" %}
+ 
+&lt;!-- 条件赋值 --&gt;
+{% if product.available %}
+  {% assign availability_class = "in-stock" %}
+  {% assign availability_text = "有库存" %}
+{% else %}
+  {% assign availability_class = "out-of-stock" %}
+  {% assign availability_text = "缺货" %}
+{% endif %}
+ 
+&lt;!-- 复杂计算 --&gt;
+{% assign discount = product.compare_at_price | minus: product.price %}
+{% assign discount_percent = discount | times: 100 | divided_by: product.compare_at_price | round %}
+{% assign savings_text = "节省 " | append: discount_percent | append: "%" %}
+</code></pre>
+<h3 id="capture">capture</h3><pre><code>&lt;!-- 捕获 HTML 内容 --&gt;
+{% capture product_gallery %}
+  &lt;div class="product-gallery"&gt;
+    {% for image in product.images %}
+      &lt;div class="gallery-item"&gt;
+        &lt;img src="{{ image | image_url: width: 400, height: 400 }}" 
+             alt="{{ image.alt | escape }}"
+             data-zoom="{{ image | image_url: width: 1200, height: 1200 }}"&gt;
+      &lt;/div&gt;
+    {% endfor %}
+  &lt;/div&gt;
+{% endcapture %}
+ 
+&lt;!-- 捕获动态内容 --&gt;
+{% capture shipping_calculator %}
+  {% if cart.total_price &gt; 50000 %}
+    &lt;div class="free-shipping"&gt;
+      &lt;span class="icon"&gt;🚚&lt;/span&gt;
+      &lt;span&gt;免费配送&lt;/span&gt;
+    &lt;/div&gt;
+  {% else %}
+    {% assign remaining = 50000 | minus: cart.total_price %}
+    &lt;div class="shipping-threshold"&gt;
+      &lt;span&gt;再购买 {{ remaining | money }} 即可免费配送&lt;/span&gt;
+      &lt;div class="progress-bar"&gt;
+        {% assign progress = cart.total_price | times: 100 | divided_by: 50000 %}
+        &lt;div class="progress" style="width: {{ progress }}%"&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  {% endif %}
+{% endcapture %}
+ 
+&lt;!-- 使用捕获的内容 --&gt;
+&lt;div class="product-details"&gt;
+  {{ product_gallery }}
+&lt;/div&gt;
+ 
+&lt;div class="cart-info"&gt;
+  {{ shipping_calculator }}
+&lt;/div&gt;
+</code></pre>
+<h3 id="increment-decrement">increment/decrement</h3><pre><code>&lt;!-- increment: 创建并递增变量 --&gt;
+&lt;ul class="product-list"&gt;
+  {% for product in collection.products %}
+    &lt;li class="product-item"&gt;
+      &lt;span class="item-number"&gt;{% increment item_counter %}&lt;/span&gt;
+      &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+    &lt;/li&gt;
+  {% endfor %}
+&lt;/ul&gt;
+ 
+&lt;!-- decrement: 创建并递减变量 --&gt;
+{% assign total_items = collection.products.size %}
+&lt;ol class="countdown-list"&gt;
+  {% for product in collection.products %}
+    &lt;li class="countdown-item"&gt;
+      &lt;span class="remaining"&gt;还剩 {% decrement countdown %} 个&lt;/span&gt;
+      &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+    &lt;/li&gt;
+  {% endfor %}
+&lt;/ol&gt;
+ 
+&lt;!-- 多个计数器 --&gt;
+&lt;div class="category-stats"&gt;
+  {% for product in collection.products %}
+    {% if product.type == 'Electronics' %}
+      电子产品 #{% increment electronics_count %}
+    {% elsif product.type == 'Clothing' %}
+      服装 #{% increment clothing_count %}
+    {% endif %}
+  {% endfor %}
+&lt;/div&gt;
+</code></pre>
+<h2 id="模板标签">模板标签</h2><h3 id="render">render</h3><pre><code>&lt;!-- 基本渲染 --&gt;
+{% render 'product-card' %}
+ 
+&lt;!-- 传递变量 --&gt;
+{% render 'product-card', product: product %}
+ 
+&lt;!-- 传递多个变量 --&gt;
+{% render 'product-card',
+    product: product,
+    show_vendor: true,
+    show_reviews: false,
+    css_class: 'featured' %}
+ 
+&lt;!-- 在循环中渲染 --&gt;
+&lt;div class="products-grid"&gt;
+  {% for product in collection.products %}
+    {% render 'product-card',
+        product: product,
+        index: forloop.index,
+        is_first: forloop.first %}
+  {% endfor %}
+&lt;/div&gt;
+ 
+&lt;!-- 条件渲染 --&gt;
+{% if customer %}
+  {% render 'customer-dashboard', customer: customer %}
+{% else %}
+  {% render 'login-form' %}
+{% endif %}
+</code></pre>
+<h3 id="高级-render-用法">高级 render 用法</h3><pre><code>&lt;!-- 动态模板渲染 --&gt;
+{% assign template_name = 'product-card-' | append: settings.card_style %}
+{% render template_name, product: product %}
+ 
+&lt;!-- 渲染带配置的组件 --&gt;
+{% render 'image-gallery',
+    images: product.images,
+    config: {
+      'thumbnail_size': '100x100',
+      'main_size': '600x600',
+      'zoom_enabled': true,
+      'lazy_load': true
+    } %}
+ 
+&lt;!-- 错误处理渲染 --&gt;
+{% assign snippet_exists = 'product-' | append: product.type | downcase %}
+{% render snippet_exists, product: product %}
+&lt;!-- 如果snippet不存在，会静默失败 --&gt;
+</code></pre>
+<h2 id="原始内容标签">原始内容标签</h2><h3 id="raw">raw</h3><pre><code>&lt;!-- 阻止 Liquid 处理内容 --&gt;
+{% raw %}
+  &lt;script&gt;
+    // 这里的 {{ }} 不会被 Liquid 处理
+    var productTitle = "{{ product.title }}";
+    var productPrice = {{ product.price }};
+  &lt;/script&gt;
+{% endraw %}
+ 
+&lt;!-- 显示 Liquid 代码示例 --&gt;
+&lt;div class="code-example"&gt;
+  &lt;h4&gt;使用方法:&lt;/h4&gt;
+  &lt;code&gt;
+    {% raw %}{{ product.title | upcase }}{% endraw %}
+  &lt;/code&gt;
+&lt;/div&gt;
+ 
+&lt;!-- 在教程中显示模板代码 --&gt;
+&lt;pre class="liquid-code"&gt;
+{% raw %}
+{% for product in collection.products %}
+  &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+  &lt;p&gt;{{ product.price | money }}&lt;/p&gt;
+{% endfor %}
+{% endraw %}
+&lt;/pre&gt;
+</code></pre>
+<h2 id="注释标签">注释标签</h2><h3 id="comment">comment</h3><pre><code>{% comment %}
+这是多行注释
+可以包含任何内容
+包括 Liquid 代码: {{ product.title }}
+都不会被处理或显示
+{% endcomment %}
+ 
+{% comment %}
+TODO: 优化产品卡片性能
+- 实现图片懒加载
+- 减少DOM操作
+- 缓存价格计算
+{% endcomment %}
+ 
+&lt;!-- 条件注释 --&gt;
+{% if settings.debug_mode %}
+  {% comment %}
+  调试信息:
+  - 产品ID: {{ product.id }}
+  - 模板: {{ template }}
+  - 时间: {{ 'now' | date: '%Y-%m-%d %H:%M:%S' }}
+  {% endcomment %}
+{% endif %}
+</code></pre>
+<h3 id="单行注释">单行注释</h3><pre><code>{% # 这是单行注释 %}
+ 
+{% assign price = product.price %} {% # 获取产品价格 %}
+ 
+{% # TODO: 添加变体选择器 %}
+&lt;div class="product-options"&gt;
+  &lt;!-- 变体选择器将在这里 --&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="表单标签">表单标签</h2><h3 id="form">form</h3><pre><code>&lt;!-- 产品表单 --&gt;
+{% form 'product', product %}
+  &lt;div class="product-form"&gt;
+    {% if product.variants.size &gt; 1 %}
+      &lt;div class="variant-selector"&gt;
+        &lt;select name="id" class="product-variants"&gt;
+          {% for variant in product.variants %}
+            &lt;option value="{{ variant.id }}" 
+                    {% unless variant.available %}disabled{% endunless %}&gt;
+              {{ variant.title }}
+              {% unless variant.available %} - 缺货{% endunless %}
+            &lt;/option&gt;
+          {% endfor %}
+        &lt;/select&gt;
+      &lt;/div&gt;
+    {% else %}
+      &lt;input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}"&gt;
+    {% endif %}
+    
+    &lt;div class="quantity-selector"&gt;
+      &lt;label for="quantity"&gt;数量:&lt;/label&gt;
+      &lt;input type="number" name="quantity" value="1" min="1" max="10"&gt;
+    &lt;/div&gt;
+    
+    &lt;button type="submit" class="add-to-cart-btn"&gt;
+      加入购物车
+    &lt;/button&gt;
+  &lt;/div&gt;
+{% endform %}
+ 
+&lt;!-- 联系表单 --&gt;
+{% form 'contact' %}
+  &lt;div class="contact-form"&gt;
+    &lt;div class="form-group"&gt;
+      &lt;label for="contact[name]"&gt;姓名&lt;/label&gt;
+      &lt;input type="text" name="contact[name]" required&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="form-group"&gt;
+      &lt;label for="contact[email]"&gt;邮箱&lt;/label&gt;
+      &lt;input type="email" name="contact[email]" required&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="form-group"&gt;
+      &lt;label for="contact[message]"&gt;留言&lt;/label&gt;
+      &lt;textarea name="contact[message]" rows="5" required&gt;&lt;/textarea&gt;
+    &lt;/div&gt;
+    
+    &lt;button type="submit"&gt;发送留言&lt;/button&gt;
+  &lt;/div&gt;
+{% endform %}
+</code></pre>
+<h2 id="分页标签">分页标签</h2><h3 id="paginate">paginate</h3><pre><code>&lt;!-- 博客分页 --&gt;
+{% paginate blog.articles by 5 %}
+  &lt;div class="blog-articles"&gt;
+    {% for article in blog.articles %}
+      &lt;article class="blog-post"&gt;
+        &lt;h2&gt;&lt;a href="{{ article.url }}"&gt;{{ article.title }}&lt;/a&gt;&lt;/h2&gt;
+        &lt;div class="article-meta"&gt;
+          &lt;time&gt;{{ article.published_at | date: '%Y年%m月%d日' }}&lt;/time&gt;
+          &lt;span class="author"&gt;{{ article.author }}&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="article-excerpt"&gt;
+          {{ article.excerpt | default: article.content | strip_html | truncate: 200 }}
+        &lt;/div&gt;
+        &lt;a href="{{ article.url }}" class="read-more"&gt;阅读全文&lt;/a&gt;
+      &lt;/article&gt;
+    {% endfor %}
+  &lt;/div&gt;
+ 
+  &lt;!-- 分页导航 --&gt;
+  {% if paginate.pages &gt; 1 %}
+    &lt;nav class="pagination"&gt;
+      {% if paginate.previous %}
+        &lt;a href="{{ paginate.previous.url }}" class="prev"&gt;上一页&lt;/a&gt;
+      {% endif %}
+      
+      {% for part in paginate.parts %}
+        {% if part.is_link %}
+          &lt;a href="{{ part.url }}"&gt;{{ part.title }}&lt;/a&gt;
+        {% else %}
+          &lt;span class="current"&gt;{{ part.title }}&lt;/span&gt;
+        {% endif %}
+      {% endfor %}
+      
+      {% if paginate.next %}
+        &lt;a href="{{ paginate.next.url }}" class="next"&gt;下一页&lt;/a&gt;
+      {% endif %}
+    &lt;/nav&gt;
+  {% endif %}
+{% endpaginate %}
+</code></pre>
+<h2 id="高级标签组合">高级标签组合</h2><h3 id="嵌套循环和条件">嵌套循环和条件</h3><pre><code>&lt;!-- 产品按类型分组显示 --&gt;
+{% assign product_types = collection.products | map: 'type' | uniq %}
+ 
+{% for product_type in product_types %}
+  &lt;div class="product-category"&gt;
+    &lt;h2&gt;{{ product_type }}&lt;/h2&gt;
+    
+    &lt;div class="products-grid"&gt;
+      {% for product in collection.products %}
+        {% if product.type == product_type %}
+          {% render 'product-card',
+              product: product,
+              show_type: false %}
+        {% endif %}
+      {% endfor %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- 复杂的购物车总结 --&gt;
+&lt;div class="cart-summary"&gt;
+  {% if cart.item_count &gt; 0 %}
+    {% assign subtotal = 0 %}
+    {% assign shipping = 0 %}
+    {% assign tax_rate = 0.08 %}
+    
+    {% for item in cart.items %}
+      {% assign line_total = item.quantity | times: item.price %}
+      {% assign subtotal = subtotal | plus: line_total %}
+      
+      &lt;div class="cart-line-item"&gt;
+        &lt;span class="item-title"&gt;{{ item.title }}&lt;/span&gt;
+        &lt;span class="item-quantity"&gt;{{ item.quantity }}&lt;/span&gt;
+        &lt;span class="item-price"&gt;{{ line_total | money }}&lt;/span&gt;
+      &lt;/div&gt;
+    {% endfor %}
+    
+    {% if subtotal &gt; 50000 %}
+      {% assign shipping = 0 %}
+    {% else %}
+      {% assign shipping = 800 %}
+    {% endif %}
+    
+    {% assign tax = subtotal | times: tax_rate %}
+    {% assign total = subtotal | plus: shipping | plus: tax %}
+    
+    &lt;div class="cart-totals"&gt;
+      &lt;div class="subtotal"&gt;小计: {{ subtotal | money }}&lt;/div&gt;
+      &lt;div class="shipping"&gt;运费: {{ shipping | money }}&lt;/div&gt;
+      &lt;div class="tax"&gt;税费: {{ tax | money }}&lt;/div&gt;
+      &lt;div class="total"&gt;总计: {{ total | money }}&lt;/div&gt;
+    &lt;/div&gt;
+  {% else %}
+    &lt;div class="empty-cart"&gt;
+      &lt;p&gt;购物车是空的&lt;/p&gt;
+      &lt;a href="/collections" class="continue-shopping"&gt;继续购物&lt;/a&gt;
+    &lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h2 id="性能优化技巧">性能优化技巧</h2><h3 id="避免重复计算">避免重复计算</h3><pre><code>&lt;!-- 不好的做法 --&gt;
+{% for product in collection.products %}
+  {% if collection.products.size &gt; 10 %}
+    &lt;!-- collection.products.size 在每次循环中都会计算 --&gt;
+  {% endif %}
+{% endfor %}
+ 
+&lt;!-- 好的做法 --&gt;
+{% assign product_count = collection.products.size %}
+{% for product in collection.products %}
+  {% if product_count &gt; 10 %}
+    &lt;!-- 使用预计算的值 --&gt;
+  {% endif %}
+{% endfor %}
+</code></pre>
+<h3 id="减少嵌套深度">减少嵌套深度</h3><pre><code>&lt;!-- 不好的做法 --&gt;
+{% for product in collection.products %}
+  {% if product.available %}
+    {% if product.price &lt; 10000 %}
+      {% if product.tags contains 'featured' %}
+        &lt;!-- 深层嵌套 --&gt;
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+ 
+&lt;!-- 好的做法 --&gt;
+{% for product in collection.products %}
+  {% unless product.available %}{% continue %}{% endunless %}
+  {% unless product.price &lt; 10000 %}{% continue %}{% endunless %}
+  {% unless product.tags contains 'featured' %}{% continue %}{% endunless %}
+  
+  &lt;!-- 处理符合条件的产品 --&gt;
+{% endfor %}
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>掌握了标签和控制结构后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/operators/">运算符和表达式</a> - 学习更多操作符</li>
+<li><a href="/guides/shopify-handbook/liquid/shopify-objects/">Shopify 对象参考</a> - 了解可用对象</li>
+<li><a href="/guides/shopify-handbook/liquid/advanced-liquid/">高级 Liquid 技巧</a> - 进阶用法</li>
+<li><a href="/guides/shopify-handbook/liquid/performance-optimization/">性能优化</a> - 优化技巧</li>
+</ol>
+<p>标签是 Liquid 的核心功能，掌握它们将让您能够创建复杂而强大的模板逻辑！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/third-party-integrations/"><span>上一篇</span><strong>本指南涵盖内容</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/layout-templates/"><span>下一篇</span><strong>布局模板开发</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

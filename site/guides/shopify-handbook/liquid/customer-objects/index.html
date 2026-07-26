@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>客户对象详解 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="客户对象详解 客户对象包含了用户账户的所有信息，包括个人信息、地址、订单历史、登录状态等。掌握客户对象的使用对于构建个性化的用户体验和账户功能至关重要。 客户基本信息 个人信息 下一步学习 现在您已经掌握了客户对象的详细使用，建议继">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/customer-objects/">
+  <meta property="og:title" content="客户对象详解 · Shopify 独立站手册">
+  <meta property="og:description" content="客户对象详解 客户对象包含了用户账户的所有信息，包括个人信息、地址、订单历史、登录状态等。掌握客户对象的使用对于构建个性化的用户体验和账户功能至关重要。 客户基本信息 个人信息 下一步学习 现在您已经掌握了客户对象的详细使用，建议继">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>客户对象详解</h1>
+        <p>客户对象详解 客户对象包含了用户账户的所有信息，包括个人信息、地址、订单历史、登录状态等。掌握客户对象的使用对于构建个性化的用户体验和账户功能至关重要。 客户基本信息 个人信息 下一步学习 现在您已经掌握了客户对象的详细使用，建议继</p>
+      </header>
+      <div class="article-content"><h2 id="客户对象详解">客户对象详解</h2><p>客户对象包含了用户账户的所有信息，包括个人信息、地址、订单历史、登录状态等。掌握客户对象的使用对于构建个性化的用户体验和账户功能至关重要。</p>
+<h2 id="客户基本信息">客户基本信息</h2><h3 id="个人信息">个人信息</h3><pre><code>&lt;!-- 客户基本信息 --&gt;
+{% if customer %}
+  &lt;div class="customer-info" itemscope itemtype="http://schema.org/Person"&gt;
+    &lt;h2&gt;欢迎回来，&lt;span itemprop="name"&gt;{{ customer.first_name }} {{ customer.last_name }}&lt;/span&gt;！&lt;/h2&gt;
+ 
+    &lt;div class="customer-details"&gt;
+      &lt;p&gt;&lt;strong&gt;邮箱:&lt;/strong&gt; &lt;span itemprop="email"&gt;{{ customer.email }}&lt;/span&gt;&lt;/p&gt;
+ 
+      {% if customer.phone %}
+        &lt;p&gt;&lt;strong&gt;电话:&lt;/strong&gt; &lt;span itemprop="telephone"&gt;{{ customer.phone }}&lt;/span&gt;&lt;/p&gt;
+      {% endif %}
+ 
+      &lt;p&gt;&lt;strong&gt;账户创建:&lt;/strong&gt; {{ customer.created_at | date: '%Y年%m月%d日' }}&lt;/p&gt;
+      &lt;p&gt;&lt;strong&gt;上次登录:&lt;/strong&gt; {{ customer.last_login | date: '%Y年%m月%d日' }}&lt;/p&gt;
+ 
+      &lt;div class="customer-status"&gt;
+        {% if customer.email_marketing_consent.state == 'subscribed' %}
+          &lt;span class="badge"&gt;已订阅邮件营销&lt;/span&gt;
+       ...
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>现在您已经掌握了客户对象的详细使用，建议继续学习：</p>
+<ul>
+<li><a href="/guides/shopify-handbook/liquid/cart-objects/">购物车对象详解</a> - 学习购物车功能实现</li>
+<li><a href="/guides/shopify-handbook/liquid/global-objects/">全局对象详解</a> - 了解更多全局对象</li>
+<li><a href="/guides/shopify-handbook/liquid/product-objects/">产品对象详解</a> - 深入了解产品相关对象</li>
+<li><a href="/guides/shopify-handbook/liquid/advanced-liquid/">高级 Liquid 技巧</a> - 学习更高级的模板技巧</li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/resources/"><span>上一篇</span><strong>开发资源汇总</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/global-objects/"><span>下一篇</span><strong>全局对象详解</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

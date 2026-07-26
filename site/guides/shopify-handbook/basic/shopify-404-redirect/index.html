@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify 404页面与重定向设置教程 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify 404页面与重定向设置教程 在Shopify运营过程中，难免会遇到用户访问不存在页面（404错误）或产品下架、链接变更等情况。合理设置404页面和URL重定向，不仅能提升用户体验，还能有效减少流量损失、优化SEO。本">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/basic/shopify-404-redirect/">
+  <meta property="og:title" content="Shopify 404页面与重定向设置教程 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify 404页面与重定向设置教程 在Shopify运营过程中，难免会遇到用户访问不存在页面（404错误）或产品下架、链接变更等情况。合理设置404页面和URL重定向，不仅能提升用户体验，还能有效减少流量损失、优化SEO。本">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/basic/">入门基础</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">入门基础 · 整理与归档</p>
+        <h1>Shopify 404页面与重定向设置教程</h1>
+        <p>Shopify 404页面与重定向设置教程 在Shopify运营过程中，难免会遇到用户访问不存在页面（404错误）或产品下架、链接变更等情况。合理设置404页面和URL重定向，不仅能提升用户体验，还能有效减少流量损失、优化SEO。本</p>
+      </header>
+      <div class="article-content"><h2 id="shopify-404页面与重定向设置教程">Shopify 404页面与重定向设置教程</h2><p>在Shopify运营过程中，难免会遇到用户访问不存在页面（404错误）或产品下架、链接变更等情况。合理设置404页面和URL重定向，不仅能提升用户体验，还能有效减少流量损失、优化SEO。本文将手把手教你如何在Shopify中设置自定义404页面和实现重定向。</p>
+<hr />
+<h2 id="404页面是什么-为什么要自定义">404页面是什么？为什么要自定义？</h2><p>404页面是指用户访问了不存在的页面时，网站返回的错误提示页面。默认的Shopify 404页面较为简单，容易让用户流失。自定义404页面可以：</p>
+<ul>
+<li>提供友好的提示和品牌形象</li>
+<li>引导用户返回首页或热门页面</li>
+<li>降低跳出率，提升转化</li>
+</ul>
+<h2 id="shopify自定义404页面方法">Shopify自定义404页面方法</h2><p>Shopify的404页面模板文件为<code>templates/404.liquid</code>, 或者Dawn中使用的<code>404.json</code>而其中又指向<code>sections/main-404.liquid</code></p>
+<pre><code>/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-404",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
+ 
+</code></pre>
+<p>你可以通过以下步骤自定义：</p>
+<h3 id="步骤一-进入主题编辑器">步骤一：进入主题编辑器</h3><ol>
+<li>登录Shopify后台，点击【在线商店】&gt;【主题】。</li>
+<li>找到当前正在使用的主题，点击【自定义】。</li>
+</ol>
+<h3 id="步骤二-编辑404模板">步骤二：编辑404模板</h3><ol>
+<li>在主题编辑页面，点击左上角的【主题操作】&gt;【编辑代码】。</li>
+<li>在左侧文件树中找到<code>templates/404.liquid</code>或者<code>sections/main-404.liquid</code>文件。</li>
+</ol>
+<p><img src="/assets/images/shopify-handbook/acb67e13c3f9b6ec.png" alt="404.liquid" loading="lazy" /></p>
+<ol>
+<li>修改文件内容，例如：</li>
+</ol>
+<pre><code>&lt;!-- 这是一个简单的自定义404页面示例 --&gt;
+&lt;div class="error-404"&gt;
+  &lt;h1&gt;页面未找到&lt;/h1&gt;
+  &lt;p&gt;很抱歉，您访问的页面不存在或已被删除。&lt;/p&gt;
+  &lt;a href="/" class="btn"&gt;返回首页&lt;/a&gt;
+&lt;/div&gt;
+</code></pre>
+<ol>
+<li>保存更改，刷新前台测试效果。</li>
+</ol>
+<h3 id="小技巧">小技巧：</h3><ul>
+<li>可以添加热门产品、搜索框、联系方式等内容，提升用户留存。</li>
+<li>建议配合品牌风格美化页面。</li>
+</ul>
+<h2 id="shopify后台设置url重定向">Shopify后台设置URL重定向</h2><p>当产品下架、页面URL变更或需要合并流量时，可以通过Shopify后台设置301重定向。</p>
+<h3 id="步骤一-进入重定向设置">步骤一：进入重定向设置</h3><ol>
+<li>登录Shopify后台，点击左侧菜单【内容】&gt;【菜单】。</li>
+<li>在左上角找到【URL重定向】（URL Redirects），点击进入。</li>
+</ol>
+<h3 id="步骤二-添加重定向">步骤二：添加重定向</h3><ol>
+<li>点击【创建URL重定向】（Add URL redirect）。</li>
+<li>填写”原始URL”（如<code>/old-page</code>）和”目标URL”（如<code>/new-page</code>）。</li>
+<li>点击保存。</li>
+</ol>
+<p><img src="/assets/images/shopify-handbook/84423fd6a040d72b.png" alt="Shopify创建URL重定向" loading="lazy" /></p>
+<blockquote>
+<p>注意：</p>
+<ul>
+<li>原始URL必须是相对路径（以/开头），不包含域名。</li>
+<li>目标URL可以是站内任意有效页面。</li>
+<li>301重定向有助于SEO权重传递。</li>
+</ul>
+</blockquote>
+<h3 id="批量导入重定向">批量导入重定向</h3><p>如需批量设置，可在重定向页面右上角选择”导入”，上传CSV文件批量添加。</p>
+<h2 id="常见问题与注意事项">常见问题与注意事项</h2><ul>
+<li><strong>404页面不生效？</strong> 检查主题是否支持自定义404模板，或是否缓存未刷新。</li>
+<li><strong>重定向后SEO会受影响吗？</strong> 301重定向可传递大部分SEO权重，建议及时设置。</li>
+<li><strong>能否重定向到外部网站？</strong> Shopify仅支持站内URL重定向，不能直接跳转到外部域名。</li>
+<li><strong>如何监控404访问？</strong> 可结合Google Analytics等工具，监控404页面访问量，及时优化。</li>
+</ul>
+<hr />
+<p>最后更新时间：</p>
+<p>2026年6月27日</p>
+<p><a href="/guides/shopify-handbook/basic/shopify-blocks/">Shopify目录中的Blocks详解</a><a href="/guides/shopify-handbook/basic/shopify-analytics-setup/">Shopify数据分析设置完整指南</a></p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/email-marketing-setup/"><span>上一篇</span><strong>ESP（邮件服务商）选型速查</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/menu/"><span>下一篇</span><strong>Shopify 菜单(Menu)创建与设置教程</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>一、为什么主题开发需要「工程化」 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="大语言模型（LLM）与 IDE 内嵌助手已能显著加快 Liquid、JSON Schema、CSS 与说明文档 的产出速度，但 Shopify 主题上线责任仍在开发者 ：API 会变更、对象上下文会错、安全与性能规则不能交给模型「猜">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/ai-theme-engineering/">
+  <meta property="og:title" content="一、为什么主题开发需要「工程化」 · Shopify 独立站手册">
+  <meta property="og:description" content="大语言模型（LLM）与 IDE 内嵌助手已能显著加快 Liquid、JSON Schema、CSS 与说明文档 的产出速度，但 Shopify 主题上线责任仍在开发者 ：API 会变更、对象上下文会错、安全与性能规则不能交给模型「猜">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>一、为什么主题开发需要「工程化」</h1>
+        <p>大语言模型（LLM）与 IDE 内嵌助手已能显著加快 Liquid、JSON Schema、CSS 与说明文档 的产出速度，但 Shopify 主题上线责任仍在开发者 ：API 会变更、对象上下文会错、安全与性能规则不能交给模型「猜</p>
+      </header>
+      <div class="article-content"><p>大语言模型（LLM）与 IDE 内嵌助手已能显著加快 <strong>Liquid、JSON Schema、CSS 与说明文档</strong> 的产出速度，但 <strong>Shopify 主题上线责任仍在开发者</strong>：API 会变更、对象上下文会错、安全与性能规则不能交给模型「猜」。本篇说明：<strong>AI 适合做什么、必须人工把关什么</strong>，以及如何与 <strong>CLI、Theme Check、Git、CI</strong> 组成可重复、可审查的工程化流程。</p>
+<blockquote>
+<p>阅读前建议已了解：<a href="/guides/shopify-handbook/liquid/environment-setup/">开发环境搭建</a>、<a href="/guides/shopify-handbook/liquid/shopify-cli/">Shopify CLI</a>、<a href="/guides/shopify-handbook/liquid/code-organization/">代码组织</a>、<a href="/guides/shopify-handbook/liquid/theme-engineering-setup/">主题工程化：目录与 npm 脚本</a>、<a href="/guides/shopify-handbook/liquid/security/">安全最佳实践</a>。</p>
+</blockquote>
+<hr />
+<h2 id="一-为什么主题开发需要-工程化">一、为什么主题开发需要「工程化」</h2><p>主题不是单文件脚本，而是 <strong>多模板、多资源、多环境（开发店 / 生产）</strong> 的长期维护对象。没有工程化时常见问题包括：</p>
+<ul>
+<li>多人改同一主题、<strong>覆盖线上</strong>；</li>
+<li>弃用过滤器或错误 <code>render</code> 参数<strong>上线后才发现</strong>；</li>
+<li>App 与自定义脚本堆叠导致 <strong>CLS / LCP 劣化</strong>；</li>
+<li>无法回答「<strong>这一版相对上一版改了什么</strong>」。</li>
+</ul>
+<p>工程化目标：<strong>可预览、可 diff、可静态检查、可回滚</strong>，AI 应嵌套在这一套流程里，而不是替代流程。</p>
+<hr />
+<h2 id="二-ai-在-liquid-主题场景中的合理用法">二、AI 在 Liquid / 主题场景中的合理用法</h2><h3 id="适合交给-ai-辅助的任务">适合交给 AI 辅助的任务</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>解释报错与 Theme Check 规则</td>
+<td>把规则 ID、报错片段贴给模型，快速理解含义与修复方向</td>
+</tr>
+<tr>
+<td>生成 Section / Snippet 草稿</td>
+<td>基于你已提供的 settings 结构与字段类型，生成初版 Liquid + Schema，再由人校对</td>
+</tr>
+<tr>
+<td>书写 {% schema %} 的 JSON</td>
+<td>减少手写括号错误；注意 Shopify 对 schema 版本与字段 的要求以官方为准</td>
+</tr>
+<tr>
+<td>把 Dawn 片段改写成你项目的命名风格</td>
+<td>提供现有文件作为风格参考（注意许可证与归属）</td>
+</tr>
+<tr>
+<td>编写测试清单、PR 描述、发布说明</td>
+<td>基于 git diff 让模型生成 human-readable 摘要</td>
+</tr>
+<tr>
+<td>多语言文案占位</td>
+<td>生成 locales 键结构草稿，正式翻译仍需人工或专业翻译流程</td>
+</tr>
+</tbody></table>
+<h3 id="不适合单独依赖-ai-的任务">不适合单独依赖 AI 的任务</h3><ul>
+<li><strong>判断某对象在某模板是否可用</strong>（例如 <code>collection</code> 仅在集合模板存在）——必须对照 <a href="/guides/shopify-handbook/liquid/shopify-objects/">Shopify 对象</a> 与当前 <code>template</code>。</li>
+<li><strong>选用过滤器与参数</strong>（如 <code>image_url</code> 参数、<code>money</code> 与货币格式）——以 <a href="https://shopify.dev/docs/api/liquid" target="_blank" rel="noreferrer">官方 Liquid 文档</a>  为准，模型可能仍输出已弃用写法。</li>
+<li><strong>结账与隐私相关逻辑</strong>——涉及合规与 PCI 边界，需人工与官方限制双重核对。</li>
+<li><strong>性能关键路径的最终定稿</strong>——需 Lighthouse / Web Vitals 与真实数据验证。</li>
+</ul>
+<hr />
+<h2 id="三-使用-ai-时的风险与禁区">三、使用 AI 时的风险与禁区</h2><h3 id="1-幻觉与过时知识">1. 幻觉与过时知识</h3><p>模型可能生成 <strong>不存在的过滤器、错误的 <code>{% schema %}</code> 字段名、旧版 <code>img_url</code></strong> 等。对策：</p>
+<ul>
+<li><strong>始终以 shopify.dev 当前文档为准</strong>；</li>
+<li>合并前在本地跑 <strong><code>shopify theme check</code></strong>（见 <a href="https://shopify.dev/docs/themes/tools/theme-check" target="_blank" rel="noreferrer">Theme Check</a> ）；</li>
+<li>对关键 Liquid 使用 <strong>主题开发预览店</strong> 实机点一遍。</li>
+</ul>
+<h3 id="2-密钥与隐私">2. 密钥与隐私</h3><p><strong>禁止</strong>向不可信模型会话粘贴：<strong>Admin API Token、私有 App 密钥、客户完整 PII、未脱敏订单导出</strong>。若用云端 IDE/插件，需阅读其<strong>数据留存与训练政策</strong>。</p>
+<h3 id="3-版权与许可证">3. 版权与许可证</h3><p>从模型或网络直接复制整段 <strong>第三方主题</strong> 代码可能违反许可。应：<strong>只借鉴思路</strong>；商业项目使用 <strong>自有代码或明确 MIT 等许可</strong> 的片段。</p>
+<h3 id="4-盲目合并大段-diff">4. 盲目合并大段 diff</h3><p>AI 一次改写过多文件时，<strong>审查成本</strong>可能高于手写。建议：<strong>小步提交、小 PR</strong>，便于 <code>git bisect</code> 与 Code Review。</p>
+<hr />
+<h2 id="四-主题工程化工具链-与-ai-的配合方式">四、主题工程化工具链（与 AI 的配合方式）</h2><h3 id="1-shopify-cli">1. Shopify CLI</h3><ul>
+<li><strong><code>shopify theme dev</code></strong>：本地与开发店实时预览，减少「改完才发现上下文错了」的轮次。</li>
+<li><strong><code>shopify theme push/pull</code></strong>：与 Git 配合，避免直接在后台编辑器无版本地改生产。</li>
+</ul>
+<p>详见 <a href="/guides/shopify-handbook/liquid/shopify-cli/">Shopify CLI 使用指南</a>、<a href="/guides/shopify-handbook/liquid/theme-development-workflow/">主题开发工作流程</a>。</p>
+<h3 id="2-theme-check-静态分析">2. Theme Check（静态分析）</h3><p>将 Theme Check 作为 <strong>合并门槛</strong>（本地或 CI）：在 AI 生成代码后，<strong>先过规则再人工看逻辑</strong>。可逐步收紧规则集，避免「警告海」无人看。</p>
+<h3 id="3-git-与工作流">3. Git 与工作流</h3><table>
+<thead>
+<tr>
+<th>实践</th>
+<th>目的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>功能分支</td>
+<td>feature/collection-filters 等，避免直接在 main 开发</td>
+</tr>
+<tr>
+<td>小提交、清晰 message</td>
+<td>便于 AI 根据 git log 生成发布说明，也便于回滚</td>
+</tr>
+<tr>
+<td>PR / Code Review</td>
+<td>人类检查业务逻辑、可访问性与安全；AI 可辅助生成 checklist</td>
+</tr>
+</tbody></table>
+<h3 id="4-ci-持续集成">4. CI（持续集成）</h3><p><code>package.json</code> 中脚本与密钥隔离的约定见：<a href="/guides/shopify-handbook/liquid/theme-engineering-setup/">主题工程化：目录与 npm 脚本</a>。</p>
+<p>在 GitHub Actions 等流水线中常见步骤示例（<strong>示意</strong>，按团队栈调整）：</p>
+<pre><code># 示例：仅作结构参考，非完整可运行配置
+jobs:
+  theme-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm install -g @shopify/cli
+      - run: shopify theme check --path .
+</code></pre>
+<p>目标：<strong>每次推送</strong>至少执行 Theme Check；可选加入 <strong>压缩资源、Lint CSS/JS</strong> 等。</p>
+<h3 id="5-与-测试和部署-衔接">5. 与「测试和部署」衔接</h3><p>功能清单、浏览器矩阵、上线前检查可与 <a href="/guides/shopify-handbook/liquid/testing-deployment/">测试和部署</a> 中的清单合并，形成团队 <strong>Definition of Done</strong>。</p>
+<hr />
+<h2 id="五-人机分工-推荐的-review-清单-ai-产出必查">五、人机分工：推荐的 Review 清单（AI 产出必查）</h2><p>在合并 AI 辅助编写的 Liquid / JS 前，建议快速过一遍：</p>
+<ul>
+<li><strong>对象是否存在</strong>：该模板下 <code>product</code>、<code>collection</code>、<code>section.settings</code> 等是否均有定义</li>
+<li><strong>输出是否转义</strong>：用户可控字符串是否使用 <code>escape</code> 等（参见 <a href="/guides/shopify-handbook/liquid/security/">安全</a>）</li>
+<li><strong>图片是否使用 <code>image_url</code></strong>，避免复制旧主题的 <code>img_url</code></li>
+<li><strong><code>render</code> 参数</strong>是否与 Snippet 内 <code>{% doc %}</code> 或注释一致</li>
+<li><strong>性能</strong>：是否多余循环、是否在循环内做重计算</li>
+<li><strong>Theme Check</strong>：是否零 error（warning 是否有计划处理）</li>
+<li><strong>可访问性</strong>：关键按钮是否有可见焦点与 <code>aria-*</code>（按设计系统要求）</li>
+</ul>
+<hr />
+<h2 id="六-把-ai-写进团队规范-可选">六、把 AI 写进团队规范（可选）</h2><p>若团队使用 Cursor / Copilot / 自建模型，建议在仓库 <code>README</code> 或内部 Wiki 中写明：</p>
+<ol>
+<li><strong>允许使用的模型范围</strong>（是否可用云端、是否仅内网）</li>
+<li><strong>禁止粘贴的数据类型</strong></li>
+<li><strong>合并前必跑命令</strong>（如 <code>shopify theme check</code>）</li>
+<li><strong>谁对安全与性能签字</strong>（避免「以为是 AI 写的就不用负责」）</li>
+</ol>
+<hr />
+<h2 id="七-官方-shopify-ai-toolkit-应用与-api-向">七、官方 Shopify AI Toolkit（应用与 API 向）</h2><p>Shopify 还提供面向 <strong>应用开发</strong> 的官方 <strong><a href="https://shopify.dev/docs/apps/build/ai-toolkit" target="_blank" rel="noreferrer">Shopify AI Toolkit</a></strong> ：通过插件、Agent Skills 或 <strong>Dev MCP</strong>（<code>@shopify/dev-mcp</code>）把助手接到文档与 API Schema，减少「猜接口」带来的错误。主题开发者若在 Cursor 里同时写 App 扩展，可阅读进阶导读：<a href="/guides/shopify-handbook/advanced/shopify-ai-toolkit/">Shopify AI Toolkit 使用指南</a>。</p>
+<h2 id="八-延伸阅读">八、延伸阅读</h2><ul>
+<li><a href="/guides/shopify-handbook/liquid/best-practices/">最佳实践</a></li>
+<li><a href="/guides/shopify-handbook/liquid/code-organization/">代码组织</a></li>
+<li><a href="/guides/shopify-handbook/liquid/performance-optimization/">性能优化</a></li>
+<li><a href="/guides/shopify-handbook/liquid/troubleshooting/">问题排查</a></li>
+<li>官方：<a href="https://shopify.dev/docs/themes/tools/theme-check" target="_blank" rel="noreferrer">Theme Check</a>  · <a href="https://shopify.dev/docs/themes/tools/cli" target="_blank" rel="noreferrer">Shopify CLI for themes</a>  · <a href="https://shopify.dev/docs/apps/build/ai-toolkit" target="_blank" rel="noreferrer">Shopify AI Toolkit</a></li>
+</ul>
+<p> </p>
+<hr />
+<blockquote>
+<p><strong>总结</strong>：AI 适合加速 <strong>草稿、解释与文档</strong>；工程化负责 <strong>版本、静态检查与发布纪律</strong>。两者结合，才能在 Shopify 主题上稳定交付 <strong>可维护、可升级</strong> 的代码。</p>
+</blockquote>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/project-summary/"><span>上一篇</span><strong>项目实战总结</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/operators/"><span>下一篇</span><strong>运算符和表达式</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

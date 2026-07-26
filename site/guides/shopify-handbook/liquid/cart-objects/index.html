@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>购物车对象详解 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="购物车对象详解 购物车对象包含了用户当前购物车中的所有商品信息、价格计算、运费、税费等。掌握购物车对象是构建完整电商体验的关键。 购物车基本信息 购物车状态 购物车商品 商品列表 下一步学习 现在您已经掌握了购物车对象的使用，建议继">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/cart-objects/">
+  <meta property="og:title" content="购物车对象详解 · Shopify 独立站手册">
+  <meta property="og:description" content="购物车对象详解 购物车对象包含了用户当前购物车中的所有商品信息、价格计算、运费、税费等。掌握购物车对象是构建完整电商体验的关键。 购物车基本信息 购物车状态 购物车商品 商品列表 下一步学习 现在您已经掌握了购物车对象的使用，建议继">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>购物车对象详解</h1>
+        <p>购物车对象详解 购物车对象包含了用户当前购物车中的所有商品信息、价格计算、运费、税费等。掌握购物车对象是构建完整电商体验的关键。 购物车基本信息 购物车状态 购物车商品 商品列表 下一步学习 现在您已经掌握了购物车对象的使用，建议继</p>
+      </header>
+      <div class="article-content"><h2 id="购物车对象详解">购物车对象详解</h2><p>购物车对象包含了用户当前购物车中的所有商品信息、价格计算、运费、税费等。掌握购物车对象是构建完整电商体验的关键。</p>
+<h2 id="购物车基本信息">购物车基本信息</h2><h3 id="购物车状态">购物车状态</h3><pre><code>&lt;!-- 购物车基本信息 --&gt;
+&lt;div class="cart-summary" data-cart-count="{{ cart.item_count }}"&gt;
+  {% if cart.item_count &gt; 0 %}
+    &lt;h2&gt;购物车 ({{ cart.item_count }} 件商品)&lt;/h2&gt;
+ 
+    &lt;div class="cart-meta"&gt;
+      &lt;p&gt;&lt;strong&gt;商品数量:&lt;/strong&gt; {{ cart.item_count }}&lt;/p&gt;
+      &lt;p&gt;&lt;strong&gt;商品小计:&lt;/strong&gt; {{ cart.items_subtotal_price | money }}&lt;/p&gt;
+      &lt;p&gt;&lt;strong&gt;总价:&lt;/strong&gt; {{ cart.total_price | money }}&lt;/p&gt;
+ 
+      {% if cart.total_discount &gt; 0 %}
+        &lt;p class="discount"&gt;&lt;strong&gt;优惠:&lt;/strong&gt; -{{ cart.total_discount | money }}&lt;/p&gt;
+      {% endif %}
+    &lt;/div&gt;
+  {% else %}
+    &lt;div class="empty-cart"&gt;
+      &lt;h2&gt;购物车为空&lt;/h2&gt;
+      &lt;p&gt;您的购物车中还没有商品&lt;/p&gt;
+      &lt;a href="{{ routes.all_products_collection_url }}" class="btn btn-primary"&gt;开始购物&lt;/a&gt;
+    &lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h2 id="购物车商品">购物车商品</h2><h3 id="商品列表">商品列表</h3><pre><code>&lt;!-- 购物车商品列表 --&gt;
+{% if cart.item_count &gt; 0 %}
+  &lt;div class="cart-items"&gt;
+    {% for item in cart.items %}
+      &lt;div class="cart-item" data-variant-id="{{ item.variant.id }}"&gt;
+        &lt;div class="item-image"&gt;
+          &lt;img src="{{ item.image | image_url: width: 150, height: 150 }}"
+               alt="{{ item.product.title }}"
+               loading="lazy" /&gt;
+        &lt;/div&gt;
+ 
+        &lt;div class="item-details"&gt;
+          &lt;h3 class="item-title"&gt;
+            &lt;a href="{{ item.product.url }}"&gt;{{ item.product.title }}&lt;/a&gt;
+          &lt;/h3&gt;
+ 
+          {% unless item.variant.title == 'Default Title' %}
+            &lt;p class="item-variant"&gt;{{ item.variant.title }}&lt;/p&gt;
+          {% endunless %}
+ 
+          {% if item.vendor != blank %}
+            &lt;p class="item-vendor"&gt;品牌: {{ item.vendor }}...
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>现在您已经掌握了购物车对象的使用，建议继续学习：</p>
+<ul>
+<li><a href="/guides/shopify-handbook/liquid/global-objects/">全局对象详解</a> - 了解更多全局对象</li>
+<li><a href="/guides/shopify-handbook/liquid/product-objects/">产品对象详解</a> - 深入了解产品相关对象</li>
+<li><a href="/guides/shopify-handbook/liquid/customer-objects/">客户对象详解</a> - 学习客户相关功能</li>
+<li><a href="/guides/shopify-handbook/liquid/advanced-liquid/">高级 Liquid 技巧</a> - 学习更高级的模板技巧</li>
+</ul>
+<p>最后更新时间：</p>
+<p>2026年6月27日</p>
+<p><a href="/guides/shopify-handbook/liquid/customer-objects/">客户对象</a><a href="/guides/shopify-handbook/liquid/layout-templates/">布局和模板</a></p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/advanced-liquid/"><span>上一篇</span><strong>高级 Liquid 技巧</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/tools/"><span>下一篇</span><strong>开发工具推荐</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

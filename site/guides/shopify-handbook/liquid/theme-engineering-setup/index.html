@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>主题工程化：目录约定与 npm 脚本 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="主题工程化：目录约定与 npm 脚本 团队级主题开发通常会约定 scripts/ 目录 、 统一 npm scripts 、 提交前 Theme Check / ESLint / Prettier ，并用 Husky + lint ">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/theme-engineering-setup/">
+  <meta property="og:title" content="主题工程化：目录约定与 npm 脚本 · Shopify 独立站手册">
+  <meta property="og:description" content="主题工程化：目录约定与 npm 脚本 团队级主题开发通常会约定 scripts/ 目录 、 统一 npm scripts 、 提交前 Theme Check / ESLint / Prettier ，并用 Husky + lint ">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>主题工程化：目录约定与 npm 脚本</h1>
+        <p>主题工程化：目录约定与 npm 脚本 团队级主题开发通常会约定 scripts/ 目录 、 统一 npm scripts 、 提交前 Theme Check / ESLint / Prettier ，并用 Husky + lint </p>
+      </header>
+      <div class="article-content"><h2 id="主题工程化-目录约定与-npm-脚本">主题工程化：目录约定与 npm 脚本</h2><p>团队级主题开发通常会约定 <strong><code>scripts/</code> 目录</strong>、<strong>统一 npm scripts</strong>、<strong>提交前 Theme Check / ESLint / Prettier</strong>，并用 <strong>Husky + lint-staged</strong> 保证主分支质量。下面给出<strong>应用层级的示例思路</strong>；文中 <strong>不会出现真实 Theme ID、店铺名或 Token</strong>——你在自己仓库里应使用 <strong>环境变量或本地未提交配置</strong>，且<strong>勿把含敏感信息的 <code>package.json</code> 截图发到公开教程或客户文档</strong>。</p>
+<blockquote>
+<p>前置阅读：<a href="/guides/shopify-handbook/liquid/code-organization/">代码组织</a>、<a href="/guides/shopify-handbook/liquid/shopify-cli/">Shopify CLI</a>、<a href="/guides/shopify-handbook/liquid/ai-theme-engineering/">AI 辅助与主题工程化</a>。</p>
+</blockquote>
+<hr />
+<h2 id="一-敏感信息与仓库安全">一、敏感信息与仓库安全</h2><table>
+<thead>
+<tr>
+<th>风险</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Theme ID 写死在 package.json 并提交到公开仓</td>
+<td>使用占位符 + 本地覆盖（见下文「环境变量」），对外文档用 YOUR_DEV_THEME_ID</td>
+</tr>
+<tr>
+<td>店铺域名、CLI Token、API 密钥</td>
+<td>只放在 .env、.shopify 或 CI 密钥库；.gitignore 排除；README 中只写变量名</td>
+</tr>
+<tr>
+<td>自定义 shopify-with-store.mjs 等包装脚本</td>
+<td>可封装默认 --store，但不要在示例仓库中粘贴真实店铺 URL 或 PAT</td>
+</tr>
+<tr>
+<td>对外分享 package.json、终端截图</td>
+<td>打码或改用占位脚本名；客户交付物与开源教程分开</td>
+</tr>
+</tbody></table>
+<p>以下 JSON 中 <strong><code>YOUR_DEV_THEME_ID</code></strong> 表示「你在 Shopify 后台 → 在线商店 → 主题 → … 中看到的开发主题数字 ID」，<strong>请仅在本机或私有 CI 中替换</strong>，勿写入公开文档正文。</p>
+<hr />
+<h2 id="二-推荐目录结构">二、推荐目录结构</h2><pre><code>theme-root/
+├── assets/                 # 静态资源、Tailwind 入口等
+├── config/
+├── layout/
+├── locales/
+├── sections/
+├── snippets/
+├── templates/
+├── scripts/                  # 仅放「构建/同步/封装 CLI」脚本，勿放密钥
+│   └── shopify-with-store.mjs   # 可选：从 process.env 读取 store，再 spawn shopify CLI
+├── .husky/                   # Husky 钩子
+├── .theme-check.yml          # Theme Check 规则（可选）
+├── package.json
+└── README.md                 # 说明如何设置 SHOPIFY_* 环境变量
+</code></pre>
+<p>原则：<strong>密钥与店铺专属 ID 不进 Git</strong>；进 Git 的只有<strong>占位符、文档与脚本逻辑</strong>。</p>
+<hr />
+<h2 id="三-package-json-脚本示例">三、<code>package.json</code> 脚本示例</h2><p>下面展示<strong>常见能力分组</strong>，与你在编辑器里配置的脚本一一对应；<strong>复制后请自行替换占位符</strong>，并优先改为读环境变量：</p>
+<pre><code>{
+  "scripts": {
+    "watch": "npx tailwindcss -i ./assets/app-tailwind.css -o ./assets/app.css --watch",
+    "theme:zip": "bash scripts/theme-store-zip.sh",
+    "dev": "node scripts/shopify-with-store.mjs theme dev &amp;&amp; npm run watch",
+    "sync:pull:index": "node scripts/shopify-with-store.mjs theme pull --theme YOUR_DEV_THEME_ID --only templates/index.json --only config/settings_data.json",
+    "sync:pull:json": "node scripts/shopify-with-store.mjs theme pull --theme YOUR_DEV_THEME_ID --only \"templates/*.json\" --only \"sections/*.json\" --only config/settings_data.json",
+    "sync:push:index": "node scripts/shopify-with-store.mjs theme push --theme YOUR_DEV_THEME_ID --only templates/index.json --only config/settings_data.json",
+    "sync:push:json": "node scripts/shopify-with-store.mjs theme push --theme YOUR_DEV_THEME_ID --only \"templates/*.json\" --only \"sections/*.json\" --only config/settings_data.json",
+    "theme:check": "shopify theme check",
+    "theme:check:json": "shopify theme check --output json",
+    "theme:check:fix": "shopify theme check --auto-correct",
+    "theme:check:print": "shopify theme check --print",
+    "theme:check:list": "shopify theme check --list",
+    "theme:check:init": "shopify theme check --init",
+    "lint": "npm run lint:js &amp;&amp; npm run lint:css",
+    "lint:js": "eslint \"assets/**/*.js\"",
+    "lint:css": "stylelint \"assets/**/*.css\"",
+    "lint:theme": "npm run lint &amp;&amp; npm run theme:check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  }
+}
+</code></pre>
+<h3 id="脚本含义速查">脚本含义速查</h3><table>
+<thead>
+<tr>
+<th>脚本</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>watch</td>
+<td>Tailwind 等 CSS 构建监听</td>
+</tr>
+<tr>
+<td>theme:zip</td>
+<td>打包符合主题商店或交付规范的 zip（具体由 scripts/theme-store-zip.sh 实现）</td>
+</tr>
+<tr>
+<td>dev</td>
+<td>先拉起 theme dev（可通过包装脚本附带默认 store），再并行 CSS watch</td>
+</tr>
+<tr>
+<td>sync:pull:* / sync:push:*</td>
+<td>仅同步 JSON 模板与 settings_data，减少误推整主题风险；YOUR_DEV_THEME_ID 必须私有配置</td>
+</tr>
+<tr>
+<td>theme:check*</td>
+<td>Theme Check 检查 / JSON 输出 / 自动修复 / 打印规则 / 列表 / 初始化配置</td>
+</tr>
+<tr>
+<td>lint / lint:theme</td>
+<td>JS/CSS 与主题静态检查组合</td>
+</tr>
+<tr>
+<td>format / format:check</td>
+<td>Prettier；Liquid 可配合 @shopify/prettier-plugin-liquid</td>
+</tr>
+<tr>
+<td>prepare</td>
+<td>安装依赖后启用 Husky</td>
+</tr>
+</tbody></table>
+<p><strong>更安全的写法示例（思路）：</strong> 在 <code>shopify-with-store.mjs</code> 内读取 <code>process.env.SHOPIFY_THEME_ID</code>，若未设置则打印提示并 <code>process.exit(1)</code>，这样 <code>package.json</code> 里可完全<strong>不出现数字 ID</strong>。</p>
+<hr />
+<h2 id="四-devdependencies-与-git-钩子-示例">四、<code>devDependencies</code> 与 Git 钩子（示例）</h2><p>以下为<strong>常见组合</strong>，版本号随项目升级：</p>
+<pre><code>{
+  "devDependencies": {
+    "@shopify/cli": "^3.92.0",
+    "@shopify/prettier-plugin-liquid": "^1.10.0",
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-n": "^16.6.0",
+    "eslint-plugin-promise": "^6.6.0",
+    "husky": "^9.1.0",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.0",
+    "stylelint": "^16.26.0",
+    "stylelint-config-standard": "^39.0.0",
+    "tailwindcss": "^3.4.0"
+  },
+  "lint-staged": {
+    "**/*.{liquid,json,md,yml,yaml}": "prettier --write",
+    "assets/**/*.js": ["prettier --write", "eslint --fix"],
+    "assets/**/*.css": ["prettier --write", "stylelint --fix --allow-empty-input"]
+  }
+}
+</code></pre>
+<ul>
+<li><strong>Husky</strong>：在 <code>prepare</code> 后于 <code>.husky/pre-commit</code> 中调用 <code>npx lint-staged</code>，避免未格式化或未通过检查的代码进入仓库。</li>
+<li><strong>lint-staged</strong>：只对暂存区跑工具，速度快；规则与团队 Prettier/ESLint 配置对齐即可。</li>
+</ul>
+<hr />
+<h2 id="五-与-theme-check-ci-的衔接">五、与 Theme Check / CI 的衔接</h2><ul>
+<li>本地：<code>npm run theme:check</code> 或 <code>lint:theme</code> 作为合并前习惯。</li>
+<li>CI：可对 PR 执行 <code>shopify theme check</code>（需在 runner 上安装 CLI），<strong>不要</strong>在日志中打印 <code>--store</code> 或 Token。</li>
+</ul>
+<p>详见 <a href="/guides/shopify-handbook/liquid/testing-deployment/">测试和部署</a> 与官方 <a href="https://shopify.dev/docs/themes/tools/theme-check" target="_blank" rel="noreferrer">Theme Check</a> 。</p>
+<hr />
+<h2 id="六-小结">六、小结</h2><ol>
+<li><strong>工程化目录</strong>：<code>scripts/</code> 放自动化脚本；敏感信息只通过 <strong>环境变量 + 本地文件</strong> 注入。</li>
+<li><strong>对外文档与教程</strong>：一律使用 <strong><code>YOUR_DEV_THEME_ID</code> 等占位符</strong>，真实 ID 与店铺信息<strong>不得</strong>出现在可复制示例中。</li>
+<li><strong><code>package.json</code> 是展示脚本契约的好地方</strong>，但不是存密钥的地方。</li>
+</ol>
+<hr />
+<h2 id="延伸阅读">延伸阅读</h2><ul>
+<li><a href="/guides/shopify-handbook/liquid/code-organization/">代码组织</a></li>
+<li><a href="/guides/shopify-handbook/liquid/security/">安全最佳实践</a></li>
+<li><a href="/guides/shopify-handbook/liquid/shopify-cli/">Shopify CLI 使用指南</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-ai-toolkit/">Shopify AI Toolkit 使用指南</a>（应用向 AI 与文档对齐）</li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/operators/"><span>上一篇</span><strong>运算符和表达式</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/theme-development-workflow/"><span>下一篇</span><strong>主题开发工作流程</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

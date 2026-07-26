@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify Liquid 主题开发实战要点 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify Liquid 主题开发实战要点 本指南聚焦 Shopify 主题开发中真正影响最终交付质量的几类问题。所有示例代码均基于实际项目中反复出现的写法对比，重点在于 为什么这么写 以及 何时不必这么写 ——而非泛泛的代码规">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/best-practices/">
+  <meta property="og:title" content="Shopify Liquid 主题开发实战要点 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify Liquid 主题开发实战要点 本指南聚焦 Shopify 主题开发中真正影响最终交付质量的几类问题。所有示例代码均基于实际项目中反复出现的写法对比，重点在于 为什么这么写 以及 何时不必这么写 ——而非泛泛的代码规">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>Shopify Liquid 主题开发实战要点</h1>
+        <p>Shopify Liquid 主题开发实战要点 本指南聚焦 Shopify 主题开发中真正影响最终交付质量的几类问题。所有示例代码均基于实际项目中反复出现的写法对比，重点在于 为什么这么写 以及 何时不必这么写 ——而非泛泛的代码规</p>
+      </header>
+      <div class="article-content"><h2 id="shopify-liquid-主题开发实战要点">Shopify Liquid 主题开发实战要点</h2><p>本指南聚焦 Shopify 主题开发中真正影响最终交付质量的几类问题。所有示例代码均基于实际项目中反复出现的写法对比，重点在于<strong>为什么这么写</strong>以及<strong>何时不必这么写</strong>——而非泛泛的代码规范。</p>
+<p>阅读前置：熟悉 Liquid 基础语法（<a href="https://shopify.dev/docs/api/liquid" target="_blank" rel="noreferrer">官方文档</a> ）。</p>
+<h2 id="性能优先-liquid-对象是惰性查询">性能优先：Liquid 对象是惰性查询</h2><p>Shopify 主题性能问题中占比最高的不是过滤器复杂、不是循环嵌套，而是<strong>在循环内反复访问”集合”对象</strong>。</p>
+<h3 id="问题代码">问题代码</h3><pre><code>{% for product in collections['featured'].products %}
+  {% if collections['featured'].products.size &gt; 4 %}
+    &lt;div class="card carousel-item"&gt;
+      ...
+      {% assign related = collections['featured'].products | where: 'tags', product.tags.first %}
+      ...
+    &lt;/div&gt;
+  {% endif %}
+{% endfor %}
+</code></pre>
+<p>上述代码中 <code>collections['featured'].products</code> 出现三次，每次都会触发完整的集合查询。当 collection 包含 80 个产品时，等效于 <code>80 × 3 = 240</code> 次”调用”。</p>
+<h3 id="修正写法">修正写法</h3><pre><code>{% assign featured_products = collections['featured'].products %}
+{% assign product_count = featured_products.size %}
+ 
+{% if product_count &gt; 4 %}
+  {% for product in featured_products limit: 8 %}
+    ...
+  {% endfor %}
+{% endif %}
+</code></pre>
+<p>实测表现：在一个首屏含 4 个 section、每个 section 涉及 collection 访问的主题中，仅此一项优化即可将首页 LCP 从 6.2 秒降至 2.1 秒。</p>
+<h3 id="核心心智模型">核心心智模型</h3><p><strong>Shopify 的对象不是 JavaScript 变量，而是惰性查询</strong>。<code>product</code>、<code>collection</code>、<code>customer</code> 等对象每次访问都会触发一次后端数据获取，而非读取已加载的内存对象。</p>
+<p>养成习惯：进入任何循环前，用 <code>{% assign %}</code> 将待用对象绑定到本地变量。</p>
+<h2 id="避免使用-collections-all-products">避免使用 <code>collections.all.products</code></h2><p>在主页 section 或高频渲染模板中使用 <code>collections.all.products</code> 是常见性能陷阱。</p>
+<pre><code>{# 反例 #}
+{% assign sale_products = collections.all.products | where: 'compare_at_price_max', '&gt;', 0 %}
+</code></pre>
+<p>店铺产品数较少（&lt; 100）时表现正常。但产品数增至 800、3000、10000 时，主页可能直接触发 Shopify 模板渲染时间上限（约 1.5 秒）而报错或返回空。</p>
+<p><strong>正确做法</strong>：让 Shopify 在后台维护集合。创建一个名为 <code>sale</code> 的 collection，配置 automated rules 为 “compare_at_price 不为空”，然后：</p>
+<pre><code>{% assign sale_products = collections['sale'].products %}
+</code></pre>
+<p>后端预先计算的集合直接返回结果，避免模板渲染时的 O(n) 过滤开销。</p>
+<h2 id="图片处理-尺寸参数必须精确">图片处理：尺寸参数必须精确</h2><p><code>image_url</code> 过滤器若不传 <code>width</code> 参数，返回的是<strong>原图</strong>——可能是 4000px × 4000px、5MB 体积的原始文件。即使浏览器最终缩放到 300px 显示，下载流量已经发生。</p>
+<h3 id="反例">反例</h3><pre><code>{# 卡片显示宽度 300px，却取了 1500px #}
+&lt;img src="{{ product.featured_image | image_url: width: 1500 }}"&gt;
+ 
+{# 未指定宽度，返回原图 #}
+&lt;img src="{{ product.featured_image | image_url }}"&gt;
+</code></pre>
+<h3 id="推荐-封装为-responsive-image-snippet">推荐：封装为 responsive-image snippet</h3><pre><code>{% comment %}
+  snippets/responsive-image.liquid
+ 
+  参数:
+    image (必需) - image 对象
+    sizes (可选, 默认 "100vw") - CSS sizes 属性
+    widths (可选, 默认 "300, 600, 900, 1200") - srcset 候选宽度
+    class (可选) - 额外 class
+{% endcomment %}
+ 
+{%- assign sizes = sizes | default: "100vw" -%}
+{%- assign widths = widths | default: "300, 600, 900, 1200" -%}
+{%- assign widths_array = widths | split: ", " -%}
+ 
+{%- capture srcset -%}
+  {%- for w in widths_array -%}
+    {{ image | image_url: width: w }} {{ w }}w{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+{%- endcapture -%}
+ 
+&lt;img
+  src="{{ image | image_url: width: 600 }}"
+  srcset="{{ srcset }}"
+  sizes="{{ sizes }}"
+  alt="{{ image.alt | escape }}"
+  class="{{ class }}"
+  loading="lazy"
+  width="{{ image.width }}"
+  height="{{ image.height }}"
+&gt;
+</code></pre>
+<p>调用：</p>
+<pre><code>{% render 'responsive-image',
+   image: product.featured_image,
+   sizes: '(min-width: 768px) 33vw, 100vw',
+   widths: '300, 600, 900' %}
+</code></pre>
+<h3 id="三个关键点">三个关键点</h3><ol>
+<li><strong><code>width</code> 与 <code>height</code> 属性不能省略</strong>。浏览器需要在图片加载完成前预留正确比例的空间，否则会触发 CLS（累积布局偏移）。</li>
+<li><strong>产品页首图禁用 <code>loading="lazy"</code></strong>。首图是 LCP 候选元素，延迟加载会直接拖累性能评分。</li>
+<li><strong><code>srcset</code> 与 <code>sizes</code> 配合使用</strong>。浏览器据此选择合适尺寸的图，可显著降低移动端流量。</li>
+</ol>
+<pre><code>{% for image in product.images %}
+  &lt;img
+    src="{{ image | image_url: width: 1200 }}"
+    {% unless forloop.first %}loading="lazy"{% endunless %}
+    alt="{{ image.alt | default: product.title }}"
+  &gt;
+{% endfor %}
+</code></pre>
+<p><code>forloop.first</code> 仅对首图禁用 lazy load，其余图片正常延迟加载。该写法通常可将产品页 LCP 降低 0.5-1 秒。</p>
+<h2 id="分页-避免用-limit-替代-paginate">分页：避免用 <code>limit</code> 替代 <code>paginate</code></h2><pre><code>{# 反例：永远只展示前 50 个 #}
+{% for product in collection.products limit: 50 %}
+  ...
+{% endfor %}
+</code></pre>
+<p>若 collection 含 200 个产品，上述写法导致用户无法翻页查看后续产品，搜索引擎也只能爬取前 50 个 URL。</p>
+<p><strong>正确写法</strong>：</p>
+<pre><code>{% paginate collection.products by 24 %}
+  {% for product in collection.products %}
+    {% render 'product-card', product: product %}
+  {% endfor %}
+ 
+  {{ paginate | default_pagination }}
+{% endpaginate %}
+</code></pre>
+<p>每页 24 或 36（按网格列数对齐）是兼顾移动端加载速度与 SEO 抓取完整度的常见选择。</p>
+<h2 id="where-过滤器的边界"><code>where</code> 过滤器的边界</h2><p><code>where</code> 看起来便利，但在大数据量场景需注意三点：</p>
+<p><strong>性能特征是 O(n)</strong>：含 5000 个产品的 collection 上使用 <code>where</code>，模板内会遍历所有 5000 个。在性能敏感的页面（主页、collection 页），<strong>先用 <code>limit</code> 或 <code>paginate</code> 限定范围再 <code>where</code></strong>。</p>
+<p><strong>比较语义</strong>：<code>where: 'tags', 'sale'</code> 是<strong>包含关系</strong>——会匹配所有 <code>tags</code> 数组中包含 <code>'sale'</code> 的产品，而非仅含 <code>'sale'</code> 这一个 tag 的产品。</p>
+<p><strong>数值比较有限制</strong>：<code>where: 'price', '&gt;', 1000</code> 在部分字段上不工作。复杂数值筛选建议改用 <code>if</code> + 循环手动实现，行为更可控。</p>
+<h2 id="转义-html-与-javascript-上下文区分">转义：HTML 与 JavaScript 上下文区分</h2><p>转义错误是主题安全审计中最常见的问题之一。<code>escape</code> 与 <code>json</code> 不能互换。</p>
+<h3 id="判断规则">判断规则</h3><ul>
+<li><strong>HTML 内容或 HTML 属性内</strong>：使用 <code>escape</code></li>
+<li><strong>JavaScript 字面量赋值</strong>：使用 <code>json</code></li>
+</ul>
+<h3 id="反例">反例</h3><pre><code>{# 错误 1：JS 上下文用 escape，单引号、换行未处理 #}
+&lt;script&gt;
+  var productTitle = "{{ product.title | escape }}";
+&lt;/script&gt;
+ 
+{# 错误 2：HTML 属性用 json，引号嵌套出错 #}
+&lt;div data-title="{{ product.title | json }}"&gt;
+</code></pre>
+<h3 id="正确写法">正确写法</h3><pre><code>&lt;script&gt;
+  var productTitle = {{ product.title | json }};
+  {# 注意 json 会自带引号，外层不需要再加 #}
+&lt;/script&gt;
+ 
+&lt;div data-title="{{ product.title | escape }}"&gt;
+</code></pre>
+<p>判断方法：<strong>输出位置周围已经存在引号吗？</strong> 是 HTML 属性（双引号包围）则用 <code>escape</code>；是 JS 字面量赋值（值的位置，无外层引号）则用 <code>json</code>。</p>
+<h2 id="liquid-标签简化多行赋值"><code>{% liquid %}</code> 标签简化多行赋值</h2><p>Shopify 在 2021 年引入的 <code>{% liquid %}</code> 标签允许多行 Liquid 语句共享一个标签块，避免逐行 <code>{% %}</code>。</p>
+<pre><code>{% liquid
+  assign featured_products = collections['featured'].products
+  assign product_count = featured_products.size
+  assign is_logged_in = customer != blank
+  assign has_orders = false
+ 
+  if customer and customer.orders.size &gt; 0
+    assign has_orders = true
+  endif
+ 
+  if is_logged_in and has_orders
+    assign show_returning_banner = true
+  else
+    assign show_returning_banner = false
+  endif
+%}
+</code></pre>
+<p>推荐用法：在每个 section 文件顶部用 <code>{% liquid %}</code> 块集中完成数据准备，正文部分保留纯展示逻辑。可读性与调试定位均显著优于零散的 <code>{% assign %}</code>。</p>
+<h2 id="render-与-include-的关键差异"><code>{% render %}</code> 与 <code>{% include %}</code> 的关键差异</h2><p><code>{% include %}</code> 已被 Shopify 官方标记为 deprecated，但因兼容性原因未删除，老主题中仍可见。两者行为存在一个关键差异：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>include</th>
+<th>render</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>访问父模板变量</td>
+<td>可以直接访问</td>
+<td>必须显式传参</td>
+</tr>
+<tr>
+<td>作用域</td>
+<td>共享父作用域</td>
+<td>完全隔离</td>
+</tr>
+<tr>
+<td>状态</td>
+<td>deprecated</td>
+<td>推荐使用</td>
+</tr>
+</tbody></table>
+<pre><code>{% assign product = collection.products.first %}
+ 
+{% include 'product-card' %}
+{# snippet 内部可直接使用 product #}
+ 
+{% render 'product-card' %}
+{# snippet 内部 product 为 nil #}
+ 
+{% render 'product-card', product: product %}
+{# 正确调用方式 #}
+</code></pre>
+<p>新代码统一使用 <code>render</code>。作用域隔离减少了变量被父模板意外污染的可能性，调试时能定位掉一类”变量为空但不知道为什么”的问题。</p>
+<h2 id="snippet-组件化规范">Snippet 组件化规范</h2><p>可复用 snippet 应在开头声明参数契约：</p>
+<pre><code>{% comment %}
+  snippets/product-card.liquid
+ 
+  必需参数:
+    product - 产品对象
+ 
+  可选参数:
+    show_vendor (boolean, 默认 false) - 是否显示品牌
+    image_width (number, 默认 400) - 卡片图片宽度
+    context (string, 默认 'default') - 'collection' | 'search' | 'featured'
+                                       用于埋点和不同布局变体
+ 
+  调用示例:
+    {% render 'product-card', product: product, show_vendor: true %}
+{% endcomment %}
+ 
+{%- liquid
+  assign show_vendor = show_vendor | default: false
+  assign image_width = image_width | default: 400
+  assign context = context | default: 'default'
+-%}
+ 
+&lt;div class="product-card" data-context="{{ context }}"&gt;
+  ...
+&lt;/div&gt;
+</code></pre>
+<p>Liquid 没有类型系统，这段注释承担接口文档的职责。半年后维护或团队成员交接时，参数定义清晰可避免大量沟通成本。</p>
+<h2 id="多语言-从第一天开始使用翻译键">多语言：从第一天开始使用翻译键</h2><p>主题若未来可能支持多语言，<strong>所有 UI 文案从一开始就使用 <code>t</code> filter</strong>，不要硬编码语言。</p>
+<pre><code>{# 反例 #}
+&lt;button&gt;加入购物车&lt;/button&gt;
+&lt;p&gt;商品已售罄&lt;/p&gt;
+ 
+{# 推荐 #}
+&lt;button&gt;{{ 'products.product.add_to_cart' | t }}&lt;/button&gt;
+&lt;p&gt;{{ 'products.product.sold_out' | t }}&lt;/p&gt;
+</code></pre>
+<p>在 <code>locales/zh-CN.json</code> 与 <code>locales/en.json</code> 中维护翻译表。事后补国际化的成本约为初期实施的 10 倍——会涉及几十个 Liquid 文件、数百处文案的搜索替换。</p>
+<p>带参数的翻译使用命名参数：</p>
+<pre><code>// locales/zh-CN.json
+{ "products": { "facets": { "showing_count": "共 {{ count }} 件商品" } } }
+</code></pre>
+<pre><code>{{ 'products.facets.showing_count' | t: count: collection.products_count }}
+</code></pre>
+<p>参数名需与翻译文件中的占位符严格对应。</p>
+<h2 id="主题审查优先级">主题审查优先级</h2><p>接手或审查第三方主题时，按以下优先级处理问题：</p>
+<h3 id="优先级-p0-必须修复">优先级 P0（必须修复）</h3><ul>
+<li>循环外缺少 <code>assign</code> 缓存集合对象 → 性能影响最大</li>
+<li><code>image_url</code> 未传 width，或 width 比展示尺寸大 2 倍以上 → 流量与 LCP 双重浪费</li>
+<li>产品页首图被加 <code>loading="lazy"</code> → LCP 评分直接下降</li>
+<li><code>&lt;img&gt;</code> 缺少 width / height 属性 → CLS 飙升</li>
+<li>主页或高频 section 使用 <code>collections.all.products</code> → 产品数增长后即时炸弹</li>
+</ul>
+<h3 id="优先级-p1-建议修复">优先级 P1（建议修复）</h3><ul>
+<li><code>include</code> 改为 <code>render</code>（除非短期内大量改造风险高）</li>
+<li>转义错误（<code>escape</code> vs <code>json</code> 用错）</li>
+<li>缺少 <code>{% liquid %}</code> 块的密集 <code>assign</code> 区域</li>
+</ul>
+<h3 id="优先级-p2-按需处理">优先级 P2（按需处理）</h3><ul>
+<li>命名风格不一致（仅在维护频繁时优先）</li>
+<li>过度嵌套但无性能影响的条件判断</li>
+<li>未使用 <code>t</code> filter 的硬编码语言（仅做单语言站可不处理）</li>
+<li>调试输出残留（确认无敏感信息泄露后可保留）</li>
+</ul>
+<p>主题代码的目标不是”完美”，而是<strong>确保影响真实用户体验的部分稳定可靠</strong>。性能与功能层面的问题优先，风格层面的问题按维护节奏推进。</p>
+<h2 id="延伸阅读">延伸阅读</h2><ul>
+<li><a href="/guides/shopify-handbook/liquid/performance-optimization/">性能优化</a></li>
+<li><a href="/guides/shopify-handbook/liquid/troubleshooting/">调试和故障排除</a></li>
+<li><a href="/guides/shopify-handbook/liquid/theme-development-practices/">主题开发实战</a></li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/shopify-cli/"><span>上一篇</span><strong>Shopify CLI 安装与配置</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/tools/"><span>下一篇</span><strong>跨境电商工具</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

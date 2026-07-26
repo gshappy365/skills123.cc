@@ -2,11 +2,12 @@ import {
   buildPackageGroups,
   loadPackageSkills,
   searchCatalogue,
-} from "./catalogue-search.js?v=20260726-2";
+} from "./catalogue-search.js?v=20260726-3";
 
 const state = {
   catalog: null,
   packageSkills: {},
+  guides: [],
   query: new URL(location.href).searchParams.get("q") ?? "",
 };
 
@@ -14,10 +15,12 @@ const elements = {
   query: document.querySelector("#catalogue-query"),
   form: document.querySelector("#catalogue-search-form"),
   groups: document.querySelector("#package-group-index"),
+  topicGuides: document.querySelector("#topic-guides"),
   results: document.querySelector("#catalogue-results"),
   resultCount: document.querySelector("#result-count"),
   packageResults: document.querySelector("#package-results"),
   skillResults: document.querySelector("#skill-results"),
+  guideResults: document.querySelector("#guide-results"),
   noResults: document.querySelector("#catalogue-no-results"),
   clearSearch: document.querySelector("#clear-catalogue-search"),
 };
@@ -85,14 +88,16 @@ function renderSearchResults() {
   const searching = normalizedQuery.length > 0;
   elements.results.hidden = !searching;
   elements.groups.hidden = searching;
+  elements.topicGuides.hidden = searching;
   if (!searching) return;
 
-  const { packageMatches, skillMatches } = searchCatalogue({
+  const { packageMatches, skillMatches, guideMatches } = searchCatalogue({
     catalog: state.catalog,
     packageSkills: state.packageSkills,
+    guides: state.guides,
     query: normalizedQuery,
   });
-  const total = packageMatches.length + skillMatches.length;
+  const total = packageMatches.length + skillMatches.length + guideMatches.length;
   elements.resultCount.textContent = total;
   elements.noResults.hidden = total > 0;
 
@@ -115,6 +120,18 @@ function renderSearchResults() {
             <span class="result-type">具体技能</span>
             <div><strong>${escapeHtml(skill.name ?? skill.id)}</strong><p>${escapeHtml(resultSummary(skill))}</p></div>
             <small>归属 · ${escapeHtml(skill.package.name)}<code>${escapeHtml(skill.command ?? "")}</code></small><b>定位 →</b>
+          </a>`
+        )
+        .join("")}</section>`
+    : "";
+
+  elements.guideResults.innerHTML = guideMatches.length
+    ? `<section class="result-group"><h3>专题知识库 · ${guideMatches.length}</h3>${guideMatches
+        .map(
+          (guide) => `<a class="catalogue-result guide-result" href="${escapeHtml(guide.href)}">
+            <span class="result-type">专题知识库</span>
+            <div><strong>${escapeHtml(guide.name)}</strong><p>${escapeHtml(guide.description)}</p></div>
+            <small>${escapeHtml(guide.articleCount)} 篇文章 · ${escapeHtml(guide.label)}</small><b>进入 →</b>
           </a>`
         )
         .join("")}</section>`
@@ -151,7 +168,10 @@ function bindEvents() {
 }
 
 async function init() {
-  state.catalog = await fetch("/assets/data/catalog.json?v=20260726-1").then((response) => response.json());
+  [state.catalog, state.guides] = await Promise.all([
+    fetch("/assets/data/catalog.json?v=20260726-1").then((response) => response.json()),
+    fetch("/assets/data/guides.json?v=20260726-1").then((response) => response.json()),
+  ]);
   state.packageSkills = await loadPackageSkills(state.catalog, (url) =>
     fetch(url).then((response) => response.json())
   );

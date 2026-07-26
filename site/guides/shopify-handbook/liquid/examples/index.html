@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>实际应用示例 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="实际应用示例 本指南通过实际的应用场景和完整代码示例，帮助您深入理解 Shopify 主题开发的实践应用。 案例1：智能产品搜索 功能需求 实时搜索建议 搜索结果高亮 搜索历史记录 无搜索结果时的智能推荐 完整实现 案例2：动态购物">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/examples/">
+  <meta property="og:title" content="实际应用示例 · Shopify 独立站手册">
+  <meta property="og:description" content="实际应用示例 本指南通过实际的应用场景和完整代码示例，帮助您深入理解 Shopify 主题开发的实践应用。 案例1：智能产品搜索 功能需求 实时搜索建议 搜索结果高亮 搜索历史记录 无搜索结果时的智能推荐 完整实现 案例2：动态购物">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>实际应用示例</h1>
+        <p>实际应用示例 本指南通过实际的应用场景和完整代码示例，帮助您深入理解 Shopify 主题开发的实践应用。 案例1：智能产品搜索 功能需求 实时搜索建议 搜索结果高亮 搜索历史记录 无搜索结果时的智能推荐 完整实现 案例2：动态购物</p>
+      </header>
+      <div class="article-content"><h2 id="实际应用示例">实际应用示例</h2><p>本指南通过实际的应用场景和完整代码示例，帮助您深入理解 Shopify 主题开发的实践应用。</p>
+<h2 id="案例1-智能产品搜索">案例1：智能产品搜索</h2><h3 id="功能需求">功能需求</h3><ul>
+<li>实时搜索建议</li>
+<li>搜索结果高亮</li>
+<li>搜索历史记录</li>
+<li>无搜索结果时的智能推荐</li>
+</ul>
+<h3 id="完整实现">完整实现</h3><pre><code>&lt;!-- sections/smart-search.liquid --&gt;
+&lt;div class="smart-search" data-smart-search&gt;
+  &lt;form class="search-form" data-search-form role="search"&gt;
+    &lt;div class="search-input-wrapper"&gt;
+      &lt;input type="search" 
+             class="search-input"
+             placeholder="搜索商品、品牌、分类..."
+             data-search-input
+             autocomplete="off"
+             aria-label="搜索商品"&gt;
+      
+      &lt;button type="submit" class="search-submit" aria-label="搜索"&gt;
+        {% render 'icon-search' %}
+      &lt;/button&gt;
+      
+      &lt;button type="button" class="search-clear" data-search-clear aria-label="清空搜索"&gt;
+        {% render 'icon-close' %}
+      &lt;/button&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- 搜索建议 --&gt;
+    &lt;div class="search-suggestions" data-search-suggestions&gt;
+      &lt;div class="suggestions-header"&gt;
+        &lt;h4&gt;搜索建议&lt;/h4&gt;
+      &lt;/div&gt;
+      &lt;div class="suggestions-content" data-suggestions-content&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;!-- 搜索历史 --&gt;
+    &lt;div class="search-history" data-search-history&gt;
+      &lt;div class="history-header"&gt;
+        &lt;h4&gt;最近搜索&lt;/h4&gt;
+        &lt;button type="button" class="history-clear" data-history-clear&gt;清空&lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="history-content" data-history-content&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+class SmartSearch {
+  constructor(element) {
+    this.container = element;
+    this.form = element.querySelector('[data-search-form]');
+    this.input = element.querySelector('[data-search-input]');
+    this.suggestions = element.querySelector('[data-search-suggestions]');
+    this.history = element.querySelector('[data-search-history]');
+    
+    this.debounceTimer = null;
+    this.searchHistory = this.loadSearchHistory();
+    this.cache = new Map();
+    
+    this.init();
+  }
+  
+  init() {
+    this.bindEvents();
+    this.showSearchHistory();
+  }
+  
+  bindEvents() {
+    this.input.addEventListener('input', this.handleInput.bind(this));
+    this.input.addEventListener('focus', this.handleFocus.bind(this));
+    this.input.addEventListener('blur', this.handleBlur.bind(this));
+    
+    this.form.addEventListener('submit', this.handleSubmit.bind(this));
+    
+    // 历史记录清空
+    const historyCleanBtn = this.container.querySelector('[data-history-clear]');
+    historyCleanBtn?.addEventListener('click', this.clearHistory.bind(this));
+    
+    // 搜索清空
+    const searchClearBtn = this.container.querySelector('[data-search-clear]');
+    searchClearBtn?.addEventListener('click', this.clearSearch.bind(this));
+    
+    // 键盘导航
+    this.input.addEventListener('keydown', this.handleKeyNavigation.bind(this));
+  }
+  
+  handleInput(event) {
+    const query = event.target.value.trim();
+    
+    clearTimeout(this.debounceTimer);
+    
+    if (query.length &lt; 2) {
+      this.hideSuggestions();
+      this.showSearchHistory();
+      return;
+    }
+    
+    this.debounceTimer = setTimeout(() =&gt; {
+      this.performSearch(query);
+    }, 300);
+  }
+  
+  handleFocus() {
+    if (this.input.value.trim().length &lt; 2) {
+      this.showSearchHistory();
+    } else {
+      this.showSuggestions();
+    }
+  }
+  
+  handleBlur() {
+    // 延迟隐藏，允许点击建议项
+    setTimeout(() =&gt; {
+      this.hideSuggestions();
+      this.hideSearchHistory();
+    }, 200);
+  }
+  
+  handleSubmit(event) {
+    event.preventDefault();
+    const query = this.input.value.trim();
+    
+    if (query) {
+      this.saveToHistory(query);
+      this.redirectToSearch(query);
+    }
+  }
+  
+  async performSearch(query) {
+    // 检查缓存
+    if (this.cache.has(query)) {
+      this.displaySuggestions(this.cache.get(query), query);
+      return;
+    }
+    
+    try {
+      const response = await fetch(
+        `/search/suggest.json?q=${encodeURIComponent(query)}&amp;resources[type]=product,collection,article&amp;resources[limit]=8`
+      );
+      
+      const data = await response.json();
+      const results = data.resources.results;
+      
+      this.cache.set(query, results);
+      this.displaySuggestions(results, query);
+      
+    } catch (error) {
+      console.error('搜索失败:', error);
+    }
+  }
+  
+  displaySuggestions(results, query) {
+    const content = this.suggestions.querySelector('[data-suggestions-content]');
+    
+    if (!results.products?.length &amp;&amp; !results.collections?.length) {
+      content.innerHTML = `
+        &lt;div class="no-suggestions"&gt;
+          &lt;p&gt;没有找到相关结果&lt;/p&gt;
+          &lt;div class="recommended-terms"&gt;
+            &lt;p&gt;试试这些搜索:&lt;/p&gt;
+            &lt;button type="button" onclick="this.closest('[data-smart-search]').querySelector('[data-search-input]').value='连衣裙';this.click()"&gt;连衣裙&lt;/button&gt;
+            &lt;button type="button" onclick="this.closest('[data-smart-search]').querySelector('[data-search-input]').value='手机';this.click()"&gt;手机&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      `;
+    } else {
+      let html = '';
+      
+      // 产品建议
+      if (results.products?.length) {
+        html += '&lt;div class="suggestion-group"&gt;';
+        html += '&lt;h5&gt;商品&lt;/h5&gt;';
+        html += results.products.slice(0, 4).map(product =&gt; `
+          &lt;a href="${product.url}" class="suggestion-item suggestion-item--product"&gt;
+            &lt;img src="${product.featured_image?.url}&amp;width=40" alt="${product.title}" loading="lazy"&gt;
+            &lt;span class="suggestion-text"&gt;${this.highlightQuery(product.title, query)}&lt;/span&gt;
+            &lt;span class="suggestion-price"&gt;${this.formatMoney(product.price)}&lt;/span&gt;
+          &lt;/a&gt;
+        `).join('');
+        html += '&lt;/div&gt;';
+      }
+      
+      // 分类建议
+      if (results.collections?.length) {
+        html += '&lt;div class="suggestion-group"&gt;';
+        html += '&lt;h5&gt;分类&lt;/h5&gt;';
+        html += results.collections.slice(0, 3).map(collection =&gt; `
+          &lt;a href="${collection.url}" class="suggestion-item suggestion-item--collection"&gt;
+            &lt;span class="suggestion-text"&gt;${this.highlightQuery(collection.title, query)}&lt;/span&gt;
+            &lt;span class="suggestion-count"&gt;${collection.products_count} 件商品&lt;/span&gt;
+          &lt;/a&gt;
+        `).join('');
+        html += '&lt;/div&gt;';
+      }
+      
+      content.innerHTML = html;
+    }
+    
+    this.showSuggestions();
+  }
+  
+  highlightQuery(text, query) {
+    const regex = new RegExp(`(${this.escapeRegex(query)})`, 'gi');
+    return text.replace(regex, '&lt;mark&gt;$1&lt;/mark&gt;');
+  }
+  
+  escapeRegex(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&amp;');
+  }
+  
+  formatMoney(cents) {
+    return new Intl.NumberFormat('zh-CN', {
+      style: 'currency',
+      currency: 'CNY'
+    }).format(cents / 100);
+  }
+  
+  showSuggestions() {
+    this.suggestions.style.display = 'block';
+    this.hideSearchHistory();
+  }
+  
+  hideSuggestions() {
+    this.suggestions.style.display = 'none';
+  }
+  
+  showSearchHistory() {
+    if (this.searchHistory.length &gt; 0) {
+      const content = this.history.querySelector('[data-history-content]');
+      content.innerHTML = this.searchHistory.map(term =&gt; `
+        &lt;button type="button" 
+                class="history-item" 
+                onclick="this.closest('[data-smart-search]').querySelector('[data-search-input]').value='${term}';this.closest('form').submit()"&gt;
+          ${term}
+        &lt;/button&gt;
+      `).join('');
+      
+      this.history.style.display = 'block';
+    }
+  }
+  
+  hideSearchHistory() {
+    this.history.style.display = 'none';
+  }
+  
+  saveToHistory(query) {
+    if (!this.searchHistory.includes(query)) {
+      this.searchHistory.unshift(query);
+      this.searchHistory = this.searchHistory.slice(0, 5); // 只保留最近5个
+      localStorage.setItem('searchHistory', JSON.stringify(this.searchHistory));
+    }
+  }
+  
+  loadSearchHistory() {
+    try {
+      return JSON.parse(localStorage.getItem('searchHistory') || '[]');
+    } catch {
+      return [];
+    }
+  }
+  
+  clearHistory() {
+    this.searchHistory = [];
+    localStorage.removeItem('searchHistory');
+    this.hideSearchHistory();
+  }
+  
+  clearSearch() {
+    this.input.value = '';
+    this.hideSuggestions();
+    this.showSearchHistory();
+    this.input.focus();
+  }
+  
+  redirectToSearch(query) {
+    window.location.href = `/search?q=${encodeURIComponent(query)}`;
+  }
+  
+  handleKeyNavigation(event) {
+    const items = this.suggestions.querySelectorAll('.suggestion-item');
+    if (items.length === 0) return;
+    
+    let currentIndex = Array.from(items).findIndex(item =&gt; 
+      item.classList.contains('highlighted')
+    );
+    
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        currentIndex = (currentIndex + 1) % items.length;
+        this.highlightItem(items, currentIndex);
+        break;
+        
+      case 'ArrowUp':
+        event.preventDefault();
+        currentIndex = currentIndex &lt;= 0 ? items.length - 1 : currentIndex - 1;
+        this.highlightItem(items, currentIndex);
+        break;
+        
+      case 'Enter':
+        if (currentIndex &gt;= 0 &amp;&amp; items[currentIndex]) {
+          event.preventDefault();
+          items[currentIndex].click();
+        }
+        break;
+        
+      case 'Escape':
+        this.hideSuggestions();
+        this.input.blur();
+        break;
+    }
+  }
+  
+  highlightItem(items, index) {
+    items.forEach((item, i) =&gt; {
+      item.classList.toggle('highlighted', i === index);
+    });
+  }
+}
+ 
+// 初始化智能搜索
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.querySelectorAll('[data-smart-search]').forEach(search =&gt; {
+    new SmartSearch(search);
+  });
+});
+&lt;/script&gt;
+ 
+&lt;style&gt;
+.smart-search {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+ 
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 25px;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+ 
+.search-input-wrapper:focus-within {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+ 
+.search-input {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  font-size: 16px;
+  background: transparent;
+}
+ 
+.search-submit, .search-clear {
+  padding: 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s;
+}
+ 
+.search-submit:hover, .search-clear:hover {
+  color: #1a73e8;
+}
+ 
+.search-suggestions, .search-history {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 1000;
+  display: none;
+  max-height: 400px;
+  overflow-y: auto;
+}
+ 
+.suggestions-header, .history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #f9f9f9;
+}
+ 
+.suggestion-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.2s;
+}
+ 
+.suggestion-item:hover, .suggestion-item.highlighted {
+  background-color: #f5f5f5;
+}
+ 
+.suggestion-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 12px;
+}
+ 
+.suggestion-text {
+  flex: 1;
+}
+ 
+.suggestion-text mark {
+  background: #fff3cd;
+  color: #856404;
+  padding: 0 2px;
+}
+ 
+.history-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+ 
+.history-item:hover {
+  background-color: #f5f5f5;
+}
+&lt;/style&gt;
+</code></pre>
+<h2 id="案例2-动态购物车">案例2：动态购物车</h2><h3 id="功能需求">功能需求</h3><ul>
+<li>Ajax添加商品</li>
+<li>实时购物车更新</li>
+<li>商品数量调整</li>
+<li>购物车商品推荐</li>
+</ul>
+<h3 id="核心实现">核心实现</h3><pre><code>&lt;!-- snippets/dynamic-cart.liquid --&gt;
+&lt;div class="cart-overlay" data-cart-overlay&gt;&lt;/div&gt;
+ 
+&lt;div class="cart-drawer" data-cart-drawer&gt;
+  &lt;div class="cart-header"&gt;
+    &lt;h2&gt;购物车 (&lt;span data-cart-count&gt;0&lt;/span&gt;)&lt;/h2&gt;
+    &lt;button class="cart-close" data-cart-close&gt;×&lt;/button&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="cart-body"&gt;
+    &lt;div class="cart-items" data-cart-items&gt;
+      &lt;!-- 购物车商品列表 --&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="cart-empty" data-cart-empty style="display: none;"&gt;
+      &lt;p&gt;购物车是空的&lt;/p&gt;
+      &lt;a href="/collections" class="btn btn--primary"&gt;继续购物&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="cart-footer" data-cart-footer&gt;
+    &lt;div class="cart-total"&gt;
+      &lt;span&gt;总计: &lt;strong data-cart-total&gt;¥0.00&lt;/strong&gt;&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;button class="btn btn--primary btn--full" data-cart-checkout&gt;
+      去结账
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+class DynamicCart {
+  constructor() {
+    this.cart = null;
+    this.isOpen = false;
+    this.init();
+  }
+  
+  async init() {
+    this.bindEvents();
+    await this.loadCart();
+    this.updateUI();
+  }
+  
+  bindEvents() {
+    // 添加到购物车按钮
+    document.addEventListener('click', async (e) =&gt; {
+      if (e.target.matches('[data-add-to-cart]')) {
+        e.preventDefault();
+        await this.handleAddToCart(e.target);
+      }
+    });
+    
+    // 购物车抽屉控制
+    document.addEventListener('click', (e) =&gt; {
+      if (e.target.matches('[data-cart-trigger]')) {
+        this.open();
+      }
+      
+      if (e.target.matches('[data-cart-close]') || e.target.matches('[data-cart-overlay]')) {
+        this.close();
+      }
+    });
+    
+    // 商品数量调整
+    document.addEventListener('click', async (e) =&gt; {
+      if (e.target.matches('[data-cart-quantity-plus]')) {
+        const key = e.target.dataset.cartKey;
+        await this.updateQuantity(key, 1);
+      }
+      
+      if (e.target.matches('[data-cart-quantity-minus]')) {
+        const key = e.target.dataset.cartKey;
+        await this.updateQuantity(key, -1);
+      }
+      
+      if (e.target.matches('[data-cart-remove]')) {
+        const key = e.target.dataset.cartKey;
+        await this.removeItem(key);
+      }
+    });
+    
+    // 结账按钮
+    document.addEventListener('click', (e) =&gt; {
+      if (e.target.matches('[data-cart-checkout]')) {
+        window.location.href = '/checkout';
+      }
+    });
+  }
+  
+  async loadCart() {
+    try {
+      const response = await fetch('/cart.js');
+      this.cart = await response.json();
+    } catch (error) {
+      console.error('加载购物车失败:', error);
+    }
+  }
+  
+  async handleAddToCart(button) {
+    const form = button.closest('form');
+    const formData = new FormData(form);
+    
+    try {
+      this.setButtonLoading(button, true);
+      
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (response.ok) {
+        const item = await response.json();
+        await this.loadCart();
+        this.updateUI();
+        this.open();
+        this.showAddedNotification(item);
+      } else {
+        const error = await response.json();
+        this.showError(error.message);
+      }
+    } catch (error) {
+      this.showError('添加商品失败');
+    } finally {
+      this.setButtonLoading(button, false);
+    }
+  }
+  
+  async updateQuantity(key, change) {
+    const currentItem = this.cart.items.find(item =&gt; item.key === key);
+    if (!currentItem) return;
+    
+    const newQuantity = Math.max(0, currentItem.quantity + change);
+    
+    try {
+      const response = await fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: key, quantity: newQuantity })
+      });
+      
+      this.cart = await response.json();
+      this.updateUI();
+    } catch (error) {
+      this.showError('更新数量失败');
+    }
+  }
+  
+  async removeItem(key) {
+    return this.updateQuantity(key, -999); // 设置为0来移除
+  }
+  
+  updateUI() {
+    this.updateCartCount();
+    this.updateCartItems();
+    this.updateCartTotal();
+    this.updateEmptyState();
+  }
+  
+  updateCartCount() {
+    const countElements = document.querySelectorAll('[data-cart-count]');
+    countElements.forEach(el =&gt; {
+      el.textContent = this.cart.item_count;
+    });
+  }
+  
+  updateCartItems() {
+    const container = document.querySelector('[data-cart-items]');
+    if (!container) return;
+    
+    if (this.cart.items.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
+    
+    container.innerHTML = this.cart.items.map(item =&gt; `
+      &lt;div class="cart-item" data-cart-item="${item.key}"&gt;
+        &lt;div class="cart-item-image"&gt;
+          &lt;img src="${item.featured_image.url}&amp;width=80" alt="${item.product_title}"&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="cart-item-details"&gt;
+          &lt;h4 class="cart-item-title"&gt;${item.product_title}&lt;/h4&gt;
+          ${item.variant_title ? `&lt;p class="cart-item-variant"&gt;${item.variant_title}&lt;/p&gt;` : ''}
+          
+          &lt;div class="cart-item-quantity"&gt;
+            &lt;button class="quantity-btn" data-cart-quantity-minus data-cart-key="${item.key}"&gt;-&lt;/button&gt;
+            &lt;span class="quantity-display"&gt;${item.quantity}&lt;/span&gt;
+            &lt;button class="quantity-btn" data-cart-quantity-plus data-cart-key="${item.key}"&gt;+&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        
+        &lt;div class="cart-item-price"&gt;
+          &lt;span class="cart-item-total"&gt;${this.formatMoney(item.line_price)}&lt;/span&gt;
+          &lt;button class="cart-item-remove" data-cart-remove data-cart-key="${item.key}"&gt;移除&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    `).join('');
+  }
+  
+  updateCartTotal() {
+    const totalElements = document.querySelectorAll('[data-cart-total]');
+    totalElements.forEach(el =&gt; {
+      el.textContent = this.formatMoney(this.cart.total_price);
+    });
+  }
+  
+  updateEmptyState() {
+    const emptyState = document.querySelector('[data-cart-empty]');
+    const cartFooter = document.querySelector('[data-cart-footer]');
+    
+    if (this.cart.item_count === 0) {
+      emptyState.style.display = 'block';
+      cartFooter.style.display = 'none';
+    } else {
+      emptyState.style.display = 'none';
+      cartFooter.style.display = 'block';
+    }
+  }
+  
+  open() {
+    const drawer = document.querySelector('[data-cart-drawer]');
+    const overlay = document.querySelector('[data-cart-overlay]');
+    
+    drawer.classList.add('is-open');
+    overlay.classList.add('is-open');
+    document.body.classList.add('cart-open');
+    this.isOpen = true;
+  }
+  
+  close() {
+    const drawer = document.querySelector('[data-cart-drawer]');
+    const overlay = document.querySelector('[data-cart-overlay]');
+    
+    drawer.classList.remove('is-open');
+    overlay.classList.remove('is-open');
+    document.body.classList.remove('cart-open');
+    this.isOpen = false;
+  }
+  
+  setButtonLoading(button, loading) {
+    button.disabled = loading;
+    button.textContent = loading ? '添加中...' : '加入购物车';
+  }
+  
+  showAddedNotification(item) {
+    const notification = document.createElement('div');
+    notification.className = 'cart-notification';
+    notification.innerHTML = `
+      &lt;div class="notification-content"&gt;
+        &lt;img src="${item.featured_image}&amp;width=60" alt="${item.product_title}"&gt;
+        &lt;div&gt;
+          &lt;p&gt;&lt;strong&gt;${item.product_title}&lt;/strong&gt; 已添加到购物车&lt;/p&gt;
+          &lt;p&gt;${item.variant_title || ''}&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() =&gt; {
+      notification.classList.add('show');
+    }, 100);
+    
+    setTimeout(() =&gt; {
+      notification.remove();
+    }, 3000);
+  }
+  
+  showError(message) {
+    alert(message); // 简单实现，实际项目中应该用更好的UI
+  }
+  
+  formatMoney(cents) {
+    return new Intl.NumberFormat('zh-CN', {
+      style: 'currency',
+      currency: 'CNY'
+    }).format(cents / 100);
+  }
+}
+ 
+// 初始化动态购物车
+window.dynamicCart = new DynamicCart();
+&lt;/script&gt;
+</code></pre>
+<h2 id="案例3-产品图片库">案例3：产品图片库</h2><h3 id="功能需求">功能需求</h3><ul>
+<li>图片缩放查看</li>
+<li>缩略图导航</li>
+<li>移动端滑动支持</li>
+<li>懒加载优化</li>
+</ul>
+<h3 id="实现代码">实现代码</h3><pre><code>&lt;!-- snippets/product-gallery.liquid --&gt;
+&lt;div class="product-gallery" data-product-gallery&gt;
+  &lt;div class="gallery-main"&gt;
+    &lt;div class="main-image-container"&gt;
+      &lt;img class="main-image" 
+           data-main-image
+           src="{{ product.featured_image | image_url: width: 800, height: 800 }}"
+           alt="{{ product.featured_image.alt | default: product.title }}"&gt;
+      
+      &lt;button class="zoom-btn" data-zoom-trigger aria-label="放大图片"&gt;
+        🔍
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="gallery-thumbs" data-gallery-thumbs&gt;
+    {% for image in product.images %}
+      &lt;button class="thumb-btn {% if forloop.first %}active{% endif %}"
+              data-thumb-btn
+              data-image-src="{{ image | image_url: width: 800, height: 800 }}"
+              data-image-alt="{{ image.alt | default: product.title }}"&gt;
+        &lt;img src="{{ image | image_url: width: 100, height: 100 }}" 
+             alt="{{ image.alt | default: product.title }}"
+             loading="lazy"&gt;
+      &lt;/button&gt;
+    {% endfor %}
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;!-- 图片放大模态框 --&gt;
+&lt;div class="image-zoom-modal" data-zoom-modal&gt;
+  &lt;div class="zoom-overlay"&gt;&lt;/div&gt;
+  &lt;div class="zoom-content"&gt;
+    &lt;img class="zoom-image" data-zoom-image&gt;
+    &lt;button class="zoom-close" data-zoom-close&gt;×&lt;/button&gt;
+    &lt;button class="zoom-prev" data-zoom-prev&gt;‹&lt;/button&gt;
+    &lt;button class="zoom-next" data-zoom-next"&gt;›&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+class ProductGallery {
+  constructor(element) {
+    this.gallery = element;
+    this.mainImage = element.querySelector('[data-main-image]');
+    this.thumbs = element.querySelectorAll('[data-thumb-btn]');
+    this.zoomModal = document.querySelector('[data-zoom-modal]');
+    
+    this.currentIndex = 0;
+    this.images = Array.from(this.thumbs).map(thumb =&gt; ({
+      src: thumb.dataset.imageSrc,
+      alt: thumb.dataset.imageAlt
+    }));
+    
+    this.init();
+  }
+  
+  init() {
+    this.bindEvents();
+    this.setupTouchSupport();
+  }
+  
+  bindEvents() {
+    // 缩略图切换
+    this.thumbs.forEach((thumb, index) =&gt; {
+      thumb.addEventListener('click', () =&gt; {
+        this.switchToImage(index);
+      });
+    });
+    
+    // 放大功能
+    const zoomTrigger = this.gallery.querySelector('[data-zoom-trigger]');
+    zoomTrigger?.addEventListener('click', () =&gt; {
+      this.openZoom();
+    });
+    
+    // 模态框控制
+    this.zoomModal?.addEventListener('click', (e) =&gt; {
+      if (e.target.matches('[data-zoom-close]') || e.target.matches('.zoom-overlay')) {
+        this.closeZoom();
+      }
+      
+      if (e.target.matches('[data-zoom-prev]')) {
+        this.prevImage();
+      }
+      
+      if (e.target.matches('[data-zoom-next]')) {
+        this.nextImage();
+      }
+    });
+    
+    // 键盘导航
+    document.addEventListener('keydown', (e) =&gt; {
+      if (this.zoomModal?.classList.contains('active')) {
+        switch (e.key) {
+          case 'ArrowLeft':
+            this.prevImage();
+            break;
+          case 'ArrowRight':
+            this.nextImage();
+            break;
+          case 'Escape':
+            this.closeZoom();
+            break;
+        }
+      }
+    });
+  }
+  
+  setupTouchSupport() {
+    let startX = 0;
+    let startY = 0;
+    
+    this.mainImage.addEventListener('touchstart', (e) =&gt; {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+    
+    this.mainImage.addEventListener('touchend', (e) =&gt; {
+      const endX = e.changedTouches[0].clientX;
+      const endY = e.changedTouches[0].clientY;
+      
+      const diffX = startX - endX;
+      const diffY = startY - endY;
+      
+      // 水平滑动且距离足够
+      if (Math.abs(diffX) &gt; Math.abs(diffY) &amp;&amp; Math.abs(diffX) &gt; 50) {
+        if (diffX &gt; 0) {
+          this.nextImage();
+        } else {
+          this.prevImage();
+        }
+      }
+    }, { passive: true });
+  }
+  
+  switchToImage(index) {
+    if (index &lt; 0 || index &gt;= this.images.length) return;
+    
+    this.currentIndex = index;
+    const image = this.images[index];
+    
+    // 更新主图片
+    this.updateMainImage(image.src, image.alt);
+    
+    // 更新缩略图状态
+    this.updateThumbsState();
+    
+    // 如果模态框打开，也更新模态框图片
+    if (this.zoomModal?.classList.contains('active')) {
+      this.updateZoomImage();
+    }
+  }
+  
+  updateMainImage(src, alt) {
+    // 预加载图片
+    const img = new Image();
+    img.onload = () =&gt; {
+      this.mainImage.src = src;
+      this.mainImage.alt = alt;
+    };
+    img.src = src;
+  }
+  
+  updateThumbsState() {
+    this.thumbs.forEach((thumb, index) =&gt; {
+      thumb.classList.toggle('active', index === this.currentIndex);
+    });
+  }
+  
+  nextImage() {
+    const nextIndex = (this.currentIndex + 1) % this.images.length;
+    this.switchToImage(nextIndex);
+  }
+  
+  prevImage() {
+    const prevIndex = this.currentIndex === 0 ? this.images.length - 1 : this.currentIndex - 1;
+    this.switchToImage(prevIndex);
+  }
+  
+  openZoom() {
+    if (!this.zoomModal) return;
+    
+    this.updateZoomImage();
+    this.zoomModal.classList.add('active');
+    document.body.classList.add('zoom-open');
+  }
+  
+  closeZoom() {
+    if (!this.zoomModal) return;
+    
+    this.zoomModal.classList.remove('active');
+    document.body.classList.remove('zoom-open');
+  }
+  
+  updateZoomImage() {
+    const zoomImage = this.zoomModal?.querySelector('[data-zoom-image]');
+    if (zoomImage) {
+      const currentImage = this.images[this.currentIndex];
+      // 使用更高分辨率的图片用于放大
+      const highResImage = currentImage.src.replace('800x800', '1600x1600');
+      zoomImage.src = highResImage;
+      zoomImage.alt = currentImage.alt;
+    }
+  }
+}
+ 
+// 初始化产品图片库
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  document.querySelectorAll('[data-product-gallery]').forEach(gallery =&gt; {
+    new ProductGallery(gallery);
+  });
+});
+&lt;/script&gt;
+</code></pre>
+<p>通过这些实际应用示例，您可以学习到完整的功能实现过程和最佳实践！</p>
+<h2 id="下一步学习">下一步学习</h2><p>完成实际应用示例后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/common-patterns/">常见模式和解决方案</a> - 开发模式总结</li>
+<li><a href="/guides/shopify-handbook/liquid/customization-examples/">定制化开发案例</a> - 高级定制技巧</li>
+</ol>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/global-objects/"><span>上一篇</span><strong>全局对象详解</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/data-types/"><span>下一篇</span><strong>数据类型详解</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

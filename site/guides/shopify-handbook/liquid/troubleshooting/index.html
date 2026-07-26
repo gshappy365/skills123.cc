@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Liquid 调试和故障排除 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Liquid 调试和故障排除 开发 Shopify 主题时，掌握有效的调试技巧是非常重要的。本指南将帮助您快速定位和解决 Liquid 代码中的问题。 调试工具和技巧 1\. 基本调试输出 2\. 对象结构检查 3\. 变量状态跟踪">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/troubleshooting/">
+  <meta property="og:title" content="Liquid 调试和故障排除 · Shopify 独立站手册">
+  <meta property="og:description" content="Liquid 调试和故障排除 开发 Shopify 主题时，掌握有效的调试技巧是非常重要的。本指南将帮助您快速定位和解决 Liquid 代码中的问题。 调试工具和技巧 1\. 基本调试输出 2\. 对象结构检查 3\. 变量状态跟踪">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>Liquid 调试和故障排除</h1>
+        <p>Liquid 调试和故障排除 开发 Shopify 主题时，掌握有效的调试技巧是非常重要的。本指南将帮助您快速定位和解决 Liquid 代码中的问题。 调试工具和技巧 1\. 基本调试输出 2\. 对象结构检查 3\. 变量状态跟踪</p>
+      </header>
+      <div class="article-content"><h2 id="liquid-调试和故障排除">Liquid 调试和故障排除</h2><p>开发 Shopify 主题时，掌握有效的调试技巧是非常重要的。本指南将帮助您快速定位和解决 Liquid 代码中的问题。</p>
+<h2 id="调试工具和技巧">调试工具和技巧</h2><h3 id="1-基本调试输出">1. 基本调试输出</h3><pre><code>&lt;!-- 简单的调试输出 --&gt;
+{% if settings.debug_mode %}
+  &lt;div class="debug-output"&gt;
+    &lt;h4&gt;调试信息&lt;/h4&gt;
+    &lt;p&gt;当前模板: {{ template }}&lt;/p&gt;
+    &lt;p&gt;产品ID: {{ product.id | default: '无' }}&lt;/p&gt;
+    &lt;p&gt;集合句柄: {{ collection.handle | default: '无' }}&lt;/p&gt;
+    &lt;p&gt;客户状态: {% if customer %}已登录{% else %}未登录{% endif %}&lt;/p&gt;
+  &lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 条件调试 --&gt;
+{% assign debug_product = settings.debug_product_id %}
+{% if product.id == debug_product %}
+  &lt;div class="debug-panel"&gt;
+    &lt;h4&gt;产品调试 (ID: {{ product.id }})&lt;/h4&gt;
+    &lt;pre&gt;{{ product | json }}&lt;/pre&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="2-对象结构检查">2. 对象结构检查</h3><pre><code>&lt;!-- 查看完整对象结构 --&gt;
+{% if settings.show_object_debug %}
+  &lt;details class="debug-details"&gt;
+    &lt;summary&gt;产品对象结构&lt;/summary&gt;
+    &lt;pre style="background: #f5f5f5; padding: 15px; overflow: auto; max-height: 400px;"&gt;
+      {{ product | json }}
+    &lt;/pre&gt;
+  &lt;/details&gt;
+  
+  &lt;details class="debug-details"&gt;
+    &lt;summary&gt;集合对象结构&lt;/summary&gt;
+    &lt;pre style="background: #f5f5f5; padding: 15px; overflow: auto; max-height: 400px;"&gt;
+      {{ collection | json }}
+    &lt;/pre&gt;
+  &lt;/details&gt;
+  
+  &lt;details class="debug-details"&gt;
+    &lt;summary&gt;购物车对象结构&lt;/summary&gt;
+    &lt;pre style="background: #f5f5f5; padding: 15px; overflow: auto; max-height: 400px;"&gt;
+      {{ cart | json }}
+    &lt;/pre&gt;
+  &lt;/details&gt;
+{% endif %}
+</code></pre>
+<h3 id="3-变量状态跟踪">3. 变量状态跟踪</h3><pre><code>&lt;!-- 跟踪变量变化 --&gt;
+{% if settings.debug_mode %}
+  {% assign debug_log = "" %}
+  
+  {% assign featured_products = collection.products | where: 'tags', 'featured' %}
+  {% assign debug_log = debug_log | append: "过滤featured标签后: " | append: featured_products.size | append: " 个产品\n" %}
+  
+  {% assign available_products = featured_products | where: 'available', true %}
+  {% assign debug_log = debug_log | append: "过滤可用性后: " | append: available_products.size | append: " 个产品\n" %}
+  
+  {% assign final_products = available_products | limit: 8 %}
+  {% assign debug_log = debug_log | append: "最终显示: " | append: final_products.size | append: " 个产品\n" %}
+  
+  &lt;div class="debug-log"&gt;
+    &lt;h4&gt;处理日志&lt;/h4&gt;
+    &lt;pre&gt;{{ debug_log }}&lt;/pre&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="4-性能调试">4. 性能调试</h3><pre><code>&lt;!-- 渲染时间测量 --&gt;
+{% assign start_time = 'now' | date: '%s' | plus: 0 %}
+ 
+&lt;!-- 主要内容 --&gt;
+&lt;div class="main-content"&gt;
+  {% for product in collection.products limit: 20 %}
+    {% render 'product-card', product: product %}
+  {% endfor %}
+&lt;/div&gt;
+ 
+{% assign end_time = 'now' | date: '%s' | plus: 0 %}
+{% assign render_time = end_time | minus: start_time %}
+ 
+{% if settings.debug_mode %}
+  &lt;div class="performance-debug"&gt;
+    &lt;p&gt;渲染耗时: {{ render_time }}秒&lt;/p&gt;
+    &lt;p&gt;处理商品: {{ collection.products.size }}&lt;/p&gt;
+    &lt;p&gt;实际渲染: 20&lt;/p&gt;
+    &lt;p&gt;平均耗时: {{ render_time | divided_by: 20.0 | round: 4 }}秒/商品&lt;/p&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="常见错误和解决方案">常见错误和解决方案</h2><h3 id="1-对象访问错误">1. 对象访问错误</h3><pre><code>&lt;!-- 错误: 访问不存在的对象 --&gt;
+{{ nonexistent_object.property }}  &lt;!-- 会显示空白 --&gt;
+ 
+&lt;!-- 解决方案: 检查对象存在性 --&gt;
+{% if nonexistent_object %}
+  {{ nonexistent_object.property }}
+{% else %}
+  &lt;span class="debug-warning"&gt;对象不存在&lt;/span&gt;
+{% endif %}
+ 
+&lt;!-- 错误: 访问可能为空的嵌套属性 --&gt;
+{{ product.featured_image.alt }}  &lt;!-- 如果没有图片会出错 --&gt;
+ 
+&lt;!-- 解决方案: 逐级检查 --&gt;
+{% if product.featured_image and product.featured_image.alt %}
+  {{ product.featured_image.alt }}
+{% else %}
+  {{ product.title }}
+{% endif %}
+ 
+&lt;!-- 更简洁的解决方案: 使用 default --&gt;
+{{ product.featured_image.alt | default: product.title }}
+</code></pre>
+<h3 id="2-数据类型错误">2. 数据类型错误</h3><pre><code>&lt;!-- 错误: 字符串和数字混用 --&gt;
+{% assign price_string = "99.99" %}
+{% assign discount = 10 %}
+{% assign final_price = price_string | minus: discount %}  &lt;!-- 可能出错 --&gt;
+ 
+&lt;!-- 解决方案: 确保数据类型一致 --&gt;
+{% assign price_number = price_string | plus: 0 %}
+{% assign final_price = price_number | minus: discount %}
+ 
+&lt;!-- 调试数据类型 --&gt;
+{% if settings.debug_mode %}
+  &lt;div class="debug-types"&gt;
+    &lt;p&gt;price_string 类型: {{ price_string | class }}&lt;/p&gt;
+    &lt;p&gt;price_number 类型: {{ price_number | class }}&lt;/p&gt;
+    &lt;p&gt;discount 类型: {{ discount | class }}&lt;/p&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="3-过滤器错误">3. 过滤器错误</h3><pre><code>&lt;!-- 错误: 对空值使用过滤器 --&gt;
+{{ empty_variable | upcase }}  &lt;!-- 可能出错 --&gt;
+ 
+&lt;!-- 解决方案: 检查变量或提供默认值 --&gt;
+{{ empty_variable | default: "默认值" | upcase }}
+ 
+&lt;!-- 错误: 过滤器参数错误 --&gt;
+{{ product.title | truncate: "invalid" }}  &lt;!-- 参数应该是数字 --&gt;
+ 
+&lt;!-- 解决方案: 使用正确的参数类型 --&gt;
+{{ product.title | truncate: 50 }}
+ 
+&lt;!-- 调试过滤器结果 --&gt;
+{% assign original_title = product.title %}
+{% assign truncated_title = original_title | truncate: 30 %}
+ 
+{% if settings.debug_mode %}
+  &lt;div class="debug-filter"&gt;
+    &lt;p&gt;原始标题: "{{ original_title }}" ({{ original_title.size }} 字符)&lt;/p&gt;
+    &lt;p&gt;截取后: "{{ truncated_title }}" ({{ truncated_title.size }} 字符)&lt;/p&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="4-循环错误">4. 循环错误</h3><pre><code>&lt;!-- 错误: 无限循环或大量迭代 --&gt;
+{% for product in collections.all.products %}  &lt;!-- 可能有成千上万个产品 --&gt;
+  {{ product.title }}
+{% endfor %}
+ 
+&lt;!-- 解决方案: 使用 limit --&gt;
+{% for product in collections.all.products limit: 50 %}
+  {{ product.title }}
+{% endfor %}
+ 
+&lt;!-- 调试循环性能 --&gt;
+{% assign loop_start = 'now' | date: '%s' | plus: 0 %}
+{% assign loop_count = 0 %}
+ 
+{% for product in collection.products %}
+  {% assign loop_count = loop_count | plus: 1 %}
+  {% render 'product-card', product: product %}
+  
+  &lt;!-- 在开发模式下限制循环 --&gt;
+  {% if settings.debug_mode and loop_count &gt;= 10 %}
+    &lt;div class="debug-warning"&gt;
+      &lt;p&gt;调试模式: 只显示前10个产品&lt;/p&gt;
+    &lt;/div&gt;
+    {% break %}
+  {% endif %}
+{% endfor %}
+ 
+{% assign loop_end = 'now' | date: '%s' | plus: 0 %}
+{% assign loop_time = loop_end | minus: loop_start %}
+ 
+{% if settings.debug_mode %}
+  &lt;div class="debug-loop"&gt;
+    &lt;p&gt;循环处理了 {{ loop_count }} 个产品&lt;/p&gt;
+    &lt;p&gt;耗时: {{ loop_time }}秒&lt;/p&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="开发环境调试">开发环境调试</h2><h3 id="1-本地开发调试">1. 本地开发调试</h3><pre><code>&lt;!-- 检测开发环境 --&gt;
+{% assign is_dev_env = false %}
+{% if request.host contains 'localhost' 
+   or request.host contains '.ngrok.io'
+   or request.host contains '.myshopify.com' %}
+  {% assign is_dev_env = true %}
+{% endif %}
+ 
+{% if is_dev_env %}
+  &lt;div class="dev-toolbar" style="
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    background: #000; 
+    color: #fff; 
+    padding: 10px; 
+    z-index: 9999;
+    font-size: 12px;
+  "&gt;
+    &lt;strong&gt;开发模式&lt;/strong&gt; | 
+    模板: {{ template }} | 
+    页面: {{ request.page_type }} | 
+    {% if product %}产品: {{ product.id }}{% endif %}
+    {% if collection %}集合: {{ collection.handle }}{% endif %}
+    
+    &lt;button onclick="document.querySelector('.dev-toolbar').style.display='none'"&gt;
+      关闭
+    &lt;/button&gt;
+  &lt;/div&gt;
+  
+  &lt;style&gt;
+    body { margin-top: 50px !important; }
+  &lt;/style&gt;
+{% endif %}
+</code></pre>
+<h3 id="2-主题检查器">2. 主题检查器</h3><pre><code>&lt;!-- 创建自定义主题检查器 --&gt;
+{% if is_dev_env and settings.enable_theme_inspector %}
+  &lt;div id="theme-inspector" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    background: rgba(0,0,0,0.9);
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 12px;
+    overflow-y: auto;
+    z-index: 9998;
+  "&gt;
+    &lt;h4 style="margin: 0 0 10px 0;"&gt;主题检查器&lt;/h4&gt;
+    
+    &lt;div class="inspector-section"&gt;
+      &lt;h5&gt;模板信息&lt;/h5&gt;
+      &lt;ul style="margin: 0; padding-left: 15px;"&gt;
+        &lt;li&gt;模板: {{ template }}&lt;/li&gt;
+        &lt;li&gt;页面类型: {{ request.page_type }}&lt;/li&gt;
+        &lt;li&gt;URL: {{ request.path }}&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    
+    {% if product %}
+    &lt;div class="inspector-section"&gt;
+      &lt;h5&gt;产品信息&lt;/h5&gt;
+      &lt;ul style="margin: 0; padding-left: 15px;"&gt;
+        &lt;li&gt;ID: {{ product.id }}&lt;/li&gt;
+        &lt;li&gt;句柄: {{ product.handle }}&lt;/li&gt;
+        &lt;li&gt;标题: {{ product.title | truncate: 30 }}&lt;/li&gt;
+        &lt;li&gt;可用: {{ product.available }}&lt;/li&gt;
+        &lt;li&gt;变体数: {{ product.variants.size }}&lt;/li&gt;
+        &lt;li&gt;图片数: {{ product.images.size }}&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    {% endif %}
+    
+    {% if collection %}
+    &lt;div class="inspector-section"&gt;
+      &lt;h5&gt;集合信息&lt;/h5&gt;
+      &lt;ul style="margin: 0; padding-left: 15px;"&gt;
+        &lt;li&gt;ID: {{ collection.id }}&lt;/li&gt;
+        &lt;li&gt;句柄: {{ collection.handle }}&lt;/li&gt;
+        &lt;li&gt;标题: {{ collection.title }}&lt;/li&gt;
+        &lt;li&gt;产品数: {{ collection.products.size }}&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    {% endif %}
+    
+    &lt;div class="inspector-section"&gt;
+      &lt;h5&gt;购物车信息&lt;/h5&gt;
+      &lt;ul style="margin: 0; padding-left: 15px;"&gt;
+        &lt;li&gt;商品数: {{ cart.item_count }}&lt;/li&gt;
+        &lt;li&gt;总价: {{ cart.total_price | money }}&lt;/li&gt;
+        &lt;li&gt;重量: {{ cart.total_weight }}g&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    
+    {% if customer %}
+    &lt;div class="inspector-section"&gt;
+      &lt;h5&gt;客户信息&lt;/h5&gt;
+      &lt;ul style="margin: 0; padding-left: 15px;"&gt;
+        &lt;li&gt;ID: {{ customer.id }}&lt;/li&gt;
+        &lt;li&gt;邮箱: {{ customer.email }}&lt;/li&gt;
+        &lt;li&gt;订单数: {{ customer.orders_count }}&lt;/li&gt;
+        &lt;li&gt;总消费: {{ customer.total_spent | money }}&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    {% endif %}
+    
+    &lt;button onclick="document.getElementById('theme-inspector').style.display='none'"
+            style="margin-top: 10px; padding: 5px 10px; background: #333; color: white; border: none; border-radius: 3px;"&gt;
+      关闭
+    &lt;/button&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="3-错误日志收集">3. 错误日志收集</h3><pre><code>&lt;!-- 错误收集和显示 --&gt;
+{% assign error_log = "" %}
+{% assign has_errors = false %}
+ 
+&lt;!-- 检查常见问题 --&gt;
+{% if product %}
+  {% unless product.featured_image %}
+    {% assign error_log = error_log | append: "警告: 产品缺少特色图片\n" %}
+    {% assign has_errors = true %}
+  {% endunless %}
+  
+  {% if product.description == blank %}
+    {% assign error_log = error_log | append: "警告: 产品缺少描述\n" %}
+    {% assign has_errors = true %}
+  {% endif %}
+  
+  {% if product.variants.size == 0 %}
+    {% assign error_log = error_log | append: "错误: 产品没有变体\n" %}
+    {% assign has_errors = true %}
+  {% endif %}
+{% endif %}
+ 
+{% if collection %}
+  {% if collection.products.size == 0 %}
+    {% assign error_log = error_log | append: "警告: 集合为空\n" %}
+    {% assign has_errors = true %}
+  {% endif %}
+{% endif %}
+ 
+&lt;!-- 显示错误日志 --&gt;
+{% if has_errors and is_dev_env %}
+  &lt;div class="error-log" style="
+    background: #ffebee;
+    border: 1px solid #f44336;
+    color: #c62828;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 4px;
+  "&gt;
+    &lt;h4 style="margin: 0 0 10px 0; color: #c62828;"&gt;⚠️ 发现问题&lt;/h4&gt;
+    &lt;pre style="margin: 0; white-space: pre-wrap;"&gt;{{ error_log }}&lt;/pre&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="浏览器开发工具">浏览器开发工具</h2><h3 id="1-控制台调试">1. 控制台调试</h3><pre><code>&lt;!-- 在浏览器控制台输出调试信息 --&gt;
+&lt;script&gt;
+{% if settings.debug_mode %}
+  console.group('Shopify Liquid Debug');
+  
+  // 基本页面信息
+  console.log('Template:', '{{ template }}');
+  console.log('Page Type:', '{{ request.page_type }}');
+  console.log('URL:', '{{ request.path }}');
+  
+  // 产品信息
+  {% if product %}
+  console.group('Product Info');
+  console.log('ID:', {{ product.id }});
+  console.log('Handle:', '{{ product.handle }}');
+  console.log('Title:', {{ product.title | json }});
+  console.log('Available:', {{ product.available }});
+  console.log('Price:', {{ product.price }});
+  console.log('Variants:', {{ product.variants.size }});
+  console.log('Images:', {{ product.images.size }});
+  console.log('Full Object:', {{ product | json }});
+  console.groupEnd();
+  {% endif %}
+  
+  // 集合信息
+  {% if collection %}
+  console.group('Collection Info');
+  console.log('ID:', {{ collection.id }});
+  console.log('Handle:', '{{ collection.handle }}');
+  console.log('Title:', {{ collection.title | json }});
+  console.log('Products Count:', {{ collection.products.size }});
+  console.log('Full Object:', {{ collection | json }});
+  console.groupEnd();
+  {% endif %}
+  
+  // 购物车信息
+  console.group('Cart Info');
+  console.log('Item Count:', {{ cart.item_count }});
+  console.log('Total Price:', {{ cart.total_price }});
+  console.log('Items:', {{ cart.items | json }});
+  console.groupEnd();
+  
+  // 客户信息
+  {% if customer %}
+  console.group('Customer Info');
+  console.log('ID:', {{ customer.id }});
+  console.log('Email:', '{{ customer.email }}');
+  console.log('Orders Count:', {{ customer.orders_count }});
+  console.log('Total Spent:', {{ customer.total_spent }});
+  console.groupEnd();
+  {% else %}
+  console.log('Customer: Not logged in');
+  {% endif %}
+  
+  console.groupEnd();
+{% endif %}
+&lt;/script&gt;
+</code></pre>
+<h3 id="2-网络请求监控">2. 网络请求监控</h3><pre><code>&lt;!-- 监控AJAX请求 --&gt;
+&lt;script&gt;
+{% if settings.debug_mode %}
+  // 监控所有AJAX请求
+  const originalFetch = window.fetch;
+  window.fetch = function(...args) {
+    console.group('🌐 Fetch Request');
+    console.log('URL:', args[0]);
+    console.log('Options:', args[1]);
+    
+    return originalFetch.apply(this, args)
+      .then(response =&gt; {
+        console.log('Response:', response);
+        console.groupEnd();
+        return response;
+      })
+      .catch(error =&gt; {
+        console.error('Error:', error);
+        console.groupEnd();
+        throw error;
+      });
+  };
+  
+  // 监控XMLHttpRequest
+  const originalXHR = window.XMLHttpRequest;
+  window.XMLHttpRequest = function() {
+    const xhr = new originalXHR();
+    const originalOpen = xhr.open;
+    const originalSend = xhr.send;
+    
+    xhr.open = function(method, url, ...rest) {
+      console.log('🔗 XHR Request:', method, url);
+      return originalOpen.apply(this, [method, url, ...rest]);
+    };
+    
+    return xhr;
+  };
+{% endif %}
+&lt;/script&gt;
+</code></pre>
+<h2 id="性能问题调试">性能问题调试</h2><h3 id="1-慢查询识别">1. 慢查询识别</h3><pre><code>&lt;!-- 识别慢速操作 --&gt;
+{% assign slow_operations = "" %}
+ 
+{% assign start_time = 'now' | date: '%s' | plus: 0 %}
+{% assign expensive_filter = collection.products | where: 'available', true | map: 'vendor' | uniq %}
+{% assign end_time = 'now' | date: '%s' | plus: 0 %}
+{% assign filter_time = end_time | minus: start_time %}
+ 
+{% if filter_time &gt; 0 %}
+  {% assign slow_operations = slow_operations | append: "vendor过滤耗时: " | append: filter_time | append: "s\n" %}
+{% endif %}
+ 
+{% assign start_time = 'now' | date: '%s' | plus: 0 %}
+{% assign sorted_products = collection.products | sort: 'price' %}
+{% assign end_time = 'now' | date: '%s' | plus: 0 %}
+{% assign sort_time = end_time | minus: start_time %}
+ 
+{% if sort_time &gt; 0 %}
+  {% assign slow_operations = slow_operations | append: "价格排序耗时: " | append: sort_time | append: "s\n" %}
+{% endif %}
+ 
+{% if slow_operations != "" and settings.debug_mode %}
+  &lt;div class="performance-warning" style="
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+  "&gt;
+    &lt;h4&gt;⚡ 性能警告&lt;/h4&gt;
+    &lt;pre&gt;{{ slow_operations }}&lt;/pre&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="2-内存使用监控">2. 内存使用监控</h3><pre><code>&lt;!-- JavaScript内存监控 --&gt;
+&lt;script&gt;
+{% if settings.debug_mode %}
+  function logMemoryUsage() {
+    if (performance.memory) {
+      console.group('📊 Memory Usage');
+      console.log('Used:', Math.round(performance.memory.usedJSHeapSize / 1024 / 1024) + ' MB');
+      console.log('Total:', Math.round(performance.memory.totalJSHeapSize / 1024 / 1024) + ' MB');
+      console.log('Limit:', Math.round(performance.memory.jsHeapSizeLimit / 1024 / 1024) + ' MB');
+      console.groupEnd();
+    }
+  }
+  
+  // 页面加载时记录内存使用
+  document.addEventListener('DOMContentLoaded', logMemoryUsage);
+  
+  // 每30秒记录一次内存使用
+  setInterval(logMemoryUsage, 30000);
+{% endif %}
+&lt;/script&gt;
+</code></pre>
+<h2 id="常见问题解决方案">常见问题解决方案</h2><h3 id="1-空白页面问题">1. 空白页面问题</h3><pre><code>&lt;!-- 诊断空白页面 --&gt;
+{% if settings.debug_mode %}
+  &lt;div class="page-diagnostics"&gt;
+    &lt;h3&gt;页面诊断&lt;/h3&gt;
+    
+    &lt;div class="diagnostic-item"&gt;
+      &lt;strong&gt;模板:&lt;/strong&gt; {{ template }}
+      {% if template == blank %}
+        &lt;span style="color: red;"&gt;❌ 模板为空&lt;/span&gt;
+      {% else %}
+        &lt;span style="color: green;"&gt;✅ 模板正常&lt;/span&gt;
+      {% endif %}
+    &lt;/div&gt;
+    
+    &lt;div class="diagnostic-item"&gt;
+      &lt;strong&gt;页面类型:&lt;/strong&gt; {{ request.page_type }}
+    &lt;/div&gt;
+    
+    {% if template contains 'product' %}
+      &lt;div class="diagnostic-item"&gt;
+        &lt;strong&gt;产品对象:&lt;/strong&gt;
+        {% if product %}
+          &lt;span style="color: green;"&gt;✅ 产品对象存在 (ID: {{ product.id }})&lt;/span&gt;
+        {% else %}
+          &lt;span style="color: red;"&gt;❌ 产品对象不存在&lt;/span&gt;
+        {% endif %}
+      &lt;/div&gt;
+    {% endif %}
+    
+    {% if template contains 'collection' %}
+      &lt;div class="diagnostic-item"&gt;
+        &lt;strong&gt;集合对象:&lt;/strong&gt;
+        {% if collection %}
+          &lt;span style="color: green;"&gt;✅ 集合对象存在 ({{ collection.products.size }} 个产品)&lt;/span&gt;
+        {% else %}
+          &lt;span style="color: red;"&gt;❌ 集合对象不存在&lt;/span&gt;
+        {% endif %}
+      &lt;/div&gt;
+    {% endif %}
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="2-样式问题调试">2. 样式问题调试</h3><pre><code>&lt;!-- CSS调试助手 --&gt;
+{% if settings.debug_mode %}
+  &lt;style&gt;
+    /* 调试边框 */
+    .debug-borders * {
+      outline: 1px solid rgba(255, 0, 0, 0.2) !important;
+    }
+    
+    /* 调试网格 */
+    .debug-grid {
+      background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    
+    /* 调试信息显示 */
+    .debug-info {
+      position: relative;
+    }
+    
+    .debug-info:hover::after {
+      content: attr(data-debug);
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 5px;
+      font-size: 12px;
+      white-space: nowrap;
+      z-index: 1000;
+    }
+  &lt;/style&gt;
+  
+  &lt;script&gt;
+    // 添加调试控制
+    document.addEventListener('keydown', function(e) {
+      // Ctrl+Shift+D 切换调试边框
+      if (e.ctrlKey &amp;&amp; e.shiftKey &amp;&amp; e.key === 'D') {
+        document.body.classList.toggle('debug-borders');
+      }
+      
+      // Ctrl+Shift+G 切换调试网格
+      if (e.ctrlKey &amp;&amp; e.shiftKey &amp;&amp; e.key === 'G') {
+        document.body.classList.toggle('debug-grid');
+      }
+    });
+  &lt;/script&gt;
+{% endif %}
+</code></pre>
+<h3 id="3-数据问题诊断">3. 数据问题诊断</h3><pre><code>&lt;!-- 数据完整性检查 --&gt;
+{% if settings.debug_mode %}
+  &lt;div class="data-diagnostics"&gt;
+    &lt;h3&gt;数据诊断&lt;/h3&gt;
+    
+    &lt;!-- 产品数据检查 --&gt;
+    {% if product %}
+      &lt;div class="diagnostic-section"&gt;
+        &lt;h4&gt;产品数据完整性&lt;/h4&gt;
+        &lt;ul&gt;
+          &lt;li&gt;
+            标题: 
+            {% if product.title and product.title != blank %}
+              &lt;span style="color: green;"&gt;✅&lt;/span&gt;
+            {% else %}
+              &lt;span style="color: red;"&gt;❌ 缺少标题&lt;/span&gt;
+            {% endif %}
+          &lt;/li&gt;
+          &lt;li&gt;
+            描述: 
+            {% if product.description and product.description != blank %}
+              &lt;span style="color: green;"&gt;✅&lt;/span&gt;
+            {% else %}
+              &lt;span style="color: orange;"&gt;⚠️ 缺少描述&lt;/span&gt;
+            {% endif %}
+          &lt;/li&gt;
+          &lt;li&gt;
+            特色图片: 
+            {% if product.featured_image %}
+              &lt;span style="color: green;"&gt;✅&lt;/span&gt;
+            {% else %}
+              &lt;span style="color: red;"&gt;❌ 缺少特色图片&lt;/span&gt;
+            {% endif %}
+          &lt;/li&gt;
+          &lt;li&gt;
+            变体: 
+            {% if product.variants.size &gt; 0 %}
+              &lt;span style="color: green;"&gt;✅ {{ product.variants.size }} 个变体&lt;/span&gt;
+            {% else %}
+              &lt;span style="color: red;"&gt;❌ 没有变体&lt;/span&gt;
+            {% endif %}
+          &lt;/li&gt;
+          &lt;li&gt;
+            价格: 
+            {% if product.price and product.price &gt; 0 %}
+              &lt;span style="color: green;"&gt;✅ {{ product.price | money }}&lt;/span&gt;
+            {% else %}
+              &lt;span style="color: red;"&gt;❌ 无效价格&lt;/span&gt;
+            {% endif %}
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    {% endif %}
+    
+    &lt;!-- 集合数据检查 --&gt;
+    {% if collection %}
+      &lt;div class="diagnostic-section"&gt;
+        &lt;h4&gt;集合数据完整性&lt;/h4&gt;
+        &lt;ul&gt;
+          &lt;li&gt;
+            产品数量: 
+            {% if collection.products.size &gt; 0 %}
+              &lt;span style="color: green;"&gt;✅ {{ collection.products.size }} 个产品&lt;/span&gt;
+            {% else %}
+              &lt;span style="color: orange;"&gt;⚠️ 集合为空&lt;/span&gt;
+            {% endif %}
+          &lt;/li&gt;
+          &lt;li&gt;
+            可用产品: 
+            {% assign available_count = collection.products | where: 'available', true | size %}
+            {% if available_count &gt; 0 %}
+              &lt;span style="color: green;"&gt;✅ {{ available_count }} 个可用&lt;/span&gt;
+            {% else %}
+              &lt;span style="color: red;"&gt;❌ 没有可用产品&lt;/span&gt;
+            {% endif %}
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    {% endif %}
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="生产环境调试">生产环境调试</h2><h3 id="1-安全的生产调试">1. 安全的生产调试</h3><pre><code>&lt;!-- 生产环境安全调试 --&gt;
+{% assign is_authorized_debug = false %}
+{% if customer and customer.email == settings.debug_admin_email %}
+  {% assign is_authorized_debug = true %}
+{% endif %}
+ 
+{% if is_authorized_debug and request.params.debug == settings.debug_secret_key %}
+  &lt;div class="production-debug" style="
+    position: fixed;
+    top: 50px;
+    right: 20px;
+    width: 250px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 11px;
+    z-index: 9999;
+  "&gt;
+    &lt;h4&gt;生产调试面板&lt;/h4&gt;
+    &lt;p&gt;模板: {{ template }}&lt;/p&gt;
+    &lt;p&gt;页面: {{ request.page_type }}&lt;/p&gt;
+    &lt;p&gt;时间: {{ 'now' | date: '%Y-%m-%d %H:%M:%S' }}&lt;/p&gt;
+    
+    {% if product %}
+      &lt;p&gt;产品: {{ product.id }} - {{ product.title | truncate: 20 }}&lt;/p&gt;
+    {% endif %}
+    
+    {% if collection %}
+      &lt;p&gt;集合: {{ collection.handle }} ({{ collection.products.size }})&lt;/p&gt;
+    {% endif %}
+    
+    &lt;button onclick="this.parentElement.style.display='none'"&gt;关闭&lt;/button&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="2-错误上报">2. 错误上报</h3><pre><code>&lt;!-- 错误收集和上报 --&gt;
+&lt;script&gt;
+{% if settings.error_reporting %}
+  window.addEventListener('error', function(e) {
+    const errorData = {
+      message: e.message,
+      filename: e.filename,
+      line: e.lineno,
+      column: e.colno,
+      stack: e.error ? e.error.stack : null,
+      userAgent: navigator.userAgent,
+      url: window.location.href,
+      timestamp: new Date().toISOString(),
+      template: '{{ template }}',
+      pageType: '{{ request.page_type }}',
+      {% if product %}productId: {{ product.id }},{% endif %}
+      {% if collection %}collectionId: {{ collection.id }},{% endif %}
+    };
+    
+    // 发送错误报告到你的错误收集服务
+    fetch('/apps/error-reporter', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(errorData)
+    }).catch(console.error);
+  });
+{% endif %}
+&lt;/script&gt;
+</code></pre>
+<h2 id="调试最佳实践">调试最佳实践</h2><h3 id="1-调试检查清单">1. 调试检查清单</h3><pre><code>{% comment %}
+调试检查清单：
+ 
+1. 对象存在性
+   - 检查所有对象是否存在
+   - 使用 if 条件包装对象访问
+   - 提供默认值或错误处理
+ 
+2. 数据类型
+   - 确认变量类型
+   - 数字和字符串转换
+   - 日期格式处理
+ 
+3. 过滤器使用
+   - 检查过滤器参数
+   - 链式过滤器顺序
+   - 空值处理
+ 
+4. 循环性能
+   - 使用 limit 限制数量
+   - 避免深度嵌套
+   - 早期跳出条件
+ 
+5. 错误处理
+   - 优雅降级
+   - 用户友好的错误信息
+   - 开发环境详细调试
+ 
+6. 性能监控
+   - 测量关键操作耗时
+   - 监控内存使用
+   - 网络请求跟踪
+{% endcomment %}
+</code></pre>
+<h3 id="2-调试工具函数">2. 调试工具函数</h3><pre><code>&lt;!-- 可重用的调试工具 --&gt;
+{% comment %}
+使用示例:
+{% render 'debug-object', object: product, title: '产品对象' %}
+{% render 'debug-performance', start_time: start_time, operation: '产品过滤' %}
+{% endcomment %}
+ 
+&lt;!-- snippets/debug-object.liquid --&gt;
+{% if settings.debug_mode %}
+  &lt;details class="debug-object" style="margin: 10px 0; border: 1px solid #ddd; padding: 10px;"&gt;
+    &lt;summary&gt;&lt;strong&gt;{{ title | default: '调试对象' }}&lt;/strong&gt;&lt;/summary&gt;
+    &lt;pre style="background: #f5f5f5; padding: 10px; overflow: auto; max-height: 300px;"&gt;{{ object | json }}&lt;/pre&gt;
+  &lt;/details&gt;
+{% endif %}
+ 
+&lt;!-- snippets/debug-performance.liquid --&gt;
+{% if settings.debug_mode %}
+  {% assign end_time = 'now' | date: '%s' | plus: 0 %}
+  {% assign duration = end_time | minus: start_time %}
+  {% if duration &gt; 0 %}
+    &lt;div class="debug-performance" style="background: #e3f2fd; border-left: 4px solid #2196f3; padding: 8px; margin: 5px 0;"&gt;
+      &lt;strong&gt;⏱️ {{ operation }}:&lt;/strong&gt; {{ duration }}秒
+    &lt;/div&gt;
+  {% endif %}
+{% endif %}
+</code></pre>
+<h2 id="总结">总结</h2><p>有效的调试技巧包括：</p>
+<ol>
+<li><strong>预防性编程</strong> - 检查对象存在性，提供默认值</li>
+<li><strong>详细日志</strong> - 记录变量状态和操作结果</li>
+<li><strong>性能监控</strong> - 测量关键操作的执行时间</li>
+<li><strong>错误处理</strong> - 优雅处理异常情况</li>
+<li><strong>开发工具</strong> - 利用浏览器开发工具和自定义调试面板</li>
+</ol>
+<h2 id="下一步学习">下一步学习</h2><p>掌握调试技巧后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/best-practices/">最佳实践</a> - 避免常见问题</li>
+<li><a href="/guides/shopify-handbook/liquid/performance-optimization/">性能优化</a> - 提升代码效率</li>
+<li><a href="/guides/shopify-handbook/liquid/theme-development-practices/">主题开发实战</a> - 实际项目应用</li>
+<li><a href="/guides/shopify-handbook/liquid/examples/">代码示例和案例</a> - 学习实际解决方案</li>
+</ol>
+<p>良好的调试习惯是成为优秀 Liquid 开发者的重要技能！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/variables/"><span>上一篇</span><strong>Liquid 变量与对象访问</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/getting-started/"><span>下一篇</span><strong>Liquid 快速入门</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>布局模板开发 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="布局模板开发 布局模板是 Shopify 主题的骨架，定义了网站的整体结构和共享元素。本指南将详细介绍如何开发高效、灵活的布局模板。 布局模板基础 1\. theme.liquid 主布局文件 2\. 密码保护页面布局 布局组件化 ">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/layout-templates/">
+  <meta property="og:title" content="布局模板开发 · Shopify 独立站手册">
+  <meta property="og:description" content="布局模板开发 布局模板是 Shopify 主题的骨架，定义了网站的整体结构和共享元素。本指南将详细介绍如何开发高效、灵活的布局模板。 布局模板基础 1\. theme.liquid 主布局文件 2\. 密码保护页面布局 布局组件化 ">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>布局模板开发</h1>
+        <p>布局模板开发 布局模板是 Shopify 主题的骨架，定义了网站的整体结构和共享元素。本指南将详细介绍如何开发高效、灵活的布局模板。 布局模板基础 1\. theme.liquid 主布局文件 2\. 密码保护页面布局 布局组件化 </p>
+      </header>
+      <div class="article-content"><h2 id="布局模板开发">布局模板开发</h2><p>布局模板是 Shopify 主题的骨架，定义了网站的整体结构和共享元素。本指南将详细介绍如何开发高效、灵活的布局模板。</p>
+<h2 id="布局模板基础">布局模板基础</h2><h3 id="1-theme-liquid-主布局文件">1. theme.liquid - 主布局文件</h3><pre><code>&lt;!doctype html&gt;
+&lt;html class="no-js" lang="{{ request.locale.iso_code }}"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+  &lt;meta name="viewport" content="width=device-width,initial-scale=1"&gt;
+  &lt;meta name="theme-color" content="{{ settings.color_accent }}"&gt;
+  
+  &lt;link rel="canonical" href="{{ canonical_url }}"&gt;
+  
+  {%- if settings.favicon != blank -%}
+    &lt;link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}"&gt;
+  {%- endif -%}
+  
+  {%- capture seo_title -%}
+    {%- if request.page_type == 'search' and search.terms != blank -%}
+      {{ 'general.search.heading' | t: count: search.results_count }}: {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+    {%- else -%}
+      {{ page_title }}
+    {%- endif -%}
+    {%- if current_tags %} &amp;ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
+    {%- if current_page != 1 %} &amp;ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+    {%- assign title_separator = ' | ' -%}
+    {%- unless page_title contains shop.name -%}
+      {{ title_separator }}{{ shop.name }}
+    {%- endunless -%}
+  {%- endcapture -%}
+  
+  &lt;title&gt;{{ seo_title | strip }}&lt;/title&gt;
+  
+  {%- if page_description -%}
+    &lt;meta name="description" content="{{ page_description | escape }}"&gt;
+  {%- endif -%}
+  
+  {% render 'meta-tags' %}
+  
+  &lt;script&gt;
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+    
+    window.theme = {
+      settings: {
+        cartType: {{ settings.cart_type | json }},
+        moneyFormat: {{ shop.money_format | json }},
+        moneyWithCurrencyFormat: {{ shop.money_with_currency_format | json }}
+      },
+      strings: {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }}
+      },
+      routes: {
+        cart: '{{ routes.cart_url }}',
+        cartAdd: '{{ routes.cart_add_url }}',
+        cartChange: '{{ routes.cart_change_url }}'
+      }
+    };
+  &lt;/script&gt;
+  
+  {% render 'css-variables' %}
+  
+  &lt;link rel="stylesheet" href="{{ 'theme.css' | asset_url }}"&gt;
+  
+  {%- unless settings.type_header_font.system? -%}
+    &lt;link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin&gt;
+  {%- endunless -%}
+  
+  &lt;script&gt;window.performance &amp;&amp; window.performance.mark &amp;&amp; window.performance.mark('shopify.content_for_header.start');&lt;/script&gt;
+  {{ content_for_header }}
+  &lt;script&gt;window.performance &amp;&amp; window.performance.mark &amp;&amp; window.performance.mark('shopify.content_for_header.end');&lt;/script&gt;
+  
+  {% render 'microdata-schema' %}
+&lt;/head&gt;
+ 
+&lt;body class="gradient{% if customer %} customer-logged-in{% endif %} template-{{ request.page_type | handle }}"&gt;
+  &lt;a class="skip-to-content-link button visually-hidden" href="#MainContent"&gt;
+    {{ 'accessibility.skip_to_text' | t }}
+  &lt;/a&gt;
+  
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+  
+  &lt;main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1"&gt;
+    {{ content_for_layout }}
+  &lt;/main&gt;
+  
+  {% section 'footer' %}
+  
+  &lt;ul hidden&gt;
+    &lt;li id="a11y-refresh-page-message"&gt;{{ 'accessibility.refresh_page' | t }}&lt;/li&gt;
+    &lt;li id="a11y-new-window-message"&gt;{{ 'accessibility.link_messages.new_window' | t }}&lt;/li&gt;
+  &lt;/ul&gt;
+  
+  &lt;script&gt;
+    window.shopUrl = {{ request.origin | json }};
+    window.routes = {
+      cart_add_url: {{ routes.cart_add_url | json }},
+      cart_change_url: {{ routes.cart_change_url | json }},
+      cart_update_url: {{ routes.cart_update_url | json }},
+      cart_url: {{ routes.cart_url | json }},
+      predictive_search_url: {{ routes.predictive_search_url | json }}
+    };
+  &lt;/script&gt;
+  
+  {% if settings.predictive_search_enabled %}
+    &lt;script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"&gt;&lt;/script&gt;
+  {% endif %}
+  
+  &lt;script src="{{ 'theme.js' | asset_url }}" defer="defer"&gt;&lt;/script&gt;
+  
+  {% render 'cart-drawer' %}
+  
+  {% if template contains 'product' %}
+    &lt;script src="{{ 'product-form.js' | asset_url }}" defer="defer"&gt;&lt;/script&gt;
+  {% endif %}
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3 id="2-密码保护页面布局">2. 密码保护页面布局</h3><pre><code>&lt;!-- layout/password.liquid --&gt;
+&lt;!doctype html&gt;
+&lt;html class="no-js" lang="{{ request.locale.iso_code }}"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+  &lt;meta name="viewport" content="width=device-width,initial-scale=1"&gt;
+  &lt;meta name="robots" content="noindex,nofollow"&gt;
+  
+  &lt;title&gt;{{ shop.name }}&lt;/title&gt;
+  
+  {% if page_description %}
+    &lt;meta name="description" content="{{ page_description | escape }}"&gt;
+  {% endif %}
+  
+  {% render 'meta-tags' %}
+  
+  &lt;link rel="stylesheet" href="{{ 'password.css' | asset_url }}"&gt;
+  
+  {{ content_for_header }}
+&lt;/head&gt;
+ 
+&lt;body class="password-page"&gt;
+  &lt;div class="password-container"&gt;
+    &lt;header class="password-header"&gt;
+      {% if shop.logo %}
+        &lt;img src="{{ shop.logo | image_url: width: 200 }}" alt="{{ shop.name }}" class="password-logo"&gt;
+      {% else %}
+        &lt;h1 class="password-shop-name"&gt;{{ shop.name }}&lt;/h1&gt;
+      {% endif %}
+    &lt;/header&gt;
+    
+    &lt;main class="password-content"&gt;
+      {{ content_for_layout }}
+    &lt;/main&gt;
+    
+    &lt;footer class="password-footer"&gt;
+      &lt;p&gt;&amp;copy; {{ 'now' | date: '%Y' }} {{ shop.name }}&lt;/p&gt;
+    &lt;/footer&gt;
+  &lt;/div&gt;
+  
+  &lt;script src="{{ 'password.js' | asset_url }}" defer&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2 id="布局组件化">布局组件化</h2><h3 id="1-头部组件片段">1. 头部组件片段</h3><pre><code>&lt;!-- snippets/layout-head.liquid --&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+&lt;meta name="viewport" content="width=device-width,initial-scale=1"&gt;
+ 
+&lt;!-- SEO 元标签 --&gt;
+{% render 'seo-meta-tags' %}
+ 
+&lt;!-- 性能优化 --&gt;
+&lt;link rel="dns-prefetch" href="https://cdn.shopify.com"&gt;
+&lt;link rel="dns-prefetch" href="https://monorail-edge.shopifysvc.com"&gt;
+ 
+&lt;!-- 字体预加载 --&gt;
+{% unless settings.type_header_font.system? %}
+  &lt;link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin&gt;
+{% endunless %}
+ 
+&lt;!-- 关键 CSS 内联 --&gt;
+{% render 'critical-css' %}
+ 
+&lt;!-- 非关键 CSS 异步加载 --&gt;
+&lt;link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'"&gt;
+&lt;noscript&gt;&lt;link rel="stylesheet" href="{{ 'theme.css' | asset_url }}"&gt;&lt;/noscript&gt;
+ 
+&lt;!-- 主题配置 --&gt;
+&lt;script&gt;
+  window.theme = {
+    settings: {{ settings | json }},
+    strings: {
+      addToCart: {{ 'products.product.add_to_cart' | t | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      unavailable: {{ 'products.product.unavailable' | t | json }}
+    },
+    routes: {
+      cart: {{ routes.cart_url | json }},
+      cartAdd: {{ routes.cart_add_url | json }},
+      cartChange: {{ routes.cart_change_url | json }}
+    }
+  };
+&lt;/script&gt;
+</code></pre>
+<h3 id="2-页脚脚本组件">2. 页脚脚本组件</h3><pre><code>&lt;!-- snippets/layout-scripts.liquid --&gt;
+&lt;!-- 核心功能脚本 --&gt;
+&lt;script src="{{ 'theme.js' | asset_url }}" defer&gt;&lt;/script&gt;
+ 
+&lt;!-- 条件加载脚本 --&gt;
+{% if settings.cart_type == 'drawer' %}
+  &lt;script src="{{ 'cart-drawer.js' | asset_url }}" defer&gt;&lt;/script&gt;
+{% endif %}
+ 
+{% if template contains 'product' %}
+  &lt;script src="{{ 'product-form.js' | asset_url }}" defer&gt;&lt;/script&gt;
+  &lt;script src="{{ 'product-gallery.js' | asset_url }}" defer&gt;&lt;/script&gt;
+{% endif %}
+ 
+{% if template contains 'collection' %}
+  &lt;script src="{{ 'collection-filters.js' | asset_url }}" defer&gt;&lt;/script&gt;
+{% endif %}
+ 
+{% if settings.predictive_search_enabled %}
+  &lt;script src="{{ 'predictive-search.js' | asset_url }}" defer&gt;&lt;/script&gt;
+{% endif %}
+ 
+&lt;!-- 第三方脚本 --&gt;
+{% render 'analytics-scripts' %}
+</code></pre>
+<h2 id="条件布局系统">条件布局系统</h2><h3 id="1-多布局支持">1. 多布局支持</h3><pre><code>&lt;!-- layout/theme.liquid --&gt;
+{%- liquid
+  assign layout_class = 'layout-default'
+  
+  case template.name
+    when 'product'
+      assign layout_class = 'layout-product'
+    when 'collection'
+      assign layout_class = 'layout-collection'
+    when 'page'
+      if page.handle contains 'landing'
+        assign layout_class = 'layout-landing'
+      endif
+    when 'blog'
+      assign layout_class = 'layout-blog'
+  endcase
+  
+  if customer
+    assign layout_class = layout_class | append: ' customer-logged-in'
+  endif
+-%}
+ 
+&lt;body class="{{ layout_class }} template-{{ template.name | handle }}"&gt;
+  &lt;!-- 根据不同布局加载不同的头部 --&gt;
+  {% case layout_class %}
+    {% when 'layout-landing' %}
+      {% section 'header-landing' %}
+    {% when 'layout-product' %}
+      {% section 'header-product' %}
+    {% else %}
+      {% section 'header' %}
+  {% endcase %}
+  
+  &lt;main id="MainContent" class="content-for-layout"&gt;
+    {{ content_for_layout }}
+  &lt;/main&gt;
+  
+  &lt;!-- 根据不同布局加载不同的页脚 --&gt;
+  {% unless layout_class contains 'layout-landing' %}
+    {% section 'footer' %}
+  {% endunless %}
+&lt;/body&gt;
+</code></pre>
+<h3 id="2-响应式布局容器">2. 响应式布局容器</h3><pre><code>&lt;!-- snippets/responsive-container.liquid --&gt;
+{%- liquid
+  assign container_class = 'container'
+  assign max_width = section.settings.container_width | default: 'default'
+  
+  case max_width
+    when 'narrow'
+      assign container_class = container_class | append: ' container--narrow'
+    when 'wide'
+      assign container_class = container_class | append: ' container--wide'
+    when 'full'
+      assign container_class = container_class | append: ' container--full'
+  endcase
+  
+  if section.settings.container_padding
+    assign container_class = container_class | append: ' container--padded'
+  endif
+-%}
+ 
+&lt;div class="{{ container_class }}"&gt;
+  &lt;div class="container__inner"&gt;
+    {{ content }}
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;style&gt;
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+  
+  .container--narrow {
+    max-width: 800px;
+  }
+  
+  .container--wide {
+    max-width: 1400px;
+  }
+  
+  .container--full {
+    max-width: none;
+    padding: 0;
+  }
+  
+  .container--padded {
+    padding: 30px 15px;
+  }
+  
+  @media (min-width: 768px) {
+    .container {
+      padding: 0 30px;
+    }
+    
+    .container--padded {
+      padding: 60px 30px;
+    }
+  }
+&lt;/style&gt;
+</code></pre>
+<h2 id="性能优化布局">性能优化布局</h2><h3 id="1-关键路径优化">1. 关键路径优化</h3><pre><code>&lt;!-- snippets/critical-css.liquid --&gt;
+&lt;style&gt;
+  /* 关键 CSS - 首屏内容样式 */
+  .header {
+    background: white;
+    padding: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  .main-content {
+    min-height: 50vh;
+    padding: 2rem 0;
+  }
+  
+  /* 加载动画 */
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.3s;
+  }
+  
+  .loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  @media (min-width: 768px) {
+    .container {
+      padding: 0 2rem;
+    }
+  }
+&lt;/style&gt;
+</code></pre>
+<h3 id="2-异步组件加载">2. 异步组件加载</h3><pre><code>&lt;!-- snippets/async-components.liquid --&gt;
+&lt;script&gt;
+  // 异步组件加载器
+  class AsyncComponentLoader {
+    constructor() {
+      this.components = new Map();
+      this.observer = new IntersectionObserver(this.handleIntersection.bind(this));
+      this.init();
+    }
+    
+    init() {
+      // 注册延迟加载的组件
+      document.querySelectorAll('[data-async-component]').forEach(el =&gt; {
+        this.observer.observe(el);
+      });
+    }
+    
+    handleIntersection(entries) {
+      entries.forEach(entry =&gt; {
+        if (entry.isIntersecting) {
+          this.loadComponent(entry.target);
+          this.observer.unobserve(entry.target);
+        }
+      });
+    }
+    
+    async loadComponent(element) {
+      const componentName = element.dataset.asyncComponent;
+      const componentData = element.dataset.componentData;
+      
+      try {
+        // 显示加载状态
+        element.innerHTML = '&lt;div class="component-loading"&gt;加载中...&lt;/div&gt;';
+        
+        // 异步获取组件内容
+        const response = await fetch(`/apps/components/${componentName}?data=${componentData}`);
+        const html = await response.text();
+        
+        // 渲染组件
+        element.innerHTML = html;
+        
+        // 初始化组件脚本
+        this.initializeComponentScripts(element);
+        
+      } catch (error) {
+        console.error(`Failed to load component ${componentName}:`, error);
+        element.innerHTML = '&lt;div class="component-error"&gt;加载失败&lt;/div&gt;';
+      }
+    }
+    
+    initializeComponentScripts(element) {
+      const scripts = element.querySelectorAll('script');
+      scripts.forEach(script =&gt; {
+        const newScript = document.createElement('script');
+        newScript.textContent = script.textContent;
+        document.head.appendChild(newScript);
+      });
+    }
+  }
+  
+  // 初始化异步组件加载器
+  document.addEventListener('DOMContentLoaded', () =&gt; {
+    new AsyncComponentLoader();
+  });
+&lt;/script&gt;
+</code></pre>
+<h2 id="移动端优化布局">移动端优化布局</h2><h3 id="1-移动端专用布局">1. 移动端专用布局</h3><pre><code>&lt;!-- layout/theme.mobile.liquid --&gt;
+&lt;!doctype html&gt;
+&lt;html class="no-js mobile-layout" lang="{{ request.locale.iso_code }}"&gt;
+&lt;head&gt;
+  {% render 'layout-head' %}
+  
+  &lt;!-- 移动端特定样式 --&gt;
+  &lt;link rel="stylesheet" href="{{ 'mobile.css' | asset_url }}"&gt;
+  
+  &lt;!-- PWA 配置 --&gt;
+  &lt;link rel="manifest" href="{{ 'manifest.json' | asset_url }}"&gt;
+  &lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;
+  &lt;meta name="apple-mobile-web-app-status-bar-style" content="default"&gt;
+&lt;/head&gt;
+ 
+&lt;body class="mobile-optimized"&gt;
+  &lt;!-- 移动端导航 --&gt;
+  {% section 'mobile-header' %}
+  
+  &lt;!-- 主内容 --&gt;
+  &lt;main id="MainContent" class="mobile-content"&gt;
+    {{ content_for_layout }}
+  &lt;/main&gt;
+  
+  &lt;!-- 移动端页脚 --&gt;
+  {% section 'mobile-footer' %}
+  
+  &lt;!-- 移动端专用脚本 --&gt;
+  &lt;script src="{{ 'mobile.js' | asset_url }}" defer&gt;&lt;/script&gt;
+  
+  &lt;!-- PWA 注册 --&gt;
+  &lt;script&gt;
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3 id="2-自适应布局切换">2. 自适应布局切换</h3><pre><code>&lt;!-- snippets/adaptive-layout.liquid --&gt;
+&lt;script&gt;
+  class AdaptiveLayout {
+    constructor() {
+      this.breakpoint = 768;
+      this.isMobile = window.innerWidth &lt; this.breakpoint;
+      this.init();
+    }
+    
+    init() {
+      this.setupLayout();
+      window.addEventListener('resize', this.handleResize.bind(this));
+    }
+    
+    setupLayout() {
+      if (this.isMobile) {
+        this.enableMobileLayout();
+      } else {
+        this.enableDesktopLayout();
+      }
+    }
+    
+    enableMobileLayout() {
+      document.body.classList.add('mobile-layout');
+      document.body.classList.remove('desktop-layout');
+      
+      // 加载移动端特定组件
+      this.loadMobileComponents();
+    }
+    
+    enableDesktopLayout() {
+      document.body.classList.add('desktop-layout');
+      document.body.classList.remove('mobile-layout');
+      
+      // 加载桌面端特定组件
+      this.loadDesktopComponents();
+    }
+    
+    handleResize() {
+      const wasMobile = this.isMobile;
+      this.isMobile = window.innerWidth &lt; this.breakpoint;
+      
+      if (wasMobile !== this.isMobile) {
+        this.setupLayout();
+      }
+    }
+    
+    loadMobileComponents() {
+      // 异步加载移动端组件
+      import('./mobile-components.js').then(module =&gt; {
+        module.init();
+      });
+    }
+    
+    loadDesktopComponents() {
+      // 异步加载桌面端组件
+      import('./desktop-components.js').then(module =&gt; {
+        module.init();
+      });
+    }
+  }
+  
+  // 初始化自适应布局
+  new AdaptiveLayout();
+&lt;/script&gt;
+</code></pre>
+<h2 id="布局调试工具">布局调试工具</h2><h3 id="1-开发模式布局调试">1. 开发模式布局调试</h3><pre><code>&lt;!-- snippets/layout-debugger.liquid --&gt;
+{% if settings.debug_mode %}
+  &lt;div class="layout-debugger" style="position: fixed; top: 10px; right: 10px; z-index: 10000; background: black; color: white; padding: 10px; font-size: 12px;"&gt;
+    &lt;div&gt;模板: {{ template.name }}&lt;/div&gt;
+    &lt;div&gt;页面类型: {{ request.page_type }}&lt;/div&gt;
+    &lt;div&gt;设备: &lt;span id="device-type"&gt;&lt;/span&gt;&lt;/div&gt;
+    &lt;div&gt;断点: &lt;span id="current-breakpoint"&gt;&lt;/span&gt;&lt;/div&gt;
+    &lt;div&gt;性能: &lt;span id="load-time"&gt;&lt;/span&gt;ms&lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;script&gt;
+    // 布局调试器
+    class LayoutDebugger {
+      constructor() {
+        this.init();
+      }
+      
+      init() {
+        this.updateDeviceInfo();
+        this.measurePerformance();
+        window.addEventListener('resize', () =&gt; this.updateDeviceInfo());
+      }
+      
+      updateDeviceInfo() {
+        const width = window.innerWidth;
+        let deviceType = 'Desktop';
+        let breakpoint = 'xl';
+        
+        if (width &lt; 576) {
+          deviceType = 'Mobile';
+          breakpoint = 'xs';
+        } else if (width &lt; 768) {
+          deviceType = 'Mobile Large';
+          breakpoint = 'sm';
+        } else if (width &lt; 992) {
+          deviceType = 'Tablet';
+          breakpoint = 'md';
+        } else if (width &lt; 1200) {
+          deviceType = 'Desktop';
+          breakpoint = 'lg';
+        }
+        
+        document.getElementById('device-type').textContent = deviceType;
+        document.getElementById('current-breakpoint').textContent = breakpoint;
+      }
+      
+      measurePerformance() {
+        window.addEventListener('load', () =&gt; {
+          const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+          document.getElementById('load-time').textContent = loadTime;
+        });
+      }
+    }
+    
+    new LayoutDebugger();
+  &lt;/script&gt;
+{% endif %}
+</code></pre>
+<p>通过这些布局模板开发技术，您可以创建高效、灵活且用户友好的 Shopify 主题布局！</p>
+<h2 id="下一步学习">下一步学习</h2><p>完成布局模板开发后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/code-organization/">代码组织和结构</a> - 项目架构最佳实践</li>
+<li><a href="/guides/shopify-handbook/liquid/best-practices/">最佳实践</a> - 开发规范和约定</li>
+</ol>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/tags/"><span>上一篇</span><strong>标签和控制结构</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/testing-deployment/"><span>下一篇</span><strong>测试和部署</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

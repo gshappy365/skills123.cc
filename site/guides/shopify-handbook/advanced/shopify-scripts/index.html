@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify Scripts 与 Functions 迁移 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify Scripts 与 Functions 迁移 Shopify Scripts 是 Shopify Plus 专属的可编程能力，用 Ruby 编写，控制购物车、运费、支付的自定义逻辑。 Shopify 已宣布 2024">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/shopify-scripts/">
+  <meta property="og:title" content="Shopify Scripts 与 Functions 迁移 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify Scripts 与 Functions 迁移 Shopify Scripts 是 Shopify Plus 专属的可编程能力，用 Ruby 编写，控制购物车、运费、支付的自定义逻辑。 Shopify 已宣布 2024">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>Shopify Scripts 与 Functions 迁移</h1>
+        <p>Shopify Scripts 与 Functions 迁移 Shopify Scripts 是 Shopify Plus 专属的可编程能力，用 Ruby 编写，控制购物车、运费、支付的自定义逻辑。 Shopify 已宣布 2024</p>
+      </header>
+      <div class="article-content"><h2 id="shopify-scripts-与-functions-迁移">Shopify Scripts 与 Functions 迁移</h2><p>Shopify Scripts 是 Shopify Plus 专属的可编程能力，用 Ruby 编写，控制购物车、运费、支付的自定义逻辑。<strong>Shopify 已宣布 2024 年 8 月 28 日彻底停用 Scripts</strong>，全面迁移到新一代 <strong>Shopify Functions</strong>。</p>
+<p>本文按”Scripts 历史能力 → Functions 替代方案 → Flow 自动化 → 三者协同”展开。如果你仍在维护未迁移的 Scripts 项目，本文的 Functions 部分尤其需要重点关注。</p>
+<h2 id="一-scripts-的三类用途与历史现状">一、Scripts 的三类用途与历史现状</h2><p>Scripts 历史上分三类：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>用途</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Line Item Scripts</td>
+<td>修改商品价格、折扣</td>
+<td>满 3 件 9 折</td>
+</tr>
+<tr>
+<td>Shipping Scripts</td>
+<td>动态调整运费</td>
+<td>VIP 客户免运费</td>
+</tr>
+<tr>
+<td>Payment Scripts</td>
+<td>控制支付方式可用性</td>
+<td>高客单单隐藏 COD</td>
+</tr>
+</tbody></table>
+<p><strong>重要时间线</strong>：</p>
+<ul>
+<li>2023 年 6 月：Shopify 宣布 Scripts 进入 Sunset</li>
+<li>2024 年 8 月 28 日：Scripts 完全停用，新功能开发禁止使用</li>
+<li>2024 年 8 月 28 日后：旧 Scripts 不再生效，必须迁移到 Functions</li>
+</ul>
+<p>如果你的店铺仍依赖 Scripts，<strong>立即开始迁移</strong>——否则相关业务逻辑会失效。</p>
+<h2 id="二-shopify-functions-概述">二、Shopify Functions 概述</h2><p>Functions 是 Scripts 的现代化替代品：</p>
+<ul>
+<li><strong>不限 Plus</strong>：所有 Shopify 套餐都可用（但开发能力门槛较高）</li>
+<li><strong>服务器端运行</strong>：Shopify 服务器上执行，零客户端性能影响</li>
+<li><strong>多语言</strong>：支持 Rust、TypeScript、JavaScript、AssemblyScript</li>
+<li><strong>更细粒度</strong>：分多个 API 类别，每类有明确的输入输出契约</li>
+</ul>
+<h3 id="functions-api-类别">Functions API 类别</h3><table>
+<thead>
+<tr>
+<th>API</th>
+<th>替代 Scripts</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cart Transform</td>
+<td>Line Item Scripts（部分）</td>
+<td>修改购物车显示与价格</td>
+</tr>
+<tr>
+<td>Product Discount / Order Discount / Shipping Discount</td>
+<td>Line Item Scripts（折扣部分）</td>
+<td>应用动态折扣</td>
+</tr>
+<tr>
+<td>Delivery Customization</td>
+<td>Shipping Scripts</td>
+<td>修改、隐藏、排序配送选项</td>
+</tr>
+<tr>
+<td>Payment Customization</td>
+<td>Payment Scripts</td>
+<td>修改、隐藏、排序支付方式</td>
+</tr>
+<tr>
+<td>Cart Checkout Validation</td>
+<td>新功能</td>
+<td>拒绝违反规则的购物车</td>
+</tr>
+<tr>
+<td>Fulfillment Constraints</td>
+<td>新功能</td>
+<td>自定义履约规则</td>
+</tr>
+<tr>
+<td>Order Routing Location Rule</td>
+<td>新功能</td>
+<td>订单路由到指定仓库</td>
+</tr>
+<tr>
+<td>Local Pickup Delivery</td>
+<td>新功能</td>
+<td>本地自提点</td>
+</tr>
+<tr>
+<td>Pickup Point Delivery</td>
+<td>新功能</td>
+<td>智能柜 / 自提点</td>
+</tr>
+</tbody></table>
+<h3 id="开发流程">开发流程</h3><pre><code># 1. 用 Shopify CLI 创建 Function
+shopify app generate extension --type product_discount
+ 
+# 2. 在生成的 src/ 目录编写逻辑
+# (Rust 推荐，性能最优；TypeScript 易上手)
+ 
+# 3. 本地测试
+shopify app dev
+ 
+# 4. 部署
+shopify app deploy
+</code></pre>
+<h3 id="function-项目结构-rust-示例">Function 项目结构（Rust 示例）</h3><pre><code>my-discount-function/
+├── shopify.function.toml      # 配置
+├── input.graphql              # 定义输入数据
+├── src/
+│   └── main.rs                # 核心逻辑
+├── Cargo.toml                 # Rust 依赖
+└── README.md
+</code></pre>
+<h2 id="三-典型场景迁移">三、典型场景迁移</h2><h3 id="场景-1-满-n-件-9-折">场景 1：满 N 件 9 折</h3><p><strong>Scripts（旧，Ruby）</strong>：</p>
+<pre><code># Line Item Script
+if Input.cart.line_items.size &gt;= 3
+  Input.cart.line_items.each do |line_item|
+    line_item.change_line_price(
+      line_item.line_price * 0.9,
+      message: "满 3 件 9 折"
+    )
+  end
+end
+Output.cart = Input.cart
+</code></pre>
+<p><strong>Functions（新，Rust）</strong>：</p>
+<pre><code>use shopify_function::prelude::*;
+ 
+#[shopify_function]
+fn function(input: schema::FunctionRunInput) -&gt; Result&lt;schema::FunctionRunResult&gt; {
+    let total_quantity: i32 = input
+        .cart
+        .lines
+        .iter()
+        .map(|line| line.quantity)
+        .sum();
+ 
+    if total_quantity &lt; 3 {
+        return Ok(schema::FunctionRunResult { discounts: vec![] });
+    }
+ 
+    let targets = input
+        .cart
+        .lines
+        .iter()
+        .map(|line| schema::Target {
+            cart_line: Some(schema::CartLineTarget {
+                id: line.id.clone(),
+                quantity: None,
+            }),
+            ..Default::default()
+        })
+        .collect();
+ 
+    Ok(schema::FunctionRunResult {
+        discounts: vec![schema::Discount {
+            message: Some("满 3 件 9 折".to_string()),
+            value: schema::Value::Percentage(schema::Percentage { value: dec!(10) }),
+            targets,
+            conditions: None,
+        }],
+    })
+}
+</code></pre>
+<p>更复杂但更灵活。开发时间约 4-8 工时（首次），熟练后 1-2 小时。</p>
+<h3 id="场景-2-vip-客户免运费">场景 2：VIP 客户免运费</h3><p><strong>Scripts（旧）</strong>：</p>
+<pre><code>if Input.cart.customer &amp;&amp; Input.cart.customer.tags.include?("VIP")
+  Input.shipping_rates.each do |rate|
+    rate.apply_discount(rate.price, message: "VIP 免运费")
+  end
+end
+Output.shipping_rates = Input.shipping_rates
+</code></pre>
+<p><strong>Functions（Delivery Customization）</strong>：</p>
+<pre><code>export function run(input) {
+  const isVIP = input.cart.buyerIdentity?.customer?.hasAnyTag === true;
+ 
+  if (!isVIP) {
+    return { operations: [] };
+  }
+ 
+  return {
+    operations: input.cart.deliveryGroups.flatMap(group =&gt;
+      group.deliveryOptions.map(option =&gt; ({
+        rename: {
+          deliveryOptionHandle: option.handle,
+          title: `免费配送（VIP 福利）`
+        }
+      }))
+    )
+  };
+}
+</code></pre>
+<p>注意：<strong>Delivery Customization 不能直接改运费金额到零</strong>（这是限制）。要实现免运费需要在折扣 Function 中做 Shipping Discount。</p>
+<h3 id="场景-3-高客单隐藏-cod">场景 3：高客单隐藏 COD</h3><p><strong>Scripts（旧）</strong>：</p>
+<pre><code>if Input.cart.subtotal_price &gt; Money.new(cents: 50000)
+  Output.payment_gateways = Input.payment_gateways.reject do |gateway|
+    gateway.name.downcase.include?("cash on delivery")
+  end
+end
+</code></pre>
+<p><strong>Functions（Payment Customization）</strong>：</p>
+<pre><code>export function run(input) {
+  const subtotalCents = parseFloat(input.cart.cost.subtotalAmount.amount) * 100;
+ 
+  if (subtotalCents &lt;= 50000) {
+    return { operations: [] };
+  }
+ 
+  const codPaymentMethod = input.paymentMethods.find(pm =&gt;
+    pm.name.toLowerCase().includes('cash on delivery')
+  );
+ 
+  if (!codPaymentMethod) {
+    return { operations: [] };
+  }
+ 
+  return {
+    operations: [{
+      hide: { paymentMethodId: codPaymentMethod.id }
+    }]
+  };
+}
+</code></pre>
+<h2 id="四-shopify-flow">四、Shopify Flow</h2><p>Flow 是 Shopify 自家的低代码自动化工具——基于”触发器 + 条件 + 动作”的工作流引擎。<strong>2024 年起向所有 Shopify 套餐开放</strong>（之前仅 Plus）。</p>
+<h3 id="flow-与-functions-的区别">Flow 与 Functions 的区别</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Flow</th>
+<th>Functions</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用户类型</td>
+<td>运营 / 业务</td>
+<td>开发者</td>
+</tr>
+<tr>
+<td>开发方式</td>
+<td>可视化 + 表达式</td>
+<td>代码（Rust / JS）</td>
+</tr>
+<tr>
+<td>执行时机</td>
+<td>事件触发后异步</td>
+<td>同步在结账流程中</td>
+</tr>
+<tr>
+<td>用途</td>
+<td>工作流自动化</td>
+<td>业务规则定制</td>
+</tr>
+<tr>
+<td>例子</td>
+<td>高客单订单 Slack 通知</td>
+<td>高客单隐藏 COD</td>
+</tr>
+</tbody></table>
+<p>简单理解：<strong>Flow 改”流程”，Functions 改”价格 / 运费 / 支付”</strong>。两者不冲突，互相配合使用。</p>
+<h3 id="flow-常用模板">Flow 常用模板</h3><p><strong>模板 1：高价值订单通知</strong></p>
+<pre><code>触发：Order Created
+条件：Order.totalPriceSet &gt; $500
+动作：Send Slack message to #vip-orders
+</code></pre>
+<p><strong>模板 2：客户分群标签</strong></p>
+<pre><code>触发：Customer's order count changes
+条件：Customer.totalSpent &gt; $1000
+动作：Tag customer with "vip"
+</code></pre>
+<p><strong>模板 3：库存预警</strong></p>
+<pre><code>触发：Inventory level changes
+条件：Variant.inventoryQuantity &lt; 10
+动作：Send email to ops@yourstore.com
+</code></pre>
+<p><strong>模板 4：拒付订单自动处理</strong></p>
+<pre><code>触发：Order risk analysis
+条件：Order.riskLevel = "high"
+动作：
+  - Cancel order
+  - Refund payment
+  - Tag customer "high-risk"
+</code></pre>
+<p>详细 Flow 实战见 <a href="/guides/shopify-handbook/advanced/marketing-automation/">营销自动化指南</a> 与 <a href="/guides/shopify-handbook/advanced/operation-optimization/">运营管理优化</a>。</p>
+<h2 id="五-第三方自动化工具协同">五、第三方自动化工具协同</h2><p>Flow + Functions 之外，第三方工具填补不同场景：</p>
+<h3 id="zapier">Zapier</h3><p>跨工具自动化，Shopify 与外部系统联动：</p>
+<ul>
+<li>Shopify 订单 → QuickBooks 财务</li>
+<li>Shopify 客户 → HubSpot CRM</li>
+<li>客服邮件 → Slack 通知</li>
+</ul>
+<p>价格：$20-$600/月。</p>
+<h3 id="make-integromat">Make（Integromat）</h3><p>类似 Zapier 但更复杂可视化逻辑，价格更亲民：$9-$100/月。</p>
+<h3 id="n8n">n8n</h3><p>开源自部署版本。完全可控，运行成本仅服务器开销（约 $5-20/月）。学习曲线陡。</p>
+<h3 id="选型决策">选型决策</h3><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>店内业务规则</td>
+<td>Shopify Flow</td>
+</tr>
+<tr>
+<td>Cart / Checkout / Delivery 定制</td>
+<td>Shopify Functions</td>
+</tr>
+<tr>
+<td>多工具协同</td>
+<td>Zapier 或 Make</td>
+</tr>
+<tr>
+<td>高频复杂工作流</td>
+<td>n8n（自部署）</td>
+</tr>
+</tbody></table>
+<h2 id="六-迁移到-functions-的项目流程">六、迁移到 Functions 的项目流程</h2><h3 id="step-1-盘点现有-scripts">Step 1：盘点现有 Scripts</h3><p>Shopify 后台 → Apps → Script Editor → 导出所有 Scripts 代码。</p>
+<p>按用途分类：</p>
+<ul>
+<li>折扣类（多数项目主体）</li>
+<li>运费类</li>
+<li>支付类</li>
+</ul>
+<h3 id="step-2-选择-functions-api">Step 2：选择 Functions API</h3><p>每个 Script 对应一个或多个 Function API：</p>
+<table>
+<thead>
+<tr>
+<th>原 Scripts</th>
+<th>新 Functions</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>商品价格折扣</td>
+<td>Product Discount Function</td>
+</tr>
+<tr>
+<td>订单整体折扣</td>
+<td>Order Discount Function</td>
+</tr>
+<tr>
+<td>运费打折</td>
+<td>Shipping Discount Function</td>
+</tr>
+<tr>
+<td>修改 / 隐藏配送方式</td>
+<td>Delivery Customization</td>
+</tr>
+<tr>
+<td>修改 / 隐藏支付方式</td>
+<td>Payment Customization</td>
+</tr>
+</tbody></table>
+<h3 id="step-3-设计">Step 3：设计</h3><p>写每个 Function 的输入输出契约。GraphQL Schema 由 Shopify 提供，你只需定义 input.graphql。</p>
+<h3 id="step-4-开发-测试">Step 4：开发 + 测试</h3><ul>
+<li>Shopify CLI 本地生成项目</li>
+<li>本地用 <code>shopify app dev</code> 测试</li>
+<li>真实订单验证（用 dev store）</li>
+</ul>
+<h3 id="step-5-部署上线">Step 5：部署上线</h3><ul>
+<li><code>shopify app deploy</code> 推送代码</li>
+<li>Shopify 后台关联到具体 Discount / Customization</li>
+<li>灰度切换（先 10% 流量，观察 48 小时）</li>
+<li>完成切换后关停旧 Scripts</li>
+</ul>
+<h3 id="step-6-监控">Step 6：监控</h3><p>部署后监控：</p>
+<ul>
+<li>Function 执行成功率（Shopify Partner 后台可查）</li>
+<li>错误日志（Function 执行报错会被记录）</li>
+<li>业务指标（如折扣覆盖率、运费应用率）</li>
+</ul>
+<h2 id="七-functions-的局限">七、Functions 的局限</h2><p>不是所有 Scripts 逻辑都能迁移：</p>
+<h3 id="限制-1-执行时间上限">限制 1：执行时间上限</h3><p>每个 Function 最多 5ms 执行时间。复杂逻辑可能触顶。</p>
+<h3 id="限制-2-网络访问">限制 2：网络访问</h3><p>Functions 无法发起 HTTP 请求。需要外部数据时只能通过 input 预先传入（如客户 metafield）。</p>
+<h3 id="限制-3-数据访问范围">限制 3：数据访问范围</h3><p>每类 Function 能访问的数据有 schema 限制。例如 Delivery Customization 看不到客户订单历史。</p>
+<h3 id="限制-4-并发限制">限制 4：并发限制</h3><p>每店每分钟 Function 执行次数有上限。高并发店铺需要优化。</p>
+<h2 id="八-避免的常见错误">八、避免的常见错误</h2><h3 id="错误-1-仍在-scripts-上加新功能">错误 1：仍在 Scripts 上加新功能</h3><p>Scripts 已停用，<strong>任何新需求都应该用 Functions 实现</strong>。</p>
+<h3 id="错误-2-用-function-做-非业务规则-事情">错误 2：用 Function 做”非业务规则”事情</h3><p>Functions 适合”基于输入返回规则结果”的逻辑。<strong>不适合</strong>：</p>
+<ul>
+<li>调外部 API</li>
+<li>发邮件 / 通知</li>
+<li>写入数据库</li>
+</ul>
+<p>这些用 Flow 或 Webhook 实现。</p>
+<h3 id="错误-3-function-逻辑过于复杂">错误 3：Function 逻辑过于复杂</h3><p>5ms 执行限制让复杂逻辑可能超时。如果逻辑复杂，考虑预计算（如把客户标签 / 分级提前算好存到 metafield）。</p>
+<h3 id="错误-4-忽视测试环境">错误 4：忽视测试环境</h3><p>Function 上线后影响真实结账。<strong>必须在 dev store 充分测试</strong>。</p>
+<h3 id="错误-5-试图同时改多个-function">错误 5：试图同时改多个 Function</h3><p>多个 Function 同时改动 → 出问题难以归因。<strong>一个 Function 验证稳定后再启用下一个</strong>。</p>
+<h2 id="九-相关教程">九、相关教程</h2><ul>
+<li><a href="/guides/shopify-handbook/advanced/shopify-discount-function-buy-gift/">Shopify Discount Function 买赠实现</a></li>
+<li><a href="/guides/shopify-handbook/advanced/marketing-automation/">Shopify Flow 详细使用</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-plus/">Shopify Plus 完整功能指南</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-api-advanced/">Shopify API 深度应用</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-webhooks-guide/">Shopify Webhook 开发</a></li>
+<li><a href="https://shopify.dev/docs/api/functions" target="_blank" rel="noreferrer">Shopify Functions 官方文档</a> </li>
+<li><a href="https://shopify.dev/docs/apps/functions" target="_blank" rel="noreferrer">Shopify Functions 学习中心</a> </li>
+<li><a href="https://www.shopify.com/flow" target="_blank" rel="noreferrer">Shopify Flow 官方页面</a> </li>
+<li><a href="https://shopify.dev/changelog/scripts-sunset" target="_blank" rel="noreferrer">Scripts 退役公告</a></li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-plus/"><span>上一篇</span><strong>Shopify Plus 完整功能与选型指南</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/web-performance-dashboard/"><span>下一篇</span><strong>Shopify Web 性能控制面板</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

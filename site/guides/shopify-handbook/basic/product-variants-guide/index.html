@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>什么是产品变体 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="产品变体是Shopify的核心功能之一，让您能够为同一产品提供不同的选项（如尺寸、颜色、材质等）。本指南将详细介绍如何有效设置和管理产品变体。 什么是产品变体 产品变体允许您为一个产品创建多个版本，每个版本可以有： 不同的价格 独立">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/basic/product-variants-guide/">
+  <meta property="og:title" content="什么是产品变体 · Shopify 独立站手册">
+  <meta property="og:description" content="产品变体是Shopify的核心功能之一，让您能够为同一产品提供不同的选项（如尺寸、颜色、材质等）。本指南将详细介绍如何有效设置和管理产品变体。 什么是产品变体 产品变体允许您为一个产品创建多个版本，每个版本可以有： 不同的价格 独立">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/basic/">入门基础</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">入门基础 · 整理与归档</p>
+        <h1>什么是产品变体</h1>
+        <p>产品变体是Shopify的核心功能之一，让您能够为同一产品提供不同的选项（如尺寸、颜色、材质等）。本指南将详细介绍如何有效设置和管理产品变体。 什么是产品变体 产品变体允许您为一个产品创建多个版本，每个版本可以有： 不同的价格 独立</p>
+      </header>
+      <div class="article-content"><p>产品变体是Shopify的核心功能之一，让您能够为同一产品提供不同的选项（如尺寸、颜色、材质等）。本指南将详细介绍如何有效设置和管理产品变体。</p>
+<h2 id="什么是产品变体">什么是产品变体</h2><p>产品变体允许您为一个产品创建多个版本，每个版本可以有：</p>
+<ul>
+<li>不同的价格</li>
+<li>独立的库存追踪</li>
+<li>唯一的SKU</li>
+<li>不同的重量</li>
+<li>独特的图片</li>
+</ul>
+<p><strong>示例：</strong></p>
+<ul>
+<li>T恤：小号/中号/大号，红色/蓝色/绿色</li>
+<li>鞋子：36码/37码/38码，黑色/白色</li>
+<li>手机：64GB/128GB/256GB，银色/金色/黑色</li>
+</ul>
+<h2 id="创建产品变体">创建产品变体</h2><h3 id="1-基础设置">1. 基础设置</h3><p>在产品编辑页面中：</p>
+<ol>
+<li>勾选”此产品有多个选项，如不同尺寸或颜色”</li>
+<li>添加选项名称（如”尺寸”、“颜色”）</li>
+<li>输入选项值（如”小号”、“中号”、“大号”）</li>
+</ol>
+<h3 id="2-选项配置最佳实践">2. 选项配置最佳实践</h3><p><strong>选项命名建议：</strong></p>
+<ul>
+<li>使用清晰易懂的名称</li>
+<li>保持命名一致性</li>
+<li>考虑客户的搜索习惯</li>
+</ul>
+<pre><code>// 良好的选项结构示例
+const productOptions = {
+  size: ["XS", "S", "M", "L", "XL", "XXL"],
+  color: ["黑色", "白色", "红色", "蓝色"],
+  material: ["棉质", "丝绸", "羊毛"]
+}
+</code></pre>
+<h2 id="变体管理策略">变体管理策略</h2><h3 id="1-sku命名规范">1. SKU命名规范</h3><p>建立一致的SKU命名规范：</p>
+<p><strong>示例格式：</strong></p>
+<ul>
+<li><code>TSHIRT-RED-M</code> (产品-颜色-尺寸)</li>
+<li><code>SHOE-BLK-40</code> (产品-颜色-尺码)</li>
+<li><code>PHONE-256GB-SIL</code> (产品-容量-颜色)</li>
+</ul>
+<pre><code>&lt;!-- 在产品页面显示SKU --&gt;
+&lt;div class="product-sku"&gt;
+  &lt;span&gt;商品编号: {{ current_variant.sku }}&lt;/span&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="2-价格设置策略">2. 价格设置策略</h3><p>不同的定价策略：</p>
+<p><strong>统一定价：</strong> 所有变体相同价格（如不同颜色的T恤）</p>
+<p><strong>差异定价：</strong> 根据成本差异设置不同价格（如不同尺寸的包包）</p>
+<p><strong>阶梯定价：</strong> 根据规格递增价格（如存储容量）</p>
+<h2 id="库存管理">库存管理</h2><h3 id="1-库存追踪设置">1. 库存追踪设置</h3><p>为每个变体设置独立库存：</p>
+<pre><code>&lt;!-- 显示库存状态 --&gt;
+{% if current_variant.inventory_quantity &gt; 0 %}
+  &lt;span class="in-stock"&gt;库存充足 ({{ current_variant.inventory_quantity }}件)&lt;/span&gt;
+{% elsif current_variant.inventory_quantity == 0 %}
+  &lt;span class="out-of-stock"&gt;暂时缺货&lt;/span&gt;
+{% else %}
+  &lt;span class="backorder"&gt;可预订&lt;/span&gt;
+{% endif %}
+</code></pre>
+<h3 id="2-库存警报设置">2. 库存警报设置</h3><p>设置低库存警报：</p>
+<ol>
+<li>进入产品详情页</li>
+<li>设置”库存不足时通知”</li>
+<li>输入警报数量阈值</li>
+</ol>
+<h2 id="变体图片管理">变体图片管理</h2><h3 id="1-图片分配策略">1. 图片分配策略</h3><p><strong>方法一：颜色变体图片</strong></p>
+<ul>
+<li>为每种颜色分配专属图片</li>
+<li>确保图片质量一致</li>
+<li>使用相同的拍摄角度</li>
+</ul>
+<pre><code>&lt;!-- 根据变体显示对应图片 --&gt;
+{% for image in product.images %}
+  {% if image.alt contains current_variant.option1 %}
+    &lt;img src="{{ image | img_url: '600x600' }}" alt="{{ image.alt }}"&gt;
+  {% endif %}
+{% endfor %}
+</code></pre>
+<p><strong>方法二：所有变体共享图片</strong> 适用于尺寸等不影响外观的变体</p>
+<h3 id="2-图片优化">2. 图片优化</h3><ul>
+<li>使用相同的图片尺寸比例</li>
+<li>确保图片加载速度</li>
+<li>提供多角度展示</li>
+<li>添加描述性的alt文本</li>
+</ul>
+<h2 id="前端展示优化">前端展示优化</h2><h3 id="1-变体选择器设计">1. 变体选择器设计</h3><p><strong>下拉菜单样式：</strong></p>
+<pre><code>&lt;div class="variant-selector"&gt;
+  &lt;label for="variant-size"&gt;尺寸：&lt;/label&gt;
+  &lt;select id="variant-size" name="option1"&gt;
+    {% for size in product.options_by_name['尺寸'].values %}
+      &lt;option value="{{ size }}"&gt;{{ size }}&lt;/option&gt;
+    {% endfor %}
+  &lt;/select&gt;
+&lt;/div&gt;
+</code></pre>
+<p><strong>按钮样式：</strong></p>
+<pre><code>&lt;div class="variant-buttons"&gt;
+  &lt;span class="variant-label"&gt;颜色：&lt;/span&gt;
+  {% for color in product.options_by_name['颜色'].values %}
+    &lt;button class="variant-button" data-value="{{ color }}"&gt;
+      {{ color }}
+    &lt;/button&gt;
+  {% endfor %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="2-实时更新功能">2. 实时更新功能</h3><pre><code>// 变体选择时更新价格和库存
+function updateVariant(variantId) {
+  const variant = variants.find(v =&gt; v.id === variantId)
+  
+  // 更新价格
+  document.querySelector('.price').textContent = formatPrice(variant.price)
+  
+  // 更新库存状态
+  const stockElement = document.querySelector('.stock-status')
+  if (variant.available) {
+    stockElement.textContent = `库存: ${variant.inventory_quantity}`
+    stockElement.className = 'stock-status in-stock'
+  } else {
+    stockElement.textContent = '缺货'
+    stockElement.className = 'stock-status out-of-stock'
+  }
+  
+  // 更新购买按钮状态
+  const addToCartBtn = document.querySelector('.add-to-cart')
+  addToCartBtn.disabled = !variant.available
+}
+</code></pre>
+<h2 id="高级变体功能">高级变体功能</h2><h3 id="1-条件显示">1. 条件显示</h3><p>根据选择显示/隐藏特定选项：</p>
+<pre><code>// 根据第一个选项动态更新第二个选项
+function updateSecondOption(firstOption) {
+  const validCombinations = {
+    '小号': ['红色', '蓝色'],
+    '中号': ['红色', '蓝色', '绿色'],
+    '大号': ['蓝色', '绿色']
+  }
+  
+  const secondSelect = document.querySelector('#option2')
+  const availableOptions = validCombinations[firstOption] || []
+  
+  // 清空现有选项
+  secondSelect.innerHTML = ''
+  
+  // 添加可用选项
+  availableOptions.forEach(option =&gt; {
+    const optionElement = document.createElement('option')
+    optionElement.value = option
+    optionElement.textContent = option
+    secondSelect.appendChild(optionElement)
+  })
+}
+</code></pre>
+<h3 id="2-变体url结构">2. 变体URL结构</h3><p>为每个变体创建独特的URL：</p>
+<pre><code>&lt;!-- 变体特定的URL --&gt;
+&lt;link rel="canonical" href="{{ shop.url }}{{ product.url }}?variant={{ current_variant.id }}"&gt;
+ 
+&lt;!-- 变体特定的结构化数据 --&gt;
+&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.title }} - {{ current_variant.title }}",
+  "sku": "{{ current_variant.sku }}",
+  "offers": {
+    "@type": "Offer",
+    "price": "{{ current_variant.price | money_without_currency }}",
+    "priceCurrency": "{{ cart.currency.iso_code }}",
+    "availability": "{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}"
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h2 id="批量管理">批量管理</h2><h3 id="1-批量导入变体">1. 批量导入变体</h3><p>使用CSV文件批量创建变体：</p>
+<p><strong>CSV格式示例：</strong></p>
+<pre><code>Handle,Title,Option1 Name,Option1 Value,Option2 Name,Option2 Value,Variant Price,Variant SKU
+tshirt,基础T恤,尺寸,S,颜色,红色,29.99,TSHIRT-RED-S
+tshirt,基础T恤,尺寸,M,颜色,红色,29.99,TSHIRT-RED-M
+tshirt,基础T恤,尺寸,L,颜色,红色,29.99,TSHIRT-RED-L
+</code></pre>
+<h3 id="2-批量价格更新">2. 批量价格更新</h3><pre><code>&lt;!-- 批量价格计算脚本 --&gt;
+{% assign base_price = product.price %}
+{% for variant in product.variants %}
+  {% case variant.option1 %}
+    {% when 'XS' or 'S' %}
+      {% assign variant_price = base_price %}
+    {% when 'M' or 'L' %}
+      {% assign variant_price = base_price | plus: 500 %}
+    {% when 'XL' or 'XXL' %}
+      {% assign variant_price = base_price | plus: 1000 %}
+  {% endcase %}
+{% endfor %}
+</code></pre>
+<h2 id="变体seo优化">变体SEO优化</h2><h3 id="1-变体标题优化">1. 变体标题优化</h3><pre><code>&lt;!-- 动态生成变体标题 --&gt;
+{% if current_variant %}
+  &lt;title&gt;{{ product.title }} - {{ current_variant.title }} | {{ shop.name }}&lt;/title&gt;
+{% else %}
+  &lt;title&gt;{{ product.title }} | {{ shop.name }}&lt;/title&gt;
+{% endif %}
+</code></pre>
+<h3 id="2-变体描述">2. 变体描述</h3><pre><code>&lt;!-- 变体特定描述 --&gt;
+&lt;meta name="description" content="{{ product.description | truncate: 160 }} - {{ current_variant.title }}"&gt;
+</code></pre>
+<h2 id="常见问题解决">常见问题解决</h2><h3 id="1-变体过多的处理">1. 变体过多的处理</h3><p>**问题：**变体组合超过100个限制</p>
+<p><strong>解决方案：</strong></p>
+<ul>
+<li>重新设计产品结构</li>
+<li>将相关产品分开</li>
+<li>使用应用扩展变体限制</li>
+</ul>
+<h3 id="2-缺货变体管理">2. 缺货变体管理</h3><pre><code>&lt;!-- 自动隐藏缺货变体 --&gt;
+{% unless variant.available %}
+  &lt;style&gt;
+    .variant-option[data-variant-id="{{ variant.id }}"] {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  &lt;/style&gt;
+{% endunless %}
+</code></pre>
+<h3 id="3-变体价格显示">3. 变体价格显示</h3><pre><code>&lt;!-- 价格范围显示 --&gt;
+{% assign min_price = product.price_min %}
+{% assign max_price = product.price_max %}
+ 
+{% if min_price != max_price %}
+  &lt;span class="price-range"&gt;
+    {{ min_price | money }} - {{ max_price | money }}
+  &lt;/span&gt;
+{% else %}
+  &lt;span class="price-single"&gt;
+    {{ min_price | money }}
+  &lt;/span&gt;
+{% endif %}
+</code></pre>
+<h2 id="最佳实践总结">最佳实践总结</h2><h3 id="设计原则">设计原则</h3><ol>
+<li><strong>简化选择</strong>：不要创建过于复杂的变体结构</li>
+<li><strong>一致性</strong>：保持命名和格式的一致性</li>
+<li><strong>用户友好</strong>：确保变体选择界面直观易用</li>
+<li><strong>性能优化</strong>：优化变体切换的加载速度</li>
+</ol>
+<h3 id="管理建议">管理建议</h3><ol>
+<li><strong>定期审核</strong>：检查并清理不必要的变体</li>
+<li><strong>库存监控</strong>：建立有效的库存管理流程</li>
+<li><strong>数据分析</strong>：跟踪变体销售表现</li>
+<li><strong>客户反馈</strong>：根据用户体验调整变体设置</li>
+</ol>
+<h2 id="总结">总结</h2><p>产品变体是提升客户购物体验和管理产品目录的强大工具。通过合理的规划和设置，您可以为客户提供丰富的选择，同时保持后台管理的效率。</p>
+<p>记住，变体设置不是一次性工作，需要根据业务发展和客户需求持续优化调整。</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/getting-started/"><span>上一篇</span><strong>什么是 Shopify？</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/collections-setup/"><span>下一篇</span><strong>什么是产品系列？</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

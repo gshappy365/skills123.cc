@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>开发环境搭建 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="开发环境搭建 在编写 Liquid 主题前，需要可重复的本地环境： Node（运行 Shopify CLI） 、 Git 、 编辑器与 Liquid 支持 、 Partner 店铺或开发店 用于 shopify theme dev ">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/environment-setup/">
+  <meta property="og:title" content="开发环境搭建 · Shopify 独立站手册">
+  <meta property="og:description" content="开发环境搭建 在编写 Liquid 主题前，需要可重复的本地环境： Node（运行 Shopify CLI） 、 Git 、 编辑器与 Liquid 支持 、 Partner 店铺或开发店 用于 shopify theme dev ">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>开发环境搭建</h1>
+        <p>开发环境搭建 在编写 Liquid 主题前，需要可重复的本地环境： Node（运行 Shopify CLI） 、 Git 、 编辑器与 Liquid 支持 、 Partner 店铺或开发店 用于 shopify theme dev </p>
+      </header>
+      <div class="article-content"><h2 id="开发环境搭建">开发环境搭建</h2><p>在编写 Liquid 主题前，需要可重复的本地环境：<strong>Node（运行 Shopify CLI）</strong>、<strong>Git</strong>、<strong>编辑器与 Liquid 支持</strong>、<strong>Partner 店铺或开发店</strong>用于 <code>shopify theme dev</code>。本文按「安装 → 校验 → 目录约定 → 排错」组织，并与本专栏 <a href="/guides/shopify-handbook/liquid/shopify-cli/">Shopify CLI</a>、<a href="/guides/shopify-handbook/liquid/theme-development-workflow/">工作流程</a> 衔接。</p>
+<h2 id="你将完成什么">你将完成什么</h2><ul>
+<li>安装并校验 Node / npm 与 Shopify CLI</li>
+<li>配置 VS Code（或同类编辑器）的 Liquid 与格式化</li>
+<li>了解 Theme Check、推荐目录结构</li>
+<li>能独立处理版本、权限、网络等常见阻塞</li>
+</ul>
+<h2 id="前置条件">前置条件</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Shopify Partner</td>
+<td>注册 Partners  并创建开发店铺（Development store），用于拉取主题与预览</td>
+</tr>
+<tr>
+<td>系统</td>
+<td>Windows 10+、macOS 11+ 或主流 Linux；磁盘建议预留 5GB+（含 node_modules 与主题资源）</td>
+</tr>
+<tr>
+<td>网络</td>
+<td>CLI 需访问 Shopify API；若跨境访问不稳定，需自备企业网络或合规代理，否则 theme dev / login 易超时</td>
+</tr>
+</tbody></table>
+<h2 id="系统与硬件建议">系统与硬件建议</h2><ul>
+<li><strong>内存</strong>：8GB 及以上更顺畅（同时开浏览器预览 + 编辑器 + CLI）</li>
+<li><strong>CPU</strong>：无硬性要求；大型主题 <code>theme check</code> 会占用一定 CPU</li>
+</ul>
+<h2 id="1-node-js">1. Node.js</h2><p>Shopify CLI 依赖 Node。<strong>请使用当前 CLI 文档要求的 LTS 主版本</strong>（安装前可查看 <a href="https://shopify.dev/docs/api/shopify-cli" target="_blank" rel="noreferrer">Shopify CLI 安装说明</a> ）。</p>
+<h3 id="安装方式">安装方式</h3><p><strong>官网安装包</strong></p>
+<ul>
+<li>下载：<a href="https://nodejs.org/" target="_blank" rel="noreferrer">https://nodejs.org/</a> （选 LTS）</li>
+</ul>
+<p><strong>macOS（Homebrew）</strong></p>
+<pre><code>brew install node
+node --version
+npm --version
+</code></pre>
+<p><strong>Windows（Chocolatey）</strong></p>
+<pre><code>choco install nodejs-lts
+</code></pre>
+<p><strong>Linux（Debian/Ubuntu 示例）</strong></p>
+<pre><code>curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt-get install -y nodejs
+node --version
+</code></pre>
+<h3 id="版本管理-推荐-nvm">版本管理（推荐 nvm）</h3><p>多项目并存时，用 nvm 切换 Node 版本：</p>
+<pre><code>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install --lts
+nvm use --lts
+</code></pre>
+<h2 id="2-git">2. Git</h2><p>主题仓库与 CLI 拉取推送均依赖 Git。</p>
+<ul>
+<li><strong>下载</strong>：<a href="https://git-scm.com/" target="_blank" rel="noreferrer">https://git-scm.com/</a> </li>
+<li><strong>macOS</strong>：<code>xcode-select --install</code> 或 <code>brew install git</code></li>
+<li><strong>初始化用户信息</strong>：</li>
+</ul>
+<pre><code>git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+</code></pre>
+<h2 id="3-shopify-cli">3. Shopify CLI</h2><p>安装与登录流程见专文：<a href="/guides/shopify-handbook/liquid/shopify-cli/">Shopify CLI 使用指南</a>。环境阶段只需验证：</p>
+<pre><code>npm install -g @shopify/cli @shopify/theme
+shopify version
+shopify auth login --store your-dev-store.myshopify.com
+</code></pre>
+<h2 id="4-编辑器-以-vs-code-为例">4. 编辑器（以 VS Code 为例）</h2><h3 id="推荐扩展">推荐扩展</h3><table>
+<thead>
+<tr>
+<th>扩展</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Shopify Liquid（官方）</td>
+<td>语法高亮、补全、与 Theme Check 集成</td>
+</tr>
+<tr>
+<td>Theme Check</td>
+<td>静态规则：弃用标签、性能、翻译键等</td>
+</tr>
+<tr>
+<td>GitLens</td>
+<td>行级 blame、历史浏览</td>
+</tr>
+<tr>
+<td>EditorConfig</td>
+<td>缩进与换行统一</td>
+</tr>
+</tbody></table>
+<h3 id="settings-json-片段"><code>settings.json</code> 片段</h3><pre><code>{
+  "liquid.format.enable": true,
+  "files.associations": {
+    "*.liquid": "liquid"
+  },
+  "emmet.includeLanguages": {
+    "liquid": "html"
+  },
+  "[liquid]": {
+    "editor.defaultFormatter": "Shopify.theme-check-vscode"
+  }
+}
+</code></pre>
+<blockquote>
+<p>若团队使用 WebStorm / Cursor，请确保启用 <strong>Liquid</strong> 或 <strong>Shopify</strong> 相关插件，并统一 <strong>缩进（建议 2 空格）</strong> 与 <strong>换行符（LF）</strong>，避免 CR 导致 CI 与 Theme Check 告警。</p>
+</blockquote>
+<h2 id="5-theme-check-主题质量">5. Theme Check（主题质量）</h2><p>在 CI 或提交前运行 Theme Check，可提前发现弃用 API、错误 <code>render</code> 参数、缺失翻译键等问题。</p>
+<pre><code>shopify theme check
+</code></pre>
+<p>详细规则与忽略配置见官方：<a href="https://shopify.dev/docs/themes/tools/theme-check" target="_blank" rel="noreferrer">Theme Check</a> 。本专栏 <a href="/guides/shopify-handbook/liquid/best-practices/">最佳实践</a> 与 <a href="/guides/shopify-handbook/liquid/code-organization/">代码组织</a> 中的约定应与规则集一致。</p>
+<h2 id="6-浏览器">6. 浏览器</h2><p>使用 <strong>Chrome</strong> 或 <strong>Edge（Chromium）</strong> 进行预览与 DevTools 性能分析（LCP、CLS）。移动端调试使用设备模拟或真实手机同一局域网预览（取决于 <code>shopify theme dev</code> 暴露的 URL）。</p>
+<h2 id="7-环境自检脚本">7. 环境自检脚本</h2><pre><code>mkdir -p shopify-dev-test &amp;&amp; cd shopify-dev-test
+npm init -y
+node -e "console.log('Node', process.version)"
+</code></pre>
+<p>若 <code>shopify version</code> 与 <code>node -e</code> 均正常，即可进入 <a href="/guides/shopify-handbook/liquid/theme-development-workflow/">主题开发工作流程</a> 拉取第一个主题。</p>
+<h2 id="8-推荐目录结构">8. 推荐目录结构</h2><p>在机器上固定工作区，便于备份与多项目切换：</p>
+<pre><code>~/shopify-development/
+├── themes/          # 各客户或内部主题 Git 仓库
+├── apps/            # 如需配套自定义应用
+├── tools/           # 脚本、主题检查配置共享
+└── learning/        # 练习与 POC
+</code></pre>
+<p>创建示例：</p>
+<pre><code>mkdir -p ~/shopify-development/{themes,apps,tools,learning}
+</code></pre>
+<h2 id="9-npm-镜像-可选">9. npm 镜像（可选）</h2><p>中国大陆用户若安装 CLI 或依赖较慢，可临时使用镜像（注意公司安全策略）：</p>
+<pre><code>npm config set registry https://registry.npmmirror.com
+</code></pre>
+<p>恢复官方源：</p>
+<pre><code>npm config set registry https://registry.npmjs.org/
+</code></pre>
+<h2 id="10-故障排除">10. 故障排除</h2><h3 id="node-版本过旧或过新">Node 版本过旧或过新</h3><p>使用 <strong>nvm</strong> 切换到 CLI 文档推荐的 LTS，再执行 <code>npm install -g @shopify/cli @shopify/theme</code>。</p>
+<h3 id="linux-macos-npm-权限错误">Linux / macOS npm 权限错误</h3><pre><code>sudo chown -R "$(whoami)" ~/.npm
+# 若曾用 sudo 全局安装，避免混用；可改为仅用户目录前缀或使用 nvm
+</code></pre>
+<h3 id="无法访问-shopify-com">无法访问 shopify.com</h3><pre><code>ping shopify.com
+curl -I https://shopify.dev
+</code></pre>
+<p>若超时，检查 DNS、公司防火墙或合规代理；<strong>不要在文档示例中硬编码代理密钥</strong>。</p>
+<h2 id="下一步">下一步</h2><ol>
+<li><a href="/guides/shopify-handbook/liquid/shopify-cli/">Shopify CLI 使用指南</a> — 登录、拉主题、<code>theme dev</code></li>
+<li><a href="/guides/shopify-handbook/liquid/theme-development-workflow/">主题开发工作流程</a> — Git 分支与预览协作</li>
+<li><a href="/guides/shopify-handbook/liquid/getting-started/">Liquid 快速入门</a> — 开始写模板</li>
+</ol>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/tools/"><span>上一篇</span><strong>开发工具推荐</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/resources/"><span>下一篇</span><strong>开发资源汇总</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

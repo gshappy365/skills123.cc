@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>高级 Liquid 技巧 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="高级 Liquid 技巧 本指南将介绍高级 Liquid 开发技巧，帮助您创建更加高效、可维护和强大的主题代码。 高级过滤器技巧 链式过滤器优化 自定义过滤器模拟 3\. 错误处理 下一步学习 掌握高级 Liquid 技巧后，建议继">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/advanced-liquid/">
+  <meta property="og:title" content="高级 Liquid 技巧 · Shopify 独立站手册">
+  <meta property="og:description" content="高级 Liquid 技巧 本指南将介绍高级 Liquid 开发技巧，帮助您创建更加高效、可维护和强大的主题代码。 高级过滤器技巧 链式过滤器优化 自定义过滤器模拟 3\. 错误处理 下一步学习 掌握高级 Liquid 技巧后，建议继">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>高级 Liquid 技巧</h1>
+        <p>高级 Liquid 技巧 本指南将介绍高级 Liquid 开发技巧，帮助您创建更加高效、可维护和强大的主题代码。 高级过滤器技巧 链式过滤器优化 自定义过滤器模拟 3\. 错误处理 下一步学习 掌握高级 Liquid 技巧后，建议继</p>
+      </header>
+      <div class="article-content"><h2 id="高级-liquid-技巧">高级 Liquid 技巧</h2><p>本指南将介绍高级 Liquid 开发技巧，帮助您创建更加高效、可维护和强大的主题代码。</p>
+<h2 id="高级过滤器技巧">高级过滤器技巧</h2><h3 id="链式过滤器优化">链式过滤器优化</h3><pre><code>&lt;!-- 复杂的数据处理链 --&gt;
+{% assign featured_products = collection.products
+  | where: 'available', true
+  | where: 'tags', 'featured'
+  | sort: 'created_at'
+  | reverse
+  | limit: 8 %}
+ 
+&lt;!-- 价格范围过滤 --&gt;
+{% assign affordable_products = collection.products
+  | where: 'available', true
+  | map: 'price'
+  | where: '&gt;', 0
+  | where: '&lt;', 50000 %}
+ 
+&lt;!-- 复杂排序和分组 --&gt;
+{% assign grouped_products = collection.products
+  | group_by: 'vendor'
+  | sort: 'name' %}
+ 
+{% for vendor_group in grouped_products %}
+  &lt;h3&gt;{{ vendor_group.name }}&lt;/h3&gt;
+  {% assign vendor_products = vendor_group.items | sort: 'price' %}
+  {% for product in vendor_products limit: 4 %}
+    {% render 'product-card', product: product %}
+  {% endfor %}
+{% endfor %}
+</code></pre>
+<h3 id="自定义过滤器模拟">自定义过滤器模拟</h3><pre><code>&lt;!-- 模拟 map_where 功能 --&gt;
+{% assign sale_prices = "" %}
+{% for product in collection.products %}
+  {% if product.compare_at_price &gt; product.price %}
+    {% if sale_prices == "" %}
+      {% assign sale_prices = product.price %}
+    {% else %}
+      {% assign sale_prices = sale_prices | append: "," | append: product.price %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% assign sale_prices_array = sale_prices | split: "," %}
+ 
+&lt;!-- 模拟 find 功能 --&gt;
+{% assign featured_product = null %}
+{% for product in collection.products %}
+  {% if product.tags contains 'featured' %}
+    {% assign featured_product = product %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+ 
+&lt;!-- 模拟 count_by 功能 --&gt;
+{% assign vendor_counts = "" %}
+{% assign unique_vendors = collection.products | map: 'vendor' | uniq %}
+{% fo...
+</code></pre>
+<h3 id="3-错误处理">3. 错误处理</h3><pre><code>&lt;!-- 安全的对象访问 --&gt;
+{% if product and product.featured_image %}
+  &lt;img src="{{ product.featured_image | image_url: width: 400, height: 400 }}"
+       alt="{{ product.featured_image.alt | default: product.title | escape }}"&gt;
+{% else %}
+  &lt;div class="no-image-placeholder"&gt;
+    &lt;span&gt;暂无图片&lt;/span&gt;
+  &lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 回退机制 --&gt;
+{% assign primary_collection = collections[settings.featured_collection] %}
+{% assign fallback_collection = collections.all %}
+{% assign display_collection = primary_collection | default: fallback_collection %}
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>掌握高级 Liquid 技巧后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/performance-optimization/">性能优化</a> - 深入性能优化技巧</li>
+<li><a href="/guides/shopify-handbook/liquid/best-practices/">最佳实践</a> - 代码规范和模式</li>
+<li><a href="/guides/shopify-handbook/liquid/theme-development-practices/">主题开发实战</a> - 实际项目开发</li>
+<li><a href="/guides/shopify-handbook/liquid/troubleshooting/">调试和故障排除</a> - 问题诊断和解决</li>
+</ol>
+<p>高级技巧的掌握需要在实际项目中不断练习和应用，结合业务需求创造出更加优秀的用户体验！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/localization/"><span>上一篇</span><strong>多语言和本地化</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/cart-objects/"><span>下一篇</span><strong>购物车对象详解</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>
