@@ -12,17 +12,30 @@ async function loadCatalog() {
   return JSON.parse(await readFile(catalogUrl, "utf8"));
 }
 
-test("launch catalog exposes the four active packages and coming-soon scenarios", async () => {
+test("launch catalog exposes the five active packages and scenario statuses", async () => {
   const catalog = await loadCatalog();
   const activePackages = catalog.packages.filter((item) => item.status === "active");
   const scenarios = Object.fromEntries(catalog.scenarios.map((item) => [item.id, item]));
 
   assert.deepEqual(
     activePackages.map((item) => item.id).sort(),
-    ["dair-academy", "development", "investment-research", "rayskills"]
+    ["dair-academy", "development", "investment-research", "pm-skills", "rayskills"]
   );
   assert.equal(scenarios.content.status, "active");
-  assert.equal(scenarios.operations.status, "coming-soon");
+  assert.equal(scenarios.operations.status, "active");
+});
+
+test("PM Skills package preserves its operations placement and upstream snapshot", async () => {
+  const catalog = await loadCatalog();
+  const pmSkills = catalog.packages.find((item) => item.id === "pm-skills");
+
+  assert.equal(pmSkills.name, "PM Skills 产品管理技能包");
+  assert.equal(pmSkills.scenario, "operations");
+  assert.equal(pmSkills.skillCount, 68);
+  assert.match(pmSkills.installCommand, /^codex plugin marketplace add phuryn\/pm-skills && codex plugin add pm-toolkit@pm-skills/);
+  assert.match(pmSkills.installCommand, /codex plugin add pm-ai-shipping@pm-skills$/);
+  assert.equal(pmSkills.license, "MIT");
+  assert.equal(pmSkills.source.commit, "18468a95b427e70e258b51389796367c6f684e7d");
 });
 
 test("Rayskills package preserves its content placement, scope, license and snapshot", async () => {

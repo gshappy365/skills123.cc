@@ -22,20 +22,26 @@ const rayskillsUrl = new URL(
   "../site/assets/data/rayskills-skills.json",
   import.meta.url
 );
+const pmSkillsUrl = new URL(
+  "../site/assets/data/pm-skills.json",
+  import.meta.url
+);
 
 async function fixtures() {
-  const [catalog, atlasSkills, researchSkills, dairSkills, rayskills] = await Promise.all([
+  const [catalog, atlasSkills, researchSkills, dairSkills, rayskills, pmSkills] = await Promise.all([
     readFile(catalogUrl, "utf8").then(JSON.parse),
     readFile(atlasUrl, "utf8").then(JSON.parse),
     readFile(researchUrl, "utf8").then(JSON.parse),
     readFile(dairUrl, "utf8").then(JSON.parse),
     readFile(rayskillsUrl, "utf8").then(JSON.parse),
+    readFile(pmSkillsUrl, "utf8").then(JSON.parse),
   ]);
   const packageSkills = await loadPackageSkills(catalog, async (url) => {
     if (url === "/assets/data/atlas-skills.json") return atlasSkills;
     if (url === "/assets/data/research-skills.json") return researchSkills;
     if (url === "/assets/data/dair-academy-skills.json") return dairSkills;
     if (url === "/assets/data/rayskills-skills.json") return rayskills;
+    if (url === "/assets/data/pm-skills.json") return pmSkills;
     assert.fail(`Unexpected skills URL: ${url}`);
   });
   return { catalog, packageSkills };
@@ -55,7 +61,8 @@ test("package groups use the approved order and retain coming-soon groups", asyn
   assert.equal(groups[1].packages[0].id, "investment-research");
   assert.equal(groups[2].status, "active");
   assert.equal(groups[2].packages[0].id, "rayskills");
-  assert.equal(groups[3].status, "coming-soon");
+  assert.equal(groups[3].status, "active");
+  assert.equal(groups[3].packages[0].id, "pm-skills");
 });
 
 test("global search distinguishes package matches from owned skill matches", async () => {
@@ -129,6 +136,21 @@ test("global search matches a Rayskills direction and retains content package ow
   assert.equal(
     result.skillMatches.find((item) => item.id === "ray-writer").package.id,
     "rayskills"
+  );
+});
+
+test("global search matches a PM skill and retains operations package ownership", async () => {
+  const { catalog, packageSkills } = await fixtures();
+  const result = searchCatalogue({
+    catalog,
+    packageSkills,
+    query: "产品需求文档",
+  });
+
+  assert.ok(result.skillMatches.some((item) => item.id === "create-prd"));
+  assert.equal(
+    result.skillMatches.find((item) => item.id === "create-prd").package.id,
+    "pm-skills"
   );
 });
 

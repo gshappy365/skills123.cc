@@ -3,7 +3,7 @@
     {"id":"research","name":"研究","description":"投研、行业、市场与尽调","status":"active"},
     {"id":"content","name":"内容","description":"写作、叙事与分发","status":"active"},
     {"id":"development","name":"开发","description":"构建、测试与交付","status":"active"},
-    {"id":"operations","name":"运营","description":"流程、协作与增长","status":"coming-soon"}
+    {"id":"operations","name":"运营","description":"流程、协作与增长","status":"active"}
   ],
   "packages": [
     {
@@ -119,6 +119,38 @@
           "product":"产品",
           "collaboration":"协作",
           "operations":"内务"
+        },
+        "lifecycleLabels":{"published":"已发布"},
+        "invocationModeLabels":{"model-allowed":"自然语言触发"}
+      }
+    },
+    {
+      "id":"pm-skills",
+      "name":"PM Skills 产品管理技能包",
+      "scenario":"operations",
+      "description":"覆盖产品发现、策略、执行、研究、数据分析、上市增长和 AI 交付的 68 项产品管理技能。",
+      "skillCount":68,
+      "tags":["产品管理","产品策略","用户研究","增长","项目执行"],
+      "status":"active",
+      "installCommand":"codex plugin marketplace add phuryn/pm-skills && codex plugin add pm-toolkit@pm-skills && codex plugin add pm-product-strategy@pm-skills && codex plugin add pm-product-discovery@pm-skills && codex plugin add pm-market-research@pm-skills && codex plugin add pm-data-analytics@pm-skills && codex plugin add pm-marketing-growth@pm-skills && codex plugin add pm-go-to-market@pm-skills && codex plugin add pm-execution@pm-skills && codex plugin add pm-ai-shipping@pm-skills",
+      "platform":"Claude Code / Codex",
+      "license":"MIT",
+      "source":{"name":"phuryn/pm-skills","url":"https://github.com/phuryn/pm-skills","commit":"18468a95b427e70e258b51389796367c6f684e7d"},
+      "groups":["产品发现","产品策略","产品执行","用户研究","数据分析","上市增长","产品营销","工具箱","AI 交付"],
+      "workspace":{
+        "skillsUrl":"/assets/data/pm-skills.json",
+        "eyebrow":"PM SKILLS MARKETPLACE",
+        "groupFacetLabel":"技能方向",
+        "groupLabels":{
+          "product-discovery":"产品发现",
+          "product-strategy":"产品策略",
+          "execution":"产品执行",
+          "market-research":"用户研究",
+          "data-analytics":"数据分析",
+          "go-to-market":"上市增长",
+          "marketing-growth":"产品营销",
+          "toolkit":"工具箱",
+          "ai-shipping":"AI 交付"
         },
         "lifecycleLabels":{"published":"已发布"},
         "invocationModeLabels":{"model-allowed":"自然语言触发"}

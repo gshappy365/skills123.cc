@@ -100,7 +100,7 @@ test("grouped navigation searches owned skills and restores search on back", asy
     "内容",
     "运营",
   ]);
-  assert.equal(await page.locator(".package-index-group.is-coming-soon").count(), 1);
+  assert.equal(await page.locator(".package-index-group.is-coming-soon").count(), 0);
   assert.equal(
     await page.locator(".package-index-group.is-coming-soon a").count(),
     0

@@ -74,7 +74,10 @@ function validateCatalogShell(catalog) {
     assert(pkg.workspace?.skillsUrl, `package "${pkg.id}" is missing workspace.skillsUrl`);
     if (pkg.installCommand !== undefined) {
       assert(
-        typeof pkg.installCommand === "string" && pkg.installCommand.startsWith("npx -y skills add "),
+        typeof pkg.installCommand === "string" &&
+          (pkg.installCommand.startsWith("npx -y skills add ") ||
+            pkg.installCommand.startsWith("codex plugin marketplace add ") ||
+            pkg.installCommand.startsWith("claude plugin marketplace add ")),
         `package "${pkg.id}" has an invalid installCommand`
       );
     }

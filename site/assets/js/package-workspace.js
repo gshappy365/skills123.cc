@@ -329,7 +329,7 @@ async function init() {
     if (!response.ok) throw new Error(`Unable to load ${url}: ${response.status}`);
     return response.json();
   };
-  const catalog = await fetchJson("/assets/data/catalog.json");
+  const catalog = await fetchJson("/assets/data/catalog.json?v=20260726-1");
   const workspace = await createPackageWorkspaceModel(catalog, packageId, fetchJson);
   packageData = workspace.package;
   skills = workspace.skills;
