@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify Webhook 完整开发指南 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify Webhook 完整开发指南 Webhook 是 Shopify 与外部系统集成的核心机制——当店铺发生特定事件（订单、产品、客户、库存等变更）时，Shopify 主动推送 HTTP POST 请求 到你的接收端点。">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/shopify-webhooks-guide/">
+  <meta property="og:title" content="Shopify Webhook 完整开发指南 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify Webhook 完整开发指南 Webhook 是 Shopify 与外部系统集成的核心机制——当店铺发生特定事件（订单、产品、客户、库存等变更）时，Shopify 主动推送 HTTP POST 请求 到你的接收端点。">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>Shopify Webhook 完整开发指南</h1>
+        <p>Shopify Webhook 完整开发指南 Webhook 是 Shopify 与外部系统集成的核心机制——当店铺发生特定事件（订单、产品、客户、库存等变更）时，Shopify 主动推送 HTTP POST 请求 到你的接收端点。</p>
+      </header>
+      <div class="article-content"><h2 id="shopify-webhook-完整开发指南">Shopify Webhook 完整开发指南</h2><p>Webhook 是 Shopify 与外部系统集成的核心机制——当店铺发生特定事件（订单、产品、客户、库存等变更）时，Shopify <strong>主动推送 HTTP POST 请求</strong>到你的接收端点。相比轮询 API：</p>
+<ul>
+<li><strong>实时</strong>：事件发生数秒内推送</li>
+<li><strong>节省 API 配额</strong>：不消耗主要 API 限流</li>
+<li><strong>可靠</strong>：失败自动重试，48 小时窗口</li>
+</ul>
+<p>但 Webhook 开发的失败点也很多：签名验证、幂等性、5 秒超时、重试风暴——任意一点处理不当都会导致生产事故。本文按”订阅 → 接收 → 处理 → 监控”展开。</p>
+<h2 id="一-webhook-工作机制">一、Webhook 工作机制</h2><h3 id="基本流程">基本流程</h3><pre><code>店铺事件发生
+   ↓
+Shopify 后端构造 payload
+   ↓
+HTTP POST → 你的 endpoint URL
+   ↓
+你的服务器接收 + 验签 + 处理
+   ↓
+返回 HTTP 200（5 秒内）
+   ↓
+Shopify 标记成功
+</code></pre>
+<h3 id="失败后的重试">失败后的重试</h3><p>如果你的 endpoint：</p>
+<ul>
+<li>5 秒内未响应</li>
+<li>返回非 2xx 状态码</li>
+<li>网络不可达</li>
+</ul>
+<p>Shopify 会<strong>自动重试，最多 19 次，分布在 48 小时内</strong>。每次重试包含相同 payload + 增加的 <code>X-Shopify-Webhook-Id</code> header（用于幂等判断）。</p>
+<p>48 小时后仍失败 → 放弃推送。<strong>这是关键风险</strong>——如果你的服务器停机 &gt; 48 小时，期间所有 Webhook 永久丢失。</p>
+<h3 id="webhook-与-api-的关系">Webhook 与 API 的关系</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>API 轮询</th>
+<th>Webhook</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>时效性</td>
+<td>取决于轮询频率</td>
+<td>秒级</td>
+</tr>
+<tr>
+<td>API 配额</td>
+<td>消耗</td>
+<td>不消耗</td>
+</tr>
+<tr>
+<td>资源利用</td>
+<td>大量空轮询</td>
+<td>仅事件时触发</td>
+</tr>
+<tr>
+<td>复杂度</td>
+<td>简单</td>
+<td>中等（需要 endpoint）</td>
+</tr>
+<tr>
+<td>可靠性</td>
+<td>自有控制</td>
+<td>Shopify 重试机制</td>
+</tr>
+</tbody></table>
+<h2 id="二-常用事件类型">二、常用事件类型</h2><h3 id="订单事件-最高频">订单事件（最高频）</h3><table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>触发时机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>orders/create</td>
+<td>新订单创建（含未支付）</td>
+</tr>
+<tr>
+<td>orders/updated</td>
+<td>订单任何字段变更</td>
+</tr>
+<tr>
+<td>orders/paid</td>
+<td>支付完成</td>
+</tr>
+<tr>
+<td>orders/cancelled</td>
+<td>订单取消</td>
+</tr>
+<tr>
+<td>orders/fulfilled</td>
+<td>订单全部发货</td>
+</tr>
+<tr>
+<td>orders/partially_fulfilled</td>
+<td>部分发货</td>
+</tr>
+<tr>
+<td>orders/edited</td>
+<td>订单内容被修改</td>
+</tr>
+<tr>
+<td>refunds/create</td>
+<td>退款创建</td>
+</tr>
+</tbody></table>
+<h3 id="产品-库存事件">产品 / 库存事件</h3><table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>触发时机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>products/create</td>
+<td>产品创建</td>
+</tr>
+<tr>
+<td>products/update</td>
+<td>产品更新</td>
+</tr>
+<tr>
+<td>products/delete</td>
+<td>产品删除</td>
+</tr>
+<tr>
+<td>inventory_levels/update</td>
+<td>库存量变化</td>
+</tr>
+<tr>
+<td>inventory_items/create / update / delete</td>
+<td>库存项变...</td>
+</tr>
+</tbody></table>
+<h2 id="十三-相关教程">十三、相关教程</h2><ul>
+<li><a href="/guides/shopify-handbook/advanced/shopify-api-advanced/">Shopify API 深度应用</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-app-development/">Shopify App 开发</a></li>
+<li><a href="/guides/shopify-handbook/advanced/gdpr-compliance-guide/">GDPR 合规完整指南</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-scripts/">Shopify Scripts 与 Functions</a></li>
+<li><a href="https://shopify.dev/docs/apps/webhooks" target="_blank" rel="noreferrer">Shopify Webhook 官方文档</a> </li>
+<li><a href="https://shopify.dev/docs/api/admin-graphql/latest/enums/WebhookSubscriptionTopic" target="_blank" rel="noreferrer">Webhook Topics 列表</a> </li>
+<li><a href="https://github.com/OptimalBits/bull" target="_blank" rel="noreferrer">Bull Queue 文档</a></li>
+</ul>
+<p> </p>
+<p>最后更新时间：</p>
+<p>2026年6月27日</p>
+<p><a href="/guides/shopify-handbook/advanced/shopify-honeypot-antispam/">Shopify表单防垃圾：Honeypot蜜罐机制实用教程</a><a href="/guides/shopify-handbook/advanced/shopify-theme-development-guide/">Shopify主题开发</a></p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/web-performance-dashboard/"><span>上一篇</span><strong>Shopify Web 性能控制面板</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-winter-2026-editions/"><span>下一篇</span><strong>Shopify Winter ‘26 Editions 盘点</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

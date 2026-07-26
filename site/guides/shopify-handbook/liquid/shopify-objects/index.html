@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>1\. 建议怎么读这篇 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Liquid 里所谓「对象」，就是 Shopify 在渲染某一页时已经帮你准备好的 数据入口 （商店、购物车、当前产品、集合等）。写主题时真正省时间的，不是背每个字段名，而是搞清楚： 当前模板里哪些对象一定有、哪些是 nil、和 r">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/shopify-objects/">
+  <meta property="og:title" content="1\. 建议怎么读这篇 · Shopify 独立站手册">
+  <meta property="og:description" content="Liquid 里所谓「对象」，就是 Shopify 在渲染某一页时已经帮你准备好的 数据入口 （商店、购物车、当前产品、集合等）。写主题时真正省时间的，不是背每个字段名，而是搞清楚： 当前模板里哪些对象一定有、哪些是 nil、和 r">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>1\. 建议怎么读这篇</h1>
+        <p>Liquid 里所谓「对象」，就是 Shopify 在渲染某一页时已经帮你准备好的 数据入口 （商店、购物车、当前产品、集合等）。写主题时真正省时间的，不是背每个字段名，而是搞清楚： 当前模板里哪些对象一定有、哪些是 nil、和 r</p>
+      </header>
+      <div class="article-content"><p>Liquid 里所谓「对象」，就是 Shopify 在渲染某一页时已经帮你准备好的 <strong>数据入口</strong>（商店、购物车、当前产品、集合等）。写主题时真正省时间的，不是背每个字段名，而是搞清楚：<strong>当前模板里哪些对象一定有、哪些是 nil、和 <code>routes</code> / <code>request</code> 怎么配合</strong>。</p>
+<p>官方完整字段以 <a href="https://shopify.dev/docs/api/liquid/objects" target="_blank" rel="noreferrer">Liquid 对象索引</a>  为准；本文做 <strong>地图 + 速查 + 常见写法</strong>，细节深挖见站内各篇。</p>
+<hr />
+<h2 id="1-建议怎么读这篇">1. 建议怎么读这篇</h2><ol>
+<li>先看下面 <strong>「按页面类型，对象是否可用」</strong>，避免在 <code>footer.liquid</code> 里写 <code>product.title</code> 却纳闷为什么是空的。</li>
+<li>需要某个对象的字段时，用文中 <strong>速查表</strong> 定位常用属性，再点进 <a href="/guides/shopify-handbook/liquid/global-objects/">全局对象</a>、<a href="/guides/shopify-handbook/liquid/product-objects/">产品对象</a> 等专题。</li>
+<li>链接与跳转一律优先用 <strong><code>routes.*</code></strong>，少写死 <code>/cart</code>、<code>/account/login</code>，多市场、子路径、自定义域名时更稳。</li>
+</ol>
+<hr />
+<h2 id="2-按页面类型-对象可用性-简表">2. 按页面类型：对象可用性（简表）</h2><table>
+<thead>
+<tr>
+<th>对象 / 情境</th>
+<th>全局（layout、多数 section）</th>
+<th>仅部分模板有「当前」实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>shop</td>
+<td>有</td>
+<td>—</td>
+</tr>
+<tr>
+<td>routes</td>
+<td>有</td>
+<td>—</td>
+</tr>
+<tr>
+<td>request</td>
+<td>有</td>
+<td>—</td>
+</tr>
+<tr>
+<td>settings（主题设置）</td>
+<td>有</td>
+<td>—</td>
+</tr>
+<tr>
+<td>section / block</td>
+<td>在对应 section 内</td>
+<td>—</td>
+</tr>
+<tr>
+<td>cart</td>
+<td>有（空购物车也是对象）</td>
+<td>结账页 Liquid 能力受限，勿假设与店面一致</td>
+</tr>
+<tr>
+<td>customer</td>
+<td>登录后有</td>
+<td>未登录为 nil，用 {% if customer %}</td>
+</tr>
+<tr>
+<td>product</td>
+<td>仅产品页（及显式 all_products 等上下文）</td>
+<td>集合循环里是 for 里的局部变量</td>
+</tr>
+<tr>
+<td>collection</td>
+<td>集合页、部分 section 赋值后</td>
+<td>—</td>
+</tr>
+<tr>
+<td>blog / article</td>
+<td>博客列表 / 文章页</td>
+<td>文章页用 article，列表用 blog.articles</td>
+</tr>
+<tr>
+<td>page</td>
+<td>仅自定义页面模板</td>
+<td>—</td>
+</tr>
+<tr>
+<td>search</td>
+<td>搜索模板执行搜索后</td>
+<td>search.performed 区分是否已搜</td>
+</tr>
+<tr>
+<td>template</td>
+<td>有</td>
+<td>分支判断更推荐 request.page_type（见下文）</td>
+</tr>
+<tr>
+<td>paginate</td>
+<td>仅在 {% paginate %}…{% endpaginate %} 内</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p><strong>记忆口诀</strong>：跟「当前 URL 代表的是谁」绑定的对象（<code>product</code>、<code>collection</code>、<code>article</code>…），出了对应模板就不要指望还在「当前」上下文里；全局展示用 <code>section.settings</code> 选资源，或 <code>all_products[handle]</code> 显式取。</p>
+<hr />
+<h2 id="3-routes-链接不要写死路径">3. <code>routes</code>：链接不要写死路径</h2><p>storefront 与账户、搜索、购物车等 URL 会随商店配置变化，应使用 <code>routes</code>（见 <a href="https://shopify.dev/docs/api/liquid/objects/routes" target="_blank" rel="noreferrer">routes 对象</a> ）。</p>
+<table>
+<thead>
+<tr>
+<th>常见用途</th>
+<th>Liquid 示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>购物车</td>
+<td>{{ routes.cart_url }}</td>
+</tr>
+<tr>
+<td>搜索提交</td>
+<td>{{ routes.search_url }}（form 的 action）</td>
+</tr>
+<tr>
+<td>登录 / 注册</td>
+<td>{{ routes.account_login_url }} / {{ routes.account_register_url }}</td>
+</tr>
+<tr>
+<td>首页</td>
+<td>{{ routes.root_url }}</td>
+</tr>
+<tr>
+<td>全店商品集合</td>
+<td>{{ routes.all_products_collection_url }}</td>
+</tr>
+</tbody></table>
+<p>示例（搜索表单）：</p>
+<pre><code>&lt;form action="{{ routes.search_url }}" method="get" role="search"&gt;
+  &lt;label class="visually-hidden" for="q"&gt;搜索&lt;/label&gt;
+  &lt;input id="q" type="search" name="q" value="{{ search.terms | escape }}" placeholder="搜索…"&gt;
+  &lt;button type="submit"&gt;搜索&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+<hr />
+<h2 id="4-shop-对象-商店">4. <code>shop</code> 对象（商店）</h2><p>包含店名、域名、货币、政策链接、地址等。站内扩展阅读：<a href="/guides/shopify-handbook/liquid/global-objects/">全局对象详解</a>。</p>
+<h3 id="常用属性速查">常用属性速查</h3><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>shop.name / shop.domain / shop.url</td>
+<td>名称、主域、店铺 URL</td>
+</tr>
+<tr>
+<td>shop.currency</td>
+<td>店铺货币代码</td>
+</tr>
+<tr>
+<td>shop.email</td>
+<td>店铺联系邮箱（展示用）</td>
+</tr>
+<tr>
+<td>shop.address</td>
+<td>地址对象（多级字段）</td>
+</tr>
+<tr>
+<td>shop.privacy_policy 等</td>
+<td>政策页面对象，用 .url 链出</td>
+</tr>
+<tr>
+<td>shop.secure_url</td>
+<td>HTTPS 根 URL，拼 canonical 时常用</td>
+</tr>
+</tbody></table>
+<pre><code>&lt;h1&gt;{{ shop.name }}&lt;/h1&gt;
+{% if shop.description != blank %}
+  &lt;p&gt;{{ shop.description }}&lt;/p&gt;
+{% endif %}
+ 
+&lt;address&gt;
+  {{ shop.address.address1 }}&lt;br /&gt;
+  {% if shop.address.address2 != blank %}{{ shop.address.address2 }}&lt;br /&gt;{% endif %}
+  {{ shop.address.city }}, {{ shop.address.province_code }} {{ shop.address.zip }}&lt;br /&gt;
+  {{ shop.address.country }}
+&lt;/address&gt;
+ 
+&lt;p&gt;&lt;a href="mailto:{{ shop.email }}"&gt;{{ shop.email }}&lt;/a&gt;&lt;/p&gt;
+ 
+{% if shop.privacy_policy %}
+  &lt;a href="{{ shop.privacy_policy.url }}"&gt;隐私政策&lt;/a&gt;
+{% endif %}
+</code></pre>
+<hr />
+<h2 id="5-cart-对象-购物车">5. <code>cart</code> 对象（购物车）</h2><p><code>cart</code> 在店面主题里几乎始终存在；<code>cart.item_count == 0</code> 表示空车。行项目用 <code>cart.items</code>。详解：<a href="/guides/shopify-handbook/liquid/cart-objects/">购物车对象</a>。</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cart.items</td>
+<td>行项目数组</td>
+</tr>
+<tr>
+<td>cart.item_count</td>
+<td>件数（数量之和）</td>
+</tr>
+<tr>
+<td>cart.total_price</td>
+<td>总价（配合</td>
+</tr>
+<tr>
+<td>cart.currency</td>
+<td>购物车货币</td>
+</tr>
+<tr>
+<td>cart.taxes_included</td>
+<td>是否含税价展示</td>
+</tr>
+</tbody></table>
+<pre><code>&lt;p&gt;小计 {{ cart.total_price | money }}{% if cart.currency != shop.currency %}（{{ cart.currency }}）{% endif %}&lt;/p&gt;
+ 
+{% for item in cart.items %}
+  &lt;div class="cart-line" data-line-key="{{ item.key }}"&gt;
+    {% if item.image %}
+      {{ item.image | image_url: width: 120 | image_tag: alt: item.image.alt | default: item.title, loading: 'lazy' }}
+    {% endif %}
+    &lt;div&gt;
+      &lt;a href="{{ item.url }}"&gt;{{ item.product.title }}&lt;/a&gt;
+      {% unless item.product.has_only_default_variant %}
+        &lt;p&gt;{{ item.variant.title }}&lt;/p&gt;
+      {% endunless %}
+      &lt;p&gt;{{ item.final_line_price | money }} × {{ item.quantity }}&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+{% endfor %}
+ 
+{% if cart.item_count == 0 %}
+  &lt;p&gt;购物车是空的。&lt;/p&gt;
+  &lt;a href="{{ routes.all_products_collection_url }}"&gt;去逛逛&lt;/a&gt;
+{% endif %}
+</code></pre>
+<hr />
+<h2 id="6-customer-对象-当前客户">6. <code>customer</code> 对象（当前客户）</h2><p>仅登录后存在；未登录务必 <code>{% if customer %}</code>。详解：<a href="/guides/shopify-handbook/liquid/customer-objects/">客户对象</a>。</p>
+<pre><code>{% if customer %}
+  &lt;p&gt;欢迎，{{ customer.first_name | default: '顾客' }}&lt;/p&gt;
+  &lt;p&gt;{{ customer.email }}&lt;/p&gt;
+  {% if customer.default_address %}
+    &lt;p&gt;{{ customer.default_address.city }}&lt;/p&gt;
+  {% endif %}
+  &lt;a href="{{ routes.account_url }}"&gt;账户&lt;/a&gt;
+{% else %}
+  &lt;a href="{{ routes.account_login_url }}"&gt;登录&lt;/a&gt;
+  &lt;a href="{{ routes.account_register_url }}"&gt;注册&lt;/a&gt;
+{% endif %}
+</code></pre>
+<hr />
+<h2 id="7-request-对象-当前请求">7. <code>request</code> 对象（当前请求）</h2><p>做 <strong>hreflang</strong>、canonical、调试、按语言切换 class 时都会用到。</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>request.page_type</td>
+<td>页面类型字符串，如 product、collection、index</td>
+</tr>
+<tr>
+<td>request.path</td>
+<td>路径部分</td>
+</tr>
+<tr>
+<td>request.origin</td>
+<td>源站 origin，拼绝对 URL</td>
+</tr>
+<tr>
+<td>request.locale</td>
+<td>当前区域 / 语言相关</td>
+</tr>
+<tr>
+<td>request.design_mode</td>
+<td>主题编辑器预览中为 true</td>
+</tr>
+</tbody></table>
+<p><strong>按页面类型分支</strong>：优先用 <code>request.page_type</code>，不要依赖把 <code>template</code> 当字符串的 <code>{% case template %}</code>（<code>template</code> 在新主题里多为 <strong>对象</strong>，应用 <code>template.name</code> 或直接用 <code>request.page_type</code>）。</p>
+<pre><code>{% case request.page_type %}
+  {% when 'index' %}
+    {% comment %} 首页 {% endcomment %}
+  {% when 'product' %}
+    {% comment %} 产品页 {% endcomment %}
+  {% when 'collection' %}
+    {% comment %} 集合页 {% endcomment %}
+  {% when 'cart' %}
+    {% comment %} 购物车 {% endcomment %}
+  {% else %}
+    {% comment %} 其他类型 {% endcomment %}
+{% endcase %}
+</code></pre>
+<p>调试（仅开发环境或 <code>settings</code> 开关）：</p>
+<pre><code>{% if request.design_mode %}
+  &lt;p class="theme-debug"&gt;page_type={{ request.page_type }}&lt;/p&gt;
+{% endif %}
+</code></pre>
+<hr />
+<h2 id="8-product-对象-当前产品">8. <code>product</code> 对象（当前产品）</h2><p>仅在 <strong>产品模板</strong>（或你显式传入的 <code>product</code>）上下文。价格、变体、图、SEO 等见 <a href="/guides/shopify-handbook/liquid/product-objects/">产品对象详解</a>。</p>
+<pre><code>&lt;h1&gt;{{ product.title }}&lt;/h1&gt;
+&lt;p&gt;{{ product.vendor }}&lt;/p&gt;
+ 
+&lt;div class="price"&gt;
+  {% if product.compare_at_price &gt; product.price %}
+    &lt;span class="compare"&gt;{{ product.compare_at_price | money }}&lt;/span&gt;
+    &lt;span class="sale"&gt;{{ product.price | money }}&lt;/span&gt;
+  {% else %}
+    &lt;span&gt;{{ product.price | money }}&lt;/span&gt;
+  {% endif %}
+&lt;/div&gt;
+ 
+{% if product.description != blank %}
+  &lt;div class="rte"&gt;{{ product.description }}&lt;/div&gt;
+{% endif %}
+ 
+{% if product.featured_image %}
+  {{ product.featured_image | image_url: width: 800 | image_tag: alt: product.featured_image.alt | default: product.title, loading: 'eager', fetchpriority: 'high' }}
+{% endif %}
+</code></pre>
+<hr />
+<h2 id="9-collection-对象-集合">9. <code>collection</code> 对象（集合）</h2><p>集合页有「当前」<code>collection</code>；<code>collection.products</code> 在 <strong>未分页</strong> 时注意性能，列表页应用 <code>{% paginate %}</code> 或限制 <code>limit:</code>。</p>
+<pre><code>&lt;h1&gt;{{ collection.title }}&lt;/h1&gt;
+{% if collection.description != blank %}
+  &lt;div class="rte"&gt;{{ collection.description }}&lt;/div&gt;
+{% endif %}
+ 
+{% paginate collection.products by 24 %}
+  {% for product in collection.products %}
+    {% render 'product-card', product: product %}
+  {% endfor %}
+  {% if paginate.pages &gt; 1 %}
+    &lt;a href="{{ paginate.next.url }}" rel="next"&gt;下一页&lt;/a&gt;
+  {% endif %}
+{% endpaginate %}
+</code></pre>
+<p>空集合：</p>
+<pre><code>{% if collection.products_count == 0 %}
+  &lt;p&gt;该集合暂无商品。&lt;/p&gt;
+{% endif %}
+</code></pre>
+<hr />
+<h2 id="10-blog-与-article">10. <code>blog</code> 与 <code>article</code></h2><ul>
+<li><strong>博客列表页</strong>：<code>blog</code> 有 <code>title</code>、<code>articles</code> 等。</li>
+<li><strong>文章详情页</strong>：当前文章多为顶层 <code>article</code>（与模板有关，以你主题 <code>article.json</code> / <code>article.liquid</code> 为准）。</li>
+</ul>
+<pre><code>&lt;h1&gt;{{ blog.title }}&lt;/h1&gt;
+{% for article in blog.articles limit: 10 %}
+  &lt;article&gt;
+    &lt;h2&gt;&lt;a href="{{ article.url }}"&gt;{{ article.title }}&lt;/a&gt;&lt;/h2&gt;
+    &lt;time datetime="{{ article.published_at | date: '%Y-%m-%d' }}"&gt;{{ article.published_at | date: '%Y-%m-%d' }}&lt;/time&gt;
+    {% if article.excerpt != blank %}
+      &lt;p&gt;{{ article.excerpt | strip_html | truncate: 160 }}&lt;/p&gt;
+    {% endif %}
+  &lt;/article&gt;
+{% endfor %}
+</code></pre>
+<hr />
+<h2 id="11-page-对象-自定义页面">11. <code>page</code> 对象（自定义页面）</h2><p>用于 <code>page</code> 模板。字段以 <a href="https://shopify.dev/docs/api/liquid/objects/page" target="_blank" rel="noreferrer">page 对象</a>  为准；<code>author</code> 等是否出现取决于后台是否填写或使用 metafield。</p>
+<pre><code>&lt;h1&gt;{{ page.title }}&lt;/h1&gt;
+&lt;div class="rte"&gt;{{ page.content }}&lt;/div&gt;
+</code></pre>
+<hr />
+<h2 id="12-template-对象">12. <code>template</code> 对象</h2><p>提供当前渲染的模板名、后缀等。做条件时推荐 <strong><code>request.page_type</code></strong> 或 <strong><code>template.name</code></strong>，与旧版「<code>template</code> 当作字符串」的写法区分开。</p>
+<pre><code>{% if template.name == 'product' %}
+  {% comment %} 产品 JSON 模板等 {% endcomment %}
+{% endif %}
+</code></pre>
+<hr />
+<h2 id="13-paginate-对象">13. <code>paginate</code> 对象</h2><p>只在 <code>{% paginate collection.products by n %}…{% endpaginate %}</code>（或 blog、search 等可分页集合）内部可用，提供 <code>paginate.previous</code>、<code>paginate.next</code>、<code>paginate.parts</code>、<code>paginate.current_page</code> 等。</p>
+<pre><code>{% paginate collection.products by 12 %}
+  {% for product in collection.products %}…{% endfor %}
+  {% if paginate.pages &gt; 1 %}
+    &lt;nav aria-label="分页"&gt;
+      {% if paginate.previous %}&lt;a href="{{ paginate.previous.url }}" rel="prev"&gt;上一页&lt;/a&gt;{% endif %}
+      {% for part in paginate.parts %}
+        {% if part.is_link %}&lt;a href="{{ part.url }}"&gt;{{ part.title }}&lt;/a&gt;{% else %}&lt;span&gt;{{ part.title }}&lt;/span&gt;{% endif %}
+      {% endfor %}
+      {% if paginate.next %}&lt;a href="{{ paginate.next.url }}" rel="next"&gt;下一页&lt;/a&gt;{% endif %}
+    &lt;/nav&gt;
+  {% endif %}
+{% endpaginate %}
+</code></pre>
+<hr />
+<h2 id="14-search-对象">14. <code>search</code> 对象</h2><p><code>search.performed</code> 为真表示用户已提交搜索；结果在 <code>search.results</code>，类型可用 <code>item.object_type</code> 分支（以官方文档枚举为准）。</p>
+<pre><code>{% if search.performed %}
+  &lt;h1&gt;「{{ search.terms | escape }}」的搜索结果&lt;/h1&gt;
+  &lt;p&gt;共 {{ search.results_count }} 条&lt;/p&gt;
+  {% for item in search.results %}
+    {% case item.object_type %}
+      {% when 'product' %}
+        &lt;a href="{{ item.url }}"&gt;{{ item.title }}&lt;/a&gt;
+      {% when 'article' %}
+        &lt;a href="{{ item.url }}"&gt;{{ item.title }}&lt;/a&gt;
+      {% when 'page' %}
+        &lt;a href="{{ item.url }}"&gt;{{ item.title }}&lt;/a&gt;
+    {% endcase %}
+  {% endfor %}
+{% endif %}
+</code></pre>
+<hr />
+<h2 id="15-section-与-settings-分区与主题配置">15. <code>section</code> 与 <code>settings</code>（分区与主题配置）</h2><ul>
+<li><strong><code>section</code></strong>：在 <code>sections/*.liquid</code> 内，<code>section.id</code>、<code>section.settings</code>、<code>section.blocks</code> 最常用。实践见 <a href="/guides/shopify-handbook/liquid/custom-sections/">自定义分区开发</a>。</li>
+<li><strong><code>settings</code></strong>：<code>config/settings_schema.json</code> 定义的全局主题设置，全站片段、layout 里都能读。</li>
+</ul>
+<hr />
+<h2 id="16-使用注意-合并成几条硬规则">16. 使用注意（合并成几条硬规则）</h2><ol>
+<li><strong>先判断再输出</strong>：<code>{% if product %}</code>、<code>{% if collection.products_count &gt; 0 %}</code>，避免 nil 上点属性。</li>
+<li><strong>价格与货币</strong>：展示用 <code>\| money</code>；JSON-LD 或结构化数据里常用 <code>money_without_currency</code> 等，注意与币种字段一致。</li>
+<li><strong>性能</strong>：大集合不要无分页一次扫光；同一字段在循环里多次访问可先 <code>{% assign img = product.featured_image %}</code>。</li>
+<li><strong>HTML 安全</strong>：用户输入、标题等输出到属性或 JSON 时用 <code>\| escape</code>；<code>description</code> 类富文本用 <code>strip_html</code> 再进 meta。</li>
+<li><strong>结构化数据</strong>：示例 JSON-LD 仅作参考，变体、多币种、预售等场景建议用主题或 App 统一维护，避免与后台真实库存不同步。</li>
+</ol>
+<pre><code>{% if product.featured_image %}
+  {% assign img = product.featured_image %}
+  {{ img | image_url: width: 600 | image_tag: alt: img.alt | default: product.title | escape, loading: 'lazy' }}
+{% endif %}
+</code></pre>
+<hr />
+<h2 id="17-延伸阅读">17. 延伸阅读</h2><ul>
+<li><a href="/guides/shopify-handbook/liquid/global-objects/">全局对象详解</a></li>
+<li><a href="/guides/shopify-handbook/liquid/product-objects/">产品对象详解</a></li>
+<li><a href="/guides/shopify-handbook/liquid/customer-objects/">客户对象详解</a></li>
+<li><a href="/guides/shopify-handbook/liquid/cart-objects/">购物车对象</a></li>
+<li><a href="/guides/shopify-handbook/liquid/filters/">Liquid 过滤器</a></li>
+<li><a href="/guides/shopify-handbook/liquid/custom-sections/">自定义分区开发</a></li>
+<li><a href="/guides/shopify-handbook/liquid/advanced-liquid/">高级 Liquid 技巧</a></li>
+<li>官方：<a href="https://shopify.dev/docs/api/liquid/objects" target="_blank" rel="noreferrer">Liquid 对象</a></li>
+</ul>
+<p> </p>
+<p>字段名、新增对象以 <strong>shopify.dev 当前页</strong> 为准；主题升级后若某属性废弃，以 Theme Check 与发布说明为准。</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/web-performance/"><span>上一篇</span><strong>Web 性能优化深度指南</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/filters/"><span>下一篇</span><strong>5--- title: “过滤器完全指南” description: “全面掌握Shopify Liquid过滤器，包含所有过滤器的详细说明和实际代码示例”</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

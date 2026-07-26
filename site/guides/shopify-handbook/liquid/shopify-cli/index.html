@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify CLI 安装与配置 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify CLI 安装与配置 Shopify CLI 是官方提供的命令行工具，用于加速 Shopify 主题和应用的开发。本指南将详细介绍如何安装、配置和使用 Shopify CLI。 什么是 Shopify CLI？ Sho">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/shopify-cli/">
+  <meta property="og:title" content="Shopify CLI 安装与配置 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify CLI 安装与配置 Shopify CLI 是官方提供的命令行工具，用于加速 Shopify 主题和应用的开发。本指南将详细介绍如何安装、配置和使用 Shopify CLI。 什么是 Shopify CLI？ Sho">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>Shopify CLI 安装与配置</h1>
+        <p>Shopify CLI 安装与配置 Shopify CLI 是官方提供的命令行工具，用于加速 Shopify 主题和应用的开发。本指南将详细介绍如何安装、配置和使用 Shopify CLI。 什么是 Shopify CLI？ Sho</p>
+      </header>
+      <div class="article-content"><h2 id="shopify-cli-安装与配置">Shopify CLI 安装与配置</h2><p>Shopify CLI 是官方提供的命令行工具，用于加速 Shopify 主题和应用的开发。本指南将详细介绍如何安装、配置和使用 Shopify CLI。</p>
+<h2 id="什么是-shopify-cli">什么是 Shopify CLI？</h2><p>Shopify CLI 是一个命令行界面工具，提供以下功能：</p>
+<ul>
+<li><strong>主题开发</strong>: 创建、预览和部署主题</li>
+<li><strong>应用开发</strong>: 构建和测试 Shopify 应用</li>
+<li><strong>实时预览</strong>: 本地开发时实时预览更改</li>
+<li><strong>代码生成</strong>: 自动生成模板和组件</li>
+<li><strong>部署管理</strong>: 简化主题发布流程</li>
+</ul>
+<h2 id="安装前准备">安装前准备</h2><p>确保您已经完成了<a href="/guides/shopify-handbook/liquid/environment-setup/">开发环境搭建</a>：</p>
+<ul>
+<li>✅ Node.js (16.x 或更高版本)</li>
+<li>✅ npm 或 yarn</li>
+<li>✅ Git</li>
+<li>✅ 代码编辑器</li>
+</ul>
+<h2 id="安装方法">安装方法</h2><h3 id="方法一-使用-npm-安装-推荐">方法一：使用 npm 安装 (推荐)</h3><pre><code># 全局安装 Shopify CLI
+npm install -g @shopify/cli @shopify/theme
+ 
+# 验证安装
+shopify version
+</code></pre>
+<h3 id="方法二-使用-yarn-安装">方法二：使用 yarn 安装</h3><pre><code># 全局安装
+yarn global add @shopify/cli @shopify/theme
+ 
+# 验证安装
+shopify version
+</code></pre>
+<h3 id="方法三-直接下载二进制文件">方法三：直接下载二进制文件</h3><h4 id="windows">Windows</h4><pre><code># 使用 PowerShell
+iwr https://github.com/Shopify/shopify-cli/releases/latest/download/shopify-cli-windows-amd64.exe -OutFile shopify.exe
+ 
+# 将 shopify.exe 移动到 PATH 中的目录
+</code></pre>
+<h4 id="macos">macOS</h4><pre><code># 使用 Homebrew
+brew tap shopify/shopify
+brew install shopify-cli
+ 
+# 或直接下载
+curl -L https://github.com/Shopify/shopify-cli/releases/latest/download/shopify-cli-darwin-amd64 -o shopify
+chmod +x shopify
+sudo mv shopify /usr/local/bin/
+</code></pre>
+<h4 id="linux">Linux</h4><pre><code># 下载并安装
+curl -L https://github.com/Shopify/shopify-cli/releases/latest/download/shopify-cli-linux-amd64 -o shopify
+chmod +x shopify
+sudo mv shopify /usr/local/bin/
+</code></pre>
+<h2 id="验证安装">验证安装</h2><pre><code># 检查版本
+shopify version
+ 
+# 查看帮助信息
+shopify help
+ 
+# 查看所有可用命令
+shopify --help
+</code></pre>
+<h2 id="身份验证">身份验证</h2><h3 id="登录到-shopify">登录到 Shopify</h3><pre><code># 登录到您的 Shopify 账户
+shopify auth login
+ 
+# 这将打开浏览器进行身份验证
+# 按照屏幕提示完成登录过程
+</code></pre>
+<h3 id="验证登录状态">验证登录状态</h3><pre><code># 检查当前登录状态
+shopify auth whoami
+ 
+# 查看可访问的商店
+shopify auth list-stores
+</code></pre>
+<h3 id="登出">登出</h3><pre><code># 登出当前账户
+shopify auth logout
+</code></pre>
+<h2 id="主题开发命令">主题开发命令</h2><h3 id="创建新主题">创建新主题</h3><pre><code># 创建基于 Dawn 的新主题
+shopify theme init my-new-theme
+ 
+# 进入主题目录
+cd my-new-theme
+</code></pre>
+<h3 id="连接现有主题">连接现有主题</h3><pre><code># 在现有主题目录中
+shopify theme pull
+ 
+# 或指定主题 ID
+shopify theme pull --theme-id=123456789
+</code></pre>
+<h3 id="本地开发服务器">本地开发服务器</h3><pre><code># 启动开发服务器
+shopify theme dev
+ 
+# 指定商店
+shopify theme dev --store=your-store.myshopify.com
+ 
+# 使用特定主题
+shopify theme dev --theme-id=123456789
+</code></pre>
+<p>开发服务器将在 <code>http://localhost:9292</code> 启动，提供：</p>
+<ul>
+<li>🔄 热重载功能</li>
+<li>📱 移动预览</li>
+<li>🛠️ 开发工具集成</li>
+</ul>
+<h3 id="主题管理">主题管理</h3><pre><code># 查看商店中的所有主题
+shopify theme list
+ 
+# 推送本地更改到远程主题
+shopify theme push
+ 
+# 从远程拉取更改
+shopify theme pull
+ 
+# 发布主题
+shopify theme publish --theme-id=123456789
+ 
+# 创建主题副本
+shopify theme duplicate --theme-id=123456789 --name="My Copy"
+</code></pre>
+<h2 id="高级配置">高级配置</h2><h3 id="配置文件">配置文件</h3><p>Shopify CLI 使用配置文件来存储设置：</p>
+<pre><code># 查看配置文件位置
+shopify config
+ 
+# 编辑配置
+shopify config edit
+</code></pre>
+<h3 id="忽略文件配置">忽略文件配置</h3><p>创建 <code>.shopifyignore</code> 文件来排除文件：</p>
+<pre><code># .shopifyignore
+node_modules/
+.git/
+*.log
+.env
+.DS_Store
+thumbs.db
+</code></pre>
+<h3 id="环境变量">环境变量</h3><pre><code># 设置默认商店
+export SHOPIFY_FLAG_STORE="your-store.myshopify.com"
+ 
+# 设置主题 ID
+export SHOPIFY_FLAG_THEME_ID="123456789"
+ 
+# 启用调试模式
+export SHOPIFY_CLI_DEBUG=1
+</code></pre>
+<h2 id="代码生成功能">代码生成功能</h2><h3 id="生成-section">生成 Section</h3><pre><code># 生成新的 section
+shopify theme generate section
+ 
+# 或指定名称
+shopify theme generate section hero-banner
+</code></pre>
+<h3 id="生成-snippet">生成 Snippet</h3><pre><code># 生成 snippet
+shopify theme generate snippet
+ 
+# 指定名称
+shopify theme generate snippet product-card
+</code></pre>
+<h3 id="生成模板">生成模板</h3><pre><code># 生成页面模板
+shopify theme generate template page
+ 
+# 生成产品模板
+shopify theme generate template product
+</code></pre>
+<h2 id="工作流程示例">工作流程示例</h2><h3 id="日常开发流程">日常开发流程</h3><pre><code># 1. 拉取最新代码
+shopify theme pull
+ 
+# 2. 启动开发服务器
+shopify theme dev
+ 
+# 3. 在另一个终端进行开发
+# 编辑文件，浏览器会自动刷新
+ 
+# 4. 提交更改
+git add .
+git commit -m "Add new feature"
+ 
+# 5. 推送到远程主题
+shopify theme push
+ 
+# 6. 如果准备发布
+shopify theme publish
+</code></pre>
+<h3 id="团队协作流程">团队协作流程</h3><pre><code># 创建开发分支
+git checkout -b feature/new-homepage
+ 
+# 创建开发主题
+shopify theme push --unpublished --json &gt; theme-info.json
+ 
+# 获取主题 ID
+cat theme-info.json | jq -r '.theme.id'
+ 
+# 在特定主题上开发
+shopify theme dev --theme-id=THEME_ID
+ 
+# 完成开发后合并代码
+git checkout main
+git merge feature/new-homepage
+ 
+# 推送到主主题
+shopify theme push --theme-id=MAIN_THEME_ID
+</code></pre>
+<h2 id="故障排除">故障排除</h2><h3 id="常见问题">常见问题</h3><h4 id="1-认证问题">1. 认证问题</h4><pre><code># 清除认证缓存
+shopify auth logout
+shopify auth login
+ 
+# 检查网络连接
+ping shopify.com
+</code></pre>
+<h4 id="2-权限问题">2. 权限问题</h4><pre><code># 检查商店权限
+shopify auth whoami
+ 
+# 确保拥有主题编辑权限
+# 联系商店所有者分配权限
+</code></pre>
+<h4 id="3-版本冲突">3. 版本冲突</h4><pre><code># 更新到最新版本
+npm update -g @shopify/cli @shopify/theme
+ 
+# 清除 npm 缓存
+npm cache clean --force
+</code></pre>
+<h4 id="4-端口冲突">4. 端口冲突</h4><pre><code># 指定不同端口
+shopify theme dev --port=3000
+ 
+# 查看端口使用情况
+netstat -tulpn | grep :9292
+</code></pre>
+<h3 id="调试技巧">调试技巧</h3><pre><code># 启用详细日志
+shopify theme dev --verbose
+ 
+# 查看详细错误信息
+SHOPIFY_CLI_DEBUG=1 shopify theme dev
+ 
+# 检查主题文件
+shopify theme check
+</code></pre>
+<h2 id="最佳实践">最佳实践</h2><h3 id="1-版本控制集成">1. 版本控制集成</h3><pre><code># .gitignore
+.shopify/
+*.log
+.env
+node_modules/
+</code></pre>
+<h3 id="2-自动化脚本">2. 自动化脚本</h3><pre><code>// package.json
+{
+  "scripts": {
+    "dev": "shopify theme dev",
+    "push": "shopify theme push",
+    "pull": "shopify theme pull",
+    "check": "shopify theme check",
+    "build": "npm run check &amp;&amp; npm run push"
+  }
+}
+</code></pre>
+<h3 id="3-ci-cd-集成">3. CI/CD 集成</h3><pre><code># .github/workflows/deploy.yml
+name: Deploy Theme
+on:
+  push:
+    branches: [main]
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli @shopify/theme
+        
+      - name: Deploy to Shopify
+        env:
+          SHOPIFY_CLI_TOKEN: ${{ secrets.SHOPIFY_CLI_TOKEN }}
+          SHOPIFY_FLAG_STORE: ${{ secrets.SHOPIFY_STORE }}
+        run: shopify theme push --allow-live
+</code></pre>
+<h2 id="高级功能">高级功能</h2><h3 id="主题检查">主题检查</h3><pre><code># 运行主题检查
+shopify theme check
+ 
+# 只检查特定文件
+shopify theme check templates/
+ 
+# 生成报告
+shopify theme check --output=json &gt; check-report.json
+</code></pre>
+<h3 id="性能分析">性能分析</h3><pre><code># 分析主题性能
+shopify theme dev --timing
+ 
+# 查看文件大小
+shopify theme info
+</code></pre>
+<h3 id="多环境管理">多环境管理</h3><pre><code># 开发环境
+shopify theme dev --store=dev-store.myshopify.com
+ 
+# 测试环境  
+shopify theme push --store=staging-store.myshopify.com
+ 
+# 生产环境
+shopify theme push --store=production-store.myshopify.com --live
+</code></pre>
+<h2 id="相关资源">相关资源</h2><ul>
+<li><a href="https://shopify.dev/docs/themes/tools/cli" target="_blank" rel="noreferrer">Shopify CLI 官方文档</a> </li>
+<li><a href="/guides/shopify-handbook/liquid/theme-development-workflow/">主题开发工作流程</a></li>
+<li><a href="/guides/shopify-handbook/liquid/getting-started/">Liquid 入门基础</a></li>
+</ul>
+<p>Shopify CLI 是现代 Shopify 开发的核心工具，掌握它将大大提高您的开发效率！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/syntax/"><span>上一篇</span><strong>Liquid 语法详解</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/best-practices/"><span>下一篇</span><strong>Shopify Liquid 主题开发实战要点</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

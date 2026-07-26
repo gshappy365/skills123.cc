@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify 库存管理的核心概念 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="库存管理不是只看“还有多少件”。对 Shopify 独立站来说，库存会直接影响广告投放、转化率、现金流、物流时效和客户体验。 一套合格的库存体系至少要回答 5 个问题： 问题 目的 每个产品是否有清晰 SKU？ 避免发错货、统计混乱">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/basic/inventory-management-basics/">
+  <meta property="og:title" content="Shopify 库存管理的核心概念 · Shopify 独立站手册">
+  <meta property="og:description" content="库存管理不是只看“还有多少件”。对 Shopify 独立站来说，库存会直接影响广告投放、转化率、现金流、物流时效和客户体验。 一套合格的库存体系至少要回答 5 个问题： 问题 目的 每个产品是否有清晰 SKU？ 避免发错货、统计混乱">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/basic/">入门基础</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">入门基础 · 整理与归档</p>
+        <h1>Shopify 库存管理的核心概念</h1>
+        <p>库存管理不是只看“还有多少件”。对 Shopify 独立站来说，库存会直接影响广告投放、转化率、现金流、物流时效和客户体验。 一套合格的库存体系至少要回答 5 个问题： 问题 目的 每个产品是否有清晰 SKU？ 避免发错货、统计混乱</p>
+      </header>
+      <div class="article-content"><p><img src="/assets/images/shopify-handbook/e952e0beca7428fc.png" alt="Shopify 库存管理基础指南" loading="lazy" /></p>
+<p>库存管理不是只看“还有多少件”。对 Shopify 独立站来说，库存会直接影响广告投放、转化率、现金流、物流时效和客户体验。</p>
+<p>一套合格的库存体系至少要回答 5 个问题：</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>目的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>每个产品是否有清晰 SKU？</td>
+<td>避免发错货、统计混乱</td>
+</tr>
+<tr>
+<td>Shopify 是否追踪库存？</td>
+<td>避免超卖和缺货后继续售卖</td>
+</tr>
+<tr>
+<td>多仓库存是否准确？</td>
+<td>避免跨仓发货和履约延迟</td>
+</tr>
+<tr>
+<td>什么时候需要补货？</td>
+<td>避免广告跑起来后突然断货</td>
+</tr>
+<tr>
+<td>缺货时怎么处理？</td>
+<td>降低退款、差评和客服压力</td>
+</tr>
+</tbody></table>
+<hr />
+<h2 id="shopify-库存管理的核心概念">Shopify 库存管理的核心概念</h2><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SKU</td>
+<td>商品内部编号，用于区分款式、颜色、尺码和仓库</td>
+</tr>
+<tr>
+<td>Inventory tracking</td>
+<td>是否由 Shopify 追踪库存数量</td>
+</tr>
+<tr>
+<td>Continue selling when out of stock</td>
+<td>缺货后是否继续销售，适合预售或定制品</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>库存地点，如主仓、海外仓、门店、3PL 仓库</td>
+</tr>
+<tr>
+<td>Incoming inventory</td>
+<td>已采购但未入库的库存</td>
+</tr>
+<tr>
+<td>Low stock</td>
+<td>低库存状态，需要触发补货或广告调整</td>
+</tr>
+</tbody></table>
+<p>对新店来说，最常见的问题不是功能不会用，而是一开始没有定义清楚 SKU 和库存规则，后面产品变多后再整理会非常痛苦。</p>
+<hr />
+<h2 id="sku-命名建议">SKU 命名建议</h2><p>SKU 不建议随便写产品名称。好的 SKU 应该短、稳定、可读，并能表达关键属性。</p>
+<p>示例结构：</p>
+<pre><code>品类-系列-颜色-尺码
+TS-BASIC-BLK-M
+</code></pre>
+<p>常用规则：</p>
+<table>
+<thead>
+<tr>
+<th>规则</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>品类简写</td>
+<td>TS 表示 T-shirt，HD 表示 Hoodie</td>
+</tr>
+<tr>
+<td>系列或款式</td>
+<td>BASIC、PRO、SUMMER</td>
+</tr>
+<tr>
+<td>颜色</td>
+<td>BLK、WHT、RED</td>
+</tr>
+<tr>
+<td>尺码</td>
+<td>S、M、L、XL</td>
+</tr>
+<tr>
+<td>不使用中文和空格</td>
+<td>方便导出、ERP、仓库系统识别</td>
+</tr>
+</tbody></table>
+<p>不要频繁修改 SKU。SKU 一旦用于订单、库存、ERP 或仓储系统，就应保持稳定。</p>
+<hr />
+<h2 id="是否开启库存追踪">是否开启库存追踪</h2><p>大多数实体商品都应开启库存追踪。只有少数场景适合不追踪库存。</p>
+<table>
+<thead>
+<tr>
+<th>商品类型</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>现货实体商品</td>
+<td>开启库存追踪</td>
+</tr>
+<tr>
+<td>海外仓商品</td>
+<td>开启库存追踪，并按仓库地点管理</td>
+</tr>
+<tr>
+<td>数字产品</td>
+<td>可不追踪库存</td>
+</tr>
+<tr>
+<td>定制产品</td>
+<td>可允许缺货继续销售，但要写明周期</td>
+</tr>
+<tr>
+<td>预售商品</td>
+<td>可允许继续销售，并明确发货时间</td>
+</tr>
+</tbody></table>
+<p>如果你投放广告，不建议长期开启“缺货后继续销售”。除非你有明确的预售机制，否则很容易带来退款和差评。</p>
+<hr />
+<h2 id="多地点库存怎么管理">多地点库存怎么管理</h2><p>如果你同时使用国内仓、海外仓、门店或第三方仓库，需要使用 Shopify 的 Locations 管理库存。</p>
+<p>建议设置方式：</p>
+<table>
+<thead>
+<tr>
+<th>地点</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Main Warehouse</td>
+<td>默认主仓</td>
+</tr>
+<tr>
+<td>US Warehouse</td>
+<td>美国本地履约</td>
+</tr>
+<tr>
+<td>EU Warehouse</td>
+<td>欧洲本地履约</td>
+</tr>
+<tr>
+<td>3PL Warehouse</td>
+<td>第三方物流仓</td>
+</tr>
+<tr>
+<td>Retail Store</td>
+<td>线下门店库存</td>
+</tr>
+</tbody></table>
+<p>多仓管理重点不是“建几个地点”，而是保持库存同步。每次调拨、退货、入库和损耗都应有记录，否则前台显示库存会越来越不准。</p>
+<hr />
+<h2 id="低库存预警">低库存预警</h2><p>低库存预警不能只设一个固定数字。不同产品的销售速度、采购周期和广告投入不同，安全库存也不同。</p>
+<p>一个简单可用的公式：</p>
+<pre><code>安全库存 = 日均销量 × 补货周期天数 + 缓冲库存
+</code></pre>
+<p>示例：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>数值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>日均销量</td>
+<td>10 件</td>
+</tr>
+<tr>
+<td>补货周期</td>
+<td>20 天</td>
+</tr>
+<tr>
+<td>缓冲库存</td>
+<td>50 件</td>
+</tr>
+<tr>
+<td>建议安全库存</td>
+<td>250 件</td>
+</tr>
+</tbody></table>
+<p>当库存低于 250 件时，就不应该等到快卖完才补货。广告跑量产品尤其要提前处理，否则断货后不仅损失订单，还会打断广告学习。</p>
+<hr />
+<h2 id="缺货和预售策略">缺货和预售策略</h2><p>缺货时有 4 种处理方式：</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>适合场景</th>
+<th>风险</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>直接下架或隐藏</td>
+<td>长期缺货、停产</td>
+<td>损失 SEO 和收藏流量</td>
+</tr>
+<tr>
+<td>显示缺货不可购买</td>
+<td>短期缺货</td>
+<td>可能降低转化</td>
+</tr>
+<tr>
+<td>开启到货通知</td>
+<td>热门 SKU</td>
+<td>需要邮件或短信工具</td>
+</tr>
+<tr>
+<td>开启预售</td>
+<td>明确补货周期</td>
+<td>需要清楚说明发货时间</td>
+</tr>
+</tbody></table>
+<p>如果使用预售，产品页、购物车和订单通知中都应写明预计发货时间，避免用户以为是现货。</p>
+<hr />
+<h2 id="补货流程">补货流程</h2><p>建议建立固定补货流程，而不是等库存快没了才临时采购。</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>每周查看低库存 SKU</td>
+</tr>
+<tr>
+<td>2</td>
+<td>按销量和毛利判断优先级</td>
+</tr>
+<tr>
+<td>3</td>
+<td>确认供应商生产和发货周期</td>
+</tr>
+<tr>
+<td>4</td>
+<td>生成采购计划</td>
+</tr>
+<tr>
+<td>5</td>
+<td>入库后核对 Shopify 库存</td>
+</tr>
+<tr>
+<td>6</td>
+<td>同步广告、邮件和活动计划</td>
+</tr>
+</tbody></table>
+<p>补货优先级可以按“销量 × 毛利 × 缺货风险”判断。不是所有低库存产品都值得补，滞销 SKU 应该优先清仓或降低采购量。</p>
+<hr />
+<h2 id="盘点与库存校准">盘点与库存校准</h2><p>库存差异通常来自退货未入库、仓库漏扫、手动修改、供应商少发、订单取消后未恢复库存等原因。</p>
+<p>建议频率：</p>
+<table>
+<thead>
+<tr>
+<th>店铺阶段</th>
+<th>盘点频率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>新店 / SKU 少</td>
+<td>每月一次</td>
+</tr>
+<tr>
+<td>稳定运营</td>
+<td>每两周抽盘重点 SKU</td>
+</tr>
+<tr>
+<td>高销量 / 多仓</td>
+<td>每周检查重点 SKU</td>
+</tr>
+<tr>
+<td>大促前后</td>
+<td>必须盘点</td>
+</tr>
+</tbody></table>
+<p>重点 SKU 包括：广告主推款、高客单价产品、高退货率产品、易错发的颜色尺码组合。</p>
+<hr />
+<h2 id="常见错误">常见错误</h2><table>
+<thead>
+<tr>
+<th>错误</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SKU 命名混乱</td>
+<td>发货、统计、补货都容易出错</td>
+</tr>
+<tr>
+<td>不开启库存追踪</td>
+<td>超卖、退款、客服压力增加</td>
+</tr>
+<tr>
+<td>预售不写发货周期</td>
+<td>用户投诉和拒付风险上升</td>
+</tr>
+<tr>
+<td>多仓库存不同步</td>
+<td>履约延迟、运费增加</td>
+</tr>
+<tr>
+<td>只看总库存不看变体</td>
+<td>热销尺码断货仍继续投广告</td>
+</tr>
+<tr>
+<td>不保留库存调整记录</td>
+<td>盘点差异无法追溯</td>
+</tr>
+</tbody></table>
+<hr />
+<h2 id="总结">总结</h2><p>Shopify 库存管理的关键不是复杂系统，而是早期就建立清楚的 SKU、库存追踪、多仓规则、低库存预警和补货流程。产品越多、广告投放越强，库存管理越应该前置，否则缺货和超卖会直接影响现金流与用户体验。</p>
+<p>如果你的店铺已经出现 SKU 混乱、多仓库存不同步或主题前台库存展示问题，可以结合 <a href="/guides/shopify-handbook/advanced/shopify-store-build-service/">Shopify 建站服务</a> 或 <a href="/guides/shopify-handbook/advanced/store-diagnosis-consulting/">店铺诊断服务</a> 做一次系统梳理。</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/menu/"><span>上一篇</span><strong>Shopify 菜单(Menu)创建与设置教程</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/shopify-folders/"><span>下一篇</span><strong>Shopify 主题目录结构（Liquid 文件）详解</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

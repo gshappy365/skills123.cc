@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Liquid 进阶技巧 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Liquid 进阶技巧 本教程面向已经熟悉 Liquid 基础语法，正在或将要负责主题级别工程的开发者。重点不在”Liquid 能做什么”，而在 生产级主题中的可靠模式 ：如何处理复杂数据、如何控制性能、如何把代码组织得可维护。 阅">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/advanced-liquid-techniques/">
+  <meta property="og:title" content="Liquid 进阶技巧 · Shopify 独立站手册">
+  <meta property="og:description" content="Liquid 进阶技巧 本教程面向已经熟悉 Liquid 基础语法，正在或将要负责主题级别工程的开发者。重点不在”Liquid 能做什么”，而在 生产级主题中的可靠模式 ：如何处理复杂数据、如何控制性能、如何把代码组织得可维护。 阅">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>Liquid 进阶技巧</h1>
+        <p>Liquid 进阶技巧 本教程面向已经熟悉 Liquid 基础语法，正在或将要负责主题级别工程的开发者。重点不在”Liquid 能做什么”，而在 生产级主题中的可靠模式 ：如何处理复杂数据、如何控制性能、如何把代码组织得可维护。 阅</p>
+      </header>
+      <div class="article-content"><h2 id="liquid-进阶技巧">Liquid 进阶技巧</h2><p>本教程面向已经熟悉 Liquid 基础语法，正在或将要负责主题级别工程的开发者。重点不在”Liquid 能做什么”，而在<strong>生产级主题中的可靠模式</strong>：如何处理复杂数据、如何控制性能、如何把代码组织得可维护。</p>
+<p>阅读前置：</p>
+<ul>
+<li>熟悉 Liquid 基础（assign、for、if、capture、render）</li>
+<li>理解 Shopify 主题目录结构（layout、templates、sections、snippets）</li>
+<li>推荐先阅读 <a href="/guides/shopify-handbook/liquid/best-practices/">Liquid 最佳实践</a></li>
+</ul>
+<h2 id="一-复杂数据结构处理">一、复杂数据结构处理</h2><p>Liquid 没有原生的数组操作 API，处理多维或动态结构时需要借助字符串拼接与 split。</p>
+<h3 id="唯一值收集-去重">唯一值收集（去重）</h3><p>从产品集合中收集所有唯一 tag：</p>
+<pre><code>{%- liquid
+  assign all_tags = ''
+  for product in collection.products
+    for tag in product.tags
+      unless all_tags contains tag
+        assign all_tags = all_tags | append: tag | append: '|'
+      endunless
+    endfor
+  endfor
+  assign tags_array = all_tags | split: '|' | compact
+-%}
+ 
+&lt;ul class="tag-cloud"&gt;
+  {%- for tag in tags_array -%}
+    &lt;li&gt;&lt;a href="{{ collection.url }}/{{ tag | handle }}"&gt;{{ tag }}&lt;/a&gt;&lt;/li&gt;
+  {%- endfor -%}
+&lt;/ul&gt;
+</code></pre>
+<p><strong>关键点</strong>：</p>
+<ul>
+<li>用 <code>|</code> 而非 <code>,</code> 作为分隔符，避免 tag 本身含逗号时拆分错误</li>
+<li><code>compact</code> 过滤器移除空字符串</li>
+<li>这种模式对 collection.products.size &gt; 200 会有性能压力，大集合应考虑用 metafield 预存</li>
+</ul>
+<h3 id="构建-json-输出">构建 JSON 输出</h3><p>为前端 JavaScript 提供数据时，<strong>永远不要拼字符串</strong>。用 Shopify 的 <code>json</code> filter：</p>
+<pre><code>{%- liquid
+  assign products_data = ''
+-%}
+&lt;script&gt;
+window.collectionData = {
+  "title": {{ collection.title | json }},
+  "handle": {{ collection.handle | json }},
+  "products_count": {{ collection.products.size }},
+  "products": [
+    {%- for product in collection.products limit: 12 -%}
+      {
+        "id": {{ product.id }},
+        "title": {{ product.title | json }},
+        "handle": {{ product.handle | json }},
+        "url": {{ product.url | json }},
+        "price": {{ product.price }},
+        "available": {{ product.available }},
+        "image": {{ product.featured_image | image_url: width: 600 | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+};
+&lt;/script&gt;
+</code></pre>
+<p><strong>关键点</strong>：</p>
+<ul>
+<li><code>json</code> filter 自动处理引号、转义、Unicode</li>
+<li>价格保持整数（cents），前端再除以 100</li>
+<li><code>forloop.last</code> 控制逗号</li>
+</ul>
+<h3 id="动态属性访问">动态属性访问</h3><p>Liquid 支持方括号语法访问对象属性：</p>
+<pre><code>{%- liquid
+  assign meta_key = 'specifications'
+  assign specs = product.metafields.custom[meta_key]
+-%}
+ 
+{%- for i in (1..3) -%}
+  {%- assign option_key = 'option' | append: i -%}
+  {%- if product[option_key] != blank -%}
+    &lt;div class="option"&gt;{{ product[option_key] }}&lt;/div&gt;
+  {%- endif -%}
+{%- endfor -%}
+</code></pre>
+<p>应用场景：</p>
+<ul>
+<li>多语言字段从 metafield 按 locale 动态取值</li>
+<li>配置驱动的列表渲染（同一个 section 服务多种类型）</li>
+<li>A/B 测试时根据用户分组选择不同内容字段</li>
+</ul>
+<h2 id="二-过滤器链式优化">二、过滤器链式优化</h2><p>过滤器可以链式组合，但<strong>顺序很重要</strong>——错误顺序导致结果不同或性能下降。</p>
+<h3 id="顺序原则">顺序原则</h3><p><strong>先过滤、再排序、最后限量</strong>：</p>
+<pre><code>{# 推荐：先 where 后 sort #}
+{% assign featured_products = collection.products
+   | where: 'available'
+   | sort: 'created_at'
+   | reverse
+   | slice: 0, 6 %}
+</code></pre>
+<pre><code>{# 不推荐：先 sort 后 where，sort 浪费在被过滤掉的元素上 #}
+{% assign featured_products = collection.products
+   | sort: 'created_at'
+   | reverse
+   | where: 'available'
+   | slice: 0, 6 %}
+</code></pre>
+<p>虽然结果相同，前者在大集合（&gt; 1000 产品）上明显更快。</p>
+<h3 id="多条件-where-链式">多条件 where 链式</h3><pre><code>{% assign sale_featured = collection.products
+   | where: 'available'
+   | where: 'tags', 'featured'
+   | where: 'compare_at_price', '&gt;', 0 %}
+</code></pre>
+<p>每个 <code>where</code> 都是 O(n) 遍历。如果有 5000 产品，三个 <code>where</code> 链 = 15000 次比较。建议先用 paginate 或集合预筛限制范围。</p>
+<h3 id="字符串处理链">字符串处理链</h3><pre><code>{%- liquid
+  assign description = product.description
+    | strip_html
+    | strip_newlines
+    | truncate: 160, '…'
+    | escape
+-%}
+ 
+&lt;meta name="description" content="{{ description }}"&gt;
+</code></pre>
+<p><code>strip_html</code> 必须最先，否则 <code>&lt;p&gt;…&lt;/p&gt;</code> 内的标点会被截断算错字数。</p>
+<h2 id="三-循环性能模式">三、循环性能模式</h2><h3 id="tablerow-替代-for-网格-css">tablerow 替代 for + 网格 CSS</h3><p>需要固定列数的网格时，<code>tablerow</code> 比 for + CSS Grid 更简洁：</p>
+<pre><code>{% tablerow product in collection.products cols: 4 limit: 12 %}
+  {% render 'product-card', product: product %}
+{% endtablerow %}
+</code></pre>
+<p>生成的 HTML 是 <code>&lt;table&gt;</code> 结构，对静态展示性能略优于 CSS Grid。但缺乏响应式能力（不同断点切换列数），所以<strong>仅适合桌面端固定布局或邮件模板</strong>。</p>
+<h3 id="break-与-continue-早退">break 与 continue 早退</h3><pre><code>{%- liquid
+  assign featured_count = 0
+  for product in collection.products
+    unless product.available
+      continue
+    endunless
+ 
+    if product.tags contains 'featured'
+      assign featured_count = featured_count | plus: 1
+      render 'product-card', product: product
+      if featured_count &gt;= 6
+        break
+      endif
+    endif
+  endfor
+-%}
+</code></pre>
+<p><code>break</code> 在找到足够元素后立即退出，避免遍历整个集合。</p>
+<h3 id="数据预处理移出循环">数据预处理移出循环</h3><p>循环内的重复计算是常见性能瓶颈：</p>
+<pre><code>{# 反例：循环内每次都重新计算 #}
+{% for product in collection.products %}
+  {% if collection.products.size &gt; 10 %}
+    {# size 在每次迭代中都被访问 #}
+  {% endif %}
+{% endfor %}
+ 
+{# 推荐：循环外预计算 #}
+{%- liquid
+  assign total_count = collection.products.size
+  assign should_show_extra = false
+  if total_count &gt; 10
+    assign should_show_extra = true
+  endif
+-%}
+ 
+{% for product in collection.products %}
+  {% if should_show_extra %}
+    {# 使用预计算的标志 #}
+  {% endif %}
+{% endfor %}
+</code></pre>
+<h2 id="四-复杂条件逻辑">四、复杂条件逻辑</h2><h3 id="多重条件组合用单独的-assign-化简">多重条件组合用单独的 assign 化简</h3><pre><code>{# 反例：深层嵌套难读 #}
+{% if customer %}
+  {% if customer.orders.size &gt; 0 %}
+    {% if customer.total_spent &gt; 100000 %}
+      {% if customer.tags contains 'vip' %}
+        &lt;!-- VIP 内容 --&gt;
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endif %}
+ 
+{# 推荐：扁平化布尔值 #}
+{%- liquid
+  assign is_vip = false
+  if customer
+    and customer.orders.size &gt; 0
+    and customer.total_spent &gt; 100000
+    and customer.tags contains 'vip'
+    assign is_vip = true
+  endif
+-%}
+ 
+{% if is_vip %}
+  &lt;!-- VIP 内容 --&gt;
+{% endif %}
+</code></pre>
+<h3 id="case-when-替代多分支-if">case / when 替代多分支 if</h3><pre><code>{%- liquid
+  case template
+    when 'product'
+      assign body_class = 'page--product'
+    when 'collection'
+      assign body_class = 'page--collection'
+    when 'cart'
+      assign body_class = 'page--cart'
+    when 'index'
+      assign body_class = 'page--home'
+    else
+      assign body_class = 'page--default'
+  endcase
+-%}
+ 
+&lt;body class="{{ body_class }}"&gt;
+</code></pre>
+<h3 id="时间窗口判断">时间窗口判断</h3><pre><code>{%- liquid
+  assign now = 'now' | date: '%s' | times: 1
+  assign sale_start = settings.sale_start | date: '%s' | times: 1
+  assign sale_end = settings.sale_end | date: '%s' | times: 1
+  assign is_sale_active = false
+  if now &gt;= sale_start and now &lt;= sale_end
+    assign is_sale_active = true
+  endif
+-%}
+ 
+{% if is_sale_active %}
+  &lt;div class="sale-banner"&gt;限时优惠中&lt;/div&gt;
+{% endif %}
+</code></pre>
+<p><code>'now' | date: '%s'</code> 返回 Unix 时间戳字符串，乘 1 转为数字才能比较。</p>
+<h2 id="五-字符串处理进阶">五、字符串处理进阶</h2><h3 id="sku-解析">SKU 解析</h3><p>按规则解码 SKU 提取分类信息：</p>
+<pre><code>{%- liquid
+  assign sku_parts = product.sku | split: '-'
+  assign category = sku_parts[0]
+  assign size = sku_parts[1]
+  assign color = sku_parts[2]
+-%}
+ 
+&lt;div class="product-meta" data-category="{{ category }}" data-color="{{ color }}"&gt;
+</code></pre>
+<h3 id="动态-css-类名拼接">动态 CSS 类名拼接</h3><pre><code>{%- liquid
+  assign css_classes = 'product-card'
+  unless product.available
+    assign css_classes = css_classes | append: ' is-sold-out'
+  endunless
+  if product.tags contains 'new'
+    assign css_classes = css_classes | append: ' is-new'
+  endif
+  if product.compare_at_price &gt; product.price
+    assign css_classes = css_classes | append: ' is-on-sale'
+  endif
+-%}
+ 
+&lt;div class="{{ css_classes }}"&gt;
+</code></pre>
+<h3 id="智能截断保持完整词">智能截断保持完整词</h3><p><code>truncate</code> 会在字符位置硬切，可能截掉半个单词。保持单词完整：</p>
+<pre><code>{%- liquid
+  assign desc = product.description | strip_html
+  if desc.size &gt; 150
+    assign truncated = desc | truncate: 150, ''
+    assign words = truncated | split: ' '
+    assign safe_words = words | slice: 0, -1
+    assign final_desc = safe_words | join: ' ' | append: '…'
+  else
+    assign final_desc = desc
+  endif
+-%}
+ 
+&lt;p&gt;{{ final_desc }}&lt;/p&gt;
+</code></pre>
+<h2 id="六-组件化与作用域">六、组件化与作用域</h2><h3 id="snippet-参数化设计">snippet 参数化设计</h3><p>Liquid 没有真正的”函数”，但 <code>{% render %}</code> + 命名参数能达到类似效果：</p>
+<pre><code>{# snippets/price-display.liquid #}
+{%- comment %}
+  显示价格组件
+ 
+  必需参数：
+    price (number) - 价格（cents）
+ 
+  可选参数：
+    compare_at_price (number) - 划线价（cents）
+    currency_code (string) - 货币代码，默认 cart.currency.iso_code
+    show_savings (boolean) - 是否显示节省金额，默认 false
+    css_class (string) - 自定义 class
+{% endcomment -%}
+ 
+{%- liquid
+  assign currency_code = currency_code | default: cart.currency.iso_code
+  assign show_savings = show_savings | default: false
+  assign css_class = css_class | default: 'price-display'
+-%}
+ 
+&lt;div class="{{ css_class }}"&gt;
+  {%- if compare_at_price and compare_at_price &gt; price -%}
+    &lt;span class="price-display__sale"&gt;{{ price | money }}&lt;/span&gt;
+    &lt;span class="price-display__regular"&gt;&lt;s&gt;{{ compare_at_price | money }}&lt;/s&gt;&lt;/span&gt;
+    {%- if show_savings -%}
+      {%- assign savings = compare_at_price | minus: price -%}
+      &lt;span class="price-display__savings"&gt;省 {{ savings | money }}&lt;/span&gt;
+    {%- endif -%}
+  {%- else -%}
+    &lt;span class="price-display__regular"&gt;{{ price | money }}&lt;/span&gt;
+  {%- endif -%}
+&lt;/div&gt;
+</code></pre>
+<p>调用：</p>
+<pre><code>{% render 'price-display',
+   price: product.price,
+   compare_at_price: product.compare_at_price,
+   show_savings: true %}
+</code></pre>
+<h3 id="作用域隔离的好处">作用域隔离的好处</h3><p><code>{% render %}</code> 的作用域隔离让 snippet 真正可复用：</p>
+<ul>
+<li>snippet 内部不会被父模板变量”污染”</li>
+<li>多次调用时变量不会互相影响</li>
+<li>重构父模板时无需担心 snippet 副作用</li>
+</ul>
+<p>唯一例外：<code>product</code>、<code>section</code>、<code>block</code> 等 Shopify 内置变量在 section 上下文中可自动透传到 snippet（取决于 Shopify 版本）。<strong>显式传参是更安全的做法</strong>。</p>
+<h3 id="section-block-循环">Section block 循环</h3><p>支持 block 的 section 可让运营人员在主题编辑器中自由增删模块：</p>
+<pre><code>{# sections/featured-collections.liquid #}
+&lt;div class="featured-collections"&gt;
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'collection' -%}
+        &lt;div class="featured-collection" {{ block.shopify_attributes }}&gt;
+          &lt;h2&gt;{{ block.settings.title }}&lt;/h2&gt;
+          {%- if block.settings.collection != blank -%}
+            {%- render 'collection-preview',
+                 collection: collections[block.settings.collection],
+                 limit: block.settings.product_count -%}
+          {%- endif -%}
+        &lt;/div&gt;
+      {%- when 'banner' -%}
+        &lt;div class="featured-banner" {{ block.shopify_attributes }}&gt;
+          &lt;img src="{{ block.settings.image | image_url: width: 1200 }}"
+               alt="{{ block.settings.alt }}"&gt;
+        &lt;/div&gt;
+    {%- endcase -%}
+  {%- endfor -%}
+&lt;/div&gt;
+ 
+{% schema %}
+{
+  "name": "Featured Collections",
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "text", "id": "title", "label": "标题" },
+        { "type": "collection", "id": "collection", "label": "集合" },
+        { "type": "range", "id": "product_count", "label": "产品数",
+          "min": 2, "max": 12, "step": 2, "default": 4 }
+      ]
+    },
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "图片" },
+        { "type": "text", "id": "alt", "label": "Alt 文本" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Featured Collections" }]
+}
+{% endschema %}
+</code></pre>
+<p><code>block.shopify_attributes</code> 是必加的——它让主题编辑器能识别并高亮可点击的 block。</p>
+<h2 id="七-国际化与本地化">七、国际化与本地化</h2><h3 id="翻译键的命名约定">翻译键的命名约定</h3><p>按 <code>命名空间.作用域.具体内容</code> 三段式组织：</p>
+<pre><code>{
+  "products": {
+    "product": {
+      "add_to_cart": "加入购物车",
+      "sold_out": "已售罄",
+      "on_sale": "限时优惠"
+    },
+    "facets": {
+      "filter_by": "筛选条件",
+      "showing_count": "共 {{ count }} 件商品"
+    }
+  },
+  "cart": {
+    "general": {
+      "subtotal": "小计",
+      "free_shipping_remaining": "再加 {{ amount }} 包邮"
+    }
+  }
+}
+</code></pre>
+<p>调用：</p>
+<pre><code>{{ 'products.product.add_to_cart' | t }}
+{{ 'products.facets.showing_count' | t: count: collection.products_count }}
+{{ 'cart.general.free_shipping_remaining' | t: amount: remaining_amount | money }}
+</code></pre>
+<h3 id="货币地区化">货币地区化</h3><pre><code>{%- liquid
+  assign price_money = product.price | money
+  assign price_no_currency = product.price | money_without_currency
+  assign price_with_iso = product.price | money_with_currency
+-%}
+ 
+&lt;span itemprop="price" content="{{ product.price | divided_by: 100.00 }}"&gt;
+  {{ price_money }}
+&lt;/span&gt;
+&lt;meta itemprop="priceCurrency" content="{{ cart.currency.iso_code }}"&gt;
+</code></pre>
+<p>不同 filter 输出：</p>
+<ul>
+<li><code>money</code>：使用 Markets 配置的格式（如 <code>$9.99</code>）</li>
+<li><code>money_without_currency</code>：仅金额（<code>9.99</code>）</li>
+<li><code>money_with_currency</code>：金额 + ISO 码（<code>9.99 USD</code>）</li>
+</ul>
+<h3 id="多语言内容回退">多语言内容回退</h3><pre><code>{%- liquid
+  assign current_locale = request.locale.iso_code
+  assign translated_title = product.metafields.translations[current_locale].title
+  assign final_title = translated_title | default: product.title
+-%}
+ 
+&lt;h1&gt;{{ final_title }}&lt;/h1&gt;
+</code></pre>
+<p><code>default</code> filter 在变量为空或 false 时返回 fallback，是回退机制的标准写法。</p>
+<h2 id="八-调试技巧">八、调试技巧</h2><h3 id="输出对象结构">输出对象结构</h3><p>开发时输出对象的完整 JSON 结构，了解可用字段：</p>
+<pre><code>{% if settings.debug_mode %}
+  &lt;pre style="background:#f4f4f4;padding:1em;font-size:11px;"&gt;
+    {{ product | json }}
+  &lt;/pre&gt;
+{% endif %}
+</code></pre>
+<p>不要在生产环境保留——<code>product | json</code> 输出可能包含敏感字段。</p>
+<h3 id="性能埋点">性能埋点</h3><pre><code>{%- assign perf_start = 'now' | date: '%s%L' | times: 1 -%}
+ 
+{# 待测代码块 #}
+{%- for product in collection.products -%}
+  {# 复杂逻辑 #}
+{%- endfor -%}
+ 
+{%- assign perf_end = 'now' | date: '%s%L' | times: 1 -%}
+{%- assign perf_diff = perf_end | minus: perf_start -%}
+ 
+{% if settings.show_perf %}
+  &lt;div class="perf-info"&gt;Block executed in {{ perf_diff }}ms&lt;/div&gt;
+{% endif %}
+</code></pre>
+<p><code>%L</code> 输出毫秒级时间戳。注意 Liquid 渲染时间通常 &lt; 100ms，更精细的性能问题需要在客户端用 Performance API 测。</p>
+<h3 id="错误边界">错误边界</h3><p>Liquid 没有 try/catch，但可以用 <code>default</code> 与显式检查模拟错误处理：</p>
+<pre><code>{%- liquid
+  assign featured_handle = settings.featured_collection_handle
+  assign featured_collection = collections[featured_handle]
+-%}
+ 
+{%- if featured_collection and featured_collection.products.size &gt; 0 -%}
+  {%- render 'collection-preview', collection: featured_collection -%}
+{%- elsif collections.all.products.size &gt; 0 -%}
+  {# 回退到全部产品 #}
+  {%- render 'collection-preview', collection: collections.all -%}
+{%- else -%}
+  &lt;p&gt;暂无产品&lt;/p&gt;
+{%- endif -%}
+</code></pre>
+<h2 id="九-生产环境注意事项">九、生产环境注意事项</h2><h3 id="section-限制">Section 限制</h3><p>每个 section 文件<strong>最大 1MB</strong>，schema JSON <strong>最大 16KB</strong>。超出会导致主题保存失败。复杂 section 应拆分为多个独立 section 或用 snippet 抽取。</p>
+<h3 id="全局变量泄露">全局变量泄露</h3><p>避免在 layout 中 assign 通用变量名（如 <code>title</code>、<code>description</code>、<code>url</code>）——会污染所有 section / snippet 的作用域。约定命名前缀（如 <code>_layout_title</code>）。</p>
+<h3 id="缓存失效">缓存失效</h3><p>Shopify 主题渲染有页面缓存，但<strong>包含 <code>customer</code> 对象的内容不缓存</strong>。如果某个 section 引用了 <code>customer.name</code>，整个页面的缓存都会被绕过。</p>
+<p>优化方法：把客户专属内容用 AJAX 异步加载，主页 HTML 保持纯静态。</p>
+<h3 id="渲染时间上限">渲染时间上限</h3><p>单个模板渲染超过约 1.5 秒会触发 Shopify 的 timeout，返回空白或错误。性能压力最大的位置：</p>
+<ul>
+<li>主页（多个 section 同时渲染）</li>
+<li>collection 页（产品列表 + filter）</li>
+<li>含大量 metafield 查询的产品页</li>
+</ul>
+<p>预防：避免 <code>collections.all.products</code> 在主页、用 paginate 限定产品列表、把复杂数据预存到 metafield。</p>
+<h2 id="延伸阅读">延伸阅读</h2><ul>
+<li><a href="/guides/shopify-handbook/liquid/best-practices/">Liquid 最佳实践</a></li>
+<li><a href="/guides/shopify-handbook/liquid/performance-optimization/">Liquid 性能优化</a></li>
+<li><a href="/guides/shopify-handbook/liquid/code-organization/">代码组织和结构</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-theme-development-guide/">Shopify Theme 开发指南</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-local-theme-development/">Shopify CLI 本地开发</a></li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/google-ai-shopping-optimization/"><span>上一篇</span><strong>Google AI Shopping 可见性优化</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/us-sales-tax-guide/"><span>下一篇</span><strong>Nexus 门槛速查（46 个征税州 + DC）</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

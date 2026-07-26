@@ -1,0 +1,594 @@
+[
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2F404-overview.73d0688b.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/404-overview.73d0688b.png",
+    "local_path": "/assets/images/shopify-handbook/acb67e13c3f9b6ec.png",
+    "alt": "404.liquid",
+    "bytes": 76796,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadd-lang.ccdd69ca.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/add-lang.ccdd69ca.png",
+    "local_path": "/assets/images/shopify-handbook/cac82b4e3b515f28.png",
+    "alt": "添加语言",
+    "bytes": 114407,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadd-lang2.12f95b2e.png&w=2048&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/add-lang2.12f95b2e.png",
+    "local_path": "/assets/images/shopify-handbook/e969ed77e61155ec.png",
+    "alt": "添加语言确认",
+    "bytes": 63635,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fadd-redirect.9d52175d.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/add-redirect.9d52175d.png",
+    "local_path": "/assets/images/shopify-handbook/84423fd6a040d72b.png",
+    "alt": "Shopify创建URL重定向",
+    "bytes": 101504,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmarkets.ac011cd5.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/markets.ac011cd5.png",
+    "local_path": "/assets/images/shopify-handbook/79668c5909756adb.png",
+    "alt": "Shopify市场设置",
+    "bytes": 112482,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmarkets2.0984bfd1.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/markets2.0984bfd1.png",
+    "local_path": "/assets/images/shopify-handbook/5595e17b60a472c9.png",
+    "alt": "创建新市场",
+    "bytes": 38212,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmarkets3.1c367f41.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/markets3.1c367f41.png",
+    "local_path": "/assets/images/shopify-handbook/a6b95fb359c1eb37.png",
+    "alt": "市场定价设置",
+    "bytes": 68902,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fselect-lang.e51463f0.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/select-lang.e51463f0.png",
+    "local_path": "/assets/images/shopify-handbook/17528409d856d647.png",
+    "alt": "开启内置语言切换器",
+    "bytes": 166418,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-advanced-guide-cover.a349f048.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-advanced-guide-cover.a349f048.png",
+    "local_path": "/assets/images/shopify-handbook/44dc0659010050d8.png",
+    "alt": "Shopify 建站教程进阶指南",
+    "bytes": 461000,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-app-selection-guide-cover.f249f0b2.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-app-selection-guide-cover.f249f0b2.png",
+    "local_path": "/assets/images/shopify-handbook/f1cbe9ef6dba3531.png",
+    "alt": "Shopify 应用选择与安装指南",
+    "bytes": 347399,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-diy-vs-done-for-you.0240da12.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-diy-vs-done-for-you.0240da12.png",
+    "local_path": "/assets/images/shopify-handbook/c5411ed76f653e7a.png",
+    "alt": "Shopify 自己建站 vs 找人代建",
+    "bytes": 432316,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-fiverr-upwork-vs-agency.c0f534fd.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-fiverr-upwork-vs-agency.c0f534fd.png",
+    "local_path": "/assets/images/shopify-handbook/c9a20c19c0be2c39.png",
+    "alt": "Shopify 外包方式怎么选",
+    "bytes": 385830,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-free-theme-vs-custom-theme.e13685c2.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-free-theme-vs-custom-theme.e13685c2.png",
+    "local_path": "/assets/images/shopify-handbook/c399d3fec9422318.png",
+    "alt": "Shopify 免费模板 vs 定制主题",
+    "bytes": 348162,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-fulfillment-status.e0cfbc4a.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-fulfillment-status.e0cfbc4a.png",
+    "local_path": "/assets/images/shopify-handbook/eda796a611afd486.png",
+    "alt": "配送状态界面",
+    "bytes": 133214,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-inventory-management-guide-cover.f59113af.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-inventory-management-guide-cover.f59113af.png",
+    "local_path": "/assets/images/shopify-handbook/e952e0beca7428fc.png",
+    "alt": "Shopify 库存管理基础指南",
+    "bytes": 545952,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-liquid-guide-cover.03dddbf7.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-liquid-guide-cover.03dddbf7.png",
+    "local_path": "/assets/images/shopify-handbook/4a2200fee2dc26fd.png",
+    "alt": "Shopify Liquid 模板语言指南",
+    "bytes": 382739,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-order-status-overview.79869b40.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-order-status-overview.79869b40.png",
+    "local_path": "/assets/images/shopify-handbook/e3dbe3694f325b6b.png",
+    "alt": "Shopify订单状态总览",
+    "bytes": 258813,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-payment-capture-options.ae2a91bc.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-payment-capture-options.ae2a91bc.png",
+    "local_path": "/assets/images/shopify-handbook/f7edb9001cc2d3cf.png",
+    "alt": "款项获取设置",
+    "bytes": 180574,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-payment-status-authorized.18de2f58.png&w=2048&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-payment-status-authorized.18de2f58.png",
+    "local_path": "/assets/images/shopify-handbook/a6b31f4c8bc94284.png",
+    "alt": "已授权状态界面",
+    "bytes": 130834,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-payment-status-pending.95f90772.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-payment-status-pending.95f90772.png",
+    "local_path": "/assets/images/shopify-handbook/7e6d92271615b511.png",
+    "alt": "待付款状态",
+    "bytes": 174504,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-plus-banner.09eeacee.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-plus-banner.09eeacee.png",
+    "local_path": "/assets/images/shopify-handbook/7737796f8c717c2e.png",
+    "alt": "Shopify Plus 企业电商平台",
+    "bytes": 196067,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-pricing-package-comparison.04b293a6.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-pricing-package-comparison.04b293a6.png",
+    "local_path": "/assets/images/shopify-handbook/8d548076df5c96f7.png",
+    "alt": "Shopify 建站套餐怎么选",
+    "bytes": 323836,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-return-status.b89f93d2.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-return-status.b89f93d2.png",
+    "local_path": "/assets/images/shopify-handbook/8cd1e81a68baf7c1.png",
+    "alt": "退货状态界面",
+    "bytes": 243784,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fshopify-store-security-guide-cover.b1ba7a03.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/shopify-store-security-guide-cover.b1ba7a03.png",
+    "local_path": "/assets/images/shopify-handbook/a4e068ff2a4ed293.png",
+    "alt": "Shopify 店铺安全设置指南",
+    "bytes": 363125,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ftranslate.cea54ef3.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/translate.cea54ef3.png",
+    "local_path": "/assets/images/shopify-handbook/7644805178194251.png",
+    "alt": "翻译插件",
+    "bytes": 203992,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ftranslate2.376a8b78.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/_next/static/media/translate2.376a8b78.png",
+    "local_path": "/assets/images/shopify-handbook/2f258eb4a23fc0b8.png",
+    "alt": "翻译插件执行",
+    "bytes": 74031,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fadd-block1.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/add-block1.png",
+    "local_path": "/assets/images/shopify-handbook/3b39914e02f66c73.png",
+    "alt": "Shopify\\_theme\\_add\\_blocks",
+    "bytes": 214188,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fadd-block2.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/add-block2.png",
+    "local_path": "/assets/images/shopify-handbook/48211e1a68a93dca.png",
+    "alt": "Shopify\\_theme\\_add\\_blocks",
+    "bytes": 91904,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fadd-block3.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/add-block3.png",
+    "local_path": "/assets/images/shopify-handbook/7d5340a04b5c7e9f.png",
+    "alt": "Shopify\\_theme\\_add\\_blocks",
+    "bytes": 158188,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fadd-product-button.png&w=1200&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/add-product-button.png",
+    "local_path": "/assets/images/shopify-handbook/aa385ab9b38d0ec2.png",
+    "alt": "添加产品按钮位置",
+    "bytes": 197369,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fadd-section.png&w=1080&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/add-section.png",
+    "local_path": "/assets/images/shopify-handbook/6767707ced42539d.png",
+    "alt": "Shopify Theme怎么开发一个分区",
+    "bytes": 642882,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fadd-section2.png&w=1080&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/add-section2.png",
+    "local_path": "/assets/images/shopify-handbook/00b2351fbb75f412.png",
+    "alt": "Shopify Theme增加一个分区",
+    "bytes": 144911,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fadd-section3.png%3Fv%3D1&w=1080&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/add-section3.png?v=1",
+    "local_path": "/assets/images/shopify-handbook/773e1eaddef2462f.png",
+    "alt": "Shopify 在 Theme Editor 中添加该 Section",
+    "bytes": 127933,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fadd-section4.png&w=1080&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/add-section4.png",
+    "local_path": "/assets/images/shopify-handbook/58daaecf91f6d0c7.png",
+    "alt": "Shopify 在 Theme Editor 中添加该 Section",
+    "bytes": 664781,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fadmin.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/admin.png",
+    "local_path": "/assets/images/shopify-handbook/ebcd68099e954158.png",
+    "alt": "Shopify admin",
+    "bytes": 412383,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fadmin2.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/admin2.png",
+    "local_path": "/assets/images/shopify-handbook/ff48c66c9a25d698.png",
+    "alt": "Shopify admin theme",
+    "bytes": 262215,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2FAttribution.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/Attribution.png",
+    "local_path": "/assets/images/shopify-handbook/e85357b131f7ca04.png",
+    "alt": "Shopify Growth Attribution 界面——订单归因数据视图",
+    "bytes": 230953,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fauto-collection.png&w=1200&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/auto-collection.png",
+    "local_path": "/assets/images/shopify-handbook/5cf26623ba0807a3.png",
+    "alt": "Shopify创建自动产品系列",
+    "bytes": 154546,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2FCampaigns.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/Campaigns.png",
+    "local_path": "/assets/images/shopify-handbook/d3f8536319519d83.png",
+    "alt": "Shopify Growth Campaigns 界面——创建活动与 Tracking Link 管理",
+    "bytes": 271645,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fclose-password.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/close-password.png",
+    "local_path": "/assets/images/shopify-handbook/d47fe704b2cabea4.png",
+    "alt": "删除Shopify商店密码",
+    "bytes": 105500,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fgrowth.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/growth.png",
+    "local_path": "/assets/images/shopify-handbook/5662dbff77b90627.png",
+    "alt": "Shopify Spring '26 Growth 标签界面——Campaign、Attribution 与 Autopilot",
+    "bytes": 354027,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fimg_1.png&w=1200&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/img_1.png",
+    "local_path": "/assets/images/shopify-handbook/0a9873a47d949f4e.png",
+    "alt": "seo listing",
+    "bytes": 127744,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Finventory-management.png&w=1200&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/inventory-management.png",
+    "local_path": "/assets/images/shopify-handbook/d61f897ac05122cb.png",
+    "alt": "库存管理设置",
+    "bytes": 176329,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fmobile-optimization.png&w=828&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/mobile-optimization.png",
+    "local_path": "/assets/images/shopify-handbook/990ff5aadcf65b02.png",
+    "alt": "移动端产品页优化要点",
+    "bytes": 48312,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fproduct-status.png&w=1080&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/product-status.png",
+    "local_path": "/assets/images/shopify-handbook/a6612036edb48559.png",
+    "alt": "产品状态设置",
+    "bytes": 246356,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fpublish-theme.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/publish-theme.png",
+    "local_path": "/assets/images/shopify-handbook/2fddad981a80e58d.png",
+    "alt": "发布Shopify主题",
+    "bytes": 172382,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fset-collaborator.png&w=1200&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/set-collaborator.png",
+    "local_path": "/assets/images/shopify-handbook/ae3c79f0858c5ba0.png",
+    "alt": "Shopify 后台设置中复制合作者请求代码的位置示意",
+    "bytes": 122244,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fshopify-ai-toolkit-added.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/shopify-ai-toolkit-added.png",
+    "local_path": "/assets/images/shopify-handbook/5c68ee05620b15b9.png",
+    "alt": "安装 Shopify-ai-toolkit 一直回车安装完毕",
+    "bytes": 195638,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fshopify-ai-toolkit-optimize.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/shopify-ai-toolkit-optimize.png",
+    "local_path": "/assets/images/shopify-handbook/7018bcab8f0d2da5.png",
+    "alt": "安装 Shopify-ai-toolkit 优化产品和SEO",
+    "bytes": 195638,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fshopify-ai-toolkit.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/shopify-ai-toolkit.png",
+    "local_path": "/assets/images/shopify-handbook/ffa81a15d5029b29.png",
+    "alt": "安装 Shopify-ai-toolkit",
+    "bytes": 181516,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fshopify-masdaq.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/shopify-masdaq.png",
+    "local_path": "/assets/images/shopify-handbook/85a33c3b01584538.png",
+    "alt": "Shopify股价表现",
+    "bytes": 102702,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fshopify-others.png&w=1200&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/shopify-others.png",
+    "local_path": "/assets/images/shopify-handbook/cc977ea1f8bde762.png",
+    "alt": "Shopify 设置第三方支付方式",
+    "bytes": 50343,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fshopify-payments.png&w=1200&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/shopify-payments.png",
+    "local_path": "/assets/images/shopify-handbook/2a3659e3190ea64e.png",
+    "alt": "Shopify Payments设置界面",
+    "bytes": 131966,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fshopify-settings-metafields.png&w=2048&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/shopify-settings-metafields.png",
+    "local_path": "/assets/images/shopify-handbook/5dec3aa1e5054b2d.png",
+    "alt": "Shopify 管理员中的元字段与元对象定义",
+    "bytes": 136218,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Ftheme-customizer.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/theme-customizer.png",
+    "local_path": "/assets/images/shopify-handbook/1fded2e56eb5eba0.png",
+    "alt": "Shopify主题自定义编辑器",
+    "bytes": 304418,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Ftheme-store.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/theme-store.png",
+    "local_path": "/assets/images/shopify-handbook/ef9881fcea27be86.png",
+    "alt": "Shopify主题商店",
+    "bytes": 161998,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Ftheme.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/theme.png",
+    "local_path": "/assets/images/shopify-handbook/0213a41e0cfb1dac.png",
+    "alt": "Shopify admin theme",
+    "bytes": 199067,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Ftrends.png&w=1920&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/trends.png",
+    "local_path": "/assets/images/shopify-handbook/ace4fe22f3ab935e.png",
+    "alt": "Shopify vs WordPress Google 搜索趋势",
+    "bytes": 94512,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fvariants-setup.png&w=1200&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/variants-setup.png",
+    "local_path": "/assets/images/shopify-handbook/cfa04146f6e3d33d.png",
+    "alt": "产品变体设置",
+    "bytes": 37578,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fwave-animation-section.png&w=2048&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/wave-animation-section.png",
+    "local_path": "/assets/images/shopify-handbook/980866256248cecb.png",
+    "alt": "Shopify 水波浪动画配置",
+    "bytes": 182435,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Fimages%2Fcontents%2Fwave-animation.gif&w=2048&q=75",
+    "download_url": "https://shopify.baoea.com/images/contents/wave-animation.gif",
+    "local_path": "/assets/images/shopify-handbook/1c02d154553f74a4.gif",
+    "alt": "Shopify 水波浪动画",
+    "bytes": 3556112,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Fahrefs.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/ahrefs.png",
+    "local_path": "/assets/images/shopify-handbook/192a25c5f4dbed1e.png",
+    "alt": "Ahrefs",
+    "bytes": 16795,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Fbuffer.png%3Fv%3D1&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/buffer.png?v=1",
+    "local_path": "/assets/images/shopify-handbook/1d081624b39b70f0.png",
+    "alt": "Buffer",
+    "bytes": 69510,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Fcanva.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/canva.png",
+    "local_path": "/assets/images/shopify-handbook/b5408f084c12d48f.png",
+    "alt": "Canva",
+    "bytes": 58452,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Fchatgpt.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/chatgpt.png",
+    "local_path": "/assets/images/shopify-handbook/1ba1587ed726d916.png",
+    "alt": "ChatGPT",
+    "bytes": 13712,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Fgoogle-trends.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/google-trends.png",
+    "local_path": "/assets/images/shopify-handbook/bc635788748e6213.png",
+    "alt": "Google Trends",
+    "bytes": 6492,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Fixspy.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/ixspy.png",
+    "local_path": "/assets/images/shopify-handbook/da52bd9d412f4bc1.png",
+    "alt": "iXSpy",
+    "bytes": 5629,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Floox.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/loox.png",
+    "local_path": "/assets/images/shopify-handbook/c6c540644d7fc880.png",
+    "alt": "Loox",
+    "bytes": 48869,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Fparcelpanel.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/parcelpanel.png",
+    "local_path": "/assets/images/shopify-handbook/a19af1c0173ee9a2.png",
+    "alt": "Parcel Panel",
+    "bytes": 232040,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Fsearch-console.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/search-console.png",
+    "local_path": "/assets/images/shopify-handbook/c384b523b9c36ebe.png",
+    "alt": "Google Search Console",
+    "bytes": 81480,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Fshippo.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/shippo.png",
+    "local_path": "/assets/images/shopify-handbook/0331955f5bd1d8d9.png",
+    "alt": "Shippo",
+    "bytes": 5427,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Ftinypng.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/tinypng.png",
+    "local_path": "/assets/images/shopify-handbook/8972e8cbaac6d756.png",
+    "alt": "TinyPNG",
+    "bytes": 125071,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Fubersuggest.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/ubersuggest.png",
+    "local_path": "/assets/images/shopify-handbook/d505c13e9686ff63.png",
+    "alt": "Ubersuggest",
+    "bytes": 8635,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  },
+  {
+    "source_url": "https://shopify.baoea.com/_next/image?url=%2Ftools%2Fzoho.png&w=3840&q=75",
+    "download_url": "https://shopify.baoea.com/tools/zoho.png",
+    "local_path": "/assets/images/shopify-handbook/9d9822b3ea44fb8f.png",
+    "alt": "Zoho邮箱",
+    "bytes": 14970,
+    "snapshot_generated_at": "2026-07-26T05:47:42.121Z"
+  }
+]

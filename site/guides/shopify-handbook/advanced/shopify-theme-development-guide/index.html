@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>一、Online Store 2.0 与旧主题的差异 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify 主题开发自 2021 年 Online Store 2.0 推出后发生了根本性变化——从基于固定模板的”主题”，演进为以 Sections + Blocks + JSON Templates 为核心的”可视化拖拽系统">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/shopify-theme-development-guide/">
+  <meta property="og:title" content="一、Online Store 2.0 与旧主题的差异 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify 主题开发自 2021 年 Online Store 2.0 推出后发生了根本性变化——从基于固定模板的”主题”，演进为以 Sections + Blocks + JSON Templates 为核心的”可视化拖拽系统">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>一、Online Store 2.0 与旧主题的差异</h1>
+        <p>Shopify 主题开发自 2021 年 Online Store 2.0 推出后发生了根本性变化——从基于固定模板的”主题”，演进为以 Sections + Blocks + JSON Templates 为核心的”可视化拖拽系统</p>
+      </header>
+      <div class="article-content"><p>Shopify 主题开发自 2021 年 <strong>Online Store 2.0</strong> 推出后发生了根本性变化——从基于固定模板的”主题”，演进为以 <strong>Sections + Blocks + JSON Templates</strong> 为核心的”可视化拖拽系统”。本文聚焦在生产级主题开发的关键模式与决策，<strong>不重复 Liquid 基础语法</strong>（基础语法见 <a href="/guides/shopify-handbook/liquid/">Liquid 文档</a>）。</p>
+<p>阅读前置：</p>
+<ul>
+<li>熟悉 Liquid 基础（assign、for、if、render）</li>
+<li>熟悉 Shopify 主题目录结构</li>
+<li>推荐先看 <a href="/guides/shopify-handbook/advanced/advanced-liquid-techniques/">Liquid 进阶技巧</a></li>
+</ul>
+<h2 id="一-online-store-2-0-与旧主题的差异">一、Online Store 2.0 与旧主题的差异</h2><h3 id="主题文件结构-2-0">主题文件结构（2.0）</h3><pre><code>my-theme/
+├── assets/                  # 静态资源（CSS、JS、字体、图片）
+├── config/
+│   ├── settings_schema.json # 主题设置
+│   └── settings_data.json   # 主题配置实际值
+├── layout/
+│   └── theme.liquid         # 主布局
+├── sections/                # 可复用 section 与 block
+│   ├── header.liquid
+│   ├── footer.liquid
+│   └── *.liquid
+├── snippets/                # 可复用代码片段
+├── templates/               # 页面模板（JSON 或 Liquid）
+│   ├── product.json         # 2.0 推荐：JSON 模板
+│   ├── product.liquid       # 旧：Liquid 模板
+│   ├── collection.json
+│   └── index.json
+├── locales/                 # 多语言文件
+└── blocks/                  # 2024 新增：theme blocks（更细粒度）
+</code></pre>
+<h3 id="json-templates-取代-liquid-templates">JSON Templates 取代 Liquid Templates</h3><p>旧主题：</p>
+<pre><code>{# templates/product.liquid #}
+&lt;div class="product"&gt;
+  {% section 'product-info' %}
+  {% section 'product-recommendations' %}
+&lt;/div&gt;
+</code></pre>
+<p>2.0 主题：</p>
+<pre><code>{
+  "sections": {
+    "main": { "type": "main-product", "settings": {} },
+    "recommendations": { "type": "product-recommendations", "settings": {} }
+  },
+  "order": ["main", "recommendations"]
+}
+</code></pre>
+<p>JSON 模板让<strong>运营人员可以在主题编辑器中拖拽改变 section 顺序</strong>，无需开发介入。</p>
+<h3 id="sections-everywhere">Sections Everywhere</h3><p>旧主题：sections 仅在首页可用，其他页面是静态 Liquid。</p>
+<p>2.0：每个页面都可由多个 sections 组成，每个 section 可包含多个 blocks。运营自由组合。</p>
+<h3 id="推荐做法">推荐做法</h3><ul>
+<li><strong>所有新主题项目用 2.0 架构</strong></li>
+<li>老主题升级时，把 Liquid templates 改为 JSON</li>
+<li>主 section（如 main-product）建为完整的 section，子组件用 blocks</li>
+</ul>
+<h2 id="二-section-与-block-设计">二、Section 与 Block 设计</h2><h3 id="section-schema-完整结构">Section Schema 完整结构</h3><pre><code>{% schema %}
+{
+  "name": "Featured Products",
+  "tag": "section",
+  "class": "section-featured-products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "标题",
+      "default": "热门产品"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "集合"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "label": "每行产品数",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_card",
+      "name": "产品卡片",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "产品"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products",
+      "category": "Products"
+    }
+  ],
+  "max_blocks": 12
+}
+{% endschema %}
+</code></pre>
+<h3 id="block-设计原则">Block 设计原则</h3><ul>
+<li>每种 block type 独立 schema 定义</li>
+<li>多个 block 可在同一 section 中重复（运营可加多个产品 / 多张图）</li>
+<li>单 section 的 blocks 总数有上限（默认 16，可在 schema 设上限）</li>
+<li>不同 block type 的 settings 完全独立</li>
+</ul>
+<h3 id="渲染-blocks">渲染 blocks</h3><pre><code>&lt;div class="featured-products"&gt;
+  {%- if section.settings.title != blank -%}
+    &lt;h2&gt;{{ section.settings.title }}&lt;/h2&gt;
+  {%- endif -%}
+ 
+  &lt;div class="product-grid product-grid--{{ section.settings.products_per_row }}-cols"&gt;
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'product_card' -%}
+          &lt;div class="product-grid__item" {{ block.shopify_attributes }}&gt;
+            {%- if block.settings.product != blank -%}
+              {% render 'product-card', product: block.settings.product %}
+            {%- endif -%}
+          &lt;/div&gt;
+      {%- endcase -%}
+    {%- endfor -%}
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p><code>{{ block.shopify_attributes }}</code> <strong>必填</strong>——让主题编辑器能识别并高亮可点击的 block。</p>
+<h2 id="三-theme-liquid-布局规范">三、theme.liquid 布局规范</h2><h3 id="头部规范">头部规范</h3><pre><code>&lt;!doctype html&gt;
+&lt;html lang="{{ request.locale.iso_code }}"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;meta name="theme-color" content="{{ settings.color_brand }}"&gt;
+ 
+  {%- liquid
+    assign page_title_with_brand = page_title
+    unless page_title contains shop.name
+      assign page_title_with_brand = page_title | append: ' - ' | append: shop.name
+    endunless
+  -%}
+  &lt;title&gt;{{ page_title_with_brand }}&lt;/title&gt;
+ 
+  &lt;meta name="description" content="{{ page_description | default: shop.description | escape }}"&gt;
+  &lt;link rel="canonical" href="{{ canonical_url }}"&gt;
+ 
+  {# Hreflang 多语言 #}
+  {%- for locale in shop.published_locales -%}
+    &lt;link rel="alternate"
+          hreflang="{{ locale.iso_code }}"
+          href="{{ canonical_url }}"&gt;
+  {%- endfor -%}
+  &lt;link rel="alternate" hreflang="x-default" href="{{ canonical_url }}"&gt;
+ 
+  {# 预连接 + DNS Prefetch #}
+  &lt;link rel="preconnect" href="https://cdn.shopify.com" crossorigin&gt;
+  &lt;link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin&gt;
+ 
+  {# 关键 CSS（首屏） #}
+  {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+ 
+  {# 非关键 CSS（异步） #}
+  &lt;link rel="preload" href="{{ 'theme.css' | asset_url }}" as="style"
+        onload="this.onload=null;this.rel='stylesheet'"&gt;
+ 
+  {{ content_for_header }}
+&lt;/head&gt;
+&lt;body class="template-{{ template | replace: '.', '-' }}"&gt;
+  &lt;a class="skip-link" href="#MainContent"&gt;跳转到主要内容&lt;/a&gt;
+ 
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+ 
+  &lt;main id="MainContent" role="main"&gt;
+    {{ content_for_layout }}
+  &lt;/main&gt;
+ 
+  {% section 'footer' %}
+ 
+  {# 非关键 JS 延迟加载 #}
+  &lt;script src="{{ 'theme.js' | asset_url }}" defer&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3 id="关键点">关键点</h3><ul>
+<li><strong><code>lang</code> 属性自动取当前 locale</strong></li>
+<li><strong><code>&lt;title&gt;</code> 与 <code>shop.name</code> 智能拼接</strong>避免重复</li>
+<li><strong>canonical 与 hreflang</strong> 默认输出</li>
+<li><strong>preconnect</strong> Shopify CDN 减少 DNS 时间</li>
+<li><strong>critical.css</strong> 内联 + <strong>theme.css</strong> 异步加载</li>
+</ul>
+<h2 id="四-性能优化模式">四、性能优化模式</h2><h3 id="性能问题的常见来源">性能问题的常见来源</h3><p>按真实项目影响排序：</p>
+<ol>
+<li>循环外缺少 <code>assign</code> 缓存集合对象</li>
+<li><code>image_url</code> 未指定 width 或 width 过大</li>
+<li>首屏图片错加 <code>loading="lazy"</code></li>
+<li><code>&lt;img&gt;</code> 缺 width/height（CLS 飙升）</li>
+<li>第三方脚本同步加载（INP 飙升）</li>
+</ol>
+<p>详细诊断见 <a href="/guides/shopify-handbook/advanced/improving-web-performance/">Shopify 商店性能优化</a>。</p>
+<h3 id="主题代码层面的性能模式">主题代码层面的性能模式</h3><p><strong>模式 1：响应式图片 snippet</strong></p>
+<pre><code>{# snippets/responsive-image.liquid #}
+{%- assign sizes = sizes | default: "100vw" -%}
+{%- assign widths = widths | default: "300, 600, 900, 1200" -%}
+{%- assign widths_array = widths | split: ", " -%}
+ 
+{%- capture srcset -%}
+  {%- for w in widths_array -%}
+    {{ image | image_url: width: w }} {{ w }}w{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+{%- endcapture -%}
+ 
+&lt;img
+  src="{{ image | image_url: width: 600 }}"
+  srcset="{{ srcset }}"
+  sizes="{{ sizes }}"
+  alt="{{ image.alt | escape }}"
+  loading="{{ loading | default: 'lazy' }}"
+  fetchpriority="{{ priority | default: 'auto' }}"
+  width="{{ image.width }}"
+  height="{{ image.height }}"
+&gt;
+</code></pre>
+<p>调用：</p>
+<pre><code>{# 首屏 hero 图 #}
+{% render 'responsive-image',
+   image: section.settings.hero_image,
+   sizes: '100vw',
+   loading: 'eager',
+   priority: 'high' %}
+ 
+{# 产品卡片图 #}
+{% render 'responsive-image',
+   image: product.featured_image,
+   sizes: '(min-width: 768px) 33vw, 100vw',
+   widths: '300, 600' %}
+</code></pre>
+<p><strong>模式 2：循环外预加载</strong></p>
+<pre><code>{%- liquid
+  assign featured_products = collections['featured'].products
+  assign product_count = featured_products.size
+-%}
+ 
+{%- if product_count &gt; 0 -%}
+  {%- for product in featured_products limit: 8 -%}
+    {%- render 'product-card', product: product -%}
+  {%- endfor -%}
+{%- endif -%}
+</code></pre>
+<p><strong>模式 3：第三方脚本延迟</strong></p>
+<pre><code>&lt;script&gt;
+  function loadDeferred() {
+    if (window.deferredLoaded) return;
+    window.deferredLoaded = true;
+    var scripts = ['{{ "tracking.js" | asset_url }}', 'https://example.com/widget.js'];
+    scripts.forEach(function(src) {
+      var s = document.createElement('script');
+      s.src = src;
+      s.async = true;
+      document.head.appendChild(s);
+    });
+  }
+  ['scroll', 'click', 'keydown'].forEach(function(e) {
+    window.addEventListener(e, loadDeferred, { once: true, passive: true });
+  });
+  setTimeout(loadDeferred, 5000);
+&lt;/script&gt;
+</code></pre>
+<h2 id="五-javascript-架构">五、JavaScript 架构</h2><h3 id="现代-shopify-主题-js-趋势">现代 Shopify 主题 JS 趋势</h3><ul>
+<li><strong>Web Components</strong>：原生 Custom Elements，零依赖</li>
+<li><strong>Alpine.js</strong>：轻量框架，适合简单交互</li>
+<li><strong>Stimulus</strong>：HTML-first 框架</li>
+<li><strong>vanilla TypeScript</strong>：性能最优但开发复杂</li>
+</ul>
+<p><strong>不推荐</strong>：</p>
+<ul>
+<li>jQuery（过时、体积大）</li>
+<li>完整 React 框架（除非 Headless）</li>
+<li>多个框架混用</li>
+</ul>
+<h3 id="web-components-示例-cart-drawer">Web Components 示例：Cart Drawer</h3><pre><code>class CartDrawer extends HTMLElement {
+  constructor() {
+    super();
+    this.openButton = this.querySelector('[data-open]');
+    this.closeButton = this.querySelector('[data-close]');
+  }
+ 
+  connectedCallback() {
+    this.openButton?.addEventListener('click', () =&gt; this.open());
+    this.closeButton?.addEventListener('click', () =&gt; this.close());
+    document.addEventListener('cart:updated', () =&gt; this.refresh());
+  }
+ 
+  open() {
+    this.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+ 
+  close() {
+    this.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+ 
+  async refresh() {
+    const response = await fetch('/cart.js');
+    const cart = await response.json();
+    this.updateUI(cart);
+  }
+ 
+  updateUI(cart) {
+    this.querySelector('[data-cart-count]').textContent = cart.item_count;
+    this.querySelector('[data-cart-subtotal]').textContent =
+      this.formatMoney(cart.total_price);
+  }
+ 
+  formatMoney(cents) {
+    return (cents / 100).toFixed(2);
+  }
+}
+ 
+customElements.define('cart-drawer', CartDrawer);
+</code></pre>
+<pre><code>&lt;cart-drawer aria-hidden="true"&gt;
+  &lt;button data-open&gt;购物车 ({{ cart.item_count }})&lt;/button&gt;
+  &lt;div class="drawer"&gt;
+    &lt;button data-close&gt;关闭&lt;/button&gt;
+    &lt;ul&gt;
+      {%- for item in cart.items -%}
+        {# 渲染 item #}
+      {%- endfor -%}
+    &lt;/ul&gt;
+    &lt;p&gt;小计：&lt;span data-cart-subtotal&gt;{{ cart.total_price | money }}&lt;/span&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/cart-drawer&gt;
+</code></pre>
+<h3 id="cart-api-交互">Cart API 交互</h3><pre><code>// 加入购物车
+async function addToCart(variantId, quantity) {
+  const response = await fetch('/cart/add.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: variantId, quantity: quantity })
+  });
+ 
+  if (!response.ok) {
+    throw new Error('Add to cart failed');
+  }
+ 
+  const item = await response.json();
+ 
+  document.dispatchEvent(new CustomEvent('cart:added', { detail: item }));
+  document.dispatchEvent(new CustomEvent('cart:updated'));
+ 
+  return item;
+}
+ 
+// 更新数量
+async function updateCartItem(line, quantity) {
+  const response = await fetch('/cart/change.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ line, quantity })
+  });
+ 
+  return response.json();
+}
+</code></pre>
+<h2 id="六-seo-集成">六、SEO 集成</h2><h3 id="自动生成的结构化数据">自动生成的结构化数据</h3><p>针对产品页：</p>
+<pre><code>{# snippets/product-schema.liquid #}
+&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "image": [
+    {%- for image in product.images limit: 5 -%}
+      {{ image | image_url: width: 1200 | json }}
+      {%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ],
+  "description": {{ product.description | strip_html | json }},
+  "sku": {{ product.selected_or_first_available_variant.sku | json }},
+  "brand": {
+    "@type": "Brand",
+    "name": {{ product.vendor | json }}
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": {{ shop.url | append: product.url | json }},
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "price": "{{ product.price | divided_by: 100.00 }}",
+    "availability": "{%- if product.available -%}https://schema.org/InStock{%- else -%}https://schema.org/OutOfStock{%- endif -%}",
+    {% if product.metafields.reviews.rating_count &gt; 0 %}
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "{{ product.metafields.reviews.rating.value }}",
+      "reviewCount": "{{ product.metafields.reviews.rating_count }}"
+    }
+    {% endif %}
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h3 id="meta-标签">Meta 标签</h3><pre><code>{# Open Graph #}
+&lt;meta property="og:type" content="{% if template contains 'product' %}product{% else %}website{% endif %}"&gt;
+&lt;meta property="og:title" content="{{ page_title | escape }}"&gt;
+&lt;meta property="og:description" content="{{ page_description | default: shop.description | escape }}"&gt;
+&lt;meta property="og:url" content="{{ canonical_url }}"&gt;
+{%- if template contains 'product' -%}
+  &lt;meta property="og:image" content="https:{{ product.featured_image | image_url: width: 1200 }}"&gt;
+  &lt;meta property="product:price:amount" content="{{ product.price | divided_by: 100.0 }}"&gt;
+  &lt;meta property="product:price:currency" content="{{ cart.currency.iso_code }}"&gt;
+{%- endif -%}
+ 
+{# Twitter Card #}
+&lt;meta name="twitter:card" content="summary_large_image"&gt;
+</code></pre>
+<h2 id="七-可访问性-a11y">七、可访问性（A11y）</h2><h3 id="语义化-html">语义化 HTML</h3><pre><code>{# 不推荐 #}
+&lt;div class="header"&gt;
+  &lt;div class="nav"&gt;
+    &lt;div class="menu-item"&gt;&lt;a href="..."&gt;Home&lt;/a&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+{# 推荐 #}
+&lt;header&gt;
+  &lt;nav aria-label="主导航"&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="..." {% if request.path == '/' %}aria-current="page"{% endif %}&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/nav&gt;
+&lt;/header&gt;
+</code></pre>
+<h3 id="表单标签">表单标签</h3><pre><code>&lt;form action="/contact" method="post"&gt;
+  &lt;label for="contact-email"&gt;电子邮箱&lt;/label&gt;
+  &lt;input id="contact-email" name="contact[email]" type="email" required
+         aria-describedby="email-help"&gt;
+  &lt;small id="email-help"&gt;仅用于回复您的咨询&lt;/small&gt;
+  &lt;button type="submit"&gt;提交&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+<h3 id="跳转链接">跳转链接</h3><pre><code>&lt;a class="skip-link" href="#MainContent"&gt;跳转到主要内容&lt;/a&gt;
+</code></pre>
+<p>配合 CSS：</p>
+<pre><code>.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: white;
+  padding: 1rem;
+  z-index: 9999;
+}
+</code></pre>
+<h3 id="颜色对比">颜色对比</h3><p>按 WCAG AA 标准：</p>
+<ul>
+<li>正文文字 ≥ 4.5:1</li>
+<li>大字号 ≥ 3:1</li>
+<li>UI 组件 ≥ 3:1</li>
+</ul>
+<p>用浏览器 DevTools Lighthouse Accessibility 检查。</p>
+<h2 id="八-shopify-cli-开发流程">八、Shopify CLI 开发流程</h2><h3 id="安装">安装</h3><pre><code>npm install -g @shopify/cli @shopify/theme
+shopify auth login
+</code></pre>
+<h3 id="本地开发">本地开发</h3><pre><code># 拉取主题代码
+shopify theme pull --store=my-store.myshopify.com --theme=THEME_ID
+ 
+# 启动本地预览
+cd my-theme
+shopify theme dev --store=my-store.myshopify.com
+ 
+# 修改代码 → 自动热重载
+</code></pre>
+<h3 id="推送修改">推送修改</h3><pre><code># 推送到 unpublished theme（推荐先测试）
+shopify theme push --unpublished
+ 
+# 直接更新现有主题
+shopify theme push --theme=THEME_ID
+</code></pre>
+<h3 id="检查代码">检查代码</h3><pre><code># 静态检查
+shopify theme check
+ 
+# 输出错误、警告、建议
+</code></pre>
+<h2 id="九-生产部署流程">九、生产部署流程</h2><h3 id="推荐工作流">推荐工作流</h3><pre><code>本地开发
+   ↓ shopify theme push --unpublished
+Unpublished Theme（测试）
+   ↓ Theme editor 测试
+   ↓ Lighthouse 性能验证
+   ↓ 关键流程手动测试（购买、加购、登录）
+Live Theme（生产）
+</code></pre>
+<h3 id="版本管理">版本管理</h3><p>主题代码用 Git 管理：</p>
+<pre><code>main          # 当前生产版本
+develop       # 开发分支
+feature/xxx   # 功能开发
+</code></pre>
+<p>每次发布 tag：<code>v1.2.3</code>，便于回滚。</p>
+<h3 id="灰度发布">灰度发布</h3><p>大改动时：</p>
+<ol>
+<li>推送到 unpublished theme</li>
+<li>通过 <a href="https://shopify.dev/themes/tools/preview" target="_blank" rel="noreferrer">Shopify Theme Preview</a>  共享 preview URL</li>
+<li>内部测试 1-3 天</li>
+<li>灰度部分流量（用第三方 A/B 工具如 Intelligems）</li>
+<li>全量切换</li>
+</ol>
+<h2 id="十-避免的常见错误">十、避免的常见错误</h2><h3 id="错误-1-未升级到-online-store-2-0">错误 1：未升级到 Online Store 2.0</h3><p>旧 Liquid templates 已不再获得 Shopify 新功能支持。新主题项目必须 2.0。</p>
+<h3 id="错误-2-硬编码英文文案">错误 2：硬编码英文文案</h3><pre><code>{# 反例 #}
+&lt;button&gt;Add to Cart&lt;/button&gt;
+ 
+{# 推荐 #}
+&lt;button&gt;{{ 'products.product.add_to_cart' | t }}&lt;/button&gt;
+</code></pre>
+<h3 id="错误-3-忽略-block-shopify-attributes">错误 3：忽略 block.shopify_attributes</h3><p>未输出该属性的 block 在主题编辑器中不能被选中编辑。</p>
+<h3 id="错误-4-在主题中存储大量逻辑">错误 4：在主题中存储大量逻辑</h3><p>复杂业务逻辑应该在应用 / 服务器端实现，主题只负责展示。</p>
+<h3 id="错误-5-不验证主题在-mobile-上的表现">错误 5：不验证主题在 mobile 上的表现</h3><p>主题改完只在桌面测试。多数 Shopify 流量来自移动端。</p>
+<h2 id="十一-相关教程">十一、相关教程</h2><ul>
+<li><a href="/guides/shopify-handbook/advanced/advanced-liquid-techniques/">Liquid 进阶技巧</a></li>
+<li><a href="/guides/shopify-handbook/liquid/best-practices/">Liquid 最佳实践</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-local-theme-development/">Shopify 主题开发实战</a></li>
+<li><a href="/guides/shopify-handbook/advanced/web-performance/">Web 性能优化指南</a></li>
+<li><a href="/guides/shopify-handbook/advanced/improving-web-performance/">Shopify 商店性能优化</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-metafields-metaobjects/">Metafields 与 Metaobjects</a></li>
+<li><a href="https://shopify.dev/docs/themes" target="_blank" rel="noreferrer">Shopify 主题官方文档</a> </li>
+<li><a href="https://shopify.dev/docs/themes/tools/cli" target="_blank" rel="noreferrer">Shopify CLI 文档</a> </li>
+<li><a href="https://shopify.dev/docs/themes/store/migrate" target="_blank" rel="noreferrer">Online Store 2.0 迁移</a></li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/hreflang-seo-guide/"><span>上一篇</span><strong>一、Hreflang 工作原理</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/improving-web-performance/"><span>下一篇</span><strong>一、Shopify 平台层面的默认优化</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

@@ -232,6 +232,57 @@ test("global search finds a DAIR skill and reports its package", async () => {
   await page.close();
 });
 
+test("Shopify 专题在全局搜索中只显示入口，专题内搜索正确隐藏文章", async () => {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
+
+  await page.getByPlaceholder("搜索技能包、技能或 /command").fill("Liquid");
+  assert.equal(await page.locator(".catalogue-result.guide-result").count(), 1);
+  assert.equal(await page.locator(".catalogue-result.skill-result").count(), 0);
+  await page.locator(".catalogue-result.guide-result").click();
+  await page.waitForLoadState("networkidle");
+
+  assert.equal(await page.locator("[data-guide-card]").count(), 157);
+  await page.getByPlaceholder("搜索 Shopify、SEO、Liquid…").fill("SEO");
+  const visibleCards = page.locator("[data-guide-card]:visible");
+  assert.ok((await visibleCards.count()) > 0);
+  assert.ok((await visibleCards.count()) < 157);
+  await assert.doesNotReject(
+    page.getByText("Shopify Google SEO 完全指南", { exact: true }).waitFor()
+  );
+  assert.equal(
+    await page.locator("[data-guide-card][hidden]").first().evaluate(
+      (node) => getComputedStyle(node).display
+    ),
+    "none"
+  );
+  assert.equal(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+    ),
+    false
+  );
+  await page.close();
+});
+
+test("Shopify 深层技术文章可直达并保留代码与表格阅读结构", async () => {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
+  await page.goto(`${baseUrl}/guides/shopify-handbook/liquid/getting-started/`, {
+    waitUntil: "networkidle",
+  });
+
+  assert.match(await page.locator(".guide-article h1").innerText(), /Liquid/);
+  assert.ok((await page.locator(".article-content pre code").count()) > 0);
+  assert.ok((await page.locator(".article-content table").count()) > 0);
+  assert.equal(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+    ),
+    false
+  );
+  await page.close();
+});
+
 test("Rayskills package shows the complete directory and separates package install from member call", async () => {
   const context = await browser.newContext({
     permissions: ["clipboard-read", "clipboard-write"],

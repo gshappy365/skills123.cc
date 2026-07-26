@@ -1,0 +1,2516 @@
+{
+  "schema_version": 1,
+  "site": "https://shopify.baoea.com",
+  "generated_at": "2026-07-26T05:47:42.121Z",
+  "source": {
+    "crawler": "Wigolo",
+    "cache_db": "/Users/gaoshan/.wigolo/wigolo.db",
+    "sitemap": "https://shopify.baoea.com/sitemap.xml",
+    "sitemap_child": "https://shopify.baoea.com/sitemap-0.xml",
+    "robots": "https://shopify.baoea.com/robots.txt"
+  },
+  "validation": {
+    "site": "https://shopify.baoea.com",
+    "sitemap_count": 163,
+    "internal_link_candidate_count": 163,
+    "candidate_union_count": 165,
+    "public_page_count": 164,
+    "overlap_count": 161,
+    "sitemap_only_count": 2,
+    "internal_only_candidate_count": 2,
+    "internal_only_public_count": 1,
+    "excluded_non_public_count": 1,
+    "missing_or_empty_count": 0,
+    "sitemap_only_urls": [
+      "https://shopify.baoea.com/terms",
+      "https://shopify.baoea.com/tools/store-search"
+    ],
+    "internal_only_urls": [
+      "https://shopify.baoea.com/contact"
+    ],
+    "excluded_non_public_urls": [
+      {
+        "url": "https://shopify.baoea.com/alternatives/naridon",
+        "http_status": 404,
+        "reason": "internal link resolves to an HTTP 404 page",
+        "referrers": [
+          "https://shopify.baoea.com/advanced/competitor-alternative-page-seo"
+        ]
+      }
+    ],
+    "missing_or_empty_urls": [],
+    "internal_only_referrers": {
+      "https://shopify.baoea.com/contact": [
+        "https://shopify.baoea.com/advanced/shopify-diy-vs-done-for-you",
+        "https://shopify.baoea.com/advanced/shopify-fiverr-upwork-vs-agency",
+        "https://shopify.baoea.com/advanced/shopify-pricing-package-comparison",
+        "https://shopify.baoea.com/advanced/shopify-store-build-service",
+        "https://shopify.baoea.com/basic/how-to-choose-shopify-theme",
+        "https://shopify.baoea.com/basic/shopify-free-vs-paid-theme-guide",
+        "https://shopify.baoea.com/basic/store-security-setup",
+        "https://shopify.baoea.com/terms",
+        "https://shopify.baoea.com/tools/store-search",
+        "https://shopify.baoea.com/tools/whatshop"
+      ]
+    }
+  },
+  "pages": [
+    {
+      "url": "https://shopify.baoea.com",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/index.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:39:01",
+      "fetch_method": "http",
+      "content_hash": "abb6d96b127c32e85a117586e096bcdc9ef7a9f2efde39fdfea0a4e2dbe447ce",
+      "content_chars": 3106,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/about",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/about/index.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:19:45",
+      "fetch_method": "http",
+      "content_hash": "afe4210b3d93d7346921407411c08d8022a610baaa0c6d1d3c1c2598f8a6d946",
+      "content_chars": 2362,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/index.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:20:21",
+      "fetch_method": "http",
+      "content_hash": "14a5376e5e994a1ba6dfc73b7af733eab3e90a21b4ac1a4efac30c0b3a027baa",
+      "content_chars": 6883,
+      "internal_links_count": 27
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/add-section",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/add-section.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:25:24",
+      "fetch_method": "http",
+      "content_hash": "02062d742a07beeb69299d4e39ea0f44a93ea742a658ca3c0fc0c2129f0af23a",
+      "content_chars": 8406,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/advanced-analytics",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/advanced-analytics.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:25:57",
+      "fetch_method": "http",
+      "content_hash": "d3674dff65d6723c76a0de495e9e515c28040d798873580ac046c1a572d9b8c8",
+      "content_chars": 5950,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/advanced-liquid-techniques",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/advanced-liquid-techniques.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:26:30",
+      "fetch_method": "http",
+      "content_hash": "aa11b8f60d71b067b7321c77a28d8cb79744e445c8b52bdc8dfe9548c1ba646b",
+      "content_chars": 18676,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/advanced-seo-strategies",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/advanced-seo-strategies.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:27:04",
+      "fetch_method": "http",
+      "content_hash": "a17f6d0e05e14ae1d448e92116e48c373e6522cab8799bc775e70136552c14a4",
+      "content_chars": 7227,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/ai-customer-service",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/ai-customer-service.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:27:37",
+      "fetch_method": "http",
+      "content_hash": "ac720afeef30cb7863db4ebaea7050b23d4704b6a51cc2b322184000caacaf30",
+      "content_chars": 8209,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/ai-hot-topics-independent-stores",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/ai-hot-topics-independent-stores.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:28:10",
+      "fetch_method": "http",
+      "content_hash": "61d40b281559624f9aa1eefba7b9a75540bcf1bd2b0c2ea7031ad222023705e9",
+      "content_chars": 8542,
+      "internal_links_count": 9
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/ai-merchant-operations-playbook",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/ai-merchant-operations-playbook.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:28:44",
+      "fetch_method": "http",
+      "content_hash": "8a2915c6728c8020fd9021cd259b594d7daf0ab65614945db0267d578b141d23",
+      "content_chars": 17503,
+      "internal_links_count": 18
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/bfcm-guide",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/bfcm-guide.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:29:18",
+      "fetch_method": "http",
+      "content_hash": "15e822e13313e335956c889d31e4aac92740a5190e79b08cc69045272c31cbf7",
+      "content_chars": 6653,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/competitor-alternative-page-seo",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/competitor-alternative-page-seo.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:29:51",
+      "fetch_method": "http",
+      "content_hash": "39285b17f2e91d44af5d9446fe2e56e78df28e9509f2e6fa7866ada0ac93f4a0",
+      "content_chars": 6516,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/content-marketing",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/content-marketing.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:30:03",
+      "fetch_method": "http",
+      "content_hash": "bcd898470850ed03d2aa755fcea0203da2c0f98ae5cce443faab46df0d5cd22b",
+      "content_chars": 10284,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/conversion-optimization",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/conversion-optimization.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:20:55",
+      "fetch_method": "http",
+      "content_hash": "ddd7ca46eec2664767a2e98c88789c52f1082e386503f8bd758927b7ef5c1f68",
+      "content_chars": 9986,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/cross-border-advanced",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/cross-border-advanced.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:30:05",
+      "fetch_method": "http",
+      "content_hash": "8de09cf40180873e1918a34d0591ca64dc39e5bfde8d9b9279db567902c1706f",
+      "content_chars": 6330,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/cross-border-tax-guide",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/cross-border-tax-guide.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:30:08",
+      "fetch_method": "http",
+      "content_hash": "32baa81e69a1d2edc07641d3a774e062d5246130bd3d8c7fefeb7e646357221a",
+      "content_chars": 15174,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/currency-tax-management",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/currency-tax-management.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:30:10",
+      "fetch_method": "http",
+      "content_hash": "fb9345290a6bbddedcd7954498cb1c31ad99ce600f56086bb8726d61c9df2a29",
+      "content_chars": 8071,
+      "internal_links_count": 11
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/customer-service-optimization",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/customer-service-optimization.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:30:13",
+      "fetch_method": "http",
+      "content_hash": "0e31c95e7075c6702f0548f4a84c4de02e4ceba5ba912121b97a110fbfae5a47",
+      "content_chars": 7630,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/data-driven-decision",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/data-driven-decision.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:30:16",
+      "fetch_method": "http",
+      "content_hash": "f6c961f5beb78dafec26b3b125a6375687b1f412872e05a908ffa0815beb623d",
+      "content_chars": 12551,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/email-marketing",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/email-marketing.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:30:19",
+      "fetch_method": "http",
+      "content_hash": "2109056e113e1f2f33af0a41d8b87c3f648e0d9cda0c6805057814409ec665cf",
+      "content_chars": 11753,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/gdpr-compliance-guide",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/gdpr-compliance-guide.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:30:21",
+      "fetch_method": "http",
+      "content_hash": "71f411de8f78c0ed844104ad864d0421248d4204d728d41bc270ea1aa3b03511",
+      "content_chars": 14144,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/geo-optimization",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/geo-optimization.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:30:23",
+      "fetch_method": "http",
+      "content_hash": "649b13d8f76456561364e1f57d1a73667e5b73759d9ab399d5adbebf7220761a",
+      "content_chars": 16886,
+      "internal_links_count": 2
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/global-logistics",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/global-logistics.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:30:25",
+      "fetch_method": "http",
+      "content_hash": "ac37b9b251d45d962d8b4fddcc5a2916400527715ce9b783ca4ad6f660318c6a",
+      "content_chars": 9393,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/google-ai-shopping-optimization",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/google-ai-shopping-optimization.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:30:27",
+      "fetch_method": "http",
+      "content_hash": "6ed702cf092bd0ee9cbf2b6f7b528cdc8c2ad5879fafda4ac3ba314763e0fea8",
+      "content_chars": 6316,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/headless-commerce-architecture",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/headless-commerce-architecture.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:30:29",
+      "fetch_method": "http",
+      "content_hash": "ce8f3812113efaaf42c50bd2b662036133ba5a3da4e95fff4f2d078b0b9a3fcd",
+      "content_chars": 1396,
+      "internal_links_count": 1
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/hreflang-seo-guide",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/hreflang-seo-guide.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:31:02",
+      "fetch_method": "http",
+      "content_hash": "057b905ddf5a68e8dd7fead14d0bc16a89ad4c5703f2dfccae40c45771132902",
+      "content_chars": 1961,
+      "internal_links_count": 1
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/improving-web-performance",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/improving-web-performance.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:31:35",
+      "fetch_method": "http",
+      "content_hash": "a3185bad00825f2d76d2eee0ed00f6e42a7883e5c46ddd5a4082ba664c8205ab",
+      "content_chars": 12238,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/independent-site-ongoing-operations",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/independent-site-ongoing-operations.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:32:07",
+      "fetch_method": "http",
+      "content_hash": "0b78410f7272509452f8155746a1a4b5b521343ab80755990ff6a5ee14a203d9",
+      "content_chars": 4560,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/independent-site-pricing-expectations",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/independent-site-pricing-expectations.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:32:40",
+      "fetch_method": "http",
+      "content_hash": "b77e6088fc4909f0fd13a1423600f1d8652fb59f66b1629af1d3ace7f450be1f",
+      "content_chars": 5928,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/inventory-optimization",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/inventory-optimization.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:33:14",
+      "fetch_method": "http",
+      "content_hash": "170ec23b6ea6c2b6091f6da017353158a2a8e454fab68dc6da6296b2ac4460ee",
+      "content_chars": 9888,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/loyalty-program",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/loyalty-program.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:33:47",
+      "fetch_method": "http",
+      "content_hash": "d92a67989b7ccf7d06313bbd69ba38ddca95ee056f709240019278cc529ab912",
+      "content_chars": 9937,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/marketing-automation",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/marketing-automation.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:34:19",
+      "fetch_method": "http",
+      "content_hash": "c9d02288708c89487a817d551252c83a8e5bd141c8ce4239af4b5379a7531b6d",
+      "content_chars": 13598,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/multi-channel-integration",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/multi-channel-integration.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:34:54",
+      "fetch_method": "http",
+      "content_hash": "5dc3c92091d02203cd5525890ab5cb82198bd88c137e4ee96e4a2eff5dcec96b",
+      "content_chars": 9489,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/multi-market-strategy",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/multi-market-strategy.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:35:25",
+      "fetch_method": "http",
+      "content_hash": "0c14b97a6c9f8249f358f17295c30a34c9b2a2be9962a9496c54c6af80686217",
+      "content_chars": 11011,
+      "internal_links_count": 10
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/operation-optimization",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/operation-optimization.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:34:53",
+      "fetch_method": "http",
+      "content_hash": "3d620170eae0b78a1fa24f024b5a9069b1f1c267891416b2049d2251f20f54ed",
+      "content_chars": 10088,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/paypal-business-account",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/paypal-business-account.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:35:26",
+      "fetch_method": "http",
+      "content_hash": "b425d370c68516b768540af62f167a6af2e9ccbaeca82f92dc435dd08d352108",
+      "content_chars": 12260,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/predictive-analytics",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/predictive-analytics.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:35:58",
+      "fetch_method": "http",
+      "content_hash": "83072823bc62716a080030eb5e1bb76f7dd757eb47d89541b72f9f2b3a1021c1",
+      "content_chars": 11565,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/seo-technical-services",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/seo-technical-services.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:36:32",
+      "fetch_method": "http",
+      "content_hash": "bbbf1607f12a02e4f8e27465481de8697af0dce1d2ccac29234e5f6ab601e24e",
+      "content_chars": 12848,
+      "internal_links_count": 10
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-agentic-commerce-playbook",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-agentic-commerce-playbook.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:37:05",
+      "fetch_method": "http",
+      "content_hash": "5de3f19b00dbb3cd9dc4b50256e309f413984bb3ef1f3fa1898eaefdbb6dc822",
+      "content_chars": 22145,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-agentic-storefronts",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-agentic-storefronts.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:37:37",
+      "fetch_method": "http",
+      "content_hash": "1c634a451e24d57c18cb511a7eebbd1b4988f93ffda42f73405f4d4c3cc4f29a",
+      "content_chars": 6528,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-ai-toolkit",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-ai-toolkit.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:38:11",
+      "fetch_method": "http",
+      "content_hash": "12f38230ff8a37a398b3ba204e7b0f92d99add80c0c80d09c84230745d304be2",
+      "content_chars": 12697,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-analytics-tracking",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-analytics-tracking.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:38:45",
+      "fetch_method": "http",
+      "content_hash": "1aa01279dc9bd78be6875391d745fc26b5566ca4dffe2f3a24d141ff3a477a84",
+      "content_chars": 7348,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-api-advanced",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-api-advanced.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:39:18",
+      "fetch_method": "http",
+      "content_hash": "cd3d92a3d9ba99fcb4ddd5208aced8fd49f6694136eaef1c4021f3b0cbfa5797",
+      "content_chars": 14743,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-app-development",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-app-development.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:39:51",
+      "fetch_method": "http",
+      "content_hash": "f083b7e617e8879da5b8c1c5c2703d5c040e6ebaa1c06a8726ed669d1d2f1502",
+      "content_chars": 4109,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-discount-function-buy-gift",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-discount-function-buy-gift.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:40:24",
+      "fetch_method": "http",
+      "content_hash": "14f56361e9822f04695b7b3155e0a67626a635b92d417811dcbc3bde9f195c99",
+      "content_chars": 16818,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-diy-vs-done-for-you",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-diy-vs-done-for-you.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:40:57",
+      "fetch_method": "http",
+      "content_hash": "707393587e09dbd14c82817f826178be0b7b664fbcbd67556f3e453b455b8ecc",
+      "content_chars": 3840,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-fiverr-upwork-vs-agency",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-fiverr-upwork-vs-agency.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:19",
+      "fetch_method": "http",
+      "content_hash": "6fb611acd0663e9c2ba1b678823f1910800b4f02e2d3f1f2fcf4d763229a325c",
+      "content_chars": 4397,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-free-theme-vs-custom-theme",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-free-theme-vs-custom-theme.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:20",
+      "fetch_method": "http",
+      "content_hash": "6cda08ba189e98a96a882ef19e53b329cb6c36bbebdc141574487ec427ca9e55",
+      "content_chars": 3937,
+      "internal_links_count": 2
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-geo-redirect",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-geo-redirect.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:32",
+      "fetch_method": "http",
+      "content_hash": "969709ba5495b4fc448dc8d9e6d5ef7c74695b58b210198f368a28920b605e47",
+      "content_chars": 24050,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-headless-intro",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-headless-intro.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:29",
+      "fetch_method": "http",
+      "content_hash": "794891a280dca7baaca64282fe64954e7a29aaa38fde72d16307911ca2352b8d",
+      "content_chars": 10228,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-honeypot-antispam",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-honeypot-antispam.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:29",
+      "fetch_method": "http",
+      "content_hash": "1bf95b0eee562e51ae169ca45813624a7fdaf76e0fa7c886d8c46a8f5efd09bc",
+      "content_chars": 8137,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-line-restock-notification",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-line-restock-notification.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:32",
+      "fetch_method": "http",
+      "content_hash": "6fc447ee9aff57fd71ee78cbf176e9de68d7d00caaf4561a264166a96f12fab0",
+      "content_chars": 23057,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-local-theme-development",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-local-theme-development.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:29",
+      "fetch_method": "http",
+      "content_hash": "ea5eab3c45973fc0d04ad13faebf5244f0ac25961f727ccd0b2d253a6386efbd",
+      "content_chars": 12866,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-marketing",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-marketing.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:31",
+      "fetch_method": "http",
+      "content_hash": "00f4cd40b536957b871cd19cbabc2638f1ae1a4b636268d315f9557c30f64e4d",
+      "content_chars": 12218,
+      "internal_links_count": 12
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-metafields-metaobjects",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-metafields-metaobjects.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:35",
+      "fetch_method": "http",
+      "content_hash": "8bcfe6e19dccd00959219eab2e5d6510c6d627e6d200931dd5dfffcaab0ce2a1",
+      "content_chars": 16934,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-plus",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-plus.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:35",
+      "fetch_method": "http",
+      "content_hash": "5543113ec853a784ed82b6a1ed112a344792212496b850744e7bff0f80826d43",
+      "content_chars": 12560,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-plus-enterprise",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-plus-enterprise.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:41",
+      "fetch_method": "http",
+      "content_hash": "3275e8f35c98bd6458615dea1f4ecb2885663123205317bae40b5bdbd11bcb2a",
+      "content_chars": 37502,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-pricing-package-comparison",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-pricing-package-comparison.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:39",
+      "fetch_method": "http",
+      "content_hash": "bdef2e4d2c1889a74f89f2229b831f2f65ca19861f8a02c686e5d518122e5ad3",
+      "content_chars": 3774,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-scripts",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-scripts.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:40",
+      "fetch_method": "http",
+      "content_hash": "e4aa9055508cf763438c614142e9916ec0cdbe37999f42dad12c247d978f8e8b",
+      "content_chars": 12689,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-seo",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-seo.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:21:29",
+      "fetch_method": "http",
+      "content_hash": "c2599ec1da0b74ade43197e9e43f4afcc5fd7cb652d09260749cb69f75f8b851",
+      "content_chars": 5777,
+      "internal_links_count": 9
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-spring-2026-growth",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-spring-2026-growth.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:40",
+      "fetch_method": "http",
+      "content_hash": "6f8414e5f6effbb1cd85f8eed326206a9e6b26174d4885f5976eee04cb3d9936",
+      "content_chars": 5539,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-store-build-service",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-store-build-service.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:40",
+      "fetch_method": "http",
+      "content_hash": "e5901882ced11815e2284323e2d70c0df3af8f276cd033606abe6fd9c2e6a193",
+      "content_chars": 3629,
+      "internal_links_count": 10
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-theme-bg-music",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-theme-bg-music.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:43",
+      "fetch_method": "http",
+      "content_hash": "b67037ba30ed27c8e8ef73714edbee57999f294e1f1fbe4a24b4d7629025b2f0",
+      "content_chars": 2959,
+      "internal_links_count": 0
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-theme-development-guide",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-theme-development-guide.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:44",
+      "fetch_method": "http",
+      "content_hash": "1a818aadfd9a1c653b1a13808215c6090b21e952f395379c9519de433c4b6027",
+      "content_chars": 20678,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-ucp-guide",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-ucp-guide.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:45",
+      "fetch_method": "http",
+      "content_hash": "183f96854acccb3dc6b2bdfe8d5b4bbe341ef28167e73920025954ee11192ae2",
+      "content_chars": 6927,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-webhooks-guide",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-webhooks-guide.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:46",
+      "fetch_method": "http",
+      "content_hash": "53f9d3b4d93b61ac78b73245fcabbe118c28e1795bafa4e1dc0e3cdd065cd510",
+      "content_chars": 3386,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/shopify-winter-2026-editions",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/shopify-winter-2026-editions.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:46",
+      "fetch_method": "http",
+      "content_hash": "3d7ea345d804b71b69486c350b9157b55faa0f45f32a6119173254454283f470",
+      "content_chars": 6601,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/social-media-marketing",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/social-media-marketing.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:47",
+      "fetch_method": "http",
+      "content_hash": "7a4b5438b2f228212ab008f44b52c23747f3f44394370bf1d7da18ec20cdae7f",
+      "content_chars": 11973,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/store-detection",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/store-detection.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:47",
+      "fetch_method": "http",
+      "content_hash": "616222ffc8944ebf4c400baa23228ca36a54b64aaa5e64dd852c1cc1477b5817",
+      "content_chars": 7267,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/store-diagnosis-consulting",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/store-diagnosis-consulting.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:48",
+      "fetch_method": "http",
+      "content_hash": "21c20e48d39c57e06e375587a0f034fcacf8e68d88e4f12768bdcb92fc55a8fb",
+      "content_chars": 2639,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/storefront-mcp-overview",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/storefront-mcp-overview.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:50",
+      "fetch_method": "http",
+      "content_hash": "a2e0299d5b1f00114a13a052e9d1005940a7baa28f4f8d0eba6daf7e2c711e49",
+      "content_chars": 6779,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/tiktok-shop-integration",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/tiktok-shop-integration.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:50",
+      "fetch_method": "http",
+      "content_hash": "044d3640bddd658ea5bf603044117a0d014d40321dd3d1fce640c640849da06e",
+      "content_chars": 6180,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/us-sales-tax-guide",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/us-sales-tax-guide.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:52",
+      "fetch_method": "http",
+      "content_hash": "1238dde6c76825d7023f2e259dfd67e113a66a8f4484c683e2ec3b46d442cffa",
+      "content_chars": 11113,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/wave-animation",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/wave-animation.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:52",
+      "fetch_method": "http",
+      "content_hash": "2d3e551f44a578c5f5ec8ea66d81f749eb32f0676dd22fb1b42a8f7a35a67aaa",
+      "content_chars": 2316,
+      "internal_links_count": 1
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/web-performance",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/web-performance.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:53",
+      "fetch_method": "http",
+      "content_hash": "dacd4f5e55baf545284109e51d717285b389268eaa51b777541cd415fc277967",
+      "content_chars": 12904,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/advanced/web-performance-dashboard",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/advanced/web-performance-dashboard.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:54",
+      "fetch_method": "http",
+      "content_hash": "26088f9ba50d751e1d8b9fb8d461a31c89beacdc9ebe9641eb2233e3b138752a",
+      "content_chars": 12324,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/basic",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/index.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:22:03",
+      "fetch_method": "http",
+      "content_hash": "4b079541329a9c210165e016cab28b7247046b3ed0b36b734a6756ec59f6f08a",
+      "content_chars": 5299,
+      "internal_links_count": 37
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/app-recommendations",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/app-recommendations.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:54",
+      "fetch_method": "http",
+      "content_hash": "ca1834d86eb665a1eb2a1287e95f5211e4057f633aa5ba04d2feef1bf2943e07",
+      "content_chars": 5007,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/beginner-pitfalls",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/beginner-pitfalls.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:57",
+      "fetch_method": "http",
+      "content_hash": "7eefaae011dd032256d0474905cdeec6dd188ed4caaacb2fd377dacd31b037a8",
+      "content_chars": 6486,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/checkout-optimization",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/checkout-optimization.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:59",
+      "fetch_method": "http",
+      "content_hash": "5edb00694504e991319cdfeafe8da13b8985882c20d120ef223b71a3ae6f0230",
+      "content_chars": 19459,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/collaborator",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/collaborator.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:58",
+      "fetch_method": "http",
+      "content_hash": "71ae831da30388c99ffc1b8a3ca13450f7d101707525d32160b54c815b89da55",
+      "content_chars": 5543,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/collections-setup",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/collections-setup.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:58",
+      "fetch_method": "http",
+      "content_hash": "405de260484fb5dfb23bf56abbfe0e297859c0bcbbe3f803740b8f1f8901239a",
+      "content_chars": 6098,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/customer-segmentation",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/customer-segmentation.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:41:58",
+      "fetch_method": "http",
+      "content_hash": "840f8f36f1c89c727b20bd1731c24f1d257f510be4cebd718ce8df1111d98d01",
+      "content_chars": 8071,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/email-marketing-setup",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/email-marketing-setup.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:00",
+      "fetch_method": "http",
+      "content_hash": "27e632384751d4e15e2948f6733b94d21342da25d79864c740f1e58e24b2c344",
+      "content_chars": 19587,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/getting-started",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/getting-started.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:22:36",
+      "fetch_method": "http",
+      "content_hash": "96bb2afb37f95cf30ef24d00f17a415cd5347b4de0364f6562294f8b4bfed072",
+      "content_chars": 4767,
+      "internal_links_count": 13
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/how-to-choose-shopify-theme",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/how-to-choose-shopify-theme.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:00",
+      "fetch_method": "http",
+      "content_hash": "4751ef3af006da6a86bf00bfb21be8eb218a3cad36c9be0bc4f78df5ec3b5338",
+      "content_chars": 2704,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/international-shipping",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/international-shipping.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:07",
+      "fetch_method": "http",
+      "content_hash": "b8742136c5fe58fa797f775abd371f705d207de1c4387a89175f264e7126a7b4",
+      "content_chars": 15099,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/inventory-management-basics",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/inventory-management-basics.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:06",
+      "fetch_method": "http",
+      "content_hash": "301599d971244d00443a8a483818d15145cbb853ad5bef9b29eebcb7dcf71134",
+      "content_chars": 4383,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/kk-resources-recommendation",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/kk-resources-recommendation.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:07",
+      "fetch_method": "http",
+      "content_hash": "b4ba5bb8cd8fb9fa9d00e3d608e8247703b929ec275138cfee97dabe9f23a069",
+      "content_chars": 3559,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/marketing-strategies",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/marketing-strategies.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:07",
+      "fetch_method": "http",
+      "content_hash": "58aaaee0da4fbcc373ee92b9699671236a6e1d01904ed7323ca7911734775ff6",
+      "content_chars": 13298,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/menu",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/menu.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:07",
+      "fetch_method": "http",
+      "content_hash": "3187a89c032e093539f02a8ba0aa426cc8fb677410753d9341a7e87c7cd3a3a8",
+      "content_chars": 7131,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/multi-market-tax",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/multi-market-tax.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:08",
+      "fetch_method": "http",
+      "content_hash": "c0d9e06aa5d134a23e68f6c1d759a6e76ccef3e8aecb13dd4056710b8a82e024",
+      "content_chars": 14390,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/order-status",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/order-status.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:08",
+      "fetch_method": "http",
+      "content_hash": "2fc4214fabe34fe39ab3b5d533e3b134ddbe24a5c5e4a9f068ee020fe48eb30d",
+      "content_chars": 5353,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/payment-setup",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/payment-setup.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:09",
+      "fetch_method": "http",
+      "content_hash": "218de4341e51db39993183653fbe4ef746403aedb68cd2c1d3df222281acda50",
+      "content_chars": 5321,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/product-image-optimization",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/product-image-optimization.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:16",
+      "fetch_method": "http",
+      "content_hash": "b6083a41f5fb6e80899b0d9c3863d494147503dabc581ac8f40f3a578e36f0ad",
+      "content_chars": 16523,
+      "internal_links_count": 1
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/product-variants-guide",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/product-variants-guide.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:15",
+      "fetch_method": "http",
+      "content_hash": "51afbaec099241a171b4b9a45b9c848592231530b6cc3af4d0481ec4a2d45439",
+      "content_chars": 10029,
+      "internal_links_count": 1
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/release-product",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/release-product.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:15",
+      "fetch_method": "http",
+      "content_hash": "8e58723571b0cf5e21bca1a86582a0cf9a1b9805a9a7cb489ad6aa0abdb5e9fe",
+      "content_chars": 7136,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/remove-password",
+      "title": "Shopify商店如何删除店铺的密码",
+      "file": "pages/basic/remove-password.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:16",
+      "fetch_method": "http",
+      "content_hash": "c99e0255e463613ed34ca0f7d80d031ac0c9a8256e98837451d2624a5cea9475",
+      "content_chars": 868,
+      "internal_links_count": 0
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shipping-tax",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shipping-tax.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:15",
+      "fetch_method": "http",
+      "content_hash": "ac06841b0f8e7fab5f25dda2a6e1a984a39c0bec524cabc3aace054a58dca5a6",
+      "content_chars": 4315,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shopify-404-redirect",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shopify-404-redirect.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:17",
+      "fetch_method": "http",
+      "content_hash": "602736f685ad21ecc08267efee0cb8f04ed7d0d67fd9921aafc490284c3a869f",
+      "content_chars": 3854,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shopify-analytics-setup",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shopify-analytics-setup.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:20",
+      "fetch_method": "http",
+      "content_hash": "631b57d1298f1709f53fd95d4749c8ef4b67be554e11c65ff1c9d8f2459ba6e5",
+      "content_chars": 31294,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shopify-billing",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shopify-billing.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:18",
+      "fetch_method": "http",
+      "content_hash": "b999ad3a381b678c348758ad300ac74c4639005904107475aba27124c4490f40",
+      "content_chars": 6031,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shopify-blocks",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shopify-blocks.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:22",
+      "fetch_method": "http",
+      "content_hash": "cdfaac7800764c3442db1c5ed0c70771351fb149b22967acc47cf5c94bf42188",
+      "content_chars": 3852,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shopify-buy-x-get-y-discount",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shopify-buy-x-get-y-discount.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:22",
+      "fetch_method": "http",
+      "content_hash": "8102f1c111d07f58f1e13b4f08cd7dc4592b6cdca9a6ffd7df5e7d01dcb78133",
+      "content_chars": 7269,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shopify-discount-codes-guide",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shopify-discount-codes-guide.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:23",
+      "fetch_method": "http",
+      "content_hash": "427548e77bfe42a7283f97f106f9fa8f73387ce9fe922744d1449c8178a05df7",
+      "content_chars": 9520,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shopify-folders",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shopify-folders.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:23",
+      "fetch_method": "http",
+      "content_hash": "cf07651af15e94d2e736e0413950d5d1da8c99224848c218d062744386b210fa",
+      "content_chars": 14908,
+      "internal_links_count": 2
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shopify-free-vs-paid-theme-guide",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shopify-free-vs-paid-theme-guide.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:23",
+      "fetch_method": "http",
+      "content_hash": "d2951ae2e1e822ada2eca190159b4a0e0562bc92f3c76f33218b8b2edeeb2af9",
+      "content_chars": 7180,
+      "internal_links_count": 9
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shopify-multi-currency-setup",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shopify-multi-currency-setup.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:24",
+      "fetch_method": "http",
+      "content_hash": "f8f009d42991a22260cd5a07368bce5c26c787998983d29477692a2ad1562942",
+      "content_chars": 15679,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shopify-multi-language-setup",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shopify-multi-language-setup.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:25",
+      "fetch_method": "http",
+      "content_hash": "7ea98d971a45c5e1d52a5bf77f757b471cbf8c81ca6da409151569dec40a86a7",
+      "content_chars": 11441,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shopify-registration",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shopify-registration.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:23:10",
+      "fetch_method": "http",
+      "content_hash": "b77f402c4f9b3d3c693d65f4b8e98162da561b33b15cbf9fd78001497448b538",
+      "content_chars": 5543,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/shopify-vs-wordpress",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/shopify-vs-wordpress.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:28",
+      "fetch_method": "http",
+      "content_hash": "9931f6af9c7d05b53ca36d92e397b52acf43262a7ec241fb6feac8df1e1771d0",
+      "content_chars": 6171,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/store-security-setup",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/store-security-setup.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:28",
+      "fetch_method": "http",
+      "content_hash": "40777d36f7de536daa93f8f05af89381f83c97ac5d4a7934a5a64c701835207f",
+      "content_chars": 4584,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/theme-setup",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/theme-setup.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:28",
+      "fetch_method": "http",
+      "content_hash": "c8590f50bcdb57cc7ebe028737232b70135ef02b3fb2b5f86eb0d21ee8fb36cb",
+      "content_chars": 3128,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/basic/zoho",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/basic/zoho.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:28",
+      "fetch_method": "http",
+      "content_hash": "cca90d9c304a1563873e6ddc231b86aae3bdca5f8fbe426219686a823604cf66",
+      "content_chars": 4087,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/cases",
+      "title": "客户案例",
+      "file": "pages/cases/index.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:24:18",
+      "fetch_method": "http",
+      "content_hash": "847f9b9ef560bc04860605ac9ccd1eb7f451e8979946ea396f708f5e35affe78",
+      "content_chars": 3828,
+      "internal_links_count": 0
+    },
+    {
+      "url": "https://shopify.baoea.com/contact",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/contact/index.md",
+      "status": "ok",
+      "discovered_via": [
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:46:24",
+      "fetch_method": "http",
+      "content_hash": "c83397e1dd1d4fc8fb9ad43472181c5452701cc3353a2371b5f6d0297d26628d",
+      "content_chars": 593,
+      "internal_links_count": 0
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/index.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:23:43",
+      "fetch_method": "http",
+      "content_hash": "1a845b139404a3a94d96b20a9468a7112283bb353de5b693ea8eedd7d7346892",
+      "content_chars": 4087,
+      "internal_links_count": 12
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/advanced-liquid",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/advanced-liquid.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:30",
+      "fetch_method": "http",
+      "content_hash": "5a3d2650c015477f65e69ee0ecf3687b29b80fb87c3e12ba2331cd1eb7147efe",
+      "content_chars": 3377,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/ai-theme-engineering",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/ai-theme-engineering.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:31",
+      "fetch_method": "http",
+      "content_hash": "407362694aaf1d7ce159f50cee2f92ffd136ad3e2a1418b3c3ad9881a088cc8c",
+      "content_chars": 7664,
+      "internal_links_count": 13
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/ajax-liquid",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/ajax-liquid.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:36",
+      "fetch_method": "http",
+      "content_hash": "388650d3d753e661586511b1a4fac510ad1c86e0ee452fb18c8bb5b91330635d",
+      "content_chars": 21957,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/best-practices",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/best-practices.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:35",
+      "fetch_method": "http",
+      "content_hash": "8fac1e13931f04d419e7448794335e6ba79f976a70d29e5c2967a6bda5bd01ec",
+      "content_chars": 11043,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/cart-objects",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/cart-objects.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:35",
+      "fetch_method": "http",
+      "content_hash": "6c6c6ab1d1ec9a5a1cbef633054587e42070eeb2e8730b64ec05f35311f56732",
+      "content_chars": 2897,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/code-organization",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/code-organization.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:36",
+      "fetch_method": "http",
+      "content_hash": "d209311f405e76235ecc9fdcdfdab353121e7185549a3e0c4c6a890b8d5b6b31",
+      "content_chars": 18733,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/common-patterns",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/common-patterns.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:37",
+      "fetch_method": "http",
+      "content_hash": "7e73ea98b1aceeae429b235e68acb917488b25f059ea649ce93ac80459d48281",
+      "content_chars": 21196,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/custom-sections",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/custom-sections.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:35",
+      "fetch_method": "http",
+      "content_hash": "f6fb54ddab70f49295136d4b869f37c380f8adc5b15ba89e40a7855493db22c8",
+      "content_chars": 12915,
+      "internal_links_count": 11
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/custom-snippets",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/custom-snippets.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:44",
+      "fetch_method": "http",
+      "content_hash": "cad35b61e676680aa49cb4341aa796b7182bf57523516a89b82e7debc56b14be",
+      "content_chars": 28451,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/customer-objects",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/customer-objects.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:47",
+      "fetch_method": "browser",
+      "content_hash": "7388f203245a36c2017bc320fe5fd632be79cac222d7b4e69f927b8543520015",
+      "content_chars": 1798,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/customization-examples",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/customization-examples.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:46",
+      "fetch_method": "http",
+      "content_hash": "d107088204424dc5fa27ee6725830ffae3c18b78853752215a07becfe5b36ee1",
+      "content_chars": 25155,
+      "internal_links_count": 0
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/data-types",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/data-types.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:45",
+      "fetch_method": "http",
+      "content_hash": "90b0a1a9fc148e8e672024ec494288f05c560a5826f4a611e4e80e37632cca87",
+      "content_chars": 16367,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/ecommerce-features",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/ecommerce-features.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:47",
+      "fetch_method": "http",
+      "content_hash": "463ce9ba54e7b30d29e03533fe81ba28321e72945b69bb6c6d667095e0f4148c",
+      "content_chars": 30982,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/environment-setup",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/environment-setup.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:46",
+      "fetch_method": "http",
+      "content_hash": "3c3ff0264699c981c38feca8a1c98b02db34f0260ffe5fab80b6b856e2d31b96",
+      "content_chars": 6387,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/examples",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/examples.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:47",
+      "fetch_method": "http",
+      "content_hash": "9df545e4e56bddc270623d06ca7af525569fa2e64d8121afb0329cff8ae0b64a",
+      "content_chars": 26278,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/filters",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/filters.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:47",
+      "fetch_method": "http",
+      "content_hash": "6c0476f4ec4c8639d9423d0e564898fcafceddb5f3713e107962dec5b98be0b5",
+      "content_chars": 22832,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/getting-started",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/getting-started.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:52",
+      "fetch_method": "http",
+      "content_hash": "9f7c0dc1c51a1f6ab76401046e241dddbebfa4bcb9cf1a997ddf2079fdd3a7d0",
+      "content_chars": 12952,
+      "internal_links_count": 6
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/global-objects",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/global-objects.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:52",
+      "fetch_method": "http",
+      "content_hash": "b418e33793fa6d6ba6dcbd7b1bb205d4fa6e9680d856eb2cb29e111a48cc58ba",
+      "content_chars": 14709,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/layout-templates",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/layout-templates.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:52",
+      "fetch_method": "http",
+      "content_hash": "991ce62a0fdf4d8e88470694bb90a02444edcfced8c16f9c1b0d7ca129dab069",
+      "content_chars": 19281,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/localization",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/localization.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:53",
+      "fetch_method": "http",
+      "content_hash": "1496874d19438b499d39a46256d67949b588ae144f6c69a6323c0a613c778207",
+      "content_chars": 17882,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/objects",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/objects.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:53",
+      "fetch_method": "http",
+      "content_hash": "49c1927a7fa28de404623f76098a15132e139e2e219bdfe57fbadae454a0a8bf",
+      "content_chars": 16616,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/operators",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/operators.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:54",
+      "fetch_method": "http",
+      "content_hash": "d69abd2938d6ae8264e88391984927f3fdc24dff857f017641bc09262636f89a",
+      "content_chars": 19754,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/performance-optimization",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/performance-optimization.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:54",
+      "fetch_method": "http",
+      "content_hash": "ee3e4feca44b9c5f95398e1ba5d1f12ece96af900ccf34d91521ed085c13f85c",
+      "content_chars": 24020,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/product-objects",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/product-objects.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:58",
+      "fetch_method": "http",
+      "content_hash": "b92665c65fc65bcd7923c45ddcb059275d6a434d53fcc1699665b2992e0204ab",
+      "content_chars": 5965,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/project-summary",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/project-summary.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:58",
+      "fetch_method": "http",
+      "content_hash": "941ae2c2404fc799c88cebc098315bf1e04ff6440a9580a4998bce46ad07568c",
+      "content_chars": 15907,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/resources",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/resources.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:57",
+      "fetch_method": "http",
+      "content_hash": "4cc79362720615705b73acef8fd6508d6908d89c2c54a9dbfae9fb09d83f4fd5",
+      "content_chars": 12360,
+      "internal_links_count": 2
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/responsive-design",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/responsive-design.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:58",
+      "fetch_method": "http",
+      "content_hash": "42fa5cd0e629d0c958b78ec7899531905142e5124d4e0d6e1b66473238de1ad9",
+      "content_chars": 12201,
+      "internal_links_count": 1
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/security",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/security.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:00",
+      "fetch_method": "http",
+      "content_hash": "3f78aee22b31ebb82459b75d6c2f97acc816b8ccd43d2182cac40e1a505dc267",
+      "content_chars": 18550,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/shopify-cli",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/shopify-cli.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:42:59",
+      "fetch_method": "http",
+      "content_hash": "0aedb3583c82265eda04391a5950133b7e48b60ed55090110ce1ea6cf8213d11",
+      "content_chars": 10102,
+      "internal_links_count": 4
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/shopify-objects",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/shopify-objects.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:00",
+      "fetch_method": "http",
+      "content_hash": "bbfccc1ba39d34ae073cc6d35aceb8f92d38aa86b4c3df0e6f1cd68a61fed053",
+      "content_chars": 13058,
+      "internal_links_count": 8
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/syntax",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/syntax.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:09",
+      "fetch_method": "http",
+      "content_hash": "9791510935b1a8689556a41007c5333edde4302f3729668133e29390fcc04611",
+      "content_chars": 15764,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/tags",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/tags.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:10",
+      "fetch_method": "http",
+      "content_hash": "c9b745ffefca746c060f4d37c704601d2ae43490f8656d20728c9eb68f09862d",
+      "content_chars": 20690,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/testing-deployment",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/testing-deployment.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:10",
+      "fetch_method": "http",
+      "content_hash": "1912a0a9cdb70d40339d3384df7f4c387b06ecc1a2d269d87886c51fbd142d93",
+      "content_chars": 26582,
+      "internal_links_count": 1
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/theme-development-practices",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/theme-development-practices.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:08",
+      "fetch_method": "http",
+      "content_hash": "cc7621d29a8a58900f3344832a8fd58c1eeb96c867dce37462ad6d6c1e9e4693",
+      "content_chars": 3824,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/theme-development-workflow",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/theme-development-workflow.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:10",
+      "fetch_method": "http",
+      "content_hash": "7f986966df45701c788d41c13b90502629d117938a48c05867a52ad7fa946ed1",
+      "content_chars": 12898,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/theme-engineering-setup",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/theme-engineering-setup.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:10",
+      "fetch_method": "http",
+      "content_hash": "76a3a88e33eab91222d6d83f409e7245c274bffb84b813b2263fe6e272d98dc1",
+      "content_chars": 6480,
+      "internal_links_count": 7
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/theme-settings",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/theme-settings.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:13",
+      "fetch_method": "http",
+      "content_hash": "6f8b650b0635894e0168a8cc4d32d2fe4a4abc8d3574682b24a3a27e2834e726",
+      "content_chars": 25869,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/third-party-integrations",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/third-party-integrations.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:20",
+      "fetch_method": "browser",
+      "content_hash": "7805b93c0612ca85c6a510766245e61783c2401b67a6ef75e9c8f9068c41fe97",
+      "content_chars": 6120,
+      "internal_links_count": 1
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/tools",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/tools.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:18",
+      "fetch_method": "http",
+      "content_hash": "52b383ade5f94c8791af542f9b9cdb36a90b235ed29a0663fecbfc0e27877f79",
+      "content_chars": 16605,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/troubleshooting",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/troubleshooting.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:20",
+      "fetch_method": "http",
+      "content_hash": "5b9ffa549f15487984daa300a52053c54e16c67b9babb2fccc34edfdf86389f6",
+      "content_chars": 26920,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/liquid/variables",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/liquid/variables.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:18",
+      "fetch_method": "http",
+      "content_hash": "bb001965ffa581920545c225ea482b236e0a36d926635e09ef8f75a46a5b122e",
+      "content_chars": 5617,
+      "internal_links_count": 5
+    },
+    {
+      "url": "https://shopify.baoea.com/pricing",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/pricing/index.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:18",
+      "fetch_method": "http",
+      "content_hash": "19eea6ad87072e984a11508044faca181126fdb3f10c304f3fc84f2d0adf1e03",
+      "content_chars": 815,
+      "internal_links_count": 0
+    },
+    {
+      "url": "https://shopify.baoea.com/privacy-policy",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/privacy-policy/index.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:18",
+      "fetch_method": "http",
+      "content_hash": "50b8990548a814a9bc4be05816a6be9f1bafe79497cc542ce19fe3ac27e41b28",
+      "content_chars": 1041,
+      "internal_links_count": 0
+    },
+    {
+      "url": "https://shopify.baoea.com/terms",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/terms/index.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap"
+      ],
+      "fetched_at": "2026-07-26 05:43:21",
+      "fetch_method": "http",
+      "content_hash": "0c6304cb9ca426138576d00bdc0df1e314a45e022ba59921cd231cf136208baa",
+      "content_chars": 2796,
+      "internal_links_count": 3
+    },
+    {
+      "url": "https://shopify.baoea.com/tools",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/tools/index.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:24:52",
+      "fetch_method": "http",
+      "content_hash": "481d84f89014b988992489e75c3d7e16ca11f36f42be5722b6c3b32e7f1fd1f5",
+      "content_chars": 2413,
+      "internal_links_count": 0
+    },
+    {
+      "url": "https://shopify.baoea.com/tools/store-search",
+      "title": "Shopify 独立站搭建实战 & 建站咨询服务｜Shopify建站教程",
+      "file": "pages/tools/store-search.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap"
+      ],
+      "fetched_at": "2026-07-26 05:43:22",
+      "fetch_method": "http",
+      "content_hash": "445d500fab6016dc7263bf3e069f1f966d19b1fa4aef82f59841ce7286b28e91",
+      "content_chars": 198,
+      "internal_links_count": 2
+    },
+    {
+      "url": "https://shopify.baoea.com/tools/whatshop",
+      "title": "店铺信息检测（Shopify",
+      "file": "pages/tools/whatshop.md",
+      "status": "ok",
+      "discovered_via": [
+        "sitemap",
+        "internal_link"
+      ],
+      "fetched_at": "2026-07-26 05:43:23",
+      "fetch_method": "http",
+      "content_hash": "3e4eedafd6ad6540f6a4363ceb0dcaa0d846c794bf2237061c89a8a90253cdf2",
+      "content_chars": 198,
+      "internal_links_count": 2
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>主题开发实战 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="主题开发实战 本指南将通过实际项目案例，深入介绍 Shopify 主题开发的最佳实践、架构设计和具体实现技巧。 项目架构设计 1\. 主题文件结构规划 2\. 组件化开发策略 下一步学习 掌握了主题开发实战后，建议继续学习： 1. ">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/theme-development-practices/">
+  <meta property="og:title" content="主题开发实战 · Shopify 独立站手册">
+  <meta property="og:description" content="主题开发实战 本指南将通过实际项目案例，深入介绍 Shopify 主题开发的最佳实践、架构设计和具体实现技巧。 项目架构设计 1\. 主题文件结构规划 2\. 组件化开发策略 下一步学习 掌握了主题开发实战后，建议继续学习： 1. ">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>主题开发实战</h1>
+        <p>主题开发实战 本指南将通过实际项目案例，深入介绍 Shopify 主题开发的最佳实践、架构设计和具体实现技巧。 项目架构设计 1\. 主题文件结构规划 2\. 组件化开发策略 下一步学习 掌握了主题开发实战后，建议继续学习： 1. </p>
+      </header>
+      <div class="article-content"><h2 id="主题开发实战">主题开发实战</h2><p>本指南将通过实际项目案例，深入介绍 Shopify 主题开发的最佳实践、架构设计和具体实现技巧。</p>
+<h2 id="项目架构设计">项目架构设计</h2><h3 id="1-主题文件结构规划">1. 主题文件结构规划</h3><pre><code>theme/
+├── assets/                     # 静态资源
+│   ├── styles/
+│   │   ├── base/              # 基础样式
+│   │   │   ├── reset.css
+│   │   │   ├── variables.css
+│   │   │   └── typography.css
+│   │   ├── components/        # 组件样式
+│   │   │   ├── buttons.css
+│   │   │   ├── cards.css
+│   │   │   └── forms.css
+│   │   ├── layout/           # 布局样式
+│   │   │   ├── header.css
+│   │   │   ├── footer.css
+│   │   │   └── grid.css
+│   │   └── pages/            # 页面特定样式
+│   │       ├── product.css
+│   │       ├── collection.css
+│   │       └── cart.css
+│   ├── scripts/
+│   │   ├── modules/          # 功能模块
+│   │   │   ├── cart.js
+│   │   │   ├── product.js
+│   │   │   └── search.js
+│   │   ├── utilities/        # 工具函数
+│   │   │   ├── dom.js
+│   │   │   ├── api.js
+│   │   │   └── helpers.js
+│   │   └── main.js          # 主入口文件
+│   └── images/              # 图片资源
+├── config/                  # 配置文件
+├── layout/                  # 布局模板
+├── sections/               # 分区文件
+│   ├── header.liquid
+│   ├── footer.liquid
+│   ├── product-hero.liquid
+│   ├── product-recommendations.liquid
+│   ├── collection-filters.liquid
+│   └── newsletter-signup.liquid
+├── snippets/               # 代码片段
+│   ├── components/         # UI组件
+│   │   ├── product-card.liquid
+│   │   ├── price-display.liquid
+│   │   ├── quantity-selector.liquid
+│   │   └── variant-selector.liquid
+│   ├── utilities/          # 工具片段
+│   │   ├── image-responsive.liquid
+│   │   ├── social-sharing.liquid
+│   │   └── breadcrumbs.liquid
+│   └── icons/             # 图标片段
+│       ├── icon-cart.liquid
+│       ├── icon-search.liquid
+│       └── icon-arrow.liquid
+└── templates/             # 模板文件
+</code></pre>
+<h3 id="2-组件化开发策略">2. 组件化开发策略</h3><pre><code>&lt;!-- snippets/components/product-card.liquid --&gt;
+{% comment %}
+  产品卡片组件
+ 
+  参数:
+  - product: 产品对象 (必需)
+  - image_width: 图片宽度像素 (可选, 默认: 300)，配合 `image_url` 使用
+  - show_vendor: 是否显示品牌 (可选, 默认: false)
+  - show_price: 是否显示价格 (可选, 默认: true)
+  - css_class: 自定义CSS类 (可选)
+  - lazy_load: 是否懒加载图片 (可选, 默认: true)
+{% endcomment %}
+ 
+{% assign image_width = image_width | default: 300 %}
+{% assign show_vendor = show_vendor | default: false %}
+{% assign show_price = show_price | default: true %}
+{% assign lazy_load = lazy_load | default: true %}
+ 
+&lt;article class="product-card {{ css_class }}" data-product-id="{{ product.id }}"&gt;
+  &lt;!-- 产品图片 --&gt;
+  &lt;div class="product-card__image"&gt;
+    &lt;a href="{{ product.url }}" aria-label="{{ product.title }}"&gt;
+      {% if product.featured_image %}
+        {% if ...
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>掌握了主题开发实战后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/custom-sections/">自定义分区开发</a> - 创建灵活的页面分区</li>
+<li><a href="/guides/shopify-handbook/liquid/custom-snippets/">自定义代码片段</a> - 开发可复用组件</li>
+<li><a href="/guides/shopify-handbook/liquid/theme-settings/">主题设置配置</a> - 主题自定义选项</li>
+<li><a href="/guides/shopify-handbook/liquid/responsive-design/">响应式设计实现</a> - 移动优先设计</li>
+<li><a href="/guides/shopify-handbook/liquid/ecommerce-features/">电商功能实现</a> - 高级电商功能</li>
+<li><a href="/guides/shopify-handbook/liquid/third-party-integrations/">第三方集成</a> - 外部服务集成</li>
+</ol>
+<p>通过实战项目的锻炼，您将能够开发出专业级别的 Shopify 主题！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/theme-development-workflow/"><span>上一篇</span><strong>主题开发工作流程</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/theme-settings/"><span>下一篇</span><strong>主题设置配置</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

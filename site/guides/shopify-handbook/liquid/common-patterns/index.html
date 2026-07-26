@@ -1,0 +1,839 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>常见模式和解决方案 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="常见模式和解决方案 本指南汇总了 Shopify 主题开发中的常见设计模式、最佳实践和问题解决方案，帮助您更高效地开发主题。 数据处理模式 1\. 条件渲染模式 2\. 循环处理模式 3\. 数据转换模式 UI组件模式 1\. 可配">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/common-patterns/">
+  <meta property="og:title" content="常见模式和解决方案 · Shopify 独立站手册">
+  <meta property="og:description" content="常见模式和解决方案 本指南汇总了 Shopify 主题开发中的常见设计模式、最佳实践和问题解决方案，帮助您更高效地开发主题。 数据处理模式 1\. 条件渲染模式 2\. 循环处理模式 3\. 数据转换模式 UI组件模式 1\. 可配">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>常见模式和解决方案</h1>
+        <p>常见模式和解决方案 本指南汇总了 Shopify 主题开发中的常见设计模式、最佳实践和问题解决方案，帮助您更高效地开发主题。 数据处理模式 1\. 条件渲染模式 2\. 循环处理模式 3\. 数据转换模式 UI组件模式 1\. 可配</p>
+      </header>
+      <div class="article-content"><h2 id="常见模式和解决方案">常见模式和解决方案</h2><p>本指南汇总了 Shopify 主题开发中的常见设计模式、最佳实践和问题解决方案，帮助您更高效地开发主题。</p>
+<h2 id="数据处理模式">数据处理模式</h2><h3 id="1-条件渲染模式">1. 条件渲染模式</h3><pre><code>&lt;!-- 多条件判断模式 --&gt;
+{%- liquid
+  assign show_content = false
+ 
+  if section.settings.enable_section
+    if product.available or settings.show_sold_out_products
+      if product.tags contains 'featured' or section.settings.show_all
+        assign show_content = true
+      endif
+    endif
+  endif
+-%}
+ 
+{% if show_content %}
+  &lt;!-- 渲染内容 --&gt;
+{% endif %}
+ 
+&lt;!-- 默认值处理模式 --&gt;
+{%- liquid
+  assign heading = section.settings.heading
+  if heading == blank
+    assign heading = product.title
+  endif
+ 
+  assign button_text = section.settings.button_text | default: 'Learn More'
+  assign image_size = section.settings.image_size | default: '400x400'
+  assign show_price = section.settings.show_price | default: true
+-%}
+ 
+&lt;!-- 复杂条件简化 --&gt;
+{%- liquid
+  case product.type
+    when 'clothing'
+      assign size_guide_url = 'size guide url1'
+    when 'shoes'
+      assign size_guide_url = 'size guide url2'
+    else
+      assign size_guide_url = 'size guide url3'
+  endcase
+-%}
+</code></pre>
+<h3 id="2-循环处理模式">2. 循环处理模式</h3><pre><code>&lt;!-- 分组循环模式 --&gt;
+{%- assign products_by_type = collections.all.products | group_by: 'type' -%}
+ 
+{% for group in products_by_type %}
+  &lt;div class="product-type-group"&gt;
+    &lt;h3&gt;{{ group.name }}&lt;/h3&gt;
+    &lt;div class="products-grid"&gt;
+      {% for product in group.items limit: 4 %}
+        {% render 'product-card', product: product %}
+      {% endfor %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+{% endfor %}
+ 
+&lt;!-- 分页循环模式 --&gt;
+{%- assign items_per_row = 3 -%}
+{%- assign total_items = collection.products.size -%}
+ 
+{% for product in collection.products %}
+  {% assign row_index = forloop.index0 | divided_by: items_per_row %}
+  {% assign col_index = forloop.index0 | modulo: items_per_row %}
+ 
+  {% if col_index == 0 %}
+    &lt;div class="products-row"&gt;
+  {% endif %}
+ 
+  {% render 'product-card', product: product %}
+ 
+  {% if col_index == items_per_row | minus: 1 or forloop.last %}
+    &lt;/div&gt;
+  {% endif %}
+{% endfor %}
+ 
+&lt;!-- 过滤循环模式 --&gt;
+{%- assign featured_products = collection.products | where: 'tags', 'featured' -%}
+{%- assign available_products = featured_products | where: 'available', true -%}
+ 
+{% for product in available_products limit: 8 %}
+  {% render 'product-card', product: product %}
+{% endfor %}
+</code></pre>
+<h3 id="3-数据转换模式">3. 数据转换模式</h3><pre><code>&lt;!-- 数据格式化模式 --&gt;
+{%- liquid
+  assign price_cents = product.price
+  assign price_yuan = price_cents | divided_by: 100.0
+  assign formatted_price = price_yuan | money_without_currency | append: ' 元'
+ 
+  assign publish_date = article.created_at | date: '%Y-%m-%d'
+  assign reading_time = article.content | strip_html | split: ' ' | size | divided_by: 200
+  if reading_time &lt; 1
+    assign reading_time = 1
+  endif
+-%}
+ 
+&lt;!-- 多语言处理模式 --&gt;
+{%- liquid
+  assign current_locale = request.locale.iso_code
+ 
+  case current_locale
+    when 'zh-CN'
+      assign currency_symbol = '¥'
+      assign date_format = '%Y年%m月%d日'
+    when 'en'
+      assign currency_symbol = '$'
+      assign date_format = '%B %d, %Y'
+    else
+      assign currency_symbol = shop.currency
+      assign date_format = '%Y-%m-%d'
+  endcase
+-%}
+ 
+&lt;!-- JSON数据处理模式 --&gt;
+{%- capture product_json -%}
+{
+  "id": {{ product.id }},
+  "title": {{ product.title | json }},
+  "price": {{ product.price }},
+  "available": {{ product.available }},
+  "variants": [
+    {%- for variant in product.variants -%}
+    {
+      "id": {{ variant.id }},
+      "title": {{ variant.title | json }},
+      "price": {{ variant.price }},
+      "available": {{ variant.available }}
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+{%- endcapture -%}
+ 
+&lt;script id="product-data" type="application/json"&gt;
+  {{ product_json }}
+&lt;/script&gt;
+</code></pre>
+<h2 id="ui组件模式">UI组件模式</h2><h3 id="1-可配置组件模式">1. 可配置组件模式</h3><pre><code>&lt;!-- snippets/configurable-button.liquid --&gt;
+{% comment %}
+可配置按钮组件
+ 
+参数:
+- text: 按钮文本 (必需)
+- url: 链接地址 (可选)
+- style: 按钮样式 ('primary', 'secondary', 'outline')
+- size: 按钮大小 ('small', 'medium', 'large')
+- icon: 图标名称 (可选)
+- attributes: 额外HTML属性 (可选)
+{% endcomment %}
+ 
+{%- liquid
+  assign button_text = text
+  assign button_url = url | default: '#'
+  assign button_style = style | default: 'primary'
+  assign button_size = size | default: 'medium'
+  assign button_icon = icon
+  assign button_attributes = attributes
+ 
+  assign button_class = 'btn btn--' | append: button_style | append: ' btn--' | append: button_size
+ 
+  if button_icon
+    assign button_class = button_class | append: ' btn--with-icon'
+  endif
+-%}
+ 
+{% if button_url == '#' %}
+  &lt;button class="{{ button_class }}" {{ button_attributes }}&gt;
+    {% if button_icon %}
+      {% render 'icon', name: button_icon %}
+    {% endif %}
+    {{ button_text }}
+  &lt;/button&gt;
+{% else %}
+  &lt;a href="{{ button_url }}" class="{{ button_class }}" {{ button_attributes }}&gt;
+    {% if button_icon %}
+      {% render 'icon', name: button_icon %}
+    {% endif %}
+    {{ button_text }}
+  &lt;/a&gt;
+{% endif %}
+ 
+&lt;!-- 使用示例 --&gt;
+{% render 'configurable-button',
+  text: '立即购买',
+  url: product.url,
+  style: 'primary',
+  size: 'large',
+  icon: 'cart',
+  attributes: 'data-product-id="' | append: product.id | append: '"'
+%}
+</code></pre>
+<h3 id="2-响应式组件模式">2. 响应式组件模式</h3><pre><code>&lt;!-- snippets/responsive-grid.liquid --&gt;
+{%- liquid
+  assign grid_items = items
+  assign mobile_columns = mobile_cols | default: 1
+  assign tablet_columns = tablet_cols | default: 2
+  assign desktop_columns = desktop_cols | default: 3
+  assign gap = gap | default: '1rem'
+ 
+  assign grid_id = 'grid-' | append: section.id
+-%}
+ 
+&lt;div class="responsive-grid" id="{{ grid_id }}"&gt;
+  {% for item in grid_items %}
+    &lt;div class="grid-item"&gt;
+      {{ item }}
+    &lt;/div&gt;
+  {% endfor %}
+&lt;/div&gt;
+ 
+&lt;style&gt;
+#{{ grid_id }} {
+  display: grid;
+  gap: {{ gap }};
+  grid-template-columns: repeat({{ mobile_columns }}, 1fr);
+}
+ 
+@media (min-width: 768px) {
+  #{{ grid_id }} {
+    grid-template-columns: repeat({{ tablet_columns }}, 1fr);
+  }
+}
+ 
+@media (min-width: 1024px) {
+  #{{ grid_id }} {
+    grid-template-columns: repeat({{ desktop_columns }}, 1fr);
+  }
+}
+&lt;/style&gt;
+</code></pre>
+<h3 id="3-状态管理模式">3. 状态管理模式</h3><pre><code>// assets/js/state-manager.js
+class StateManager {
+  constructor() {
+    this.state = new Proxy({}, {
+      set: (target, key, value) =&gt; {
+        const oldValue = target[key];
+        target[key] = value;
+        this.notifySubscribers(key, value, oldValue);
+        return true;
+      }
+    });
+ 
+    this.subscribers = new Map();
+  }
+ 
+  // 订阅状态变化
+  subscribe(key, callback) {
+    if (!this.subscribers.has(key)) {
+      this.subscribers.set(key, new Set());
+    }
+    this.subscribers.get(key).add(callback);
+ 
+    // 返回取消订阅函数
+    return () =&gt; {
+      this.subscribers.get(key)?.delete(callback);
+    };
+  }
+ 
+  // 设置状态
+  setState(key, value) {
+    this.state[key] = value;
+  }
+ 
+  // 获取状态
+  getState(key) {
+    return this.state[key];
+  }
+ 
+  // 通知订阅者
+  notifySubscribers(key, newValue, oldValue) {
+    const callbacks = this.subscribers.get(key);
+    if (callbacks) {
+      callbacks.forEach(callback =&gt; {
+        callback(newValue, oldValue, key);
+      });
+    }
+  }
+}
+ 
+// 全局状态管理器
+window.stateManager = new StateManager();
+ 
+// 使用示例
+class CartComponent {
+  constructor() {
+    this.init();
+  }
+ 
+  init() {
+    // 订阅购物车状态变化
+    window.stateManager.subscribe('cart', (cart, oldCart) =&gt; {
+      this.updateCartUI(cart);
+    });
+ 
+    // 订阅用户状态变化
+    window.stateManager.subscribe('user', (user) =&gt; {
+      this.updateUserUI(user);
+    });
+  }
+ 
+  updateCartUI(cart) {
+    // 更新购物车UI
+    document.querySelectorAll('[data-cart-count]').forEach(el =&gt; {
+      el.textContent = cart.item_count;
+    });
+  }
+ 
+  updateUserUI(user) {
+    // 更新用户UI
+    const userElements = document.querySelectorAll('[data-user-name]');
+    userElements.forEach(el =&gt; {
+      el.textContent = user ? user.name : '游客';
+    });
+  }
+}
+</code></pre>
+<h2 id="性能优化模式">性能优化模式</h2><h3 id="1-懒加载模式">1. 懒加载模式</h3><pre><code>&lt;!-- 图片懒加载 --&gt;
+&lt;img class="lazy-image"
+     data-src="{{ image | image_url: width: 800, height: 600 }}"
+     data-srcset="{{ image | image_url: width: 400, height: 300 }} 400w,
+                  {{ image | image_url: width: 800, height: 600 }} 800w,
+                  {{ image | image_url: width: 1200, height: 900 }} 1200w"
+     data-sizes="(max-width: 768px) 100vw, 50vw"
+     alt="{{ image.alt | escape }}"
+     loading="lazy"&gt;
+ 
+&lt;script&gt;
+// 图片懒加载实现
+class LazyImageLoader {
+  constructor() {
+    this.images = document.querySelectorAll('.lazy-image');
+    this.imageObserver = null;
+    this.init();
+  }
+ 
+  init() {
+    if ('IntersectionObserver' in window) {
+      this.imageObserver = new IntersectionObserver((entries) =&gt; {
+        entries.forEach(entry =&gt; {
+          if (entry.isIntersecting) {
+            this.loadImage(entry.target);
+            this.imageObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        rootMargin: '50px 0px'
+      });
+ 
+      this.images.forEach(img =&gt; this.imageObserver.observe(img));
+    } else {
+      // 降级处理
+      this.images.forEach(img =&gt; this.loadImage(img));
+    }
+  }
+ 
+  loadImage(img) {
+    if (img.dataset.srcset) {
+      img.srcset = img.dataset.srcset;
+    }
+    if (img.dataset.src) {
+      img.src = img.dataset.src;
+    }
+    if (img.dataset.sizes) {
+      img.sizes = img.dataset.sizes;
+    }
+ 
+    img.classList.add('loaded');
+  }
+}
+ 
+new LazyImageLoader();
+&lt;/script&gt;
+</code></pre>
+<h3 id="2-缓存模式">2. 缓存模式</h3><pre><code>// 简单缓存实现
+class SimpleCache {
+  constructor(maxSize = 100, ttl = 5 * 60 * 1000) { // 5分钟TTL
+    this.cache = new Map();
+    this.maxSize = maxSize;
+    this.ttl = ttl;
+  }
+ 
+  set(key, value) {
+    // 如果缓存已满，删除最老的条目
+    if (this.cache.size &gt;= this.maxSize) {
+      const firstKey = this.cache.keys().next().value;
+      this.cache.delete(firstKey);
+    }
+ 
+    this.cache.set(key, {
+      value,
+      timestamp: Date.now()
+    });
+  }
+ 
+  get(key) {
+    const item = this.cache.get(key);
+ 
+    if (!item) {
+      return null;
+    }
+ 
+    // 检查是否过期
+    if (Date.now() - item.timestamp &gt; this.ttl) {
+      this.cache.delete(key);
+      return null;
+    }
+ 
+    return item.value;
+  }
+ 
+  has(key) {
+    return this.get(key) !== null;
+  }
+ 
+  clear() {
+    this.cache.clear();
+  }
+}
+ 
+// API缓存示例
+class CachedAPI {
+  constructor() {
+    this.cache = new SimpleCache();
+  }
+ 
+  async fetchProduct(productId) {
+    const cacheKey = `product-${productId}`;
+ 
+    // 检查缓存
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey);
+    }
+ 
+    // 从API获取
+    try {
+      const response = await fetch(`/products/${productId}.js`);
+      const product = await response.json();
+ 
+      // 存入缓存
+      this.cache.set(cacheKey, product);
+ 
+      return product;
+    } catch (error) {
+      console.error('Failed to fetch product:', error);
+      return null;
+    }
+  }
+}
+</code></pre>
+<h3 id="3-防抖和节流模式">3. 防抖和节流模式</h3><pre><code>// 防抖函数
+function debounce(func, wait, immediate = false) {
+  let timeout;
+ 
+  return function executedFunction(...args) {
+    const later = () =&gt; {
+      timeout = null;
+      if (!immediate) func.apply(this, args);
+    };
+ 
+    const callNow = immediate &amp;&amp; !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+ 
+    if (callNow) func.apply(this, args);
+  };
+}
+ 
+// 节流函数
+function throttle(func, limit) {
+  let inThrottle;
+ 
+  return function executedFunction(...args) {
+    if (!inThrottle) {
+      func.apply(this, args);
+      inThrottle = true;
+      setTimeout(() =&gt; inThrottle = false, limit);
+    }
+  };
+}
+ 
+// 使用示例
+class SearchComponent {
+  constructor() {
+    this.searchInput = document.querySelector('[data-search-input]');
+    this.init();
+  }
+ 
+  init() {
+    // 防抖搜索
+    const debouncedSearch = debounce(this.performSearch.bind(this), 300);
+    this.searchInput.addEventListener('input', debouncedSearch);
+ 
+    // 节流滚动
+    const throttledScroll = throttle(this.handleScroll.bind(this), 100);
+    window.addEventListener('scroll', throttledScroll);
+  }
+ 
+  performSearch(event) {
+    const query = event.target.value;
+    console.log('Searching for:', query);
+  }
+ 
+  handleScroll() {
+    console.log('Scroll position:', window.scrollY);
+  }
+}
+</code></pre>
+<h2 id="错误处理模式">错误处理模式</h2><h3 id="1-优雅降级模式">1. 优雅降级模式</h3><pre><code>&lt;!-- 图片降级处理 --&gt;
+{% if product.featured_image %}
+  &lt;picture&gt;
+    &lt;source srcset="{{ product.featured_image | image_url: width: 800, height: 600, format: 'webp' }}" type="image/webp"&gt;
+    &lt;source srcset="{{ product.featured_image | image_url: width: 800, height: 600, format: 'jpg' }}" type="image/jpeg"&gt;
+    &lt;img src="{{ product.featured_image | image_url: width: 400, height: 300 }}"
+         alt="{{ product.featured_image.alt | default: product.title | escape }}"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"&gt;
+  &lt;/picture&gt;
+  &lt;div class="image-placeholder" style="display: none;"&gt;
+    &lt;span&gt;图片暂时无法显示&lt;/span&gt;
+  &lt;/div&gt;
+{% else %}
+  &lt;div class="image-placeholder"&gt;
+    &lt;span&gt;暂无图片&lt;/span&gt;
+  &lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 内容降级处理 --&gt;
+{% if section.settings.video_url %}
+  &lt;video controls&gt;
+    &lt;source src="{{ section.settings.video_url }}" type="video/mp4"&gt;
+    &lt;p&gt;您的浏览器不支持视频播放，请&lt;a href="{{ section.settings.video_url }}"&gt;点击这里下载&lt;/a&gt;。&lt;/p&gt;
+  &lt;/video&gt;
+{% elsif section.settings.image %}
+  &lt;img src="{{ section.settings.image | image_url: width: 800, height: 600 }}"
+       alt="{{ section.settings.image.alt | escape }}"&gt;
+{% else %}
+  &lt;div class="content-placeholder"&gt;
+    &lt;p&gt;{{ section.settings.fallback_text | default: '内容加载中...' }}&lt;/p&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="2-错误边界模式">2. 错误边界模式</h3><pre><code>class ErrorBoundary {
+  constructor(element, options = {}) {
+    this.element = element;
+    this.options = {
+      fallbackMessage: '出现了一些问题，请刷新页面重试',
+      showError: false,
+      onError: null,
+      ...options
+    };
+ 
+    this.init();
+  }
+ 
+  init() {
+    this.originalContent = this.element.innerHTML;
+    this.wrapContent();
+  }
+ 
+  wrapContent() {
+    try {
+      // 执行可能出错的操作
+      this.executeRiskyOperation();
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+ 
+  executeRiskyOperation() {
+    // 这里放置可能出错的代码
+    // 例如：复杂的DOM操作、第三方API调用等
+  }
+ 
+  handleError(error) {
+    console.error('Component error:', error);
+ 
+    // 显示错误信息
+    this.showErrorUI(error);
+ 
+    // 调用错误回调
+    if (this.options.onError) {
+      this.options.onError(error);
+    }
+ 
+    // 上报错误
+    this.reportError(error);
+  }
+ 
+  showErrorUI(error) {
+    const errorHTML = `
+      &lt;div class="error-boundary"&gt;
+        &lt;h3&gt;⚠️ ${this.options.fallbackMessage}&lt;/h3&gt;
+        ${this.options.showError ? `&lt;details&gt;&lt;summary&gt;错误详情&lt;/summary&gt;&lt;pre&gt;${error.stack}&lt;/pre&gt;&lt;/details&gt;` : ''}
+        &lt;button onclick="location.reload()"&gt;刷新页面&lt;/button&gt;
+      &lt;/div&gt;
+    `;
+ 
+    this.element.innerHTML = errorHTML;
+  }
+ 
+  reportError(error) {
+    // 发送错误报告到服务器
+    fetch('/api/errors', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: error.message,
+        stack: error.stack,
+        url: window.location.href,
+        timestamp: new Date().toISOString()
+      })
+    }).catch(() =&gt; {
+      // 忽略报告错误
+    });
+  }
+ 
+  retry() {
+    this.element.innerHTML = this.originalContent;
+    this.executeRiskyOperation();
+  }
+}
+ 
+// 使用示例
+document.querySelectorAll('[data-error-boundary]').forEach(element =&gt; {
+  new ErrorBoundary(element, {
+    showError: true,
+    onError: (error) =&gt; {
+      console.log('Error caught by boundary:', error);
+    }
+  });
+});
+</code></pre>
+<h2 id="可访问性模式">可访问性模式</h2><h3 id="1-键盘导航模式">1. 键盘导航模式</h3><pre><code>class KeyboardNavigator {
+  constructor(container) {
+    this.container = container;
+    this.items = container.querySelectorAll('[data-nav-item]');
+    this.currentIndex = 0;
+ 
+    this.init();
+  }
+ 
+  init() {
+    this.bindEvents();
+    this.updateFocus();
+  }
+ 
+  bindEvents() {
+    this.container.addEventListener('keydown', (e) =&gt; {
+      switch (e.key) {
+        case 'ArrowDown':
+        case 'ArrowRight':
+          e.preventDefault();
+          this.moveNext();
+          break;
+ 
+        case 'ArrowUp':
+        case 'ArrowLeft':
+          e.preventDefault();
+          this.movePrevious();
+          break;
+ 
+        case 'Home':
+          e.preventDefault();
+          this.moveToFirst();
+          break;
+ 
+        case 'End':
+          e.preventDefault();
+          this.moveToLast();
+          break;
+ 
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          this.activateItem();
+          break;
+      }
+    });
+  }
+ 
+  moveNext() {
+    this.currentIndex = (this.currentIndex + 1) % this.items.length;
+    this.updateFocus();
+  }
+ 
+  movePrevious() {
+    this.currentIndex = this.currentIndex === 0 ? this.items.length - 1 : this.currentIndex - 1;
+    this.updateFocus();
+  }
+ 
+  moveToFirst() {
+    this.currentIndex = 0;
+    this.updateFocus();
+  }
+ 
+  moveToLast() {
+    this.currentIndex = this.items.length - 1;
+    this.updateFocus();
+  }
+ 
+  updateFocus() {
+    this.items.forEach((item, index) =&gt; {
+      const isCurrent = index === this.currentIndex;
+      item.setAttribute('tabindex', isCurrent ? '0' : '-1');
+ 
+      if (isCurrent) {
+        item.focus();
+        item.classList.add('keyboard-focused');
+      } else {
+        item.classList.remove('keyboard-focused');
+      }
+    });
+  }
+ 
+  activateItem() {
+    const currentItem = this.items[this.currentIndex];
+    currentItem.click();
+  }
+}
+</code></pre>
+<h3 id="2-屏幕阅读器友好模式">2. 屏幕阅读器友好模式</h3><pre><code>&lt;!-- ARIA标签和语义化结构 --&gt;
+&lt;nav aria-label="主导航" role="navigation"&gt;
+  &lt;ul class="main-menu"&gt;
+    {% for link in linklists.main-menu.links %}
+      &lt;li class="menu-item"&gt;
+        &lt;a href="{{ link.url }}"
+           {% if link.url == request.path %}aria-current="page"{% endif %}
+           {% if link.links != blank %}aria-expanded="false" aria-haspopup="true"{% endif %}&gt;
+          {{ link.title }}
+        &lt;/a&gt;
+ 
+        {% if link.links != blank %}
+          &lt;ul class="submenu" aria-label="{{ link.title }} 子菜单"&gt;
+            {% for childlink in link.links %}
+              &lt;li&gt;
+                &lt;a href="{{ childlink.url }}"&gt;{{ childlink.title }}&lt;/a&gt;
+              &lt;/li&gt;
+            {% endfor %}
+          &lt;/ul&gt;
+        {% endif %}
+      &lt;/li&gt;
+    {% endfor %}
+  &lt;/ul&gt;
+&lt;/nav&gt;
+ 
+&lt;!-- 实时更新区域 --&gt;
+&lt;div aria-live="polite" aria-atomic="true" class="sr-only" id="status-message"&gt;
+  &lt;!-- 状态消息会在这里动态更新 --&gt;
+&lt;/div&gt;
+ 
+&lt;!-- 商品卡片可访问性 --&gt;
+&lt;article class="product-card"
+         role="article"
+         aria-labelledby="product-title-{{ product.id }}"
+         aria-describedby="product-description-{{ product.id }}"&gt;
+ 
+  &lt;h3 id="product-title-{{ product.id }}" class="product-title"&gt;
+    {{ product.title }}
+  &lt;/h3&gt;
+ 
+  &lt;div class="product-image"&gt;
+    &lt;img src="{{ product.featured_image | image_url: width: 300, height: 300 }}"
+         alt="{{ product.featured_image.alt | default: product.title | escape }}"
+         role="img"&gt;
+  &lt;/div&gt;
+ 
+  &lt;p id="product-description-{{ product.id }}" class="product-description"&gt;
+    {{ product.description | strip_html | truncate: 100 }}
+  &lt;/p&gt;
+ 
+  &lt;div class="product-price" aria-label="价格"&gt;
+    &lt;span class="visually-hidden"&gt;价格：&lt;/span&gt;
+    {{ product.price | money }}
+  &lt;/div&gt;
+ 
+  &lt;button class="add-to-cart-btn"
+          aria-label="将 {{ product.title }} 添加到购物车"
+          data-product-id="{{ product.id }}"&gt;
+    添加到购物车
+  &lt;/button&gt;
+&lt;/article&gt;
+</code></pre>
+<p>通过掌握这些常见模式和解决方案，您可以更高效地开发出高质量的 Shopify 主题！</p>
+<h2 id="下一步学习">下一步学习</h2><p>掌握常见模式后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/customization-examples/">定制化开发案例</a> - 高级定制技巧</li>
+<li><a href="/guides/shopify-handbook/liquid/tools/">开发工具推荐</a> - 提升开发效率的工具</li>
+</ol>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/product-objects/"><span>上一篇</span><strong>产品对象详解</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/code-organization/"><span>下一篇</span><strong>代码组织和结构</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

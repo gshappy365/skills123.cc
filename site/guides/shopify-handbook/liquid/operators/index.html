@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>运算符和表达式 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="运算符和表达式 Liquid 提供了丰富的运算符来创建复杂的表达式和逻辑。掌握这些运算符对于编写强大的模板逻辑至关重要。 比较运算符 相等比较 大小比较 包含比较 逻辑运算符 AND 运算符 OR 运算符 NOT 运算符 数学运算符">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/operators/">
+  <meta property="og:title" content="运算符和表达式 · Shopify 独立站手册">
+  <meta property="og:description" content="运算符和表达式 Liquid 提供了丰富的运算符来创建复杂的表达式和逻辑。掌握这些运算符对于编写强大的模板逻辑至关重要。 比较运算符 相等比较 大小比较 包含比较 逻辑运算符 AND 运算符 OR 运算符 NOT 运算符 数学运算符">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>运算符和表达式</h1>
+        <p>运算符和表达式 Liquid 提供了丰富的运算符来创建复杂的表达式和逻辑。掌握这些运算符对于编写强大的模板逻辑至关重要。 比较运算符 相等比较 大小比较 包含比较 逻辑运算符 AND 运算符 OR 运算符 NOT 运算符 数学运算符</p>
+      </header>
+      <div class="article-content"><h2 id="运算符和表达式">运算符和表达式</h2><p>Liquid 提供了丰富的运算符来创建复杂的表达式和逻辑。掌握这些运算符对于编写强大的模板逻辑至关重要。</p>
+<h2 id="比较运算符">比较运算符</h2><h3 id="相等比较">相等比较</h3><pre><code>&lt;!-- 等于 (==) --&gt;
+{% if product.price == 9999 %}
+  &lt;span class="special-price"&gt;特价商品&lt;/span&gt;
+{% endif %}
+ 
+{% if customer.email == "admin@example.com" %}
+  &lt;div class="admin-panel"&gt;管理员面板&lt;/div&gt;
+{% endif %}
+ 
+{% if product.vendor == "Apple" %}
+  &lt;span class="apple-badge"&gt;Apple 官方&lt;/span&gt;
+{% endif %}
+ 
+&lt;!-- 不等于 (!=, &lt;&gt;) --&gt;
+{% if product.price != 0 %}
+  &lt;span class="price"&gt;{{ product.price | money }}&lt;/span&gt;
+{% endif %}
+ 
+{% if customer.email != blank %}
+  &lt;p&gt;已登录用户: {{ customer.email }}&lt;/p&gt;
+{% endif %}
+ 
+{% if product.description &lt;&gt; blank %}
+  &lt;div class="description"&gt;{{ product.description }}&lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="大小比较">大小比较</h3><pre><code>&lt;!-- 大于 (&gt;) --&gt;
+{% if product.price &gt; 10000 %}
+  &lt;span class="high-price"&gt;高价商品&lt;/span&gt;
+{% endif %}
+ 
+{% if cart.item_count &gt; 5 %}
+  &lt;div class="bulk-order"&gt;批量订单&lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 大于等于 (&gt;=) --&gt;
+{% if customer.orders_count &gt;= 10 %}
+  &lt;span class="loyal-customer"&gt;忠实客户&lt;/span&gt;
+{% endif %}
+ 
+{% if product.inventory_quantity &gt;= 100 %}
+  &lt;span class="in-stock"&gt;库存充足&lt;/span&gt;
+{% endif %}
+ 
+&lt;!-- 小于 (&lt;) --&gt;
+{% if product.price &lt; 5000 %}
+  &lt;span class="budget-friendly"&gt;经济实惠&lt;/span&gt;
+{% endif %}
+ 
+{% if cart.total_price &lt; 50000 %}
+  &lt;div class="shipping-notice"&gt;
+    还需购买 {{ 50000 | minus: cart.total_price | money }} 即可免费配送
+  &lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 小于等于 (&lt;=) --&gt;
+{% if product.inventory_quantity &lt;= 5 %}
+  &lt;span class="low-stock"&gt;库存不足&lt;/span&gt;
+{% endif %}
+ 
+{% if forloop.index &lt;= 3 %}
+  &lt;div class="featured-item"&gt;热门商品 #{{ forloop.index }}&lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="包含比较">包含比较</h3><pre><code>&lt;!-- contains 运算符 --&gt;
+{% if product.title contains "iPhone" %}
+  &lt;span class="apple-product"&gt;Apple 产品&lt;/span&gt;
+{% endif %}
+ 
+{% if product.tags contains "sale" %}
+  &lt;div class="sale-badge"&gt;促销&lt;/div&gt;
+{% endif %}
+ 
+{% if customer.tags contains "vip" %}
+  &lt;div class="vip-section"&gt;VIP 专享&lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 集合包含检查 --&gt;
+{% assign featured_tags = "featured,bestseller,hot" | split: "," %}
+{% assign has_featured_tag = false %}
+{% for tag in product.tags %}
+  {% if featured_tags contains tag %}
+    {% assign has_featured_tag = true %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+ 
+{% if has_featured_tag %}
+  &lt;span class="featured-badge"&gt;精选商品&lt;/span&gt;
+{% endif %}
+</code></pre>
+<h2 id="逻辑运算符">逻辑运算符</h2><h3 id="and-运算符">AND 运算符</h3><pre><code>&lt;!-- 基本 AND 操作 --&gt;
+{% if product.available and product.price &lt; 10000 %}
+  &lt;button class="add-to-cart affordable"&gt;立即购买&lt;/button&gt;
+{% endif %}
+ 
+{% if customer and customer.tags contains "vip" %}
+  &lt;div class="vip-discount"&gt;VIP 专享折扣&lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 多条件 AND --&gt;
+{% if product.available and product.price &gt; 0 and product.inventory_quantity &gt; 0 %}
+  &lt;div class="purchase-options"&gt;
+    &lt;button type="submit"&gt;加入购物车&lt;/button&gt;
+  &lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 复杂 AND 表达式 --&gt;
+{% if customer 
+   and customer.orders_count &gt; 0 
+   and customer.total_spent &gt; 100000 
+   and customer.tags contains "premium" %}
+  &lt;div class="premium-benefits"&gt;
+    &lt;h3&gt;尊享会员特权&lt;/h3&gt;
+    &lt;ul&gt;
+      &lt;li&gt;免费配送&lt;/li&gt;
+      &lt;li&gt;优先客服&lt;/li&gt;
+      &lt;li&gt;专属折扣&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="or-运算符">OR 运算符</h3><pre><code>&lt;!-- 基本 OR 操作 --&gt;
+{% if product.tags contains "featured" or product.tags contains "bestseller" %}
+  &lt;span class="highlight-badge"&gt;推荐商品&lt;/span&gt;
+{% endif %}
+ 
+{% if customer.tags contains "vip" or customer.total_spent &gt; 50000 %}
+  &lt;div class="premium-access"&gt;高级会员权限&lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 多条件 OR --&gt;
+{% if product.type == "Electronics" 
+   or product.type == "Computers" 
+   or product.vendor == "Apple" %}
+  &lt;div class="tech-category"&gt;科技产品&lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 组合 OR 条件 --&gt;
+{% if (product.tags contains "sale" or product.compare_at_price &gt; product.price)
+   or (customer.tags contains "member" and cart.total_price &gt; 30000) %}
+  &lt;div class="discount-eligible"&gt;享受折扣&lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="not-运算符">NOT 运算符</h3><pre><code>&lt;!-- 使用 unless (相当于 NOT) --&gt;
+{% unless product.available %}
+  &lt;div class="out-of-stock"&gt;
+    &lt;p&gt;商品暂时缺货&lt;/p&gt;
+    &lt;button class="notify-me"&gt;到货通知&lt;/button&gt;
+  &lt;/div&gt;
+{% endunless %}
+ 
+&lt;!-- 使用 != 或 &lt;&gt; --&gt;
+{% if product.vendor != "Generic" %}
+  &lt;span class="brand-name"&gt;{{ product.vendor }}&lt;/span&gt;
+{% endif %}
+ 
+&lt;!-- 复杂 NOT 表达式 --&gt;
+{% unless customer and customer.tags contains "blocked" %}
+  &lt;div class="add-to-cart-section"&gt;
+    &lt;!-- 购买选项 --&gt;
+  &lt;/div&gt;
+{% endunless %}
+</code></pre>
+<h2 id="数学运算符">数学运算符</h2><h3 id="基本数学运算">基本数学运算</h3><pre><code>&lt;!-- 加法 (+) - 通过过滤器实现 --&gt;
+{% assign total_price = product.price | plus: shipping_cost %}
+{% assign final_quantity = current_stock | plus: incoming_stock %}
+ 
+&lt;!-- 减法 (-) --&gt;
+{% assign discount_amount = product.compare_at_price | minus: product.price %}
+{% assign remaining_stock = total_inventory | minus: sold_quantity %}
+ 
+&lt;!-- 乘法 (*) --&gt;
+{% assign line_total = item.quantity | times: item.price %}
+{% assign bulk_discount = order_total | times: 0.1 %}
+ 
+&lt;!-- 除法 (/) --&gt;
+{% assign average_price = total_value | divided_by: item_count %}
+{% assign price_per_unit = bulk_price | divided_by: package_size %}
+ 
+&lt;!-- 取模 (%) --&gt;
+{% assign remainder = total_items | modulo: items_per_page %}
+{% assign is_even = forloop.index | modulo: 2 %}
+</code></pre>
+<h3 id="数学运算应用示例">数学运算应用示例</h3><pre><code>&lt;!-- 计算折扣百分比 --&gt;
+{% if product.compare_at_price &gt; product.price %}
+  {% assign savings = product.compare_at_price | minus: product.price %}
+  {% assign savings_percent = savings | times: 100 | divided_by: product.compare_at_price | round %}
+  
+  &lt;div class="sale-info"&gt;
+    &lt;span class="original-price"&gt;{{ product.compare_at_price | money }}&lt;/span&gt;
+    &lt;span class="sale-price"&gt;{{ product.price | money }}&lt;/span&gt;
+    &lt;span class="savings"&gt;节省 {{ savings_percent }}%&lt;/span&gt;
+  &lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 计算购物车统计 --&gt;
+{% assign subtotal = 0 %}
+{% assign total_weight = 0 %}
+{% assign item_count = 0 %}
+ 
+{% for item in cart.items %}
+  {% assign line_total = item.quantity | times: item.price %}
+  {% assign subtotal = subtotal | plus: line_total %}
+  {% assign line_weight = item.quantity | times: item.variant.weight %}
+  {% assign total_weight = total_weight | plus: line_weight %}
+  {% assign item_count = item_count | plus: item.quantity %}
+{% endfor %}
+ 
+&lt;div class="cart-summary"&gt;
+  &lt;p&gt;商品数量: {{ item_count }}&lt;/p&gt;
+  &lt;p&gt;总重量: {{ total_weight }}g&lt;/p&gt;
+  &lt;p&gt;小计: {{ subtotal | money }}&lt;/p&gt;
+  &lt;p&gt;平均单价: {{ subtotal | divided_by: item_count | money }}&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="高级数学运算">高级数学运算</h3><pre><code>&lt;!-- 四舍五入 --&gt;
+{% assign rounded_price = calculated_price | round %}
+{% assign precise_price = calculated_price | round: 2 %}
+ 
+&lt;!-- 向上取整 --&gt;
+{% assign pages_needed = total_items | divided_by: items_per_page | ceil %}
+ 
+&lt;!-- 向下取整 --&gt;
+{% assign complete_sets = available_quantity | divided_by: set_size | floor %}
+ 
+&lt;!-- 绝对值 --&gt;
+{% assign price_difference = new_price | minus: old_price | abs %}
+ 
+&lt;!-- 最大值和最小值 --&gt;
+{% assign max_quantity = variant.inventory_quantity | at_most: 10 %}
+{% assign min_order = 1 | at_least: minimum_order_quantity %}
+</code></pre>
+<h2 id="字符串运算符">字符串运算符</h2><h3 id="字符串比较">字符串比较</h3><pre><code>&lt;!-- 字符串相等比较 --&gt;
+{% if product.type == "Electronics" %}
+  &lt;span class="category-electronics"&gt;电子产品&lt;/span&gt;
+{% endif %}
+ 
+&lt;!-- 字符串不等比较 --&gt;
+{% if product.handle != "default-product" %}
+  &lt;a href="{{ product.url }}"&gt;{{ product.title }}&lt;/a&gt;
+{% endif %}
+ 
+&lt;!-- 字符串包含 --&gt;
+{% if product.title contains "Pro" %}
+  &lt;span class="pro-model"&gt;专业版&lt;/span&gt;
+{% endif %}
+ 
+&lt;!-- 忽略大小写比较 --&gt;
+{% assign lower_title = product.title | downcase %}
+{% if lower_title contains "iphone" %}
+  &lt;span class="iphone-product"&gt;iPhone 产品&lt;/span&gt;
+{% endif %}
+</code></pre>
+<h3 id="字符串操作">字符串操作</h3><pre><code>&lt;!-- 字符串连接 --&gt;
+{% assign full_name = customer.first_name | append: " " | append: customer.last_name %}
+{% assign product_url = "/products/" | append: product.handle %}
+ 
+&lt;!-- 字符串长度比较 --&gt;
+{% if product.title.size &gt; 30 %}
+  &lt;h3 title="{{ product.title }}"&gt;{{ product.title | truncate: 30 }}&lt;/h3&gt;
+{% else %}
+  &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+{% endif %}
+ 
+&lt;!-- 字符串空值检查 --&gt;
+{% if product.description != blank %}
+  &lt;div class="description"&gt;{{ product.description }}&lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="复杂表达式">复杂表达式</h2><h3 id="括号分组">括号分组</h3><pre><code>&lt;!-- 使用括号控制运算顺序 --&gt;
+{% if (product.available and product.price &lt; 10000) or (customer.tags contains "vip") %}
+  &lt;button class="special-offer"&gt;特别优惠&lt;/button&gt;
+{% endif %}
+ 
+&lt;!-- 复杂的条件分组 --&gt;
+{% if (product.type == "Electronics" or product.type == "Computers") 
+   and (product.vendor == "Apple" or product.vendor == "Samsung") 
+   and product.available %}
+  &lt;div class="premium-tech"&gt;高端科技产品&lt;/div&gt;
+{% endif %}
+ 
+&lt;!-- 嵌套条件 --&gt;
+{% if customer %}
+  {% if (customer.orders_count &gt; 5 and customer.total_spent &gt; 100000) 
+     or customer.tags contains "vip" %}
+    &lt;div class="loyalty-rewards"&gt;忠诚度奖励&lt;/div&gt;
+  {% endif %}
+{% endif %}
+</code></pre>
+<h3 id="条件链">条件链</h3><pre><code>&lt;!-- 多重条件判断 --&gt;
+{% if product.price &gt; 50000 %}
+  {% assign price_category = "premium" %}
+{% elsif product.price &gt; 20000 %}
+  {% assign price_category = "mid-range" %}
+{% elsif product.price &gt; 5000 %}
+  {% assign price_category = "affordable" %}
+{% else %}
+  {% assign price_category = "budget" %}
+{% endif %}
+ 
+&lt;div class="product-card {{ price_category }}"&gt;
+  &lt;!-- 产品内容 --&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="表达式求值">表达式求值</h3><pre><code>&lt;!-- 复杂的业务逻辑表达式 --&gt;
+{% assign is_eligible_for_free_shipping = 
+  cart.total_price &gt; 50000 
+  or customer.tags contains "premium" 
+  or (cart.total_weight &lt; 2000 and customer.orders_count &gt; 10) %}
+ 
+{% assign show_quantity_discount = 
+  product.available 
+  and product.variants.size &gt; 1 
+  and customer
+  and (customer.tags contains "wholesale" or cart.item_count &gt; 10) %}
+ 
+{% assign applies_rush_processing = 
+  order.created_at &gt; yesterday 
+  and order.financial_status == "paid" 
+  and (order.shipping_address.country == "CN" or customer.tags contains "priority") %}
+</code></pre>
+<h2 id="运算符优先级">运算符优先级</h2><h3 id="优先级顺序">优先级顺序</h3><pre><code>&lt;!-- 运算符优先级 (从高到低) --&gt;
+&lt;!-- 1. 括号 () --&gt;
+&lt;!-- 2. 一元运算符 (not, unless) --&gt;
+&lt;!-- 3. 乘法、除法、取模 (*, /, %) --&gt;
+&lt;!-- 4. 加法、减法 (+, -) --&gt;
+&lt;!-- 5. 比较运算符 (&lt;, &lt;=, &gt;, &gt;=) --&gt;
+&lt;!-- 6. 相等运算符 (==, !=, &lt;&gt;) --&gt;
+&lt;!-- 7. 逻辑 AND (and) --&gt;
+&lt;!-- 8. 逻辑 OR (or) --&gt;
+ 
+&lt;!-- 示例：理解优先级 --&gt;
+{% if product.price &gt; 1000 and product.available or customer.tags contains "vip" %}
+  &lt;!-- 等同于: (product.price &gt; 1000 and product.available) or (customer.tags contains "vip") --&gt;
+{% endif %}
+ 
+&lt;!-- 使用括号明确优先级 --&gt;
+{% if product.price &gt; 1000 and (product.available or customer.tags contains "vip") %}
+  &lt;!-- 明确的逻辑: price &gt; 1000 AND (available OR vip) --&gt;
+{% endif %}
+</code></pre>
+<h2 id="类型转换在表达式中">类型转换在表达式中</h2><h3 id="自动类型转换">自动类型转换</h3><pre><code>&lt;!-- 字符串到数字的自动转换 --&gt;
+{% assign string_price = "99.99" %}
+{% if string_price &gt; 50 %}
+  &lt;!-- 字符串自动转换为数字进行比较 --&gt;
+  &lt;span class="expensive"&gt;价格较高&lt;/span&gt;
+{% endif %}
+ 
+&lt;!-- 数字到字符串的转换 --&gt;
+{% assign number = 123 %}
+{% assign text = "Product " | append: number %}
+&lt;!-- 结果: "Product 123" --&gt;
+ 
+&lt;!-- 布尔值在条件中的使用 --&gt;
+{% assign is_featured = product.tags contains "featured" %}
+{% if is_featured %}
+  &lt;span class="featured-badge"&gt;精选&lt;/span&gt;
+{% endif %}
+</code></pre>
+<h3 id="显式类型转换">显式类型转换</h3><pre><code>&lt;!-- 强制数字转换 --&gt;
+{% assign price_string = "99.99" %}
+{% assign price_number = price_string | plus: 0 %}
+ 
+&lt;!-- 强制字符串转换 --&gt;
+{% assign number = 123 %}
+{% assign number_string = number | append: "" %}
+ 
+&lt;!-- 布尔值转换技巧 --&gt;
+{% assign has_content = product.description != blank %}
+{% assign is_available = product.available == true %}
+{% assign is_expensive = product.price &gt; 10000 %}
+</code></pre>
+<h2 id="实际应用案例">实际应用案例</h2><h3 id="动态定价逻辑">动态定价逻辑</h3><pre><code>&lt;!-- 复杂的定价规则 --&gt;
+{% assign base_price = product.price %}
+{% assign final_price = base_price %}
+ 
+&lt;!-- VIP 折扣 --&gt;
+{% if customer.tags contains "vip" %}
+  {% assign final_price = final_price | times: 0.9 %}
+{% endif %}
+ 
+&lt;!-- 批量折扣 --&gt;
+{% if cart.item_count &gt; 10 %}
+  {% assign final_price = final_price | times: 0.95 %}
+{% endif %}
+ 
+&lt;!-- 首次购买折扣 --&gt;
+{% if customer.orders_count == 0 %}
+  {% assign final_price = final_price | times: 0.85 %}
+{% endif %}
+ 
+&lt;!-- 季节性折扣 --&gt;
+{% assign current_month = 'now' | date: '%m' %}
+{% if current_month == "11" or current_month == "12" %}
+  {% assign final_price = final_price | times: 0.8 %}
+{% endif %}
+ 
+&lt;div class="pricing"&gt;
+  {% if final_price &lt; base_price %}
+    &lt;span class="original-price"&gt;{{ base_price | money }}&lt;/span&gt;
+    &lt;span class="final-price"&gt;{{ final_price | money }}&lt;/span&gt;
+    {% assign savings = base_price | minus: final_price %}
+    &lt;span class="savings"&gt;节省 {{ savings | money }}&lt;/span&gt;
+  {% else %}
+    &lt;span class="price"&gt;{{ final_price | money }}&lt;/span&gt;
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="库存管理逻辑">库存管理逻辑</h3><pre><code>&lt;!-- 智能库存显示 --&gt;
+{% assign inventory = product.selected_or_first_available_variant.inventory_quantity %}
+{% assign inventory_policy = product.selected_or_first_available_variant.inventory_policy %}
+ 
+{% if inventory_policy == "deny" and inventory &lt;= 0 %}
+  &lt;div class="out-of-stock"&gt;
+    &lt;span class="status"&gt;缺货&lt;/span&gt;
+    &lt;button class="notify-btn"&gt;到货通知&lt;/button&gt;
+  &lt;/div&gt;
+{% elsif inventory_policy == "deny" and inventory &lt;= 5 %}
+  &lt;div class="low-stock"&gt;
+    &lt;span class="status"&gt;仅剩 {{ inventory }} 件&lt;/span&gt;
+    &lt;span class="urgency"&gt;抓紧购买&lt;/span&gt;
+  &lt;/div&gt;
+{% elsif inventory_policy == "deny" and inventory &lt;= 20 %}
+  &lt;div class="moderate-stock"&gt;
+    &lt;span class="status"&gt;库存充足&lt;/span&gt;
+  &lt;/div&gt;
+{% elsif inventory_policy == "continue" %}
+  &lt;div class="unlimited-stock"&gt;
+    &lt;span class="status"&gt;现货供应&lt;/span&gt;
+  &lt;/div&gt;
+{% else %}
+  &lt;div class="high-stock"&gt;
+    &lt;span class="status"&gt;库存充足&lt;/span&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="推荐引擎逻辑">推荐引擎逻辑</h3><pre><code>&lt;!-- 基于规则的产品推荐 --&gt;
+{% assign recommendation_score = 0 %}
+ 
+&lt;!-- 相同类型加分 --&gt;
+{% if related_product.type == product.type %}
+  {% assign recommendation_score = recommendation_score | plus: 3 %}
+{% endif %}
+ 
+&lt;!-- 相同供应商加分 --&gt;
+{% if related_product.vendor == product.vendor %}
+  {% assign recommendation_score = recommendation_score | plus: 2 %}
+{% endif %}
+ 
+&lt;!-- 价格相近加分 --&gt;
+{% assign price_diff = related_product.price | minus: product.price | abs %}
+{% assign price_ratio = price_diff | divided_by: product.price %}
+{% if price_ratio &lt; 0.3 %}
+  {% assign recommendation_score = recommendation_score | plus: 2 %}
+{% endif %}
+ 
+&lt;!-- 标签匹配加分 --&gt;
+{% for tag in product.tags %}
+  {% if related_product.tags contains tag %}
+    {% assign recommendation_score = recommendation_score | plus: 1 %}
+  {% endif %}
+{% endfor %}
+ 
+&lt;!-- 根据评分决定是否推荐 --&gt;
+{% if recommendation_score &gt;= 5 %}
+  &lt;div class="highly-recommended"&gt;
+    {% render 'product-card', product: related_product, badge: '强烈推荐' %}
+  &lt;/div&gt;
+{% elsif recommendation_score &gt;= 3 %}
+  &lt;div class="recommended"&gt;
+    {% render 'product-card', product: related_product, badge: '推荐' %}
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="性能优化技巧">性能优化技巧</h2><h3 id="避免重复计算">避免重复计算</h3><pre><code>&lt;!-- 不好的做法 --&gt;
+{% for product in collection.products %}
+  {% if collection.products.size &gt; 10 and product.price &lt; 5000 %}
+    &lt;!-- collection.products.size 重复计算 --&gt;
+  {% endif %}
+{% endfor %}
+ 
+&lt;!-- 好的做法 --&gt;
+{% assign product_count = collection.products.size %}
+{% assign show_budget_filter = product_count &gt; 10 %}
+ 
+{% for product in collection.products %}
+  {% if show_budget_filter and product.price &lt; 5000 %}
+    &lt;!-- 使用预计算的值 --&gt;
+  {% endif %}
+{% endfor %}
+</code></pre>
+<h3 id="短路求值">短路求值</h3><pre><code>&lt;!-- 利用短路求值优化性能 --&gt;
+{% if customer and customer.orders_count &gt; 0 and expensive_calculation %}
+  &lt;!-- 如果 customer 为空，后面的条件不会执行 --&gt;
+{% endif %}
+ 
+&lt;!-- 将简单条件放在前面 --&gt;
+{% if product.available and complex_inventory_check %}
+  &lt;!-- 如果 available 为 false，复杂检查不会执行 --&gt;
+{% endif %}
+</code></pre>
+<h2 id="最佳实践">最佳实践</h2><h3 id="1-可读性优先">1. 可读性优先</h3><pre><code>&lt;!-- 使用有意义的变量名 --&gt;
+{% assign customer_is_vip = customer.tags contains "vip" %}
+{% assign product_is_on_sale = product.compare_at_price &gt; product.price %}
+{% assign order_qualifies_for_free_shipping = cart.total_price &gt; 50000 %}
+ 
+{% if customer_is_vip and product_is_on_sale %}
+  &lt;div class="vip-sale-notice"&gt;VIP 专享促销&lt;/div&gt;
+{% endif %}
+</code></pre>
+<h3 id="2-避免复杂嵌套">2. 避免复杂嵌套</h3><pre><code>&lt;!-- 不好的做法 --&gt;
+{% if customer %}
+  {% if customer.orders_count &gt; 0 %}
+    {% if customer.total_spent &gt; 100000 %}
+      {% if customer.tags contains "premium" %}
+        &lt;!-- 深层嵌套难以理解 --&gt;
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endif %}
+ 
+&lt;!-- 好的做法 --&gt;
+{% assign is_premium_customer = customer 
+  and customer.orders_count &gt; 0 
+  and customer.total_spent &gt; 100000 
+  and customer.tags contains "premium" %}
+ 
+{% if is_premium_customer %}
+  &lt;!-- 清晰的条件表达 --&gt;
+{% endif %}
+</code></pre>
+<h3 id="3-一致的代码风格">3. 一致的代码风格</h3><pre><code>&lt;!-- 保持一致的运算符使用 --&gt;
+{% if product.price == 0 %}          &lt;!-- 使用 == --&gt;
+{% if product.description != blank %} &lt;!-- 使用 != --&gt;
+{% if customer.orders_count &gt; 5 %}    &lt;!-- 使用 &gt; --&gt;
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>掌握运算符和表达式后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/shopify-objects/">Shopify 对象参考</a> - 了解可用于表达式的对象</li>
+<li><a href="/guides/shopify-handbook/liquid/advanced-liquid/">高级 Liquid 技巧</a> - 复杂逻辑实现</li>
+<li><a href="/guides/shopify-handbook/liquid/performance-optimization/">性能优化</a> - 表达式优化技巧</li>
+<li><a href="/guides/shopify-handbook/liquid/best-practices/">最佳实践</a> - 代码规范和模式</li>
+</ol>
+<p>运算符是构建复杂模板逻辑的基础，熟练掌握它们将让您能够实现各种业务需求！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/ai-theme-engineering/"><span>上一篇</span><strong>一、为什么主题开发需要「工程化」</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/theme-engineering-setup/"><span>下一篇</span><strong>主题工程化：目录约定与 npm 脚本</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

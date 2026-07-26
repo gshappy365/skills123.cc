@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>路径 A：Hydrogen（推荐） · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="路径 A：Hydrogen（推荐） Shopify 官方 React 框架，2022 年开源，2023 年集成到 Remix 之上。 优势 ： 与 Shopify 后端深度集成（Storefront API 内置） Oxygen 托">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/headless-commerce-architecture/">
+  <meta property="og:title" content="路径 A：Hydrogen（推荐） · Shopify 独立站手册">
+  <meta property="og:description" content="路径 A：Hydrogen（推荐） Shopify 官方 React 框架，2022 年开源，2023 年集成到 Remix 之上。 优势 ： 与 Shopify 后端深度集成（Storefront API 内置） Oxygen 托">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>路径 A：Hydrogen（推荐）</h1>
+        <p>路径 A：Hydrogen（推荐） Shopify 官方 React 框架，2022 年开源，2023 年集成到 Remix 之上。 优势 ： 与 Shopify 后端深度集成（Storefront API 内置） Oxygen 托</p>
+      </header>
+      <div class="article-content"><h3 id="路径-a-hydrogen-推荐">路径 A：Hydrogen（推荐）</h3><p>Shopify 官方 React 框架，2022 年开源，2023 年集成到 Remix 之上。</p>
+<p><strong>优势</strong>：</p>
+<ul>
+<li>与 Shopify 后端深度集成（Storefront API 内置）</li>
+<li>Oxygen 托管（Shopify 自家边缘网络部署）免费</li>
+<li>内置 SEO、缓存、组件库</li>
+<li>持续接收 Shopify 官方维护</li>
+</ul>
+<p><strong>适用</strong>：</p>
+<ul>
+<li>90% 选择 Headless 的店铺第一选项</li>
+<li>团队熟悉 React 但未深耕复杂前端架构</li>
+</ul>
+<p><strong>项目结构</strong>：</p>
+<pre><code>hydrogen-shop/
+├── app/
+│   ├── routes/                # Remix 路由
+│   │   ├── ($lang)._index.tsx
+│   │   ├── products.$handle.tsx
+│   │   └── collections.$handle.tsx
+│   ├── components/
+│   └── lib/
+├── public/
+└── package.json
+</code></pre>
+<p>部署：<code>npm create @shopify/hydrogen</code> → <code>npx shopify hydrogen deploy</code>，连接到 Oxygen 即上线。</p>
+<h3 id="路径-b-next-js-storefront-api">路径 B：Next.js + Storefront API</h3><p>最自由的路径，但需要自己处理与 Shopify 的所有集成。</p>
+<p><strong>优势</strong>：</p>
+<ul>
+<li>完全自定义部署目标（Vercel、Cloudflare、AWS、自建）</li>
+<li>可深度集成非 Shopify 系统（CMS、ERP、CDP）</li>
+<li>团队已有 Next.js 经验时启动快</li>
+</ul>
+<p><strong>劣势</strong>：</p>
+<ul>
+<li>没有 Shopify 默认的边缘缓存、组件等支持</li>
+<li>应用集成需要每个单独对接</li>
+<li>升级 Storefront API 版本时需自己跟进</li>
+</ul>
+<p><strong>适用</strong>：已有成熟 Next.js 站点，想接入 Shopify 后端。</p>
+<h3 id="路径-c-composable-comme">路径 C：Composable Comme...</h3></div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/global-logistics/"><span>上一篇</span><strong>跨境物流方案与订单跟踪</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/data-driven-decision/"><span>下一篇</span><strong>数据驱动的运营决策体系</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

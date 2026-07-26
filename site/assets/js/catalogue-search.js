@@ -1,4 +1,4 @@
-import { createCatalogueModel } from "./catalogue-model.js?v=20260726-2";
+import { createCatalogueModel } from "./catalogue-model.js?v=20260726-3";
 
 export const PACKAGE_GROUP_ORDER = Object.freeze([
   "development",
@@ -40,9 +40,11 @@ export async function loadPackageSkills(catalog, fetchJson) {
   return (await createCatalogueModel(catalog, fetchJson)).packageSkills;
 }
 
-export function searchCatalogue({ catalog, packageSkills, query }) {
+export function searchCatalogue({ catalog, packageSkills, guides = [], query }) {
   const normalizedQuery = String(query).trim().toLocaleLowerCase();
-  if (!normalizedQuery) return { packageMatches: [], skillMatches: [] };
+  if (!normalizedQuery) {
+    return { packageMatches: [], skillMatches: [], guideMatches: [] };
+  }
 
   const scenarioById = new Map(
     catalog.scenarios.map((scenario) => [scenario.id, scenario])
@@ -86,5 +88,24 @@ export function searchCatalogue({ catalog, packageSkills, query }) {
       }))
   );
 
-  return { packageMatches, skillMatches };
+  const guideMatches = guides
+    .filter((guide) =>
+      normalizedText([
+        guide.name,
+        guide.description,
+        guide.label,
+        guide.tags,
+      ]).includes(normalizedQuery)
+    )
+    .map(({ id, name, description, label, articleCount, topicCount, href }) => ({
+      id,
+      name,
+      description,
+      label,
+      articleCount,
+      topicCount,
+      href,
+    }));
+
+  return { packageMatches, skillMatches, guideMatches };
 }

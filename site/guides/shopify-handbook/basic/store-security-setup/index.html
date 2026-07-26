@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>安全优先级速查 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify 店铺安全不是装一个插件就能解决的问题。真正重要的是把风险分层：谁能登录、谁能改设置、哪些 App 能读数据、订单是否异常、客户数据是否合规、主题代码有没有备份。 这篇按商家最常见的风险场景来整理，不建议随便往主题里加">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/basic/store-security-setup/">
+  <meta property="og:title" content="安全优先级速查 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify 店铺安全不是装一个插件就能解决的问题。真正重要的是把风险分层：谁能登录、谁能改设置、哪些 App 能读数据、订单是否异常、客户数据是否合规、主题代码有没有备份。 这篇按商家最常见的风险场景来整理，不建议随便往主题里加">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/basic/">入门基础</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">入门基础 · 整理与归档</p>
+        <h1>安全优先级速查</h1>
+        <p>Shopify 店铺安全不是装一个插件就能解决的问题。真正重要的是把风险分层：谁能登录、谁能改设置、哪些 App 能读数据、订单是否异常、客户数据是否合规、主题代码有没有备份。 这篇按商家最常见的风险场景来整理，不建议随便往主题里加</p>
+      </header>
+      <div class="article-content"><p><img src="/assets/images/shopify-handbook/a4e068ff2a4ed293.png" alt="Shopify 店铺安全设置指南" loading="lazy" /></p>
+<p>Shopify 店铺安全不是装一个插件就能解决的问题。真正重要的是把风险分层：谁能登录、谁能改设置、哪些 App 能读数据、订单是否异常、客户数据是否合规、主题代码有没有备份。</p>
+<p>这篇按商家最常见的风险场景来整理，不建议随便往主题里加“安全代码”。Shopify 的账号、支付、结账和 SSL 大部分由平台托管，商家真正应该重点管理的是 <strong>账户权限、应用权限、订单风控和数据流程</strong>。</p>
+<hr />
+<h2 id="安全优先级速查">安全优先级速查</h2><table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>要做什么</th>
+<th>为什么重要</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P0</td>
+<td>开启双因素认证（2FA）</td>
+<td>防止邮箱或密码泄露后被直接登录</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>审核员工与协作者权限</td>
+<td>避免无关人员修改订单、支付、主题或客户数据</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>定期清理不用的 App</td>
+<td>App 权限过大是 Shopify 店铺常见风险</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>设置订单风控流程</td>
+<td>降低欺诈订单、拒付和异常退款风险</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>备份主题与关键数据</td>
+<td>防止误删、误改和上线事故</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>建立月度安全检查</td>
+<td>把安全从一次性动作变成固定流程</td>
+</tr>
+</tbody></table>
+<hr />
+<h2 id="账户安全">账户安全</h2><p>店主账号、管理员账号和开发协作者账号都应开启 2FA。不要多人共用一个账号，也不要把店主账号给临时外包人员使用。</p>
+<p>建议规则：</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>店主账号</td>
+<td>使用独立邮箱，开启 2FA，不用于日常多人共享</td>
+</tr>
+<tr>
+<td>员工账号</td>
+<td>每人独立账号，根据岗位分配权限</td>
+</tr>
+<tr>
+<td>协作者账号</td>
+<td>使用 Shopify Collaborator Access，不直接共享密码</td>
+</tr>
+<tr>
+<td>密码管理</td>
+<td>使用 1Password、Bitwarden 等密码管理器</td>
+</tr>
+<tr>
+<td>离职处理</td>
+<td>立即移除账号、协作者权限和第三方工具权限</td>
+</tr>
+</tbody></table>
+<p>如果你要找开发者协助修改主题，优先使用 <a href="/guides/shopify-handbook/basic/collaborator/">Shopify 合作伙伴权限</a>，不要直接发送店主账号和密码。</p>
+<hr />
+<h2 id="员工权限怎么分配">员工权限怎么分配</h2><p>权限设置遵循一个原则：<strong>只给完成工作所需的最小权限</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>通常需要</th>
+<th>不建议开放</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>客服</td>
+<td>订单、客户、退款相关权限</td>
+<td>支付、主题、应用、账单</td>
+</tr>
+<tr>
+<td>运营</td>
+<td>产品、集合、折扣、内容页面</td>
+<td>支付、账单、敏感设置</td>
+</tr>
+<tr>
+<td>设计/开发</td>
+<td>主题、文件、部分应用权限</td>
+<td>订单、客户、账单</td>
+</tr>
+<tr>
+<td>财务</td>
+<td>订单、付款、报表</td>
+<td>主题、应用、页面内容</td>
+</tr>
+<tr>
+<td>外包人员</td>
+<td>只给项目所需权限</td>
+<td>店主权限、完整后台权限</td>
+</tr>
+</tbody></table>
+<p>如果某个人只是改页面，不应拥有订单、客户和支付权限。如果某个人只是处理订单，不应拥有主题代码权限。</p>
+<hr />
+<h2 id="应用权限审核">应用权限审核</h2><p>Shopify App 往往会请求读取产品、订单、客户、主题或脚本等权限。很多店铺的真实风险不是来自 Shopify 平台，而是来自安装太多 App、长期不用却没有卸载。</p>
+<p>安装 App 前先问 5 个问题：</p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>判断标准</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>这个 App 解决的是否是当前必须问题？</td>
+<td>不是必须就先不装</td>
+</tr>
+<tr>
+<td>是否请求了过多权限？</td>
+<td>和功能无关的敏感权限要谨慎</td>
+</tr>
+<tr>
+<td>是否影响主题速度？</td>
+<td>会注入前端脚本的 App 要重点关注</td>
+</tr>
+<tr>
+<td>是否有稳定维护和客服？</td>
+<td>长期不更新的 App 风险更高</td>
+</tr>
+<tr>
+<td>是否有隐藏费用？</td>
+<td>看清订单量、邮件量、访问量计费规则</td>
+</tr>
+</tbody></table>
+<p>每月检查一次 App 列表。超过 30–60 天没有使用的 App，建议卸载或至少确认权限和费用。</p>
+<p>配套阅读：<a href="/guides/shopify-handbook/basic/app-recommendations/">Shopify 应用选择与安装指南</a>。</p>
+<hr />
+<h2 id="订单风控">订单风控</h2><p>防欺诈不是简单拒绝所有高风险订单，而是建立一套判断流程。</p>
+<p>重点看这些信号：</p>
+<table>
+<thead>
+<tr>
+<th>风险信号</th>
+<th>处理建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>账单地址和收货地址差异很大</td>
+<td>人工复核</td>
+</tr>
+<tr>
+<td>短时间内多个大额订单</td>
+<td>暂缓发货，确认身份</td>
+</tr>
+<tr>
+<td>邮箱、电话、地址明显异常</td>
+<td>联系客户确认</td>
+</tr>
+<tr>
+<td>高风险国家/地区 + 高客单价</td>
+<td>优先人工审核</td>
+</tr>
+<tr>
+<td>多次失败支付后成功</td>
+<td>谨慎处理</td>
+</tr>
+</tbody></table>
+<p>如果订单金额较高，不要只看“付款成功”。发货前可以通过邮件、短信或电话做二次确认，尤其是高客单价、易转售、跨境配送成本高的商品。</p>
+<hr />
+<h2 id="客户数据与合规">客户数据与合规</h2><p>面向海外市场时，隐私政策、Cookie、邮件订阅同意和数据删除请求都应提前准备。</p>
+<p>基础要求：</p>
+<table>
+<thead>
+<tr>
+<th>页面或流程</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Privacy Policy</td>
+<td>说明收集哪些数据、用于什么目的</td>
+</tr>
+<tr>
+<td>Terms of Service</td>
+<td>说明交易规则、责任边界</td>
+</tr>
+<tr>
+<td>Refund Policy</td>
+<td>说明退换货条件和处理周期</td>
+</tr>
+<tr>
+<td>Cookie Banner</td>
+<td>面向欧盟市场时建议配置</td>
+</tr>
+<tr>
+<td>邮件订阅</td>
+<td>不要默认勾选订阅，保留退订入口</td>
+</tr>
+</tbody></table>
+<p>如果主要市场在欧盟、英国或加州，建议阅读 <a href="/guides/shopify-handbook/advanced/gdpr-compliance-guide/">GDPR 合规完整指南</a>。</p>
+<hr />
+<h2 id="主题和数据备份">主题和数据备份</h2><p>Shopify 托管了服务器和 SSL，但主题代码、产品 CSV、页面文案和关键配置仍然需要商家自己有备份意识。</p>
+<p>建议备份这些内容：</p>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>频率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主题代码</td>
+<td>大改前必须备份</td>
+</tr>
+<tr>
+<td>产品 CSV</td>
+<td>每月或大批量修改前</td>
+</tr>
+<tr>
+<td>重要页面文案</td>
+<td>每次改版前</td>
+</tr>
+<tr>
+<td>App 配置截图</td>
+<td>调整前保存</td>
+</tr>
+<tr>
+<td>DNS / 域名配置</td>
+<td>绑定和迁移前保存</td>
+</tr>
+</tbody></table>
+<p>如果你有开发流程，主题代码建议使用 Git 管理。即使不懂代码，也至少在主题编辑器里复制一份当前主题，避免上线修改无法回退。</p>
+<hr />
+<h2 id="月度安全检查清单">月度安全检查清单</h2><table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>店主和管理员账号是否开启 2FA</td>
+<td>□</td>
+</tr>
+<tr>
+<td>员工和协作者权限是否仍然合理</td>
+<td>□</td>
+</tr>
+<tr>
+<td>是否有不用的 App 需要卸载</td>
+<td>□</td>
+</tr>
+<tr>
+<td>是否有异常订单、退款、拒付</td>
+<td>□</td>
+</tr>
+<tr>
+<td>主题大改前是否备份</td>
+<td>□</td>
+</tr>
+<tr>
+<td>隐私政策、退换货政策是否仍然准确</td>
+<td>□</td>
+</tr>
+<tr>
+<td>邮件、像素、客服等第三方工具权限是否需要更新</td>
+<td>□</td>
+</tr>
+</tbody></table>
+<hr />
+<h2 id="出现安全事件怎么办">出现安全事件怎么办</h2><p>如果你发现异常登录、主题被改、订单异常或客户数据风险，建议按这个顺序处理：</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>立即修改店主账号密码并确认 2FA</td>
+</tr>
+<tr>
+<td>2</td>
+<td>移除不认识的员工、协作者和 App</td>
+</tr>
+<tr>
+<td>3</td>
+<td>检查主题代码、支付设置、域名和通知邮箱</td>
+</tr>
+<tr>
+<td>4</td>
+<td>暂停高风险订单发货，复核最近订单</td>
+</tr>
+<tr>
+<td>5</td>
+<td>联系 Shopify Support 或专业技术人员协助排查</td>
+</tr>
+</tbody></table>
+<hr />
+<h2 id="总结">总结</h2><p>Shopify 店铺安全的重点不是“加一段代码”，而是管理好账号、权限、App、订单和数据。对大多数商家来说，先做好 2FA、最小权限、App 审核、订单风控和备份，就能避免大部分常见问题。</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/checkout-optimization/"><span>上一篇</span><strong>7 大弃单原因优先级表（按 Baymard 数据排序）</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/order-status/"><span>下一篇</span><strong>订单状态概览</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

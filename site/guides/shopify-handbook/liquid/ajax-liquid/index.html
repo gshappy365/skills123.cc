@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ajax 与 Liquid · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Ajax 与 Liquid Ajax 技术让您能够在不重新加载整个页面的情况下动态更新内容，提供更流畅的用户体验。结合 Liquid 模板，您可以构建高度交互的电商功能。 基础 Ajax 概念 Shopify Ajax API 购物">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/ajax-liquid/">
+  <meta property="og:title" content="Ajax 与 Liquid · Shopify 独立站手册">
+  <meta property="og:description" content="Ajax 与 Liquid Ajax 技术让您能够在不重新加载整个页面的情况下动态更新内容，提供更流畅的用户体验。结合 Liquid 模板，您可以构建高度交互的电商功能。 基础 Ajax 概念 Shopify Ajax API 购物">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>Ajax 与 Liquid</h1>
+        <p>Ajax 与 Liquid Ajax 技术让您能够在不重新加载整个页面的情况下动态更新内容，提供更流畅的用户体验。结合 Liquid 模板，您可以构建高度交互的电商功能。 基础 Ajax 概念 Shopify Ajax API 购物</p>
+      </header>
+      <div class="article-content"><h2 id="ajax-与-liquid">Ajax 与 Liquid</h2><p>Ajax 技术让您能够在不重新加载整个页面的情况下动态更新内容，提供更流畅的用户体验。结合 Liquid 模板，您可以构建高度交互的电商功能。</p>
+<h2 id="基础-ajax-概念">基础 Ajax 概念</h2><h3 id="shopify-ajax-api">Shopify Ajax API</h3><pre><code>&lt;!-- Ajax API 端点 --&gt;
+&lt;script&gt;
+// Shopify 提供的主要 Ajax 端点
+const SHOPIFY_AJAX_ENDPOINTS = {
+  cart: '/cart.js',           // 获取购物车信息
+  cartAdd: '/cart/add.js',    // 添加商品到购物车
+  cartUpdate: '/cart/update.js', // 更新购物车
+  cartChange: '/cart/change.js', // 修改单个商品
+  cartClear: '/cart/clear.js',   // 清空购物车
+  products: '/products/{handle}.js', // 获取产品信息
+  recommendations: '/recommendations/products.json', // 产品推荐
+  search: '/search/suggest.json' // 搜索建议
+}
+ 
+// 基础 Ajax 请求函数
+function shopifyAjax(url, options = {}) {
+  const defaultOptions = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  }
+  
+  return fetch(url, { ...defaultOptions, ...options })
+    .then(response =&gt; {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      return response.json()
+    })
+}
+&lt;/script&gt;
+</code></pre>
+<h2 id="购物车-ajax-功能">购物车 Ajax 功能</h2><h3 id="动态添加商品">动态添加商品</h3><pre><code>&lt;!-- Ajax 添加商品表单 --&gt;
+&lt;form class="ajax-product-form" data-product-id="{{ product.id }}"&gt;
+  &lt;div class="variant-selector"&gt;
+    &lt;select name="id" class="variant-select"&gt;
+      {% for variant in product.variants %}
+        &lt;option value="{{ variant.id }}" 
+                {% unless variant.available %}disabled{% endunless %}
+                data-price="{{ variant.price }}"
+                data-inventory="{{ variant.inventory_quantity }}"&gt;
+          {{ variant.title }}
+          {% unless variant.available %} - 缺货{% endunless %}
+        &lt;/option&gt;
+      {% endfor %}
+    &lt;/select&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="quantity-selector"&gt;
+    &lt;input type="number" name="quantity" value="1" min="1" class="quantity-input"&gt;
+  &lt;/div&gt;
+  
+  &lt;button type="submit" class="btn add-to-cart-ajax" data-loading-text="添加中..."&gt;
+    &lt;span class="btn-text"&gt;加入购物车&lt;/span&gt;
+    &lt;span class="btn-loading" style="display: none;"&gt;
+      &lt;svg class="spinner" width="20" height="20" viewBox="0 0 24 24"&gt;
+        &lt;circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"&gt;&lt;/circle&gt;
+      &lt;/svg&gt;
+    &lt;/span&gt;
+  &lt;/button&gt;
+&lt;/form&gt;
+ 
+&lt;script&gt;
+document.querySelectorAll('.ajax-product-form').forEach(form =&gt; {
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault()
+    
+    const formData = new FormData(this)
+    const button = this.querySelector('.add-to-cart-ajax')
+    const btnText = button.querySelector('.btn-text')
+    const btnLoading = button.querySelector('.btn-loading')
+    
+    // 显示加载状态
+    button.disabled = true
+    btnText.style.display = 'none'
+    btnLoading.style.display = 'inline-block'
+    
+    try {
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      })
+      
+      if (response.ok) {
+        const item = await response.json()
+        
+        // 更新购物车UI
+        await updateCartUI()
+        
+        // 显示成功消息
+        showNotification('商品已添加到购物车', 'success')
+        
+        // 打开购物车抽屉
+        openCartDrawer()
+        
+      } else {
+        throw new Error('添加失败')
+      }
+      
+    } catch (error) {
+      showNotification('添加商品失败，请重试', 'error')
+      console.error('Add to cart error:', error)
+      
+    } finally {
+      // 恢复按钮状态
+      button.disabled = false
+      btnText.style.display = 'inline-block'
+      btnLoading.style.display = 'none'
+    }
+  })
+})
+&lt;/script&gt;
+</code></pre>
+<h3 id="购物车实时更新">购物车实时更新</h3><pre><code>&lt;!-- Ajax 购物车更新 --&gt;
+&lt;div id="cart-drawer" class="cart-drawer"&gt;
+  &lt;div class="cart-header"&gt;
+    &lt;h3&gt;购物车 (&lt;span id="cart-count"&gt;{{ cart.item_count }}&lt;/span&gt;)&lt;/h3&gt;
+    &lt;button class="close-cart" onclick="closeCartDrawer()"&gt;&amp;times;&lt;/button&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="cart-items" id="cart-items-container"&gt;
+    &lt;!-- 购物车内容将通过 Ajax 加载 --&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="cart-footer"&gt;
+    &lt;div class="cart-total"&gt;
+      总计: &lt;span id="cart-total"&gt;{{ cart.total_price | money }}&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;button class="checkout-btn" onclick="proceedToCheckout()"&gt;
+      立即结账
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+// 更新购物车UI
+async function updateCartUI() {
+  try {
+    const cart = await fetch('/cart.js').then(res =&gt; res.json())
+    
+    // 更新购物车计数
+    document.getElementById('cart-count').textContent = cart.item_count
+    document.querySelectorAll('.cart-count').forEach(el =&gt; {
+      el.textContent = cart.item_count
+    })
+    
+    // 更新总价
+    document.getElementById('cart-total').textContent = formatMoney(cart.total_price)
+    
+    // 更新购物车内容
+    const cartContainer = document.getElementById('cart-items-container')
+    if (cart.item_count &gt; 0) {
+      cartContainer.innerHTML = await renderCartItems(cart.items)
+    } else {
+      cartContainer.innerHTML = '&lt;p class="empty-cart"&gt;购物车为空&lt;/p&gt;'
+    }
+    
+    return cart
+  } catch (error) {
+    console.error('Failed to update cart:', error)
+  }
+}
+ 
+// 渲染购物车商品
+async function renderCartItems(items) {
+  const itemsHTML = items.map(item =&gt; `
+    &lt;div class="cart-item" data-variant-id="${item.variant_id}"&gt;
+      &lt;img src="${item.image}" alt="${item.product_title}" class="item-image"&gt;
+      &lt;div class="item-details"&gt;
+        &lt;h4&gt;${item.product_title}&lt;/h4&gt;
+        ${item.variant_title !== 'Default Title' ? `&lt;p&gt;${item.variant_title}&lt;/p&gt;` : ''}
+        &lt;div class="quantity-controls"&gt;
+          &lt;button onclick="updateQuantity(${item.key}, ${item.quantity - 1})"&gt;-&lt;/button&gt;
+          &lt;span&gt;${item.quantity}&lt;/span&gt;
+          &lt;button onclick="updateQuantity(${item.key}, ${item.quantity + 1})"&gt;+&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="item-price"&gt;
+        ${formatMoney(item.final_line_price)}
+        &lt;button onclick="removeItem(${item.key})" class="remove-item"&gt;删除&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  `).join('')
+  
+  return itemsHTML
+}
+ 
+// 更新商品数量
+async function updateQuantity(key, quantity) {
+  try {
+    await fetch('/cart/change.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: key, quantity: quantity })
+    })
+    
+    await updateCartUI()
+  } catch (error) {
+    showNotification('更新失败', 'error')
+  }
+}
+ 
+// 删除商品
+async function removeItem(key) {
+  await updateQuantity(key, 0)
+}
+ 
+// 格式化价格
+function formatMoney(cents) {
+  return '¥' + (cents / 100).toFixed(2)
+}
+&lt;/script&gt;
+</code></pre>
+<h2 id="产品快速查看">产品快速查看</h2><h3 id="模态框快速查看">模态框快速查看</h3><pre><code>&lt;!-- 产品快速查看模态框 --&gt;
+&lt;div id="quick-view-modal" class="modal" style="display: none;"&gt;
+  &lt;div class="modal-content"&gt;
+    &lt;div class="modal-header"&gt;
+      &lt;h3 id="quick-view-title"&gt;产品详情&lt;/h3&gt;
+      &lt;button class="close-modal" onclick="closeQuickView()"&gt;&amp;times;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-body" id="quick-view-content"&gt;
+      &lt;!-- 内容将通过 Ajax 加载 --&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;!-- 产品列表中的快速查看按钮 --&gt;
+&lt;div class="product-grid"&gt;
+  {% for product in collection.products %}
+    &lt;div class="product-card"&gt;
+      &lt;img src="{{ product.featured_image | image_url: width: 300, height: 300 }}" 
+           alt="{{ product.title }}"&gt;
+      &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+      &lt;p&gt;{{ product.price | money }}&lt;/p&gt;
+      
+      &lt;div class="product-actions"&gt;
+        &lt;button class="btn quick-view-btn" 
+                data-product-handle="{{ product.handle }}"
+                onclick="openQuickView('{{ product.handle }}')"&gt;
+          快速查看
+        &lt;/button&gt;
+        
+        &lt;button class="btn add-to-cart-btn" 
+                data-variant-id="{{ product.variants.first.id }}"
+                onclick="quickAddToCart({{ product.variants.first.id }})"&gt;
+          快速添加
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  {% endfor %}
+&lt;/div&gt;
+ 
+&lt;script&gt;
+// 打开快速查看
+async function openQuickView(productHandle) {
+  try {
+    // 显示加载状态
+    document.getElementById('quick-view-title').textContent = '加载中...'
+    document.getElementById('quick-view-content').innerHTML = '&lt;div class="loading"&gt;正在加载产品信息...&lt;/div&gt;'
+    document.getElementById('quick-view-modal').style.display = 'block'
+    
+    // 获取产品数据
+    const product = await fetch(`/products/${productHandle}.js`).then(res =&gt; res.json())
+    
+    // 渲染产品内容
+    const quickViewHTML = await renderQuickViewContent(product)
+    
+    document.getElementById('quick-view-title').textContent = product.title
+    document.getElementById('quick-view-content').innerHTML = quickViewHTML
+    
+    // 初始化快速查看表单
+    initQuickViewForm()
+    
+  } catch (error) {
+    console.error('Failed to load product:', error)
+    document.getElementById('quick-view-content').innerHTML = '&lt;div class="error"&gt;加载失败，请重试&lt;/div&gt;'
+  }
+}
+ 
+// 渲染快速查看内容
+async function renderQuickViewContent(product) {
+  const variantOptions = product.variants.map(variant =&gt; 
+    `&lt;option value="${variant.id}" ${!variant.available ? 'disabled' : ''}
+             data-price="${variant.price}"&gt;
+       ${variant.title} ${!variant.available ? '- 缺货' : ''}
+     &lt;/option&gt;`
+  ).join('')
+  
+  return `
+    &lt;div class="quick-view-layout"&gt;
+      &lt;div class="product-images"&gt;
+        &lt;img src="${product.featured_image}" alt="${product.title}" class="main-image"&gt;
+      &lt;/div&gt;
+      
+      &lt;div class="product-info"&gt;
+        &lt;div class="product-price"&gt;
+          &lt;span id="current-price"&gt;${formatMoney(product.price)}&lt;/span&gt;
+          ${product.compare_at_price ? `&lt;span class="compare-price"&gt;${formatMoney(product.compare_at_price)}&lt;/span&gt;` : ''}
+        &lt;/div&gt;
+        
+        &lt;div class="product-description"&gt;
+          ${product.description}
+        &lt;/div&gt;
+        
+        &lt;form class="quick-view-form"&gt;
+          &lt;div class="variant-selector"&gt;
+            &lt;select name="id" onchange="updateQuickViewPrice(this)"&gt;
+              ${variantOptions}
+            &lt;/select&gt;
+          &lt;/div&gt;
+          
+          &lt;div class="quantity-selector"&gt;
+            &lt;input type="number" name="quantity" value="1" min="1"&gt;
+          &lt;/div&gt;
+          
+          &lt;button type="submit" class="btn btn-primary"&gt;加入购物车&lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  `
+}
+ 
+// 关闭快速查看
+function closeQuickView() {
+  document.getElementById('quick-view-modal').style.display = 'none'
+}
+ 
+// 快速添加到购物车
+async function quickAddToCart(variantId, quantity = 1) {
+  try {
+    await fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: variantId, quantity: quantity })
+    })
+    
+    await updateCartUI()
+    showNotification('商品已添加到购物车', 'success')
+    
+  } catch (error) {
+    showNotification('添加失败', 'error')
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<h2 id="动态搜索">动态搜索</h2><h3 id="实时搜索建议">实时搜索建议</h3><pre><code>&lt;!-- 搜索框 --&gt;
+&lt;div class="search-container"&gt;
+  &lt;form class="search-form" action="{{ routes.search_url }}"&gt;
+    &lt;input type="search" 
+           name="q" 
+           placeholder="搜索商品..." 
+           class="search-input"
+           autocomplete="off"
+           oninput="handleSearchInput(this)"
+           onfocus="showSearchSuggestions()"
+           onblur="hideSearchSuggestions()"&gt;
+    
+    &lt;button type="submit" class="search-btn"&gt;
+      &lt;svg class="search-icon" width="20" height="20" viewBox="0 0 24 24"&gt;
+        &lt;path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke="currentColor" fill="none"/&gt;
+      &lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/form&gt;
+  
+  &lt;!-- 搜索建议 --&gt;
+  &lt;div id="search-suggestions" class="search-suggestions" style="display: none;"&gt;
+    &lt;div class="suggestions-content"&gt;
+      &lt;!-- 建议内容将通过 Ajax 加载 --&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+let searchTimeout
+let searchCache = new Map()
+ 
+// 处理搜索输入
+function handleSearchInput(input) {
+  const query = input.value.trim()
+  
+  // 清除之前的定时器
+  clearTimeout(searchTimeout)
+  
+  if (query.length &lt; 2) {
+    hideSearchSuggestions()
+    return
+  }
+  
+  // 防抖：300ms 后执行搜索
+  searchTimeout = setTimeout(() =&gt; {
+    performSearch(query)
+  }, 300)
+}
+ 
+// 执行搜索
+async function performSearch(query) {
+  try {
+    // 检查缓存
+    if (searchCache.has(query)) {
+      displaySearchResults(searchCache.get(query))
+      return
+    }
+    
+    // 显示加载状态
+    document.querySelector('.suggestions-content').innerHTML = '&lt;div class="loading"&gt;搜索中...&lt;/div&gt;'
+    showSearchSuggestions()
+    
+    // 搜索产品
+    const productsResponse = await fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&amp;resources[type]=product&amp;resources[limit]=5`)
+    const productsData = await productsResponse.json()
+    
+    // 搜索集合
+    const collectionsResponse = await fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&amp;resources[type]=collection&amp;resources[limit]=3`)
+    const collectionsData = await collectionsResponse.json()
+    
+    const results = {
+      products: productsData.resources.results.products || [],
+      collections: collectionsData.resources.results.collections || []
+    }
+    
+    // 缓存结果
+    searchCache.set(query, results)
+    
+    // 显示结果
+    displaySearchResults(results)
+    
+  } catch (error) {
+    console.error('Search error:', error)
+    document.querySelector('.suggestions-content').innerHTML = '&lt;div class="error"&gt;搜索失败&lt;/div&gt;'
+  }
+}
+ 
+// 显示搜索结果
+function displaySearchResults(results) {
+  const { products, collections } = results
+  
+  let html = ''
+  
+  // 产品建议
+  if (products.length &gt; 0) {
+    html += '&lt;div class="suggestion-section"&gt;&lt;h4&gt;产品&lt;/h4&gt;'
+    products.forEach(product =&gt; {
+      html += `
+        &lt;a href="${product.url}" class="suggestion-item product-suggestion"&gt;
+          &lt;img src="${product.image}" alt="${product.title}" class="suggestion-image"&gt;
+          &lt;div class="suggestion-info"&gt;
+            &lt;div class="suggestion-title"&gt;${product.title}&lt;/div&gt;
+            &lt;div class="suggestion-price"&gt;${formatMoney(product.price)}&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/a&gt;
+      `
+    })
+    html += '&lt;/div&gt;'
+  }
+  
+  // 集合建议
+  if (collections.length &gt; 0) {
+    html += '&lt;div class="suggestion-section"&gt;&lt;h4&gt;分类&lt;/h4&gt;'
+    collections.forEach(collection =&gt; {
+      html += `
+        &lt;a href="${collection.url}" class="suggestion-item collection-suggestion"&gt;
+          &lt;div class="suggestion-info"&gt;
+            &lt;div class="suggestion-title"&gt;${collection.title}&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/a&gt;
+      `
+    })
+    html += '&lt;/div&gt;'
+  }
+  
+  if (html === '') {
+    html = '&lt;div class="no-results"&gt;未找到相关商品&lt;/div&gt;'
+  }
+  
+  document.querySelector('.suggestions-content').innerHTML = html
+  showSearchSuggestions()
+}
+ 
+// 显示搜索建议
+function showSearchSuggestions() {
+  document.getElementById('search-suggestions').style.display = 'block'
+}
+ 
+// 隐藏搜索建议
+function hideSearchSuggestions() {
+  setTimeout(() =&gt; {
+    document.getElementById('search-suggestions').style.display = 'none'
+  }, 200) // 延迟隐藏，允许点击建议项
+}
+&lt;/script&gt;
+</code></pre>
+<h2 id="产品过滤">产品过滤</h2><h3 id="ajax-过滤器">Ajax 过滤器</h3><pre><code>&lt;!-- 产品过滤器 --&gt;
+&lt;div class="collection-filters"&gt;
+  &lt;div class="filter-group"&gt;
+    &lt;h4&gt;价格范围&lt;/h4&gt;
+    &lt;div class="price-filter"&gt;
+      &lt;input type="range" id="price-min" min="0" max="{{ collection.products | map: 'price' | sort | last }}" value="0"&gt;
+      &lt;input type="range" id="price-max" min="0" max="{{ collection.products | map: 'price' | sort | last }}" value="{{ collection.products | map: 'price' | sort | last }}"&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;div class="filter-group"&gt;
+    &lt;h4&gt;品牌&lt;/h4&gt;
+    {% assign vendors = collection.products | map: 'vendor' | uniq | sort %}
+    {% for vendor in vendors %}
+      &lt;label class="filter-option"&gt;
+        &lt;input type="checkbox" name="vendor" value="{{ vendor }}" onchange="applyFilters()"&gt;
+        {{ vendor }}
+      &lt;/label&gt;
+    {% endfor %}
+  &lt;/div&gt;
+  
+  &lt;div class="filter-group"&gt;
+    &lt;h4&gt;产品类型&lt;/h4&gt;
+    {% assign types = collection.products | map: 'type' | uniq | sort %}
+    {% for type in types %}
+      &lt;label class="filter-option"&gt;
+        &lt;input type="checkbox" name="type" value="{{ type }}" onchange="applyFilters()"&gt;
+        {{ type }}
+      &lt;/label&gt;
+    {% endfor %}
+  &lt;/div&gt;
+&lt;/div&gt;
+ 
+&lt;!-- 产品列表 --&gt;
+&lt;div id="products-container" class="products-grid"&gt;
+  {% for product in collection.products %}
+    &lt;div class="product-card" 
+         data-price="{{ product.price }}" 
+         data-vendor="{{ product.vendor }}" 
+         data-type="{{ product.type }}"&gt;
+      &lt;img src="{{ product.featured_image | image_url: width: 300, height: 300 }}" alt="{{ product.title }}"&gt;
+      &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+      &lt;p&gt;{{ product.price | money }}&lt;/p&gt;
+    &lt;/div&gt;
+  {% endfor %}
+&lt;/div&gt;
+ 
+&lt;script&gt;
+// 应用过滤器
+function applyFilters() {
+  const products = document.querySelectorAll('.product-card')
+  
+  // 获取选中的过滤条件
+  const selectedVendors = Array.from(document.querySelectorAll('[name="vendor"]:checked')).map(cb =&gt; cb.value)
+  const selectedTypes = Array.from(document.querySelectorAll('[name="type"]:checked')).map(cb =&gt; cb.value)
+  const minPrice = parseInt(document.getElementById('price-min').value)
+  const maxPrice = parseInt(document.getElementById('price-max').value)
+  
+  products.forEach(product =&gt; {
+    const productPrice = parseInt(product.dataset.price)
+    const productVendor = product.dataset.vendor
+    const productType = product.dataset.type
+    
+    let showProduct = true
+    
+    // 价格过滤
+    if (productPrice &lt; minPrice || productPrice &gt; maxPrice) {
+      showProduct = false
+    }
+    
+    // 品牌过滤
+    if (selectedVendors.length &gt; 0 &amp;&amp; !selectedVendors.includes(productVendor)) {
+      showProduct = false
+    }
+    
+    // 类型过滤
+    if (selectedTypes.length &gt; 0 &amp;&amp; !selectedTypes.includes(productType)) {
+      showProduct = false
+    }
+    
+    product.style.display = showProduct ? 'block' : 'none'
+  })
+  
+  // 更新 URL（可选）
+  updateFilterURL(selectedVendors, selectedTypes, minPrice, maxPrice)
+}
+ 
+// 更新 URL
+function updateFilterURL(vendors, types, minPrice, maxPrice) {
+  const params = new URLSearchParams()
+  
+  if (vendors.length &gt; 0) params.set('vendor', vendors.join(','))
+  if (types.length &gt; 0) params.set('type', types.join(','))
+  if (minPrice &gt; 0) params.set('price_min', minPrice)
+  if (maxPrice &lt; 999999) params.set('price_max', maxPrice)
+  
+  const newUrl = window.location.pathname + '?' + params.toString()
+  window.history.replaceState({}, '', newUrl)
+}
+&lt;/script&gt;
+</code></pre>
+<h2 id="通知系统">通知系统</h2><h3 id="全局通知组件">全局通知组件</h3><pre><code>&lt;!-- 通知容器 --&gt;
+&lt;div id="notification-container" class="notification-container"&gt;
+  &lt;!-- 通知将通过 JavaScript 动态添加 --&gt;
+&lt;/div&gt;
+ 
+&lt;script&gt;
+// 通知系统
+const NotificationSystem = {
+  container: null,
+  
+  init() {
+    this.container = document.getElementById('notification-container')
+    if (!this.container) {
+      this.container = document.createElement('div')
+      this.container.id = 'notification-container'
+      this.container.className = 'notification-container'
+      document.body.appendChild(this.container)
+    }
+  },
+  
+  show(message, type = 'info', duration = 5000) {
+    this.init()
+    
+    const notification = document.createElement('div')
+    notification.className = `notification notification-${type}`
+    notification.innerHTML = `
+      &lt;div class="notification-content"&gt;
+        &lt;span class="notification-icon"&gt;${this.getIcon(type)}&lt;/span&gt;
+        &lt;span class="notification-message"&gt;${message}&lt;/span&gt;
+        &lt;button class="notification-close" onclick="NotificationSystem.close(this.parentElement.parentElement)"&gt;&amp;times;&lt;/button&gt;
+      &lt;/div&gt;
+    `
+    
+    this.container.appendChild(notification)
+    
+    // 动画显示
+    setTimeout(() =&gt; notification.classList.add('show'), 10)
+    
+    // 自动关闭
+    if (duration &gt; 0) {
+      setTimeout(() =&gt; this.close(notification), duration)
+    }
+    
+    return notification
+  },
+  
+  close(notification) {
+    notification.classList.remove('show')
+    setTimeout(() =&gt; {
+      if (notification.parentElement) {
+        notification.parentElement.removeChild(notification)
+      }
+    }, 300)
+  },
+  
+  getIcon(type) {
+    const icons = {
+      success: '✓',
+      error: '✕',
+      warning: '⚠',
+      info: 'ℹ'
+    }
+    return icons[type] || icons.info
+  }
+}
+ 
+// 全局通知函数
+function showNotification(message, type = 'info', duration = 5000) {
+  return NotificationSystem.show(message, type, duration)
+}
+&lt;/script&gt;
+ 
+&lt;style&gt;
+.notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  max-width: 400px;
+}
+ 
+.notification {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  margin-bottom: 10px;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.3s ease;
+}
+ 
+.notification.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+ 
+.notification-content {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+ 
+.notification-success { border-left: 4px solid #10b981; }
+.notification-error { border-left: 4px solid #ef4444; }
+.notification-warning { border-left: 4px solid #f59e0b; }
+.notification-info { border-left: 4px solid #3b82f6; }
+&lt;/style&gt;
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>现在您已经掌握了 Ajax 与 Liquid 的结合使用，建议继续学习：</p>
+<ul>
+<li><a href="/guides/shopify-handbook/liquid/performance-optimization/">性能优化</a> - 优化 Ajax 请求性能</li>
+<li><a href="/guides/shopify-handbook/liquid/advanced-liquid/">高级 Liquid 技巧</a> - 学习更高级的模板技巧</li>
+<li><a href="/guides/shopify-handbook/liquid/best-practices/">最佳实践</a> - 了解 Ajax 开发最佳实践</li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/custom-sections/"><span>上一篇</span><strong>自定义分区开发</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/variables/"><span>下一篇</span><strong>Liquid 变量与对象访问</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

@@ -1,0 +1,1250 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify Plus 企业级解决方案指南 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify Plus 企业级解决方案指南 本指南面向 已经决定使用 Shopify Plus 的工程团队 ，重点是 Plus 独有能力的 代码级实施 ——Flow 模板、Script Editor 脚本、Launchpad JS">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/shopify-plus-enterprise/">
+  <meta property="og:title" content="Shopify Plus 企业级解决方案指南 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify Plus 企业级解决方案指南 本指南面向 已经决定使用 Shopify Plus 的工程团队 ，重点是 Plus 独有能力的 代码级实施 ——Flow 模板、Script Editor 脚本、Launchpad JS">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>Shopify Plus 企业级解决方案指南</h1>
+        <p>Shopify Plus 企业级解决方案指南 本指南面向 已经决定使用 Shopify Plus 的工程团队 ，重点是 Plus 独有能力的 代码级实施 ——Flow 模板、Script Editor 脚本、Launchpad JS</p>
+      </header>
+      <div class="article-content"><h2 id="shopify-plus-企业级解决方案指南">Shopify Plus 企业级解决方案指南</h2><p>本指南面向<strong>已经决定使用 Shopify Plus 的工程团队</strong>，重点是 Plus 独有能力的<strong>代码级实施</strong>——Flow 模板、Script Editor 脚本、Launchpad JSON、Plus API 多店铺同步、B2B 批发、ERP / 3PL 集成。</p>
+<blockquote>
+<p><strong>是否值得升级 Plus 不在本文范围</strong>——如果你还在判断”我要不要花 $2,300/月 升 Plus”，先读 <a href="/guides/shopify-handbook/advanced/shopify-plus/">Shopify Plus 完整功能与选型指南</a>，里面有决策框架与典型适用场景。</p>
+</blockquote>
+<h3 id="plus-能力栈速查-按工程视角">Plus 能力栈速查（按工程视角）</h3><table>
+<thead>
+<tr>
+<th>能力</th>
+<th>标准版有吗</th>
+<th>Plus 独有点</th>
+<th>典型实施成本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Flow 自动化</td>
+<td>部分（基础触发）</td>
+<td>全功能 + 自定义 connector + 多店铺</td>
+<td>1–3 周 / 流程包</td>
+</tr>
+<tr>
+<td>Script Editor</td>
+<td>❌</td>
+<td>结账阶段的 Ruby 脚本（折扣 / 运费 / 支付）</td>
+<td>1–4 周 / 脚本</td>
+</tr>
+<tr>
+<td>Launchpad</td>
+<td>❌</td>
+<td>活动调度（自动改价 / 上下架 / 主题切换）</td>
+<td>大促前 2–3 周准备</td>
+</tr>
+<tr>
+<td>API 配额</td>
+<td>40 req/min</td>
+<td>1000 req/min（25 倍）</td>
+<td>影响架构选择</td>
+</tr>
+<tr>
+<td>多店铺管理</td>
+<td>❌</td>
+<td>Organization Admin 统一管控 N 个店</td>
+<td>视品牌数定</td>
+</tr>
+<tr>
+<td>B2B / Company 账户</td>
+<td>有限</td>
+<td>完整批发价单、信用额度、审批流</td>
+<td>2–8 周</td>
+</tr>
+<tr>
+<td>Checkout Extensibility</td>
+<td>部分</td>
+<td>完整 UI 扩展 + Functions</td>
+<td>见 Checkout 扩展</td>
+</tr>
+<tr>
+<td>ERP / 3PL 深度集成</td>
+<td>可做但受配额限制</td>
+<td>高配额 + Webhook 稳定性</td>
+<td>4–12 周</td>
+</tr>
+</tbody></table>
+<p>下面按能力分别给出<strong>模板代码 + 落地要点</strong>。所有代码示例均为参考，<strong>生产部署前需经过 staging 验证 + 灰度发布</strong>。</p>
+<h2 id="shopify-plus概述">Shopify Plus概述</h2><h3 id="1-plus-vs-标准版对比">1. Plus vs 标准版对比</h3><p><strong>核心优势：</strong></p>
+<ul>
+<li>更高的API限制 (1000次/分钟 vs 40次/分钟)</li>
+<li>无限员工账户</li>
+<li>自定义结账体验</li>
+<li>Flow自动化工具</li>
+<li>Script Editor脚本编辑器</li>
+<li>Launchpad活动管理</li>
+<li>多渠道销售支持</li>
+<li>专属客户经理</li>
+</ul>
+<p><strong>适用场景：</strong></p>
+<ul>
+<li>年交易额超过$1M</li>
+<li>需要大量定制功能</li>
+<li>多品牌、多市场运营</li>
+<li>复杂的B2B业务需求</li>
+<li>高并发流量处理</li>
+</ul>
+<h3 id="2-plus架构优势">2. Plus架构优势</h3><h2 id="flow自动化工具">Flow自动化工具</h2><h3 id="1-库存管理自动化">1. 库存管理自动化</h3><pre><code># Flow模板：低库存自动补货
+trigger:
+  type: "inventory_level_low"
+  threshold: 10
+ 
+conditions:
+  - product_vendor: "Main Supplier"
+  - product_availability: "available"
+ 
+actions:
+  - create_purchase_order:
+      supplier: "{{ product.vendor }}"
+      quantity: "{{ product.optimal_stock_level }}"
+      notes: "Auto-generated reorder for {{ product.title }}"
+  
+  - send_email:
+      to: "purchasing@company.com"
+      subject: "Low inventory alert: {{ product.title }}"
+      body: "Product {{ product.title }} has fallen below threshold. Purchase order created."
+</code></pre>
+<h3 id="2-客户分级自动化">2. 客户分级自动化</h3><pre><code># Flow模板：VIP客户自动标记
+trigger:
+  type: "order_paid"
+ 
+conditions:
+  - customer_total_spent: "&gt;= 10000"
+  - customer_orders_count: "&gt;= 5"
+ 
+actions:
+  - add_customer_tag: "VIP"
+  - add_customer_tag: "High Value"
+  
+  - send_email:
+      to: "{{ customer.email }}"
+      template: "vip_welcome"
+      
+  - create_discount:
+      type: "percentage"
+      value: 15
+      customer_id: "{{ customer.id }}"
+      expires_at: "30 days from now"
+</code></pre>
+<h3 id="3-订单处理自动化">3. 订单处理自动化</h3><pre><code># Flow模板：大额订单特殊处理
+trigger:
+  type: "order_created"
+ 
+conditions:
+  - order_total: "&gt;= 5000"
+  - shipping_country: ["US", "CA", "GB"]
+ 
+actions:
+  - add_order_tag: "high_value"
+  - assign_location: "premium_warehouse"
+  
+  - send_internal_notification:
+      to: "sales@company.com"
+      message: "High value order {{ order.name }} requires priority processing"
+      
+  - update_order_priority: "high"
+  
+  - add_timeline_comment:
+      message: "Order flagged for priority processing due to high value"
+</code></pre>
+<h2 id="script-editor高级脚本">Script Editor高级脚本</h2><h3 id="1-动态定价脚本">1. 动态定价脚本</h3><pre><code># 批量折扣定价脚本
+class VolumeDiscountScript
+  def initialize
+    @volume_tiers = [
+      { min_quantity: 10, discount: 0.05 },
+      { min_quantity: 25, discount: 0.10 },
+      { min_quantity: 50, discount: 0.15 },
+      { min_quantity: 100, discount: 0.20 }
+    ]
+  end
+ 
+  def run(cart)
+    cart.line_items.each do |line_item|
+      apply_volume_discount(line_item)
+    end
+  end
+ 
+  private
+ 
+  def apply_volume_discount(line_item)
+    quantity = line_item.quantity
+    
+    applicable_tier = @volume_tiers
+      .select { |tier| quantity &gt;= tier[:min_quantity] }
+      .max_by { |tier| tier[:min_quantity] }
+    
+    if applicable_tier
+      discount_amount = line_item.line_price * applicable_tier[:discount]
+      
+      line_item.change_line_price(
+        line_item.line_price - discount_amount,
+        message: "Volume discount (#{(applicable_tier[:discount] * 100).to_i}%)"
+      )
+    end
+  end
+end
+ 
+VolumeDiscountScript.new.run(Input.cart)
+Output.cart = Input.cart
+</code></pre>
+<h3 id="2-智能运费计算">2. 智能运费计算</h3><pre><code># 基于重量和距离的动态运费计算
+class SmartShippingScript
+  def initialize
+    @weight_rates = {
+      0..1 =&gt; 5.00,
+      1..5 =&gt; 8.00,
+      5..10 =&gt; 12.00,
+      10..Float::INFINITY =&gt; 20.00
+    }
+    
+    @zone_multipliers = {
+      'US' =&gt; 1.0,
+      'CA' =&gt; 1.2,
+      'EU' =&gt; 1.5,
+      'INTL' =&gt; 2.0
+    }
+  end
+ 
+  def run(rates)
+    rates.each do |rate|
+      adjust_shipping_rate(rate)
+    end
+  end
+ 
+  private
+ 
+  def adjust_shipping_rate(rate)
+    total_weight = calculate_total_weight
+    shipping_zone = determine_shipping_zone(rate.destination)
+    
+    base_rate = calculate_base_rate(total_weight)
+    zone_multiplier = @zone_multipliers[shipping_zone] || 2.0
+    
+    final_rate = base_rate * zone_multiplier
+    
+    # 免费配送门槛
+    if Input.cart.subtotal_price &gt;= Money.new(cents: 10000) # $100
+      final_rate = Money.new(cents: 0)
+    end
+    
+    rate.apply_discount(
+      rate.price - final_rate,
+      message: "Smart shipping calculation"
+    )
+  end
+ 
+  def calculate_total_weight
+    Input.cart.line_items.sum(&amp;:variant.weight)
+  end
+ 
+  def determine_shipping_zone(destination)
+    case destination.country_code
+    when 'US' then 'US'
+    when 'CA' then 'CA'
+    when /^(GB|DE|FR|IT|ES|NL)$/ then 'EU'
+    else 'INTL'
+    end
+  end
+ 
+  def calculate_base_rate(weight)
+    tier = @weight_rates.find { |range, _| range.cover?(weight) }
+    Money.new(cents: (tier.last * 100).to_i)
+  end
+end
+ 
+SmartShippingScript.new.run(Input.shipping_rates)
+Output.shipping_rates = Input.shipping_rates
+</code></pre>
+<h3 id="3-支付方式控制脚本">3. 支付方式控制脚本</h3><pre><code># 基于条件的支付方式过滤
+class PaymentMethodScript
+  def initialize
+    @restricted_methods = {
+      'buy_now_pay_later' =&gt; {
+        min_amount: Money.new(cents: 5000), # $50最低金额
+        excluded_countries: ['US', 'CA']
+      },
+      'cryptocurrency' =&gt; {
+        min_amount: Money.new(cents: 10000), # $100最低金额
+        vip_only: true
+      }
+    }
+  end
+ 
+  def run(payment_methods)
+    payment_methods.each do |method|
+      apply_restrictions(method)
+    end
+  end
+ 
+  private
+ 
+  def apply_restrictions(method)
+    restrictions = @restricted_methods[method.name]
+    return unless restrictions
+ 
+    # 检查最低金额
+    if restrictions[:min_amount] &amp;&amp; Input.cart.subtotal_price &lt; restrictions[:min_amount]
+      method.reject(message: "Minimum order amount not met")
+      return
+    end
+ 
+    # 检查地区限制
+    if restrictions[:excluded_countries]&amp;.include?(Input.cart.shipping_address.country_code)
+      method.reject(message: "Not available in your region")
+      return
+    end
+ 
+    # 检查VIP限制
+    if restrictions[:vip_only] &amp;&amp; !customer_is_vip?
+      method.reject(message: "VIP customers only")
+      return
+    end
+  end
+ 
+  def customer_is_vip?
+    Input.cart.customer&amp;.tags&amp;.include?('VIP')
+  end
+end
+ 
+PaymentMethodScript.new.run(Input.payment_methods)
+Output.payment_methods = Input.payment_methods
+</code></pre>
+<h2 id="launchpad活动管理">Launchpad活动管理</h2><h3 id="1-闪购活动配置">1. 闪购活动配置</h3><pre><code>{
+  "launchpad": {
+    "name": "Black Friday Flash Sale",
+    "description": "24-hour flash sale with automatic price changes",
+    "start_time": "2024-11-29T00:00:00Z",
+    "end_time": "2024-11-29T23:59:59Z",
+    "timezone": "America/New_York",
+    
+    "changes": [
+      {
+        "type": "product_price_change",
+        "target": {
+          "collection_id": "flash-sale-collection"
+        },
+        "action": {
+          "discount_type": "percentage",
+          "discount_value": 50,
+          "compare_at_price": true
+        }
+      },
+      {
+        "type": "theme_setting_change",
+        "target": {
+          "setting_name": "announcement_bar_text"
+        },
+        "action": {
+          "value": "⚡ Flash Sale: 50% Off Everything! Limited Time Only!"
+        }
+      },
+      {
+        "type": "inventory_management",
+        "target": {
+          "collection_id": "flash-sale-collection"
+        },
+        "action": {
+          "track_inventory": true,
+          "low_stock_threshold": 5
+        }
+      }
+    ],
+    
+    "post_event_actions": [
+      {
+        "type": "restore_original_prices",
+        "delay_minutes": 0
+      },
+      {
+        "type": "send_summary_report",
+        "recipients": ["marketing@company.com"]
+      }
+    ]
+  }
+}
+</code></pre>
+<h3 id="2-产品发布活动">2. 产品发布活动</h3><pre><code>{
+  "launchpad": {
+    "name": "New Product Line Launch",
+    "description": "Coordinated launch of summer collection",
+    "start_time": "2024-06-01T09:00:00Z",
+    "end_time": "2024-06-01T18:00:00Z",
+    
+    "pre_launch_setup": {
+      "days_before": 7,
+      "actions": [
+        {
+          "type": "create_collection",
+          "name": "Summer 2024 Collection",
+          "products": "tagged:summer-2024"
+        },
+        {
+          "type": "setup_email_campaign",
+          "template": "product_launch_teaser",
+          "segment": "vip_customers"
+        }
+      ]
+    },
+    
+    "launch_actions": [
+      {
+        "type": "publish_products",
+        "target": {
+          "tag": "summer-2024-preview"
+        },
+        "timing": "00:00"
+      },
+      {
+        "type": "update_homepage",
+        "hero_section": {
+          "image": "summer-collection-hero.jpg",
+          "title": "Discover Summer 2024",
+          "cta_text": "Shop Now"
+        },
+        "timing": "00:05"
+      },
+      {
+        "type": "send_launch_email",
+        "template": "product_launch_announcement",
+        "segment": "all_subscribers",
+        "timing": "09:00"
+      },
+      {
+        "type": "social_media_post",
+        "platforms": ["instagram", "facebook", "twitter"],
+        "content": "🌞 Summer 2024 Collection is here! Shop the latest trends.",
+        "timing": "09:30"
+      }
+    ]
+  }
+}
+</code></pre>
+<h2 id="plus-api高级应用">Plus API高级应用</h2><h3 id="1-多店铺管理api">1. 多店铺管理API</h3><pre><code>// 多店铺数据同步服务
+class MultiStoreSync {
+  constructor(masterStore, childStores) {
+    this.masterStore = masterStore
+    this.childStores = childStores
+    this.syncQueue = []
+  }
+ 
+  async syncProductData(productId) {
+    // 从主店铺获取产品数据
+    const masterProduct = await this.fetchProduct(this.masterStore, productId)
+    
+    // 同步到所有子店铺
+    const syncPromises = this.childStores.map(store =&gt; 
+      this.syncProductToStore(store, masterProduct)
+    )
+    
+    const results = await Promise.allSettled(syncPromises)
+    
+    return {
+      success: results.filter(r =&gt; r.status === 'fulfilled').length,
+      failed: results.filter(r =&gt; r.status === 'rejected').length,
+      details: results
+    }
+  }
+ 
+  async syncProductToStore(store, productData) {
+    try {
+      // 检查产品是否已存在
+      const existingProduct = await this.findProductByHandle(store, productData.handle)
+      
+      if (existingProduct) {
+        // 更新现有产品
+        return await this.updateProduct(store, existingProduct.id, {
+          title: productData.title,
+          body_html: productData.body_html,
+          product_type: productData.product_type,
+          vendor: productData.vendor,
+          tags: productData.tags,
+          images: productData.images,
+          variants: this.adaptVariants(productData.variants, store.currency)
+        })
+      } else {
+        // 创建新产品
+        return await this.createProduct(store, {
+          ...productData,
+          variants: this.adaptVariants(productData.variants, store.currency)
+        })
+      }
+    } catch (error) {
+      console.error(`Failed to sync product to ${store.domain}:`, error)
+      throw error
+    }
+  }
+ 
+  adaptVariants(variants, currency) {
+    return variants.map(variant =&gt; ({
+      ...variant,
+      price: this.convertPrice(variant.price, currency),
+      compare_at_price: variant.compare_at_price ? 
+        this.convertPrice(variant.compare_at_price, currency) : null
+    }))
+  }
+ 
+  convertPrice(price, targetCurrency) {
+    // 实现汇率转换逻辑
+    const exchangeRates = {
+      'USD': 1.0,
+      'EUR': 0.85,
+      'GBP': 0.73,
+      'CAD': 1.25,
+      'AUD': 1.35
+    }
+    
+    return (parseFloat(price) * exchangeRates[targetCurrency]).toFixed(2)
+  }
+ 
+  async batchSyncInventory() {
+    const inventoryUpdates = []
+    
+    for (const store of this.childStores) {
+      const products = await this.fetchAllProducts(store)
+      
+      for (const product of products) {
+        for (const variant of product.variants) {
+          inventoryUpdates.push({
+            store: store.domain,
+            variant_id: variant.id,
+            quantity: await this.getInventoryQuantity(this.masterStore, variant.sku)
+          })
+        }
+      }
+    }
+    
+    // 批量更新库存
+    return await this.executeBatchInventoryUpdate(inventoryUpdates)
+  }
+}
+</code></pre>
+<h3 id="2-高级报表系统">2. 高级报表系统</h3><pre><code>// Plus级别的高级分析报表
+class PlusAnalytics {
+  constructor(stores) {
+    this.stores = stores
+    this.reportCache = new Map()
+  }
+ 
+  async generateUnifiedReport(startDate, endDate) {
+    const reports = await Promise.all(
+      this.stores.map(store =&gt; this.generateStoreReport(store, startDate, endDate))
+    )
+    
+    return this.aggregateReports(reports)
+  }
+ 
+  async generateStoreReport(store, startDate, endDate) {
+    const [orders, products, customers] = await Promise.all([
+      this.fetchOrdersAnalytics(store, startDate, endDate),
+      this.fetchProductsAnalytics(store, startDate, endDate),
+      this.fetchCustomersAnalytics(store, startDate, endDate)
+    ])
+    
+    return {
+      store: store.domain,
+      period: { startDate, endDate },
+      metrics: {
+        revenue: {
+          total: orders.total_sales,
+          avg_order_value: orders.total_sales / orders.orders_count,
+          orders_count: orders.orders_count
+        },
+        products: {
+          total_sold: products.total_sold,
+          top_performers: products.top_performers,
+          inventory_turns: products.inventory_turns
+        },
+        customers: {
+          new_customers: customers.new_customers,
+          returning_customers: customers.returning_customers,
+          customer_lifetime_value: customers.lifetime_value
+        },
+        conversion: {
+          conversion_rate: this.calculateConversionRate(store, startDate, endDate),
+          cart_abandonment_rate: this.calculateAbandonmentRate(store, startDate, endDate)
+        }
+      }
+    }
+  }
+ 
+  async fetchOrdersAnalytics(store, startDate, endDate) {
+    const query = `
+      query ordersAnalytics($query: String!) {
+        orders(first: 250, query: $query) {
+          edges {
+            node {
+              id
+              name
+              totalPriceSet {
+                shopMoney {
+                  amount
+                }
+              }
+              processedAt
+              customer {
+                id
+                ordersCount
+              }
+              lineItems(first: 250) {
+                edges {
+                  node {
+                    quantity
+                    variant {
+                      product {
+                        handle
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `
+    
+    const response = await this.executeGraphQLQuery(store, query, {
+      query: `processed_at:&gt;='${startDate}' AND processed_at:&lt;='${endDate}'`
+    })
+    
+    return this.processOrdersData(response.data.orders)
+  }
+ 
+  processOrdersData(ordersData) {
+    const orders = ordersData.edges.map(edge =&gt; edge.node)
+    
+    return {
+      orders_count: orders.length,
+      total_sales: orders.reduce((sum, order) =&gt; 
+        sum + parseFloat(order.totalPriceSet.shopMoney.amount), 0
+      ),
+      new_customer_orders: orders.filter(order =&gt; 
+        order.customer &amp;&amp; order.customer.ordersCount === 1
+      ).length,
+      repeat_customer_orders: orders.filter(order =&gt; 
+        order.customer &amp;&amp; order.customer.ordersCount &gt; 1
+      ).length
+    }
+  }
+ 
+  aggregateReports(reports) {
+    const aggregated = {
+      summary: {
+        total_revenue: 0,
+        total_orders: 0,
+        average_order_value: 0,
+        total_customers: 0
+      },
+      by_store: reports,
+      trends: this.calculateTrends(reports),
+      insights: this.generateInsights(reports)
+    }
+    
+    // 计算汇总数据
+    reports.forEach(report =&gt; {
+      aggregated.summary.total_revenue += report.metrics.revenue.total
+      aggregated.summary.total_orders += report.metrics.revenue.orders_count
+      aggregated.summary.total_customers += report.metrics.customers.new_customers
+    })
+    
+    aggregated.summary.average_order_value = 
+      aggregated.summary.total_revenue / aggregated.summary.total_orders
+    
+    return aggregated
+  }
+ 
+  generateInsights(reports) {
+    const insights = []
+    
+    // 找出表现最好的店铺
+    const topStore = reports.reduce((max, current) =&gt; 
+      current.metrics.revenue.total &gt; max.metrics.revenue.total ? current : max
+    )
+    
+    insights.push({
+      type: 'top_performer',
+      message: `${topStore.store} is the top performing store with $${topStore.metrics.revenue.total.toFixed(2)} in revenue`,
+      value: topStore.metrics.revenue.total
+    })
+    
+    // 识别库存周转率低的产品
+    const lowTurnoverStores = reports.filter(report =&gt; 
+      report.metrics.products.inventory_turns &lt; 2
+    )
+    
+    if (lowTurnoverStores.length &gt; 0) {
+      insights.push({
+        type: 'inventory_warning',
+        message: `${lowTurnoverStores.length} stores have low inventory turnover rates`,
+        stores: lowTurnoverStores.map(s =&gt; s.store)
+      })
+    }
+    
+    return insights
+  }
+}
+</code></pre>
+<h2 id="b2b功能配置">B2B功能配置</h2><h3 id="1-批发价格管理">1. 批发价格管理</h3><pre><code>// B2B批发价格系统
+class WholesalePricing {
+  constructor() {
+    this.customerTiers = {
+      'wholesale_basic': { discount: 0.15, min_order: 500 },
+      'wholesale_premium': { discount: 0.25, min_order: 1000 },
+      'wholesale_enterprise': { discount: 0.35, min_order: 2500 }
+    }
+  }
+ 
+  async applyWholesalePricing(customerId, cart) {
+    const customer = await this.getCustomer(customerId)
+    const customerTier = this.getCustomerTier(customer)
+    
+    if (!customerTier) {
+      return cart // 非批发客户，保持原价
+    }
+    
+    const tierConfig = this.customerTiers[customerTier]
+    
+    // 检查最低订单金额
+    if (cart.subtotal &lt; tierConfig.min_order) {
+      throw new Error(`Minimum order amount of $${tierConfig.min_order} required for wholesale pricing`)
+    }
+    
+    // 应用批发折扣
+    const updatedCart = {
+      ...cart,
+      line_items: cart.line_items.map(item =&gt; ({
+        ...item,
+        price: this.calculateWholesalePrice(item.price, tierConfig.discount),
+        line_price: this.calculateWholesalePrice(item.line_price, tierConfig.discount)
+      }))
+    }
+    
+    updatedCart.subtotal = updatedCart.line_items.reduce(
+      (sum, item) =&gt; sum + item.line_price, 0
+    )
+    
+    return updatedCart
+  }
+ 
+  calculateWholesalePrice(originalPrice, discount) {
+    return parseFloat((originalPrice * (1 - discount)).toFixed(2))
+  }
+ 
+  getCustomerTier(customer) {
+    const tags = customer.tags || []
+    
+    if (tags.includes('wholesale_enterprise')) return 'wholesale_enterprise'
+    if (tags.includes('wholesale_premium')) return 'wholesale_premium'
+    if (tags.includes('wholesale_basic')) return 'wholesale_basic'
+    
+    return null
+  }
+ 
+  async createWholesaleQuote(customerId, items, validUntil) {
+    const customer = await this.getCustomer(customerId)
+    const tierConfig = this.customerTiers[this.getCustomerTier(customer)]
+    
+    const quote = {
+      id: this.generateQuoteId(),
+      customer_id: customerId,
+      created_at: new Date().toISOString(),
+      valid_until: validUntil,
+      status: 'pending',
+      items: items.map(item =&gt; ({
+        ...item,
+        wholesale_price: this.calculateWholesalePrice(item.price, tierConfig.discount),
+        savings: item.price - this.calculateWholesalePrice(item.price, tierConfig.discount)
+      })),
+      total_savings: items.reduce((sum, item) =&gt; 
+        sum + (item.price - this.calculateWholesalePrice(item.price, tierConfig.discount)) * item.quantity, 0
+      )
+    }
+    
+    // 保存报价到数据库
+    await this.saveQuote(quote)
+    
+    // 发送报价邮件
+    await this.sendQuoteEmail(customer, quote)
+    
+    return quote
+  }
+}
+</code></pre>
+<h3 id="2-公司账户管理">2. 公司账户管理</h3><pre><code>// 企业客户管理系统
+class CompanyAccountManager {
+  async createCompanyAccount(companyData, adminUserData) {
+    // 创建公司账户
+    const company = await this.createCompany({
+      name: companyData.name,
+      tax_id: companyData.tax_id,
+      billing_address: companyData.billing_address,
+      shipping_addresses: companyData.shipping_addresses,
+      payment_terms: companyData.payment_terms || 'net_30',
+      credit_limit: companyData.credit_limit || 0,
+      status: 'active'
+    })
+    
+    // 创建管理员用户
+    const adminUser = await this.createCompanyUser({
+      ...adminUserData,
+      company_id: company.id,
+      role: 'admin',
+      permissions: ['place_orders', 'manage_users', 'view_reports']
+    })
+    
+    // 设置默认购买规则
+    await this.setupPurchaseRules(company.id, {
+      approval_required: companyData.requires_approval || false,
+      spending_limit_per_user: companyData.user_spending_limit || null,
+      allowed_payment_methods: companyData.allowed_payment_methods || ['net_terms'],
+      restricted_products: companyData.restricted_products || []
+    })
+    
+    return { company, admin_user: adminUser }
+  }
+ 
+  async addCompanyUser(companyId, userData, permissions = []) {
+    const company = await this.getCompany(companyId)
+    
+    if (!company) {
+      throw new Error('Company not found')
+    }
+    
+    const user = await this.createCompanyUser({
+      ...userData,
+      company_id: companyId,
+      role: userData.role || 'member',
+      permissions: permissions.length &gt; 0 ? permissions : ['place_orders']
+    })
+    
+    // 发送欢迎邮件
+    await this.sendWelcomeEmail(user, company)
+    
+    return user
+  }
+ 
+  async processCompanyOrder(orderId, userId) {
+    const order = await this.getOrder(orderId)
+    const user = await this.getCompanyUser(userId)
+    const company = await this.getCompany(user.company_id)
+    const rules = await this.getPurchaseRules(company.id)
+    
+    // 检查权限
+    if (!user.permissions.includes('place_orders')) {
+      throw new Error('User does not have permission to place orders')
+    }
+    
+    // 检查支出限制
+    if (rules.spending_limit_per_user &amp;&amp; order.total &gt; rules.spending_limit_per_user) {
+      throw new Error('Order exceeds user spending limit')
+    }
+    
+    // 检查公司信用限制
+    const outstandingBalance = await this.getCompanyOutstandingBalance(company.id)
+    if (company.credit_limit &amp;&amp; (outstandingBalance + order.total) &gt; company.credit_limit) {
+      throw new Error('Order would exceed company credit limit')
+    }
+    
+    // 检查是否需要审批
+    if (rules.approval_required &amp;&amp; order.total &gt; rules.approval_threshold) {
+      return await this.submitForApproval(order, user, company)
+    }
+    
+    // 直接处理订单
+    return await this.processOrder(order, company)
+  }
+ 
+  async submitForApproval(order, user, company) {
+    const approval = await this.createApprovalRequest({
+      order_id: order.id,
+      requested_by: user.id,
+      company_id: company.id,
+      amount: order.total,
+      status: 'pending',
+      requested_at: new Date().toISOString()
+    })
+    
+    // 通知管理员
+    const admins = await this.getCompanyAdmins(company.id)
+    await Promise.all(
+      admins.map(admin =&gt; this.sendApprovalNotification(admin, approval, order))
+    )
+    
+    return { status: 'pending_approval', approval_id: approval.id }
+  }
+}
+</code></pre>
+<h2 id="高级集成和api">高级集成和API</h2><h3 id="1-erp系统集成">1. ERP系统集成</h3><pre><code>// ERP系统双向同步
+class ERPIntegration {
+  constructor(erpConfig) {
+    this.erpEndpoint = erpConfig.endpoint
+    this.apiKey = erpConfig.apiKey
+    this.syncInterval = erpConfig.syncInterval || 300000 // 5分钟
+    this.lastSyncTimestamp = null
+  }
+ 
+  async startSync() {
+    console.log('Starting ERP sync...')
+    
+    setInterval(async () =&gt; {
+      try {
+        await this.performBidirectionalSync()
+      } catch (error) {
+        console.error('ERP sync failed:', error)
+        await this.notifyAdministrators(error)
+      }
+    }, this.syncInterval)
+  }
+ 
+  async performBidirectionalSync() {
+    const lastSync = this.lastSyncTimestamp || new Date(Date.now() - this.syncInterval)
+    
+    // 从Shopify同步到ERP
+    await this.syncShopifyToERP(lastSync)
+    
+    // 从ERP同步到Shopify
+    await this.syncERPToShopify(lastSync)
+    
+    this.lastSyncTimestamp = new Date()
+  }
+ 
+  async syncShopifyToERP(since) {
+    // 同步新订单
+    const newOrders = await this.fetchShopifyOrders(since)
+    
+    for (const order of newOrders) {
+      await this.sendOrderToERP(order)
+    }
+    
+    // 同步客户数据
+    const newCustomers = await this.fetchShopifyCustomers(since)
+    
+    for (const customer of newCustomers) {
+      await this.sendCustomerToERP(customer)
+    }
+    
+    // 同步产品数据
+    const updatedProducts = await this.fetchUpdatedProducts(since)
+    
+    for (const product of updatedProducts) {
+      await this.sendProductToERP(product)
+    }
+  }
+ 
+  async syncERPToShopify(since) {
+    // 同步库存更新
+    const inventoryUpdates = await this.fetchERPInventoryUpdates(since)
+    
+    for (const update of inventoryUpdates) {
+      await this.updateShopifyInventory(update)
+    }
+    
+    // 同步价格更新
+    const priceUpdates = await this.fetchERPPriceUpdates(since)
+    
+    for (const update of priceUpdates) {
+      await this.updateShopifyPrice(update)
+    }
+    
+    // 同步履约状态
+    const fulfillmentUpdates = await this.fetchERPFulfillmentUpdates(since)
+    
+    for (const update of fulfillmentUpdates) {
+      await this.updateShopifyFulfillment(update)
+    }
+  }
+ 
+  async sendOrderToERP(shopifyOrder) {
+    const erpOrder = this.transformShopifyOrderToERP(shopifyOrder)
+    
+    const response = await fetch(`${this.erpEndpoint}/orders`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(erpOrder)
+    })
+    
+    if (!response.ok) {
+      throw new Error(`Failed to send order ${shopifyOrder.name} to ERP: ${response.statusText}`)
+    }
+    
+    const erpResponse = await response.json()
+    
+    // 在Shopify订单中记录ERP订单ID
+    await this.updateShopifyOrderMetafield(shopifyOrder.id, 'erp_order_id', erpResponse.id)
+  }
+ 
+  transformShopifyOrderToERP(shopifyOrder) {
+    return {
+      external_id: shopifyOrder.id,
+      order_number: shopifyOrder.name,
+      customer: {
+        external_id: shopifyOrder.customer.id,
+        email: shopifyOrder.customer.email,
+        name: `${shopifyOrder.customer.first_name} ${shopifyOrder.customer.last_name}`
+      },
+      billing_address: shopifyOrder.billing_address,
+      shipping_address: shopifyOrder.shipping_address,
+      line_items: shopifyOrder.line_items.map(item =&gt; ({
+        sku: item.sku,
+        quantity: item.quantity,
+        price: parseFloat(item.price),
+        title: item.title
+      })),
+      total_amount: parseFloat(shopifyOrder.total_price),
+      currency: shopifyOrder.currency,
+      order_date: shopifyOrder.created_at,
+      payment_status: shopifyOrder.financial_status,
+      fulfillment_status: shopifyOrder.fulfillment_status
+    }
+  }
+}
+</code></pre>
+<h3 id="2-第三方物流集成">2. 第三方物流集成</h3><pre><code>// 3PL智能物流管理
+class ThirdPartyLogistics {
+  constructor() {
+    this.providers = {
+      'fulfillment_provider_1': {
+        endpoint: 'https://api.provider1.com',
+        apiKey: process.env.PROVIDER1_API_KEY,
+        specialties: ['electronics', 'fragile'],
+        regions: ['US', 'CA']
+      },
+      'fulfillment_provider_2': {
+        endpoint: 'https://api.provider2.com',
+        apiKey: process.env.PROVIDER2_API_KEY,
+        specialties: ['apparel', 'books'],
+        regions: ['EU', 'UK']
+      }
+    }
+  }
+ 
+  async routeOrder(order) {
+    const optimalProvider = await this.selectOptimalProvider(order)
+    
+    if (!optimalProvider) {
+      throw new Error('No suitable fulfillment provider found')
+    }
+    
+    return await this.sendOrderToProvider(order, optimalProvider)
+  }
+ 
+  async selectOptimalProvider(order) {
+    const shippingCountry = order.shipping_address.country_code
+    const productTypes = order.line_items.map(item =&gt; item.product_type)
+    
+    const suitableProviders = Object.entries(this.providers).filter(([key, provider]) =&gt; {
+      // 检查地区覆盖
+      const regionMatch = provider.regions.includes(shippingCountry)
+      
+      // 检查产品类型专长
+      const specialtyMatch = productTypes.some(type =&gt; 
+        provider.specialties.includes(type.toLowerCase())
+      )
+      
+      return regionMatch &amp;&amp; specialtyMatch
+    })
+    
+    if (suitableProviders.length === 0) {
+      return null
+    }
+    
+    // 选择最优提供商（基于成本、时效等因素）
+    const providerScores = await Promise.all(
+      suitableProviders.map(async ([key, provider]) =&gt; {
+        const quote = await this.getShippingQuote(provider, order)
+        return {
+          provider: key,
+          config: provider,
+          score: this.calculateProviderScore(quote, order),
+          quote
+        }
+      })
+    )
+    
+    return providerScores.reduce((best, current) =&gt; 
+      current.score &gt; best.score ? current : best
+    )
+  }
+ 
+  calculateProviderScore(quote, order) {
+    const costWeight = 0.4
+    const speedWeight = 0.3
+    const reliabilityWeight = 0.3
+    
+    // 成本分数（成本越低分数越高）
+    const costScore = Math.max(0, 100 - (quote.cost / order.total_price * 100))
+    
+    // 速度分数（交货时间越短分数越高）
+    const speedScore = Math.max(0, 100 - quote.estimated_days * 10)
+    
+    // 可靠性分数（基于历史表现）
+    const reliabilityScore = quote.provider_rating || 80
+    
+    return (costScore * costWeight) + (speedScore * speedWeight) + (reliabilityScore * reliabilityWeight)
+  }
+ 
+  async sendOrderToProvider(order, provider) {
+    const fulfillmentRequest = {
+      order_id: order.id,
+      order_number: order.name,
+      shipping_address: order.shipping_address,
+      items: order.line_items.map(item =&gt; ({
+        sku: item.sku,
+        quantity: item.quantity,
+        description: item.title
+      })),
+      shipping_method: order.shipping_lines[0]?.code,
+      special_instructions: order.note || ''
+    }
+    
+    const response = await fetch(`${provider.config.endpoint}/fulfillments`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${provider.config.apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(fulfillmentRequest)
+    })
+    
+    if (!response.ok) {
+      throw new Error(`Fulfillment request failed: ${response.statusText}`)
+    }
+    
+    const fulfillmentResponse = await response.json()
+    
+    // 创建Shopify履约记录
+    await this.createShopifyFulfillment(order.id, {
+      location_id: null,
+      tracking_number: fulfillmentResponse.tracking_number,
+      tracking_company: fulfillmentResponse.carrier,
+      notify_customer: true,
+      line_items: order.line_items.map(item =&gt; ({
+        id: item.id,
+        quantity: item.quantity
+      }))
+    })
+    
+    return fulfillmentResponse
+  }
+ 
+  async handleFulfillmentWebhook(providerName, webhookData) {
+    const provider = this.providers[providerName]
+    
+    if (!provider) {
+      throw new Error(`Unknown provider: ${providerName}`)
+    }
+    
+    switch (webhookData.event_type) {
+      case 'fulfillment_shipped':
+        await this.updateShipmentTracking(webhookData)
+        break
+        
+      case 'fulfillment_delivered':
+        await this.markOrderDelivered(webhookData)
+        break
+        
+      case 'fulfillment_exception':
+        await this.handleFulfillmentException(webhookData)
+        break
+        
+      default:
+        console.log(`Unhandled webhook event: ${webhookData.event_type}`)
+    }
+  }
+}
+</code></pre>
+<h2 id="最佳实践总结">最佳实践总结</h2><h3 id="架构设计原则">架构设计原则</h3><ol>
+<li><strong>可扩展性</strong>：设计时考虑未来增长需求</li>
+<li><strong>模块化</strong>：将功能分解为独立模块</li>
+<li><strong>容错性</strong>：实现全面的错误处理和恢复机制</li>
+<li><strong>监控性</strong>：建立完善的监控和警报系统</li>
+</ol>
+<h3 id="性能优化策略">性能优化策略</h3><ol>
+<li><strong>智能缓存</strong>：多层缓存策略减少API调用</li>
+<li><strong>异步处理</strong>：使用队列处理耗时操作</li>
+<li><strong>批量操作</strong>：尽可能使用批量API</li>
+<li><strong>连接池</strong>：优化数据库和外部服务连接</li>
+</ol>
+<h3 id="安全最佳实践">安全最佳实践</h3><ol>
+<li><strong>权限最小化</strong>：严格控制API权限范围</li>
+<li><strong>数据加密</strong>：敏感数据传输和存储加密</li>
+<li><strong>访问控制</strong>：实施细粒度的访问控制</li>
+<li><strong>审计日志</strong>：记录所有关键操作</li>
+</ol>
+<h3 id="运维管理建议">运维管理建议</h3><ol>
+<li><strong>监控告警</strong>：建立全面的监控体系</li>
+<li><strong>备份策略</strong>：定期备份关键数据</li>
+<li><strong>灾难恢复</strong>：制定完整的灾难恢复计划</li>
+<li><strong>文档管理</strong>：维护完整的技术文档</li>
+</ol>
+<h2 id="常见问题-faq">常见问题（FAQ）</h2><p><strong>Q：Script Editor 还在用吗？已经被 Shopify Functions 替代了吗？</strong> A：<strong>正在过渡</strong>。Shopify Functions 是新一代结账定制方案（JavaScript / Rust），未来会逐步替代 Script Editor。新项目建议<strong>直接用 Functions</strong>——参考 shopify-functions skill 或 <a href="https://shopify.dev/docs/api/functions" target="_blank" rel="noreferrer">Shopify Functions 官方文档</a> 。已有的 Script Editor 脚本短期内继续可用，但长期需要迁移。</p>
+<p><strong>Q：Flow 能做哪些自动化？做不到哪些？</strong> A：<strong>适合</strong>：基于订单、客户、库存事件触发的标签 / 邮件 / 任务创建；跨 App 数据流转。<strong>不适合</strong>：实时结账定制（用 Functions）、复杂的多步骤业务流（建议用专业自动化平台如 n8n / Zapier 配合）。</p>
+<p><strong>Q：Launchpad 与普通的定时任务有什么区别？</strong> A：Launchpad 是 <strong>Shopify 官方的活动调度器</strong>——能在指定时间自动改价、上下架、切换主题。优点是不依赖外部脚本、变更被 Shopify 后台记录、回滚便捷。普通定时任务（如通过 Webhook 调 Admin API）也能做到，但需要自建调度与回滚机制。<strong>大促建议优先 Launchpad</strong>。</p>
+<p><strong>Q：多店铺架构，主店 → 子店同步用什么方案？</strong> A：三种主流选择——（1）<strong>Shopify Combined Listings + Markets</strong>（最轻量，适合同品牌多市场）；（2）<strong>Organization Admin</strong> 跨店管理（适合多品牌）；（3）<strong>自建中台 + Admin API 同步</strong>（最灵活但最贵）。本文代码示例属于第 3 种，仅在前两种无法满足时考虑。</p>
+<p><strong>Q：B2B 功能用 Shopify 原生还是用 BigCommerce / 专业 B2B 平台？</strong> A：Shopify 在 2023 年发布的 <strong>B2B on Shopify</strong> 已经覆盖了 80% 的批发场景（Company 账户、价格清单、Net 30 等支付条款、审批流）。<strong>只有非常复杂的报价 / 询盘场景</strong>才需要专业 B2B 平台。详见 <a href="/guides/shopify-handbook/advanced/shopify-plus/">Shopify Plus 完整功能与选型指南</a>。</p>
+<p><strong>Q：ERP 双向同步常见的坑是什么？</strong> A：（1）<strong>数据竞争</strong>：Shopify 与 ERP 同时改库存导致超卖——必须有”唯一源”；（2）<strong>时区差异</strong>：订单时间戳口径不一致导致重复同步；（3）<strong>Webhook 重试</strong>：Shopify Webhook 会重试，幂等性必须做；（4）<strong>配额耗尽</strong>：Plus 的 1000 req/min 仍可能不够用，需要批量 / 队列。</p>
+<p><strong>Q：Plus 的费用值得吗？什么时候升级？</strong> A：见 <a href="/guides/shopify-handbook/advanced/shopify-plus/">Shopify Plus 完整功能与选型指南</a> 的”什么时候升级”章节。简短答案：<strong>月销 &lt; $80 万 通常不值得</strong>；<strong>B2B / 多市场 / 复杂结账定制</strong>是真正的升级理由。</p>
+<hr />
+<h2 id="延伸阅读">延伸阅读</h2><ul>
+<li><a href="/guides/shopify-handbook/advanced/shopify-plus/">Shopify Plus 完整功能与选型指南</a> — 决策与选型（本文的前置篇）</li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-scripts/">Shopify Scripts</a> — Script Editor 深度</li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-api-advanced/">Shopify API 进阶</a> — Admin API、GraphQL、Webhook 模式</li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-webhooks-guide/">Shopify Webhooks 完整指南</a> — Webhook 重试、幂等、HMAC 校验</li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-headless-intro/">Shopify Headless 介绍</a> — Plus 客户的另一条架构选择</li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-app-development/">Shopify App 开发</a> — 自建私有 App 满足企业定制</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>小结</strong>：Plus 的真正价值不是”功能更多”，而是<strong>为企业级的复杂业务流程提供了官方支持的扩展点</strong>——Flow、Functions、Launchpad、B2B、Organization Admin。<strong>先用 Plus 原生能力解决问题，自建系统是最后的选择</strong>。自建越多，迁移成本与维护成本越高。</p>
+</blockquote>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-metafields-metaobjects/"><span>上一篇</span><strong>Shopify Metafields 与 Metaobjects 完整指南</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-plus/"><span>下一篇</span><strong>Shopify Plus 完整功能与选型指南</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

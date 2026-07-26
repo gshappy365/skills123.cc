@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>代码组织和结构 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="代码组织和结构 良好的代码组织是成功的 Shopify 主题开发项目的基础。本指南将介绍如何构建清晰、可维护、可扩展的主题架构。 npm 脚本、 scripts/ 目录与 Theme ID / 店铺信息脱敏 的工程化约定见：主题工程">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/code-organization/">
+  <meta property="og:title" content="代码组织和结构 · Shopify 独立站手册">
+  <meta property="og:description" content="代码组织和结构 良好的代码组织是成功的 Shopify 主题开发项目的基础。本指南将介绍如何构建清晰、可维护、可扩展的主题架构。 npm 脚本、 scripts/ 目录与 Theme ID / 店铺信息脱敏 的工程化约定见：主题工程">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>代码组织和结构</h1>
+        <p>代码组织和结构 良好的代码组织是成功的 Shopify 主题开发项目的基础。本指南将介绍如何构建清晰、可维护、可扩展的主题架构。 npm 脚本、 scripts/ 目录与 Theme ID / 店铺信息脱敏 的工程化约定见：主题工程</p>
+      </header>
+      <div class="article-content"><h2 id="代码组织和结构">代码组织和结构</h2><p>良好的代码组织是成功的 Shopify 主题开发项目的基础。本指南将介绍如何构建清晰、可维护、可扩展的主题架构。</p>
+<p>npm 脚本、<code>scripts/</code> 目录与 <strong>Theme ID / 店铺信息脱敏</strong> 的工程化约定见：<a href="/guides/shopify-handbook/liquid/theme-engineering-setup/">主题工程化：目录与 npm 脚本</a>。</p>
+<h2 id="项目目录结构">项目目录结构</h2><h3 id="1-标准主题目录结构">1. 标准主题目录结构</h3><pre><code>my-shopify-theme/
+├── assets/                 # 静态资源
+│   ├── css/
+│   │   ├── base/          # 基础样式
+│   │   ├── components/    # 组件样式
+│   │   ├── layout/        # 布局样式
+│   │   ├── pages/         # 页面特定样式
+│   │   └── vendors/       # 第三方库样式
+│   ├── js/
+│   │   ├── components/    # 组件脚本
+│   │   ├── modules/       # 功能模块
+│   │   ├── utils/         # 工具函数
+│   │   └── vendors/       # 第三方库
+│   ├── images/            # 图片资源
+│   └── fonts/             # 字体文件
+├── config/                # 配置文件
+│   ├── settings_schema.json
+│   └── settings_data.json
+├── layout/                # 布局模板
+│   ├── theme.liquid
+│   ├── password.liquid
+│   └── checkout.liquid
+├── locales/               # 多语言文件
+│   ├── en.default.json
+│   ├── zh-CN.json
+│   └── ja.json
+├── sections/              # 可重用分区
+│   ├── header.liquid
+│   ├── footer.liquid
+│   ├── product-form.liquid
+│   └── featured-collection.liquid
+├── snippets/              # 代码片段
+│   ├── components/        # 组件片段
+│   ├── helpers/           # 辅助函数
+│   ├── icons/             # 图标
+│   └── shared/            # 共享片段
+├── templates/             # 页面模板
+│   ├── 404.liquid
+│   ├── article.liquid
+│   ├── blog.liquid
+│   ├── cart.liquid
+│   ├── collection.liquid
+│   ├── index.liquid
+│   ├── page.liquid
+│   ├── product.liquid
+│   └── search.liquid
+├── docs/                  # 文档
+│   ├── README.md
+│   ├── CHANGELOG.md
+│   └── DEVELOPMENT.md
+├── scripts/               # 构建脚本
+│   ├── build.js
+│   ├── deploy.js
+│   └── watch.js
+├── tests/                 # 测试文件
+│   ├── unit/
+│   ├── integration/
+│   └── e2e/
+├── .env                   # 环境变量
+├── .gitignore
+├── package.json
+├── shopify.theme.toml
+└── README.md
+</code></pre>
+<h3 id="2-模块化css架构">2. 模块化CSS架构</h3><pre><code>// assets/css/main.scss
+// 主样式入口文件
+ 
+// 1. 变量和配置
+@import 'base/variables';
+@import 'base/functions';
+@import 'base/mixins';
+ 
+// 2. 重置和基础样式
+@import 'base/normalize';
+@import 'base/typography';
+@import 'base/base';
+ 
+// 3. 布局
+@import 'layout/grid';
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/navigation';
+ 
+// 4. 组件
+@import 'components/buttons';
+@import 'components/forms';
+@import 'components/cards';
+@import 'components/modals';
+@import 'components/product-card';
+@import 'components/cart-drawer';
+ 
+// 5. 页面特定样式
+@import 'pages/home';
+@import 'pages/product';
+@import 'pages/collection';
+@import 'pages/cart';
+ 
+// 6. 第三方库
+@import 'vendors/swiper';
+@import 'vendors/lightbox';
+ 
+// 7. 工具类
+@import 'utilities/spacing';
+@import 'utilities/visibility';
+@import 'utilities/text';
+</code></pre>
+<h3 id="3-javascript模块组织">3. JavaScript模块组织</h3><pre><code>// assets/js/main.js
+// 主脚本入口文件
+ 
+// 核心模块
+import { App } from './modules/App.js';
+import { CartManager } from './modules/CartManager.js';
+import { ProductForm } from './modules/ProductForm.js';
+import { Navigation } from './modules/Navigation.js';
+ 
+// 组件
+import { Modal } from './components/Modal.js';
+import { Accordion } from './components/Accordion.js';
+import { Tabs } from './components/Tabs.js';
+ 
+// 工具函数
+import { debounce, throttle } from './utils/helpers.js';
+import { api } from './utils/api.js';
+ 
+// 初始化应用
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  const app = new App();
+  app.init();
+});
+</code></pre>
+<h2 id="组件化开发">组件化开发</h2><h3 id="1-liquid组件模式">1. Liquid组件模式</h3><pre><code>&lt;!-- snippets/components/product-card.liquid --&gt;
+{% comment %}
+  产品卡片组件
+  
+  参数:
+  - product: 产品对象 (必需)
+  - image_size: 图片尺寸 (可选，默认: '300x300')
+  - show_vendor: 是否显示品牌 (可选，默认: false)
+  - show_price: 是否显示价格 (可选，默认: true)
+  - card_style: 卡片样式 (可选: 'standard', 'minimal', 'detailed')
+{% endcomment %}
+ 
+{%- liquid
+  assign image_size = image_size | default: '300x300'
+  assign show_vendor = show_vendor | default: false
+  assign show_price = show_price | default: true
+  assign card_style = card_style | default: 'standard'
+  assign card_class = 'product-card product-card--' | append: card_style
+-%}
+ 
+&lt;div class="{{ card_class }}" data-product-id="{{ product.id }}"&gt;
+  &lt;div class="product-card__image-wrapper"&gt;
+    &lt;a href="{{ product.url }}" class="product-card__image-link"&gt;
+      {% if product.featured_image %}
+        {% render 'responsive-image',
+          image: product.featured_image,
+          alt: product.featured_image.alt | default: product.title,
+          sizes: image_size,
+          loading: 'lazy'
+        %}
+      {% else %}
+        {% render 'placeholder-image', type: 'product' %}
+      {% endif %}
+    &lt;/a&gt;
+    
+    {% if product.compare_at_price &gt; product.price %}
+      &lt;span class="product-card__badge product-card__badge--sale"&gt;
+        {{ 'products.general.sale' | t }}
+      &lt;/span&gt;
+    {% endif %}
+    
+    {% unless product.available %}
+      &lt;span class="product-card__badge product-card__badge--sold-out"&gt;
+        {{ 'products.general.sold_out' | t }}
+      &lt;/span&gt;
+    {% endunless %}
+  &lt;/div&gt;
+  
+  &lt;div class="product-card__content"&gt;
+    {% if show_vendor and product.vendor != blank %}
+      &lt;p class="product-card__vendor"&gt;{{ product.vendor }}&lt;/p&gt;
+    {% endif %}
+    
+    &lt;h3 class="product-card__title"&gt;
+      &lt;a href="{{ product.url }}"&gt;{{ product.title }}&lt;/a&gt;
+    &lt;/h3&gt;
+    
+    {% if show_price %}
+      &lt;div class="product-card__price"&gt;
+        {% render 'price', product: product %}
+      &lt;/div&gt;
+    {% endif %}
+    
+    {% if card_style == 'detailed' %}
+      {% if product.description != blank %}
+        &lt;p class="product-card__description"&gt;
+          {{ product.description | strip_html | truncate: 100 }}
+        &lt;/p&gt;
+      {% endif %}
+      
+      &lt;div class="product-card__actions"&gt;
+        {% render 'quick-add-button', product: product %}
+        {% render 'wishlist-button', product: product %}
+      &lt;/div&gt;
+    {% endif %}
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="2-javascript组件基类">2. JavaScript组件基类</h3><pre><code>// assets/js/components/BaseComponent.js
+export class BaseComponent {
+  constructor(element, options = {}) {
+    this.element = element;
+    this.options = { ...this.defaultOptions, ...options };
+    this.isInitialized = false;
+    
+    this.init();
+  }
+  
+  get defaultOptions() {
+    return {};
+  }
+  
+  init() {
+    if (this.isInitialized) return;
+    
+    this.bindEvents();
+    this.render();
+    this.isInitialized = true;
+    
+    this.element.setAttribute('data-component-initialized', 'true');
+  }
+  
+  bindEvents() {
+    // 子类重写此方法
+  }
+  
+  render() {
+    // 子类重写此方法
+  }
+  
+  destroy() {
+    this.unbindEvents();
+    this.element.removeAttribute('data-component-initialized');
+    this.isInitialized = false;
+  }
+  
+  unbindEvents() {
+    // 子类重写此方法
+  }
+  
+  emit(eventName, detail = {}) {
+    const event = new CustomEvent(eventName, {
+      detail,
+      bubbles: true,
+      cancelable: true
+    });
+    
+    this.element.dispatchEvent(event);
+  }
+  
+  on(eventName, handler) {
+    this.element.addEventListener(eventName, handler);
+  }
+  
+  off(eventName, handler) {
+    this.element.removeEventListener(eventName, handler);
+  }
+}
+</code></pre>
+<h3 id="3-具体组件实现">3. 具体组件实现</h3><pre><code>// assets/js/components/ProductForm.js
+import { BaseComponent } from './BaseComponent.js';
+import { formatMoney } from '../utils/helpers.js';
+ 
+export class ProductForm extends BaseComponent {
+  get defaultOptions() {
+    return {
+      enableHistory: true,
+      enableAjax: true,
+      selectors: {
+        variantSelect: '[data-variant-select]',
+        priceElement: '[data-price]',
+        addButton: '[data-add-to-cart]',
+        form: 'form[action*="/cart/add"]'
+      }
+    };
+  }
+  
+  bindEvents() {
+    this.variantSelects = this.element.querySelectorAll(this.options.selectors.variantSelect);
+    this.priceElement = this.element.querySelector(this.options.selectors.priceElement);
+    this.addButton = this.element.querySelector(this.options.selectors.addButton);
+    this.form = this.element.querySelector(this.options.selectors.form);
+    
+    this.variantSelects.forEach(select =&gt; {
+      select.addEventListener('change', this.handleVariantChange.bind(this));
+    });
+    
+    if (this.options.enableAjax &amp;&amp; this.form) {
+      this.form.addEventListener('submit', this.handleAddToCart.bind(this));
+    }
+  }
+  
+  handleVariantChange() {
+    const selectedOptions = Array.from(this.variantSelects).map(select =&gt; select.value);
+    const variant = this.findVariant(selectedOptions);
+    
+    this.updatePrice(variant);
+    this.updateAddButton(variant);
+    this.updateUrl(variant);
+    
+    this.emit('variant:changed', { variant });
+  }
+  
+  findVariant(selectedOptions) {
+    return window.productVariants?.find(variant =&gt; {
+      return variant.options.every((option, index) =&gt; {
+        return option === selectedOptions[index];
+      });
+    });
+  }
+  
+  updatePrice(variant) {
+    if (!this.priceElement || !variant) return;
+    
+    let priceHtml = formatMoney(variant.price);
+    
+    if (variant.compare_at_price &gt; variant.price) {
+      priceHtml = `
+        &lt;span class="price--sale"&gt;${formatMoney(variant.price)}&lt;/span&gt;
+        &lt;span class="price--compare"&gt;${formatMoney(variant.compare_at_price)}&lt;/span&gt;
+      `;
+    }
+    
+    this.priceElement.innerHTML = priceHtml;
+  }
+  
+  updateAddButton(variant) {
+    if (!this.addButton) return;
+    
+    if (!variant) {
+      this.addButton.disabled = true;
+      this.addButton.textContent = '无此组合';
+    } else if (!variant.available) {
+      this.addButton.disabled = true;
+      this.addButton.textContent = '缺货';
+    } else {
+      this.addButton.disabled = false;
+      this.addButton.textContent = '加入购物车';
+    }
+  }
+  
+  updateUrl(variant) {
+    if (!this.options.enableHistory || !variant) return;
+    
+    const url = new URL(window.location);
+    url.searchParams.set('variant', variant.id);
+    
+    window.history.replaceState(null, '', url);
+  }
+  
+  async handleAddToCart(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(this.form);
+    
+    try {
+      this.setLoading(true);
+      
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (response.ok) {
+        const item = await response.json();
+        this.emit('cart:added', { item });
+      } else {
+        throw new Error('添加到购物车失败');
+      }
+      
+    } catch (error) {
+      this.emit('cart:error', { error: error.message });
+    } finally {
+      this.setLoading(false);
+    }
+  }
+  
+  setLoading(loading) {
+    this.addButton.disabled = loading;
+    this.addButton.classList.toggle('loading', loading);
+  }
+}
+</code></pre>
+<h2 id="配置管理">配置管理</h2><h3 id="1-主题设置架构">1. 主题设置架构</h3><pre><code>// config/settings_schema.json
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Custom Theme",
+    "theme_version": "1.0.0",
+    "theme_author": "Your Name",
+    "theme_documentation_url": "https://docs.example.com",
+    "theme_support_url": "https://support.example.com"
+  },
+  {
+    "name": "颜色",
+    "settings": [
+      {
+        "type": "header",
+        "content": "主要颜色"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "主色调",
+        "default": "#1a73e8"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary", 
+        "label": "副色调",
+        "default": "#34a853"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "强调色",
+        "default": "#ea4335"
+      }
+    ]
+  },
+  {
+    "name": "字体",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_header_font",
+        "label": "标题字体",
+        "default": "helvetica_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "正文字体", 
+        "default": "helvetica_n4"
+      },
+      {
+        "type": "range",
+        "id": "type_body_size",
+        "label": "正文字体大小",
+        "min": 12,
+        "max": 24,
+        "step": 1,
+        "unit": "px",
+        "default": 16
+      }
+    ]
+  }
+]
+</code></pre>
+<h3 id="2-环境配置管理">2. 环境配置管理</h3><pre><code>// scripts/config.js
+const environments = {
+  development: {
+    store: 'your-dev-store.myshopify.com',
+    theme: 'development',
+    debug: true,
+    watch: true
+  },
+  
+  staging: {
+    store: 'your-staging-store.myshopify.com', 
+    theme: 'staging',
+    debug: false,
+    watch: false
+  },
+  
+  production: {
+    store: 'your-store.myshopify.com',
+    theme: 'live',
+    debug: false,
+    watch: false
+  }
+};
+ 
+export function getConfig(env = 'development') {
+  return environments[env] || environments.development;
+}
+</code></pre>
+<h2 id="命名约定">命名约定</h2><h3 id="1-css命名规范-bem">1. CSS命名规范 (BEM)</h3><pre><code>// 组件样式命名
+.product-card {                          // 块 (Block)
+  &amp;__image {                            // 元素 (Element)
+    display: block;
+  }
+  
+  &amp;__title {
+    font-size: 1.2rem;
+  }
+  
+  &amp;--featured {                         // 修饰符 (Modifier)
+    border: 2px solid gold;
+  }
+  
+  &amp;--sale {
+    position: relative;
+    
+    &amp;::after {
+      content: 'SALE';
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+}
+ 
+// 状态类
+.is-active { }
+.is-hidden { }
+.is-loading { }
+ 
+// JavaScript钩子类
+.js-toggle { }
+.js-modal-trigger { }
+.js-cart-form { }
+</code></pre>
+<h3 id="2-javascript命名规范">2. JavaScript命名规范</h3><pre><code>// 类名使用PascalCase
+class ProductRecommendations { }
+class CartDrawer { }
+ 
+// 方法和变量使用camelCase
+const productData = {};
+const isVisible = true;
+ 
+function calculatePrice() { }
+function updateCartCount() { }
+ 
+// 常量使用UPPER_SNAKE_CASE
+const API_ENDPOINT = '/cart.js';
+const DEFAULT_TIMEOUT = 5000;
+ 
+// 事件名使用kebab-case
+element.dispatchEvent(new CustomEvent('cart:updated'));
+element.dispatchEvent(new CustomEvent('product:variant-changed'));
+</code></pre>
+<h3 id="3-liquid文件命名">3. Liquid文件命名</h3><pre><code>// 模板文件
+templates/
+├── index.liquid              # 首页
+├── product.liquid            # 产品页
+├── collection.liquid         # 集合页
+├── page.contact.liquid       # 联系页面 (特定页面)
+└── customers/
+    ├── login.liquid          # 客户登录
+    └── register.liquid       # 客户注册
+
+// 分区文件
+sections/
+├── header.liquid             # 头部
+├── footer.liquid             # 页脚
+├── product-form.liquid       # 产品表单
+├── featured-collection.liquid # 特色集合
+└── newsletter-signup.liquid  # 邮件订阅
+
+// 代码片段
+snippets/
+├── product-card.liquid       # 产品卡片
+├── price.liquid              # 价格显示
+├── icon-cart.liquid          # 购物车图标
+├── responsive-image.liquid   # 响应式图片
+└── components/               # 组件目录
+    ├── modal.liquid
+    ├── accordion.liquid
+    └── tabs.liquid
+</code></pre>
+<h2 id="文档和注释">文档和注释</h2><h3 id="1-代码注释规范">1. 代码注释规范</h3><pre><code>{% comment %}
+  产品推荐分区
+  
+  功能：显示相关产品推荐
+  
+  设置：
+  - heading: 标题文本
+  - product_limit: 显示产品数量 (1-12)
+  - show_vendor: 是否显示品牌
+  - image_ratio: 图片比例 ('square', 'portrait', 'landscape')
+  
+  依赖：
+  - snippets/product-card.liquid
+  - assets/recommendations.js
+  
+  更新记录：
+  - 2024-01-15: 初始创建
+  - 2024-01-20: 添加图片比例选项
+{% endcomment %}
+ 
+{%- liquid
+  assign heading = section.settings.heading | default: '相关推荐'
+  assign product_limit = section.settings.product_limit | default: 4
+  assign show_vendor = section.settings.show_vendor | default: false
+-%}
+</code></pre>
+<h3 id="2-javascript文档注释">2. JavaScript文档注释</h3><pre><code>/**
+ * 购物车抽屉组件
+ * 
+ * @class CartDrawer
+ * @extends BaseComponent
+ * 
+ * @example
+ * const cartDrawer = new CartDrawer(document.querySelector('[data-cart-drawer]'), {
+ *   autoOpen: true,
+ *   closeOnOverlay: true
+ * });
+ * 
+ * @since 1.0.0
+ * @author Your Name
+ */
+export class CartDrawer extends BaseComponent {
+  /**
+   * 创建CartDrawer实例
+   * 
+   * @param {HTMLElement} element - 购物车抽屉元素
+   * @param {Object} options - 配置选项
+   * @param {boolean} options.autoOpen - 是否自动打开
+   * @param {boolean} options.closeOnOverlay - 点击遮罩是否关闭
+   */
+  constructor(element, options = {}) {
+    super(element, options);
+  }
+  
+  /**
+   * 打开购物车抽屉
+   * 
+   * @fires CartDrawer#drawer:opened
+   * @returns {Promise&lt;void&gt;}
+   */
+  async open() {
+    // 实现...
+  }
+}
+</code></pre>
+<h2 id="版本控制策略">版本控制策略</h2><h3 id="1-git工作流程">1. Git工作流程</h3><pre><code># 分支命名规范
+feature/product-recommendations    # 新功能
+bugfix/cart-total-calculation     # 错误修复
+hotfix/critical-checkout-issue    # 紧急修复
+release/v1.2.0                   # 发布版本
+ 
+# 提交信息规范
+feat: 添加产品推荐功能
+fix: 修复购物车总价计算错误
+docs: 更新README文档
+style: 调整按钮样式
+refactor: 重构产品卡片组件
+test: 添加购物车功能测试
+</code></pre>
+<h3 id="2-版本发布流程">2. 版本发布流程</h3><pre><code>// package.json
+{
+  "name": "custom-shopify-theme",
+  "version": "1.2.0",
+  "scripts": {
+    "dev": "shopify theme dev",
+    "build": "node scripts/build.js",
+    "deploy:staging": "node scripts/deploy.js --env=staging",
+    "deploy:production": "node scripts/deploy.js --env=production",
+    "test": "jest",
+    "lint": "eslint assets/js/**/*.js"
+  }
+}
+</code></pre>
+<p>通过遵循这些代码组织和结构最佳实践，您可以创建易于维护、扩展和协作的 Shopify 主题项目！</p>
+<h2 id="下一步学习">下一步学习</h2><p>掌握代码组织后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/security/">安全最佳实践</a> - 主题安全规范</li>
+<li><a href="/guides/shopify-handbook/liquid/examples/">实际应用示例</a> - 实战案例分析</li>
+</ol>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/common-patterns/"><span>上一篇</span><strong>常见模式和解决方案</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/ecommerce-features/"><span>下一篇</span><strong>电商功能实现</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

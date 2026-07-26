@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Web 性能优化深度指南 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Web 性能优化深度指南 Web 性能在电商场景下不只是技术指标，而是 直接转化为收入的杠杆 。Google 的 RUM 研究、Shopify 的内部数据均显示： 移动端 LCP 从 4s 降至 2.5s，转化率提升 8 15% 跳">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/web-performance/">
+  <meta property="og:title" content="Web 性能优化深度指南 · Shopify 独立站手册">
+  <meta property="og:description" content="Web 性能优化深度指南 Web 性能在电商场景下不只是技术指标，而是 直接转化为收入的杠杆 。Google 的 RUM 研究、Shopify 的内部数据均显示： 移动端 LCP 从 4s 降至 2.5s，转化率提升 8 15% 跳">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>Web 性能优化深度指南</h1>
+        <p>Web 性能优化深度指南 Web 性能在电商场景下不只是技术指标，而是 直接转化为收入的杠杆 。Google 的 RUM 研究、Shopify 的内部数据均显示： 移动端 LCP 从 4s 降至 2.5s，转化率提升 8 15% 跳</p>
+      </header>
+      <div class="article-content"><h2 id="web-性能优化深度指南">Web 性能优化深度指南</h2><p>Web 性能在电商场景下不只是技术指标，而是<strong>直接转化为收入的杠杆</strong>。Google 的 RUM 研究、Shopify 的内部数据均显示：</p>
+<ul>
+<li>移动端 LCP 从 4s 降至 2.5s，转化率提升 8-15%</li>
+<li>跳出率在 LCP &gt; 3s 后开始加速上升</li>
+<li>2021 年起 Core Web Vitals 进入 Google 排名信号</li>
+</ul>
+<p>但<strong>性能优化是个有边际收益递减的工作</strong>——从 90 分提到 95 分的难度，远大于从 60 分提到 90 分。本文聚焦在如何<strong>判断当前瓶颈、选择性价比最高的优化路径</strong>。</p>
+<p>更具体的代码级调试技巧见站内 <a href="/guides/shopify-handbook/advanced/improving-web-performance/">Shopify 商店性能优化</a>，本文重点在性能与业务、监控体系层面。</p>
+<h2 id="一-core-web-vitals-三项指标">一、Core Web Vitals 三项指标</h2><p>Google 将真实用户体验拆解为三个可量化指标：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>全称</th>
+<th>衡量</th>
+<th>优秀</th>
+<th>需改进</th>
+<th>差</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LCP</td>
+<td>Largest Contentful Paint</td>
+<td>主要内容呈现时间</td>
+<td>≤ 2.5s</td>
+<td>2.5-4s</td>
+<td>&gt; 4s</td>
+</tr>
+<tr>
+<td>INP</td>
+<td>Interaction to Next Paint</td>
+<td>交互响应时间</td>
+<td>≤ 200ms</td>
+<td>200-500ms</td>
+<td>&gt; 500ms</td>
+</tr>
+<tr>
+<td>CLS</td>
+<td>Cumulative Layout Shift</td>
+<td>累积布局偏移</td>
+<td>≤ 0.1</td>
+<td>0.1-0.25</td>
+<td>&gt; 0.25</td>
+</tr>
+</tbody></table>
+<h3 id="真实数据-vs-实验数据">真实数据 vs 实验数据</h3><p><strong>真实数据（Field Data / CrUX）</strong>：来自 Chrome 真实用户的匿名采集，<strong>Google 用此判断排名</strong>。28 天滚动窗口的 75 分位值。</p>
+<p><strong>实验数据（Lab Data）</strong>：PageSpeed Insights、Lighthouse 等单次模拟测试。</p>
+<p>两者经常差异巨大。<strong>性能优化以真实数据为准</strong>，实验数据仅用于诊断单个问题。</p>
+<h3 id="数据来源">数据来源</h3><ul>
+<li><strong>Google Search Console → 网页体验</strong>：CrUX 真实数据，SEO 视角最权威</li>
+<li><strong>Shopify Web Performance Dashboard</strong>：Shopify 内置真实用户数据，按页面类型分析</li>
+<li><strong>PageSpeed Insights</strong>：含 Field Data（CrUX）+ Lab Data（Lighthouse 单次模拟）</li>
+<li><strong>Chrome User Experience Report</strong>：全网 CrUX 公开数据</li>
+</ul>
+<h2 id="二-性能与业务的量化关系">二、性能与业务的量化关系</h2><h3 id="性能-转化率">性能 → 转化率</h3><p>各类研究的一致结论：</p>
+<table>
+<thead>
+<tr>
+<th>LCP</th>
+<th>相对转化率（基线 = 2.5s 时）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.5s</td>
+<td>110-115%</td>
+</tr>
+<tr>
+<td>2.0s</td>
+<td>105-110%</td>
+</tr>
+<tr>
+<td>2.5s</td>
+<td>100%（基线）</td>
+</tr>
+<tr>
+<td>3.0s</td>
+<td>90-95%</td>
+</tr>
+<tr>
+<td>4.0s</td>
+<td>75-85%</td>
+</tr>
+<tr>
+<td>6.0s</td>
+<td>55-70%</td>
+</tr>
+</tbody></table>
+<p>每 0.5s 加速带来 5-10% 转化率提升是常见水平，<strong>移动端弹性更大</strong>。</p>
+<h3 id="性能-跳出率">性能 → 跳出率</h3><p>LCP &gt; 3s 后跳出率非线性上升：</p>
+<ul>
+<li>LCP 2s → 跳出率基线</li>
+<li>LCP 4s → 跳出率 + 40-50%</li>
+<li>LCP 6s → 跳出率 + 90-120%</li>
+</ul>
+<h3 id="性能-seo">性能 → SEO</h3><p>Core Web Vitals 是排名信号但<strong>不是决定因素</strong>。优秀的内容 + 较差的 CWV 仍能排名，但同等内容下 CWV 优秀的页面通常排前面 1-3 位。<strong>移动端的 CWV 权重大于桌面</strong>。</p>
+<h3 id="性能-广告-cpc">性能 → 广告 CPC</h3><p>Google Ads 的质量得分（Quality Score）部分受落地页体验影响。低 CWV 落地页的 CPC 通常高 10-30%。</p>
+<h3 id="计算优化的预期-roi">计算优化的预期 ROI</h3><p>按 LCP 改善 0.5s 计算：</p>
+<pre><code>当前月销售 $100,000
+预期转化率提升 5-10%
+新增月销售 $5,000-$10,000
+年度新增 $60,000-$120,000
+</code></pre>
+<p>如果一次性投入 $5,000-$15,000 把性能优化做到位，<strong>回本周期通常 1-3 个月</strong>。</p>
+<p>Shopify 在平台层已经做了基础优化，<strong>不需要配置</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>设施</th>
+<th>状态</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>全球 CDN（Cloudflare 协同）</td>
+<td>默认启用</td>
+<td>静态资源全球分发</td>
+</tr>
+<tr>
+<td>图片 CDN（cdn.shopify.com）</td>
+<td>默认启用</td>
+<td>自动生成 WebP / AVIF</td>
+</tr>
+<tr>
+<td>HTTP/2</td>
+<td>默认</td>
+<td>多路复用，比 HTTP/1.1 快</td>
+</tr>
+<tr>
+<td>Brotli 压缩</td>
+<td>默认</td>
+<td>比 gzip 体积小 15-25%</td>
+</tr>
+<tr>
+<td>Edge 缓存</td>
+<td>默认</td>
+<td>静态资源边缘节点缓存</td>
+</tr>
+</tbody></table>
+<p><strong>这些设施已经处理了 50-70% 的性能问题</strong>。剩下的性能差距几乎全部来自：</p>
+<ul>
+<li>店主上传的图片体积</li>
+<li>第三方应用的脚本</li>
+<li>主题的 JS / CSS 质量</li>
+<li>自定义代码（如埋点、A/B 测试工具）</li>
+</ul>
+<h2 id="四-按页面类型的优化优先级">四、按页面类型的优化优先级</h2><p>不同页面对性能的敏感度差异巨大。</p>
+<h3 id="首页-最高优先级">首页（最高优先级）</h3><p>首页是访客第一印象，性能直接影响品牌感知。</p>
+<p><strong>典型瓶颈</strong>：</p>
+<ul>
+<li>Hero 大图 / Hero 视频未压缩</li>
+<li>首屏多个 section 并行加载</li>
+<li>第三方营销脚本（弹窗、聊天、广告 pixel）</li>
+</ul>
+<p><strong>预期优化目标</strong>：LCP ≤ 2.0s</p>
+<h3 id="产品页-次高优先级">产品页（次高优先级）</h3><p>产品页是转化关键路径。<strong>LCP 与加购率高度相关</strong>。</p>
+<p><strong>典型瓶颈</strong>：</p>
+<ul>
+<li>主图未做 fetchpriority=“high”</li>
+<li>多角度图全部 lazy load 但配置错误（首图也被 lazy 了）</li>
+<li>推荐 / 相关产品 widget 占用主线程</li>
+</ul>
+<p><strong>预期优化目标</strong>：LCP ≤ 2.5s，加购按钮在首屏可见</p>
+<h3 id="collection-页-中等优先级">Collection 页（中等优先级）</h3><p>性能瓶颈通常是产品数量。</p>
+<p><strong>典型瓶颈</strong>：</p>
+<ul>
+<li>一次性渲染 50+ 产品</li>
+<li>产品卡片图片未 lazy load</li>
+<li>Filter 功能由 JS 重写整个列表</li>
+</ul>
+<p><strong>预期优化目标</strong>：用 <code>{% paginate %}</code> 分页（每页 24-36），LCP ≤ 2.5s</p>
+<h3 id="购物车-结账-次中等优先级">购物车 / 结账（次中等优先级）</h3><p>Shopify 结账流程已经高度优化，店主调整空间小。</p>
+<p><strong>典型瓶颈</strong>：</p>
+<ul>
+<li>购物车 Drawer 弹出卡顿（INP 问题）</li>
+<li>加购物车数据加载阻塞主线程</li>
+<li>Shopify Plus 客户的 Checkout Extension 性能问题</li>
+</ul>
+<p><strong>预期优化目标</strong>：INP ≤ 200ms</p>
+<h3 id="博客-内容页-低优先级">博客 / 内容页（低优先级）</h3><p>性能要求低，主要看 SEO 表现。</p>
+<p><strong>预期优化目标</strong>：达到”良好”等级即可，不必追求极致</p>
+<h2 id="五-监控体系搭建">五、监控体系搭建</h2><h3 id="三层监控结构">三层监控结构</h3><p><strong>层 1：周度 CrUX 数据</strong></p>
+<p>每周看一次 Google Search Console “网页体验” 报告：</p>
+<ul>
+<li>LCP / INP / CLS 三项 75 分位通过比例</li>
+<li>移动 vs 桌面分别看</li>
+<li>与上周对比</li>
+</ul>
+<p><strong>层 2：实时 RUM</strong></p>
+<p>Shopify Web Performance Dashboard 提供基础 RUM 数据。中型店铺可补充：</p>
+<ul>
+<li><a href="https://www.speedcurve.com/" target="_blank" rel="noreferrer">SpeedCurve</a> ：电商专用 RUM，与转化率关联</li>
+<li><a href="https://www.debugbear.com/" target="_blank" rel="noreferrer">DebugBear</a> ：含历史对比与告警</li>
+</ul>
+<p><strong>层 3：实验环境监控</strong></p>
+<p>每次主题改动后：</p>
+<ul>
+<li>PageSpeed Insights 测试关键页面</li>
+<li>Lighthouse 本地测试</li>
+<li>Chrome DevTools Performance 录制分析</li>
+</ul>
+<h3 id="告警阈值设置">告警阈值设置</h3><p>合理告警：</p>
+<ul>
+<li>LCP 移动端 75 分位 &gt; 4s → 紧急</li>
+<li>LCP 移动端 75 分位上涨 ≥ 1s → 警告</li>
+<li>CLS 75 分位 &gt; 0.25 → 警告</li>
+<li>INP 75 分位 &gt; 500ms → 警告</li>
+</ul>
+<p>频繁误报会让团队忽略告警。<strong>告警应该指向真实问题</strong>。</p>
+<h3 id="crux-数据的延迟">CrUX 数据的延迟</h3><p>注意：CrUX 数据需要 28 天滚动窗口积累。<strong>今天上线的优化，明天看不到效果</strong>——至少需要 4 周才能在 CrUX 中完整反映。</p>
+<p>紧急情况下可用 Lighthouse 实验数据做即时验证，但不能替代 CrUX 趋势。</p>
+<h2 id="六-优化路径决策">六、优化路径决策</h2><p>按当前性能状态选择路径：</p>
+<h3 id="路径-a-lcp-4s-重度问题">路径 A：LCP &gt; 4s（重度问题）</h3><p>90% 在以下三个原因之一：</p>
+<ol>
+<li><strong>首屏图片未优化</strong>：原图 &gt; 1MB 直接上传</li>
+<li><strong>首屏 JS 阻塞</strong>：第三方脚本同步加载</li>
+<li><strong>主题本身慢</strong>：使用了重型付费主题（带 Slider / 视频背景）</li>
+</ol>
+<p><strong>建议路径</strong>：</p>
+<ul>
+<li>Step 1：换轻量主题（Dawn / Sense）测试一次，看是否主题问题</li>
+<li>Step 2：压缩首屏图片（hero ≤ 250KB，产品图 ≤ 200KB）</li>
+<li>Step 3：审计第三方应用，停用 ROI 低的</li>
+</ul>
+<p>预期：1-2 周内 LCP 从 5s 降到 3s。</p>
+<h3 id="路径-b-lcp-2-5-4s-中度问题">路径 B：LCP 2.5-4s（中度问题）</h3><p>通常是细节优化空间：</p>
+<ul>
+<li>首屏图片缺 <code>fetchpriority="high"</code></li>
+<li>字体加载阻塞</li>
+<li>部分小应用脚本浪费主线程</li>
+</ul>
+<p><strong>建议路径</strong>：</p>
+<ul>
+<li>实施 <a href="/guides/shopify-handbook/advanced/improving-web-performance/">改善 Web 性能</a> 中的 LCP 检查清单</li>
+<li>用 Chrome DevTools Performance 找具体阻塞点</li>
+<li>优化字体加载（preload + font-display: swap）</li>
+</ul>
+<p>预期：2-4 周 LCP 降到 2.5s 以下。</p>
+<h3 id="路径-c-lcp-2-5s-但-cls-inp-有问题">路径 C：LCP &lt; 2.5s 但 CLS / INP 有问题</h3><p>性能整体良好但局部体验差。</p>
+<ul>
+<li><strong>CLS 问题</strong>：图片缺 width/height、字体加载触发重排、弹窗注入</li>
+<li><strong>INP 问题</strong>：第三方脚本阻塞主线程、Cart Drawer 重逻辑</li>
+</ul>
+<p><strong>建议路径</strong>：</p>
+<ul>
+<li>CLS：批量检查 <code>&lt;img&gt;</code> 标签确认 width/height</li>
+<li>INP：用 Chrome DevTools Performance 找耗时长的 task</li>
+</ul>
+<h3 id="路径-d-全部良好-cwv-全绿">路径 D：全部良好（CWV 全绿）</h3><p>不需要进一步优化。把精力投入产品、内容、营销。</p>
+<p><strong>警告</strong>：不要陷入”分数 95 → 98”的优化陷阱。从 95 到 98 的优化对真实用户体验提升微乎其微，但工时投入巨大。</p>
+<h2 id="七-应用对性能的影响审计">七、应用对性能的影响审计</h2><p>每月一次审计：</p>
+<h3 id="step-1-识别性能差应用">Step 1：识别性能差应用</h3><p>打开 Chrome DevTools → Performance 录制一次主页加载。在 “Bottom-Up” 视图按 “Total Time” 排序，前 10 名脚本就是嫌疑对象。</p>
+<p>域名通常对应应用：</p>
+<ul>
+<li><code>cdn.shopify.com</code> → Shopify 自身</li>
+<li><code>cdn.judge.me</code> → Judge.me 评价</li>
+<li><code>static.klaviyo.com</code> → Klaviyo</li>
+<li><code>cdn.jsdelivr.net</code> → 各类 CDN</li>
+<li>自定义域名 → 看应用文档</li>
+</ul>
+<h3 id="step-2-评估应用-roi">Step 2：评估应用 ROI</h3><p>对每个应用问：</p>
+<ul>
+<li>这个功能能用 Shopify 原生功能替代吗？</li>
+<li>这个应用过去 30 天的实际使用频率？</li>
+<li>卸载后多少性能能挽回？</li>
+</ul>
+<h3 id="step-3-决定是否卸载">Step 3：决定是否卸载</h3><table>
+<thead>
+<tr>
+<th>应用类型</th>
+<th>优先级</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用过 1 次但保留的”以防万一”应用</td>
+<td>立即卸载</td>
+</tr>
+<tr>
+<td>与 Shopify 原生功能重复（如 Shopify Email 已能覆盖的弹窗 App）</td>
+<td>卸载</td>
+</tr>
+<tr>
+<td>ROI 模糊（无法说清楚带来多少销售）</td>
+<td>删除</td>
+</tr>
+<tr>
+<td>性能差但业务关键</td>
+<td>联系开发者要求优化</td>
+</tr>
+</tbody></table>
+<h2 id="八-shopify-plus-的额外性能选项">八、Shopify Plus 的额外性能选项</h2><p>Shopify Plus 客户可以：</p>
+<h3 id="checkout-extensibility-替代旧-checkout-liquid">Checkout Extensibility（替代旧 checkout.liquid）</h3><p>新 Checkout Extensions 是 Shopify 严格控制性能的扩展模型。改动结账流程不会拖累主线性能。</p>
+<h3 id="theme-app-extensions-app-embeds">Theme App Extensions（App Embeds）</h3><p>让应用以 “Theme App Extension” 形式加载，由 Shopify 控制加载时机，不影响主线程。</p>
+<h3 id="functions-替代-scripts">Functions（替代 Scripts）</h3><p>Shopify Functions 在 Shopify 服务器端执行业务逻辑（折扣、运费、订单路由），不在浏览器端运行，零性能影响。</p>
+<p>详细见站内 <a href="/guides/shopify-handbook/advanced/shopify-plus/">Shopify Plus 高级功能</a>。</p>
+<h2 id="九-hydrogen-headless-是否真的更快">九、Hydrogen / Headless 是否真的更快</h2><p><strong>这是常见误解</strong>：Headless 不会自动让站点更快。</p>
+<p>Headless 提供<strong>更细的性能控制权</strong>，但需要刻意设计才能比 Shopify 默认主题快：</p>
+<ul>
+<li>正确的 SSG / ISR 配置</li>
+<li>边缘缓存策略</li>
+<li>图片优化与 lazy load</li>
+<li>API 请求批处理</li>
+</ul>
+<p>很多 Hydrogen 站点上线后 LCP 比 Dawn 主题还差，因为没有做这些刻意优化。</p>
+<p>详见 <a href="/guides/shopify-handbook/advanced/headless-commerce-architecture/">Headless Commerce 架构</a>。</p>
+<h2 id="十-避免的常见误区">十、避免的常见误区</h2><h3 id="误区-1-追求-pagespeed-insights-100-分">误区 1：追求 PageSpeed Insights 100 分</h3><p>PageSpeed Insights 是单次实验数据，<strong>100 分不代表真实用户体验</strong>。<strong>以 CrUX 真实数据为准</strong>。</p>
+<h3 id="误区-2-盲信优化检查清单">误区 2：盲信优化检查清单</h3><p>PageSpeed Insights 的”建议”列表有时是错的（特别是关于”未使用的 CSS / JS”）。修改前用 Chrome DevTools Performance 核实是否真是瓶颈。</p>
+<h3 id="误区-3-所有页面用同一种策略">误区 3：所有页面用同一种策略</h3><p>首页与博客页对性能的需求不同。SSR / SSG / CSR 应该按页面类型选择。</p>
+<h3 id="误区-4-忽视移动端">误区 4：忽视移动端</h3><p>桌面端 LCP 2s、移动端 5s 是常态。<strong>移动端权重应该是 70%+</strong>。</p>
+<h3 id="误区-5-一次性大改">误区 5：一次性大改</h3><p>把主题、应用、自定义代码同时改动后看效果——无法归因哪个动作起了作用。<strong>一次只改一个变量</strong>。</p>
+<h3 id="误区-6-不监控就上线">误区 6：不监控就上线</h3><p>改动后必须监控 28 天 CrUX 数据。<strong>主题改动 → CrUX 真实反映 → 业务指标</strong>之间有 4-8 周时滞。</p>
+<h2 id="十一-性能预算">十一、性能预算</h2><p>成熟的工程团队会为每个关键页面设置 <strong>性能预算（Performance Budget）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>主页预算</th>
+<th>产品页预算</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LCP</td>
+<td>≤ 2.5s</td>
+<td>≤ 2.5s</td>
+</tr>
+<tr>
+<td>INP</td>
+<td>≤ 200ms</td>
+<td>≤ 200ms</td>
+</tr>
+<tr>
+<td>CLS</td>
+<td>≤ 0.1</td>
+<td>≤ 0.1</td>
+</tr>
+<tr>
+<td>JavaScript 总体积</td>
+<td>≤ 200KB</td>
+<td>≤ 250KB</td>
+</tr>
+<tr>
+<td>CSS 总体积</td>
+<td>≤ 100KB</td>
+<td>≤ 100KB</td>
+</tr>
+<tr>
+<td>图片总体积（首屏）</td>
+<td>≤ 500KB</td>
+<td>≤ 800KB</td>
+</tr>
+<tr>
+<td>第三方域名数量</td>
+<td>≤ 8</td>
+<td>≤ 10</td>
+</tr>
+</tbody></table>
+<p>超出预算的改动 → 必须 review，决定是否值得为新功能牺牲性能。</p>
+<h2 id="十二-相关资源">十二、相关资源</h2><ul>
+<li><a href="/guides/shopify-handbook/advanced/web-performance-dashboard/">Web 性能控制面板</a> - Shopify 内置工具</li>
+<li><a href="/guides/shopify-handbook/advanced/improving-web-performance/">Shopify 商店性能优化（代码级）</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-seo/">Shopify SEO 综合指南</a></li>
+<li><a href="/guides/shopify-handbook/advanced/headless-commerce-architecture/">Headless Commerce 架构</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-plus/">Shopify Plus 高级功能</a></li>
+<li><a href="https://web.dev/explore/learn-core-web-vitals" target="_blank" rel="noreferrer">Google Core Web Vitals 学习中心</a> </li>
+<li><a href="https://developers.google.com/search/docs/appearance/core-web-vitals?hl=zh-cn" target="_blank" rel="noreferrer">Core Web Vitals 与 SEO</a> </li>
+<li><a href="https://performance.shopify.com/pages/theme-performance-data-table" target="_blank" rel="noreferrer">Shopify 主题性能数据表</a> </li>
+<li><a href="https://performance.shopify.com/blogs/blog" target="_blank" rel="noreferrer">Shopify 性能工程博客</a></li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-ucp-guide/"><span>上一篇</span><strong>Universal Commerce Protocol（UCP）实施指南</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/shopify-objects/"><span>下一篇</span><strong>1\. 建议怎么读这篇</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

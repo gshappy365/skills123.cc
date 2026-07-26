@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>自定义分区开发 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="自定义分区开发 分区（Section）是 Online Store 2.0 里 商家能在主题编辑器里改内容 的最小完整单元：一个 sections/ .liquid 文件，底部带 {% schema %} JSON。写得好，运营不用">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/custom-sections/">
+  <meta property="og:title" content="自定义分区开发 · Shopify 独立站手册">
+  <meta property="og:description" content="自定义分区开发 分区（Section）是 Online Store 2.0 里 商家能在主题编辑器里改内容 的最小完整单元：一个 sections/ .liquid 文件，底部带 {% schema %} JSON。写得好，运营不用">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>自定义分区开发</h1>
+        <p>自定义分区开发 分区（Section）是 Online Store 2.0 里 商家能在主题编辑器里改内容 的最小完整单元：一个 sections/ .liquid 文件，底部带 {% schema %} JSON。写得好，运营不用</p>
+      </header>
+      <div class="article-content"><h2 id="自定义分区开发">自定义分区开发</h2><p>分区（Section）是 Online Store 2.0 里 <strong>商家能在主题编辑器里改内容</strong> 的最小完整单元：一个 <code>sections/*.liquid</code> 文件，底部带 <code>{% schema %}</code> JSON。写得好，运营不用找你改文案；写得散，每个首页改版都是一次「全主题 diff」。</p>
+<p><strong>本篇结构</strong>：分区与 JSON 模板 → 三个约定 → Hero / Blocks 示例 → 集合与产品 → Schema 速查 → 样式与脚本 → 图片与无障碍 → 自检；延伸阅读与官方文档放在文末。</p>
+<hr />
+<h2 id="1-文件放哪-和-json-模板的关系">1. 文件放哪、和 JSON 模板的关系</h2><ul>
+<li>路径：<code>sections/你的分区名.liquid</code>（文件名即 <code>{% section 'xxx' %}</code> 里的 <code>xxx</code>，也是主题编辑器里看到的机器名基础）。</li>
+<li>首页、产品页等 <strong>JSON 模板</strong>（<code>templates/*.json</code>）里通过 <code>type</code> 引用分区；分区里的 <code>presets</code> 决定 <strong>「添加分区」</strong> 时出现的默认块与设置。</li>
+<li>模板里一段 section 大致长这样（<code>settings</code> 会落进 <code>config/settings_data.json</code> 或模板 JSON，<strong>改 schema 字段 id 等于改存储键名</strong>，上线前记得迁移或让运营重存一遍）：</li>
+</ul>
+<pre><code>{
+  "type": "hero-promo",
+  "settings": { "heading": "当季主推" },
+  "blocks": {}
+}
+</code></pre>
+<ul>
+<li>改 Liquid 后若 schema 的 <code>name</code> / <code>settings</code> 结构大变，<strong>已保存的模板 JSON 可能残留旧字段</strong>，上线前用预览主题点一遍编辑器，必要时重置该 section 配置。</li>
+</ul>
+<h3 id="限制分区出现在哪些模板-可选">限制分区出现在哪些模板（可选）</h3><p>在 schema 根级加 <code>enabled_on</code> / <code>disabled_on</code>，避免运营把「仅适合首页」的模块插进结账页附近的分区列表。具体键名与取值以 <a href="https://shopify.dev/docs/storefronts/themes/architecture/sections/section-schema" target="_blank" rel="noreferrer">Section schema</a>  当前文档为准（常见写法包含 <code>templates</code> 白名单等）。</p>
+<hr />
+<h2 id="2-写分区时的三个约定-比-bem-名字更重要">2. 写分区时的三个约定（比 BEM 名字更重要）</h2><ol>
+<li><strong>根节点带 <code>id</code> 或 <code>data-section-id="{{ section.id }}"</code></strong>，方便 JS/CSS 只作用在本实例，避免和页面上第二个同文件 section 打架。</li>
+<li><strong>可重复区块一律用 <code>{% for block in section.blocks %}</code></strong>，并在承载 block 的最外层节点写 <code>{{ block.shopify_attributes }}</code>，否则主题编辑器里拖不动、也选不中 block。</li>
+<li><strong>集合、产品、链接等「可能为空」的数据先判断</strong>，再给运营看占位文案；空集合 <code>for</code> 不报错但页面很丑。</li>
+</ol>
+<hr />
+<h2 id="3-示例一-无-blocks-的-hero-单图-文案-cta">3. 示例一：无 Blocks 的 Hero（单图 + 文案 + CTA）</h2><p>要点：<strong>首屏大图</strong>若真是 LCP，不要用整页的 <code>loading="lazy"</code>；下面示例里图片用 <code>eager</code>，其余装饰图再用 <code>lazy</code>。<code>image_tag</code> 用法详见站内 <a href="/guides/shopify-handbook/liquid/filters/">Liquid 过滤器 · <code>image_tag</code></a>。</p>
+<pre><code>{% comment %} sections/hero-promo.liquid {% endcomment %}
+&lt;section
+  id="shopify-section-{{ section.id }}"
+  class="hero-promo"
+  style="--hero-bg: {{ section.settings.tint | default: '#f4f4f4' }};"
+&gt;
+  &lt;div class="hero-promo__inner page-width"&gt;
+    {% if section.settings.image != blank %}
+      {% assign hero_alt = section.settings.image.alt | default: section.settings.heading | escape %}
+      &lt;div class="hero-promo__media"&gt;
+        {{
+          section.settings.image
+          | image_url: width: 1600
+          | image_tag:
+            loading: 'eager',
+            fetchpriority: 'high',
+            widths: '400, 800, 1200, 1600',
+            sizes: '(min-width: 990px) 60vw, 100vw',
+            class: 'hero-promo__img',
+            alt: hero_alt
+        }}
+      &lt;/div&gt;
+    {% endif %}
+ 
+    &lt;div class="hero-promo__copy"&gt;
+      {% if section.settings.heading != blank %}
+        &lt;h2 class="hero-promo__heading"&gt;{{ section.settings.heading | escape }}&lt;/h2&gt;
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+        &lt;div class="hero-promo__sub rte"&gt;{{ section.settings.subheading }}&lt;/div&gt;
+      {% endif %}
+      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+        &lt;a class="button" href="{{ section.settings.button_link }}"&gt;{{ section.settings.button_label | escape }}&lt;/a&gt;
+      {% endif %}
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+ 
+{% stylesheet %}
+  .hero-promo { background: var(--hero-bg, #f4f4f4); }
+  .hero-promo__inner { display: grid; gap: 1.5rem; align-items: center; padding-block: 2rem; }
+  @media (min-width: 990px) {
+    .hero-promo__inner { grid-template-columns: 1.1fr 0.9fr; }
+  }
+  .hero-promo__img { width: 100%; height: auto; border-radius: 8px; }
+{% endstylesheet %}
+ 
+{% schema %}
+{
+  "name": "Hero 促销条",
+  "tag": "section",
+  "class": "section-hero-promo",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "配图" },
+    { "type": "text", "id": "heading", "label": "标题", "default": "当季主推" },
+    { "type": "richtext", "id": "subheading", "label": "副文案" },
+    { "type": "text", "id": "button_label", "label": "按钮文案", "default": "去选购" },
+    { "type": "url", "id": "button_link", "label": "按钮链接" },
+    { "type": "color", "id": "tint", "label": "背景浅色调", "default": "#f4f4f4" }
+  ],
+  "presets": [{ "name": "Hero 促销条" }]
+}
+{% endschema %}
+</code></pre>
+<p>说明：</p>
+<ul>
+<li>每个 section / snippet <strong>最多一个</strong> <code>{% stylesheet %}</code>；样式里不要写 Liquid（动态值用根节点 CSS 变量承接）。官方说明见 <a href="https://shopify.dev/docs/storefronts/themes/best-practices/javascript-and-stylesheet-tags" target="_blank" rel="noreferrer">JavaScript and stylesheet tags</a> 。</li>
+<li>若团队仍统一走 <code>assets/*.css</code>，把上面样式挪出去即可，<strong>不要</strong>在十几个 section 里复制同一坨规则。目录与脚本约定还可对照 <a href="/guides/shopify-handbook/liquid/theme-engineering-setup/">主题工程化：目录与 npm 脚本</a>。</li>
+</ul>
+<hr />
+<h2 id="4-示例二-带-blocks-的-图标卖点-行">4. 示例二：带 Blocks 的「图标卖点」行</h2><p><code>block.shopify_attributes</code> 少写一次，编辑器里就会表现为「点了没反应」或无法保存排序。</p>
+<pre><code>{% comment %} sections/icon-row.liquid {% endcomment %}
+&lt;section id="shopify-section-{{ section.id }}" class="icon-row page-width"&gt;
+  {% if section.settings.heading != blank %}
+    &lt;h2 class="icon-row__title"&gt;{{ section.settings.heading | escape }}&lt;/h2&gt;
+  {% endif %}
+ 
+  {% if section.blocks.size == 0 %}
+    &lt;p class="icon-row__empty"&gt;在编辑器里点击「添加块」加入卖点。&lt;/p&gt;
+  {% else %}
+    &lt;ul class="icon-row__list" role="list"&gt;
+      {% for block in section.blocks %}
+        &lt;li class="icon-row__item" {{ block.shopify_attributes }}&gt;
+          {% if block.settings.icon != blank %}
+            &lt;span class="icon-row__icon" aria-hidden="true"&gt;
+              {{ block.settings.icon | image_url: width: 64 | image_tag: loading: 'lazy', alt: '' }}
+            &lt;/span&gt;
+          {% endif %}
+          {% if block.settings.title != blank %}
+            &lt;h3 class="icon-row__item-title"&gt;{{ block.settings.title | escape }}&lt;/h3&gt;
+          {% endif %}
+          {% if block.settings.text != blank %}
+            &lt;p class="icon-row__item-text"&gt;{{ block.settings.text | escape }}&lt;/p&gt;
+          {% endif %}
+        &lt;/li&gt;
+      {% endfor %}
+    &lt;/ul&gt;
+  {% endif %}
+&lt;/section&gt;
+ 
+{% stylesheet %}
+  .icon-row__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .icon-row__item { border: 1px solid #e3e3e3; border-radius: 8px; padding: 1rem; }
+  .icon-row__icon img { width: 40px; height: auto; }
+{% endstylesheet %}
+ 
+{% schema %}
+{
+  "name": "图标卖点行",
+  "tag": "section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "整段标题", "default": "为什么选我们" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "卖点",
+      "settings": [
+        { "type": "image_picker", "id": "icon", "label": "图标" },
+        { "type": "text", "id": "title", "label": "小标题", "default": "包邮" },
+        { "type": "textarea", "id": "text", "label": "说明", "default": "大陆订单满额包邮。" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "图标卖点行",
+      "blocks": [
+        { "type": "item", "settings": { "title": "发货", "text": "48 小时内发出。" } },
+        { "type": "item", "settings": { "title": "售后", "text": "签收 7 天内可退。" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+</code></pre>
+<p><code>{% case block.type %}</code> 适合 <strong>多种 block type 完全两套 markup</strong>（例如图文 / 视频 / 纯文字）；若只是字段多少不同，优先 <strong>单一 block type + 条件</strong>，schema 和 Liquid 都更好维护。</p>
+<hr />
+<h2 id="5-集合与产品-先确认-setting-到底是对象还是-handle">5. 集合与产品：先确认「setting 到底是对象还是 handle」</h2><p><code>schema</code> 里 <code>"type": "collection"</code> 时，在 Liquid 里常见两种接法，<strong>以你们主题里已有 section 为准</strong>（Dawn 及近年官方主题多为对象写法）：</p>
+<p><strong>写法 A（推荐，对象为 collection drop）</strong></p>
+<pre><code>{% assign featured_collection = section.settings.collection %}
+{% if featured_collection == blank or featured_collection.products_count == 0 %}
+  &lt;p class="section-empty"&gt;请在分区设置里选择一个包含商品的集合。&lt;/p&gt;
+{% else %}
+  &lt;div class="grid"&gt;
+    {% for product in featured_collection.products limit: section.settings.limit %}
+      {% render 'product-card', product: product %}
+    {% endfor %}
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<p><strong>写法 B（setting 存的是 handle 字符串时）</strong></p>
+<pre><code>{% assign featured_collection = collections[section.settings.collection] %}
+</code></pre>
+<p><code>limit</code> 务必用 <code>range</code> 控上下限（例如 4～12），避免运营填 999 拖垮首页 TTFB。卡片 markup 建议放进 <a href="/guides/shopify-handbook/liquid/custom-snippets/">自定义代码片段</a>，section 只负责循环与栅格。</p>
+<hr />
+<h2 id="6-schema-常用-settings-type-速查">6. Schema：常用 <code>settings.type</code> 速查</h2><table>
+<thead>
+<tr>
+<th>type</th>
+<th>用途</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>text / textarea</td>
+<td>短标题、长说明</td>
+<td>输出时按需</td>
+</tr>
+<tr>
+<td>richtext</td>
+<td>需要加粗、列表</td>
+<td>外层包 .rte，与主题全局排版一致</td>
+</tr>
+<tr>
+<td>image_picker</td>
+<td>图</td>
+<td>配合 image_url / image_tag</td>
+</tr>
+<tr>
+<td>url</td>
+<td>任意链接</td>
+<td>别用 text 让运营手填完整 URL</td>
+</tr>
+<tr>
+<td>collection / product / blog / page</td>
+<td>资源选择器</td>
+<td>Liquid 侧多为对应 对象；老数据或迁移主题再核对是否仍为 handle</td>
+</tr>
+<tr>
+<td>range</td>
+<td>数量、间距、列数</td>
+<td>设好 min max step</td>
+</tr>
+<tr>
+<td>select / checkbox</td>
+<td>样式开关</td>
+<td>options 的 value 建议英文小写，便于 class 后缀</td>
+</tr>
+<tr>
+<td>color</td>
+<td>色值</td>
+<td>注意对比度；大色块上叠字要测暗色模式</td>
+</tr>
+<tr>
+<td>header</td>
+<td>仅分组标题</td>
+<td>不生成数据，只分割表单</td>
+</tr>
+</tbody></table>
+<p><strong>分组</strong>：用 <code>header</code> 把「内容 / 布局 / 颜色」拆开，运营找设置会快很多；<code>info</code> 留一两句「填什么、不填会怎样」即可。</p>
+<p><strong>多语言 label（可选）</strong>：schema 的 <code>label</code> 可指向翻译键（如 <code>t:sections.xxx.settings.heading.label</code>），文案进 <code>locales/*.schema.json</code>，适合要上架 Theme Store 或双语后台的团队。键名规则见官方 <a href="https://shopify.dev/docs/storefronts/themes/architecture/locales/schema-locale-files" target="_blank" rel="noreferrer">Translate theme content</a>  一类文档。</p>
+<hr />
+<h2 id="7-样式与脚本-和-section-绑在一起的两种方式">7. 样式与脚本：和 section 绑在一起的两种方式</h2><ul>
+<li><strong>样式</strong>：<code>{% stylesheet %}</code> 与外链 <code>asset_url</code> 二选一为主，避免同一选择器在多处重复。</li>
+<li><strong>脚本</strong>：需要随 section 实例执行时，可用 <code>{% javascript %}</code>（每个文件同样建议 <strong>只保留一处</strong>），或把逻辑放进 <code>assets/*.js</code> 再在 section 根用 <code>data-</code> 属性传参。行为与限制见 <a href="https://shopify.dev/docs/storefronts/themes/best-practices/javascript-and-stylesheet-tags" target="_blank" rel="noreferrer">JavaScript and stylesheet tags</a> 。</li>
+<li>需要随 <code>section.settings</code> 变的少量变量：根节点 <code>style="--x: {{ ... }}"</code> 即可，<strong>不要把整张颜色表</strong>拼进 Liquid 字符串。</li>
+</ul>
+<p>用 AI 辅助写 section 时，可把 <a href="/guides/shopify-handbook/liquid/ai-theme-engineering/">AI 辅助与主题工程化</a> 当作流程说明，但合并前仍要过下面的自检与 Theme Check。</p>
+<hr />
+<h2 id="8-图片与性能-几条硬规则">8. 图片与性能：几条硬规则</h2><ol>
+<li><strong>LCP 那张图</strong>：<code>loading: 'eager'</code>、<code>fetchpriority: 'high'</code>，宽度给够，不要省成糊图。</li>
+<li><strong>below the fold</strong>：<code>loading: 'lazy'</code>，<code>widths</code> 给阶梯即可。</li>
+<li><strong><code>alt</code></strong>：有信息写信息，纯装饰用 <code>alt=""</code> 并避免父级再读一遍相同内容。</li>
+<li><strong>GIF 大横幅</strong>：能不用就不用；视频用托管与封面图，别塞超大动图进 section。</li>
+</ol>
+<hr />
+<h2 id="9-无障碍-比-schema-org-嵌套更优先的三件事">9. 无障碍：比 Schema.org 嵌套更优先的三件事</h2><ol>
+<li><strong>标题层级连续</strong>：全页通常保留一个 <code>h1</code>（常见在模板或产品标题），section 内模块标题从 <code>h2</code> 起跳。</li>
+<li><strong>键盘能点的一定是 <code>&lt;a href&gt;</code> 或 <code>&lt;button&gt;</code></strong>，不要 <code>div onclick</code>。</li>
+<li><strong>轮播、tabs</strong> 要么用成熟组件并测键盘，要么别做——半套无障碍比不做更麻烦。</li>
+</ol>
+<p>微数据（<code>itemscope</code>）不是不能做，但 <strong>错误嵌套会害 SEO</strong>；多数店铺先把语义 HTML 和 <code>alt</code> 做对，再考虑由布局或应用统一输出 JSON-LD，往往更稳。</p>
+<hr />
+<h2 id="10-合并前自检-比-最佳实践-清单有用">10. 合并前自检（比「最佳实践」清单有用）</h2><ul>
+<li>主题编辑器里 <strong>空 blocks、空集合、空图</strong> 各看一眼</li>
+<li>同页加 <strong>两个相同 section</strong>，样式和 JS 是否还独立</li>
+<li>跑 <strong><a href="https://shopify.dev/docs/storefronts/themes/tools/theme-check" target="_blank" rel="noreferrer">Theme Check</a></strong> （本地 CLI 或 CI），无关键报错再合并</li>
+<li>手机宽度下 <strong>点得到按钮、字不叠在图上</strong></li>
+<li>若用了 <code>javascript</code> 或全局脚本，确认 <strong>不泄漏全局变量</strong>（IIFE 或 <code>type="module"</code>）</li>
+</ul>
+<hr />
+<h2 id="11-延伸阅读">11. 延伸阅读</h2><ul>
+<li><a href="/guides/shopify-handbook/liquid/custom-snippets/">自定义代码片段</a> — 把卡片、媒体块抽成 <code>render</code>，section 只排版</li>
+<li><a href="/guides/shopify-handbook/liquid/theme-settings/">主题设置配置</a> — 全站色板、字体与 section 默认的关系</li>
+<li><a href="/guides/shopify-handbook/liquid/responsive-design/">响应式设计实现</a> — 断点与网格和主题 settings 的配合</li>
+<li><a href="/guides/shopify-handbook/liquid/layout-templates/">布局和模板</a> — <code>theme.liquid</code> 与 JSON 模板如何承接 section</li>
+<li><a href="/guides/shopify-handbook/liquid/code-organization/">代码组织和结构</a> — 目录与职责划分，避免 section 变成垃圾场</li>
+<li><a href="/guides/shopify-handbook/liquid/filters/">Liquid 过滤器</a> — <code>image_url</code> / <code>image_tag</code> 等</li>
+<li><a href="/guides/shopify-handbook/liquid/ecommerce-features/">电商功能实现</a> — 购物车、结账相关边界</li>
+<li><a href="/guides/shopify-handbook/liquid/third-party-integrations/">第三方集成</a> — 脚本与性能、隐私同意</li>
+</ul>
+<p>官方 Section 与 schema 细节以 <a href="https://shopify.dev/docs/storefronts/themes" target="_blank" rel="noreferrer">Shopify Themes 文档</a>  与 <a href="https://shopify.dev/docs/storefronts/themes/architecture/sections/section-schema" target="_blank" rel="noreferrer">Section schema</a>  为准；写 section 时手边常开 <strong>Settings 输入类型</strong> 一页，比背长示例快。</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/custom-snippets/"><span>上一篇</span><strong>自定义代码片段开发</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/ajax-liquid/"><span>下一篇</span><strong>Ajax 与 Liquid</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

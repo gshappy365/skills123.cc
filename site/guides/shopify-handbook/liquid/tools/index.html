@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>开发工具推荐 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="开发工具推荐 本指南推荐一系列工具和资源，帮助您提升 Shopify 主题开发的效率和质量。 代码编辑器 1\. Visual Studio Code (推荐) 安装和配置 VS Code 是最受欢迎的 Shopify 主题开发编辑">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/tools/">
+  <meta property="og:title" content="开发工具推荐 · Shopify 独立站手册">
+  <meta property="og:description" content="开发工具推荐 本指南推荐一系列工具和资源，帮助您提升 Shopify 主题开发的效率和质量。 代码编辑器 1\. Visual Studio Code (推荐) 安装和配置 VS Code 是最受欢迎的 Shopify 主题开发编辑">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>开发工具推荐</h1>
+        <p>开发工具推荐 本指南推荐一系列工具和资源，帮助您提升 Shopify 主题开发的效率和质量。 代码编辑器 1\. Visual Studio Code (推荐) 安装和配置 VS Code 是最受欢迎的 Shopify 主题开发编辑</p>
+      </header>
+      <div class="article-content"><h2 id="开发工具推荐">开发工具推荐</h2><p>本指南推荐一系列工具和资源，帮助您提升 Shopify 主题开发的效率和质量。</p>
+<h2 id="代码编辑器">代码编辑器</h2><h3 id="1-visual-studio-code-推荐">1. Visual Studio Code (推荐)</h3><p><strong>安装和配置</strong></p>
+<p>VS Code 是最受欢迎的 Shopify 主题开发编辑器，提供丰富的插件支持。</p>
+<p><strong>必备插件：</strong></p>
+<pre><code>// .vscode/extensions.json
+{
+  "recommendations": [
+    "shopify.liquid",
+    "shopify.theme-check-vscode",
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-json",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "ms-vscode.vscode-css-formatter",
+    "zignd.html-css-class-completion"
+  ]
+}
+</code></pre>
+<p><strong>工作区配置：</strong></p>
+<pre><code>// .vscode/settings.json
+{
+  "liquid.format.enable": true,
+  "liquid.completion.enable": true,
+  "liquid.hover.enable": true,
+  "files.associations": {
+    "*.liquid": "liquid"
+  },
+  "emmet.includeLanguages": {
+    "liquid": "html"
+  },
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "editor.formatOnSave": true,
+  "prettier.documentSelectors": ["**/*.liquid"],
+  "css.validate": false,
+  "scss.validate": false
+}
+</code></pre>
+<p><strong>代码片段配置：</strong></p>
+<pre><code>// .vscode/liquid.code-snippets
+{
+  "Liquid Comment Block": {
+    "prefix": "comment",
+    "body": [
+      "{% comment %}",
+      "  $1",
+      "{% endcomment %}"
+    ],
+    "description": "Create a Liquid comment block"
+  },
+  
+  "Product Card": {
+    "prefix": "product-card",
+    "body": [
+      "&lt;div class=\"product-card\"&gt;",
+      "  &lt;a href=\"{{ product.url }}\"&gt;",
+      "    &lt;img src=\"{{ product.featured_image | image_url: width: 300, height: 300 }}\" alt=\"{{ product.title }}\"&gt;",
+      "    &lt;h3&gt;{{ product.title }}&lt;/h3&gt;",
+      "    &lt;p&gt;{{ product.price | money }}&lt;/p&gt;",
+      "  &lt;/a&gt;",
+      "&lt;/div&gt;"
+    ]
+  },
+  
+  "For Loop with Liquid": {
+    "prefix": "for-liquid",
+    "body": [
+      "{%- liquid",
+      "  for $1 in $2",
+      "    $3",
+      "  endfor",
+      "-%}"
+    ]
+  },
+  
+  "Section Schema": {
+    "prefix": "schema",
+    "body": [
+      "{% schema %}",
+      "{",
+      "  \"name\": \"$1\",",
+      "  \"settings\": [",
+      "    {",
+      "      \"type\": \"text\",",
+      "      \"id\": \"$2\",",
+      "      \"label\": \"$3\"",
+      "    }",
+      "  ]",
+      "}",
+      "{% endschema %}"
+    ]
+  }
+}
+</code></pre>
+<h3 id="2-sublime-text">2. Sublime Text</h3><p><strong>包管理器配置：</strong></p>
+<pre><code>// Package Control.sublime-settings
+{
+  "installed_packages": [
+    "Liquid",
+    "Shopify Liquid",
+    "Emmet",
+    "SideBarEnhancements",
+    "BracketHighlighter",
+    "GitGutter"
+  ]
+}
+</code></pre>
+<h3 id="3-atom-已停止维护">3. Atom (已停止维护)</h3><p>虽然 Atom 已停止维护，但仍有一些有用的包：</p>
+<ul>
+<li><code>language-liquid</code></li>
+<li><code>shopify-liquid</code></li>
+<li><code>emmet</code></li>
+</ul>
+<h2 id="命令行工具">命令行工具</h2><h3 id="1-shopify-cli">1. Shopify CLI</h3><p><strong>安装：</strong></p>
+<pre><code># 使用 Homebrew (macOS)
+brew tap shopify/shopify
+brew install shopify-cli
+ 
+# 使用 npm
+npm install -g @shopify/cli @shopify/theme
+ 
+# 使用 Ruby Gem
+gem install shopify-cli
+</code></pre>
+<p><strong>常用命令：</strong></p>
+<pre><code># 登录 Shopify
+shopify auth login
+ 
+# 初始化新主题
+shopify theme init my-theme
+ 
+# 开发模式 (实时同步)
+shopify theme dev
+ 
+# 推送到主题
+shopify theme push
+ 
+# 拉取主题
+shopify theme pull
+ 
+# 查看主题列表
+shopify theme list
+ 
+# 预览主题
+shopify theme open
+ 
+# 发布主题
+shopify theme publish
+ 
+# 检查主题
+shopify theme check
+</code></pre>
+<p><strong>配置文件：</strong></p>
+<pre><code># shopify.theme.toml
+[environments.development]
+store = "your-dev-store.myshopify.com"
+theme = "development"
+ 
+[environments.staging]
+store = "your-staging-store.myshopify.com"
+theme = "staging"
+ 
+[environments.production]
+store = "your-store.myshopify.com"
+theme = "live"
+</code></pre>
+<h3 id="2-theme-check">2. Theme Check</h3><p><strong>安装和使用：</strong></p>
+<pre><code># 安装
+npm install -g @shopify/theme-check
+ 
+# 检查当前目录
+theme-check
+ 
+# 检查特定文件
+theme-check templates/product.liquid
+ 
+# 自动修复
+theme-check --auto-correct
+</code></pre>
+<p><strong>配置文件：</strong></p>
+<pre><code># .theme-check.yml
+extends: :theme_app_extension
+ 
+ChecksumAssetBundles:
+  enabled: false
+ 
+AssetSizeCSS:
+  threshold_in_bytes: 100000
+ 
+AssetSizeJavaScript:
+  threshold_in_bytes: 150000
+ 
+DeprecatedLazysizes:
+  enabled: true
+ 
+RemoteAsset:
+  enabled: true
+</code></pre>
+<h3 id="3-lighthouse-ci">3. Lighthouse CI</h3><p><strong>性能检测配置：</strong></p>
+<pre><code>// lighthouserc.json
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "https://your-store.myshopify.com",
+        "https://your-store.myshopify.com/products/example",
+        "https://your-store.myshopify.com/collections/all"
+      ],
+      "numberOfRuns": 3
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["error", {"minScore": 0.8}],
+        "categories:accessibility": ["error", {"minScore": 0.9}],
+        "categories:best-practices": ["error", {"minScore": 0.9}],
+        "categories:seo": ["error", {"minScore": 0.9}]
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="构建工具">构建工具</h2><h3 id="1-webpack-配置">1. Webpack 配置</h3><p><strong>基础配置：</strong></p>
+<pre><code>// webpack.config.js
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+ 
+module.exports = {
+  entry: {
+    main: './src/js/main.js',
+    product: './src/js/product.js',
+    cart: './src/js/cart.js'
+  },
+  
+  output: {
+    path: path.resolve(__dirname, 'assets'),
+    filename: '[name].bundle.js',
+    clean: true
+  },
+  
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
+      
+      {
+        test: /\.scss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'sass-loader'
+        ]
+      },
+      
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[name][ext]'
+        }
+      }
+    ]
+  },
+  
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css'
+    })
+  ],
+  
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          compress: {
+            drop_console: true
+          }
+        }
+      })
+    ]
+  },
+  
+  devtool: 'source-map'
+};
+</code></pre>
+<h3 id="2-vite-配置">2. Vite 配置</h3><pre><code>// vite.config.js
+import { defineConfig } from 'vite';
+import { resolve } from 'path';
+ 
+export default defineConfig({
+  build: {
+    outDir: 'assets',
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'src/js/main.js'),
+        product: resolve(__dirname, 'src/js/product.js'),
+        cart: resolve(__dirname, 'src/js/cart.js')
+      },
+      output: {
+        entryFileNames: '[name].js',
+        chunkFileNames: '[name].js',
+        assetFileNames: '[name].[ext]'
+      }
+    }
+  },
+  
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "@/styles/variables.scss";`
+      }
+    }
+  }
+});
+</code></pre>
+<h3 id="3-postcss-配置">3. PostCSS 配置</h3><pre><code>// postcss.config.js
+module.exports = {
+  plugins: [
+    require('tailwindcss'),
+    require('autoprefixer'),
+    require('cssnano')({
+      preset: 'default'
+    })
+  ]
+};
+</code></pre>
+<h2 id="测试工具">测试工具</h2><h3 id="1-jest-配置">1. Jest 配置</h3><pre><code>// jest.config.js
+module.exports = {
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['&lt;rootDir&gt;/tests/setup.js'],
+  testMatch: [
+    '&lt;rootDir&gt;/tests/**/*.test.js'
+  ],
+  collectCoverageFrom: [
+    'assets/js/**/*.js',
+    '!assets/js/vendor/**'
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80
+    }
+  }
+};
+</code></pre>
+<p><strong>测试示例：</strong></p>
+<pre><code>// tests/cart.test.js
+import { CartManager } from '../assets/js/cart.js';
+ 
+describe('CartManager', () =&gt; {
+  let cart;
+  
+  beforeEach(() =&gt; {
+    document.body.innerHTML = `
+      &lt;div data-cart-drawer&gt;&lt;/div&gt;
+      &lt;span data-cart-count&gt;0&lt;/span&gt;
+    `;
+    
+    cart = new CartManager();
+  });
+  
+  test('should initialize with empty cart', () =&gt; {
+    expect(cart.itemCount).toBe(0);
+  });
+  
+  test('should add item to cart', async () =&gt; {
+    const mockResponse = {
+      item_count: 1,
+      items: [{ id: 123, quantity: 1 }]
+    };
+    
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: () =&gt; Promise.resolve(mockResponse)
+    });
+    
+    await cart.addItem(123, 1);
+    
+    expect(cart.itemCount).toBe(1);
+  });
+});
+</code></pre>
+<h3 id="2-playwright-e2e-测试">2. Playwright E2E 测试</h3><pre><code>// tests/e2e/product.spec.js
+const { test, expect } = require('@playwright/test');
+ 
+test.describe('Product Page', () =&gt; {
+  test('should add product to cart', async ({ page }) =&gt; {
+    await page.goto('/products/example-product');
+    
+    // 选择变体
+    await page.selectOption('[data-variant-select]', '123456');
+    
+    // 添加到购物车
+    await page.click('[data-add-to-cart]');
+    
+    // 验证购物车更新
+    await expect(page.locator('[data-cart-count]')).toHaveText('1');
+    
+    // 验证购物车抽屉打开
+    await expect(page.locator('[data-cart-drawer]')).toBeVisible();
+  });
+  
+  test('should show correct product information', async ({ page }) =&gt; {
+    await page.goto('/products/example-product');
+    
+    await expect(page.locator('h1')).toContainText('Example Product');
+    await expect(page.locator('[data-price]')).toBeVisible();
+    await expect(page.locator('[data-product-image]')).toBeVisible();
+  });
+});
+</code></pre>
+<h2 id="性能监控工具">性能监控工具</h2><h3 id="1-web-vitals-监控">1. Web Vitals 监控</h3><pre><code>// assets/js/performance.js
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+ 
+function sendToAnalytics(metric) {
+  const body = JSON.stringify(metric);
+  
+  // 使用 navigator.sendBeacon() 发送数据
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon('/api/vitals', body);
+  } else {
+    fetch('/api/vitals', { body, method: 'POST', keepalive: true });
+  }
+}
+ 
+// 监控所有 Web Vitals
+getCLS(sendToAnalytics);
+getFID(sendToAnalytics);
+getFCP(sendToAnalytics);
+getLCP(sendToAnalytics);
+getTTFB(sendToAnalytics);
+</code></pre>
+<h3 id="2-bundle-分析">2. Bundle 分析</h3><pre><code>// webpack-bundle-analyzer.config.js
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+ 
+module.exports = {
+  // ... 其他配置
+  plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false,
+      reportFilename: 'bundle-report.html'
+    })
+  ]
+};
+</code></pre>
+<h2 id="部署和ci-cd">部署和CI/CD</h2><h3 id="1-github-actions">1. GitHub Actions</h3><pre><code># .github/workflows/deploy.yml
+name: Deploy to Shopify
+ 
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+ 
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run tests
+      run: npm test
+    
+    - name: Run theme check
+      run: npx @shopify/theme-check
+    
+    - name: Build assets
+      run: npm run build
+ 
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Shopify CLI
+      uses: shopify/github-action@v1
+      with:
+        shopify_cli_version: latest
+    
+    - name: Deploy to staging
+      run: shopify theme push --environment staging
+      env:
+        SHOPIFY_CLI_TOKEN: ${{ secrets.SHOPIFY_CLI_TOKEN }}
+    
+    - name: Run E2E tests
+      run: npx playwright test
+      env:
+        STORE_URL: ${{ secrets.STAGING_STORE_URL }}
+    
+    - name: Deploy to production
+      if: success()
+      run: shopify theme push --environment production
+      env:
+        SHOPIFY_CLI_TOKEN: ${{ secrets.SHOPIFY_CLI_TOKEN }}
+</code></pre>
+<h3 id="2-自动化脚本">2. 自动化脚本</h3><pre><code>// scripts/deploy.js
+const { execSync } = require('child_process');
+const readline = require('readline');
+ 
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+ 
+async function deploy() {
+  console.log('🚀 开始部署流程...');
+  
+  // 1. 运行测试
+  console.log('📋 运行测试...');
+  execSync('npm test', { stdio: 'inherit' });
+  
+  // 2. 检查主题
+  console.log('🔍 检查主题...');
+  execSync('npx @shopify/theme-check', { stdio: 'inherit' });
+  
+  // 3. 构建资源
+  console.log('🏗️ 构建资源...');
+  execSync('npm run build', { stdio: 'inherit' });
+  
+  // 4. 确认部署
+  const answer = await new Promise(resolve =&gt; {
+    rl.question('📤 是否部署到生产环境? (y/N): ', resolve);
+  });
+  
+  if (answer.toLowerCase() === 'y') {
+    console.log('🚀 部署到生产环境...');
+    execSync('shopify theme push --environment production', { stdio: 'inherit' });
+    console.log('✅ 部署完成!');
+  } else {
+    console.log('❌ 部署已取消');
+  }
+  
+  rl.close();
+}
+ 
+deploy().catch(console.error);
+</code></pre>
+<h2 id="调试工具">调试工具</h2><h3 id="1-chrome-devtools-扩展">1. Chrome DevTools 扩展</h3><p><strong>Shopify DevTools：</strong></p>
+<ul>
+<li>检查 Liquid 变量</li>
+<li>监控 AJAX 请求</li>
+<li>分析性能</li>
+</ul>
+<p><strong>React Developer Tools：</strong></p>
+<ul>
+<li>如果使用 React 组件</li>
+</ul>
+<h3 id="2-浏览器书签工具">2. 浏览器书签工具</h3><pre><code>// Shopify Debug 书签
+javascript:(function(){
+  const debugInfo = {
+    theme: window.Shopify?.theme,
+    shop: window.Shopify?.shop,
+    customer: window.Shopify?.customer,
+    cart: window.Shopify?.cart,
+    product: window.product,
+    collection: window.collection
+  };
+  
+  console.group('🛍️ Shopify Debug Info');
+  Object.entries(debugInfo).forEach(([key, value]) =&gt; {
+    if (value) {
+      console.log(`${key}:`, value);
+    }
+  });
+  console.groupEnd();
+  
+  // 显示所有 Liquid 变量
+  const scripts = document.querySelectorAll('script[type="application/json"]');
+  scripts.forEach(script =&gt; {
+    try {
+      const data = JSON.parse(script.textContent);
+      console.log(`📄 ${script.id || 'JSON Data'}:`, data);
+    } catch (e) {
+      // 忽略无效 JSON
+    }
+  });
+})();
+</code></pre>
+<h3 id="3-本地开发代理">3. 本地开发代理</h3><pre><code>// proxy-server.js
+const express = require('express');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+ 
+const app = express();
+ 
+// 代理到 Shopify 店铺
+const proxy = createProxyMiddleware({
+  target: 'https://your-store.myshopify.com',
+  changeOrigin: true,
+  onProxyReq: (proxyReq, req, res) =&gt; {
+    // 添加调试头
+    proxyReq.setHeader('X-Debug-Mode', 'true');
+  },
+  onProxyRes: (proxyRes, req, res) =&gt; {
+    // 注入调试脚本
+    if (proxyRes.headers['content-type']?.includes('text/html')) {
+      // 修改响应内容
+    }
+  }
+});
+ 
+app.use('/', proxy);
+ 
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () =&gt; {
+  console.log(`🔗 代理服务器运行在 http://localhost:${PORT}`);
+});
+</code></pre>
+<h2 id="文档生成工具">文档生成工具</h2><h3 id="1-jsdoc-配置">1. JSDoc 配置</h3><pre><code>// jsdoc.config.json
+{
+  "source": {
+    "include": ["./assets/js/"],
+    "includePattern": "\\.(js)$",
+    "exclude": ["node_modules/"]
+  },
+  "opts": {
+    "destination": "./docs/js/"
+  },
+  "plugins": ["plugins/markdown"]
+}
+</code></pre>
+<h3 id="2-storybook-配置">2. Storybook 配置</h3><pre><code>// .storybook/main.js
+module.exports = {
+  stories: ['../stories/**/*.stories.@(js|jsx|ts|tsx)'],
+  addons: [
+    '@storybook/addon-essentials',
+    '@storybook/addon-a11y',
+    '@storybook/addon-viewport'
+  ]
+};
+</code></pre>
+<p>通过这些工具的配合使用，您可以建立一个高效、专业的 Shopify 主题开发工作流程！</p>
+<h2 id="下一步学习">下一步学习</h2><p>掌握开发工具后，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/resources/">开发资源汇总</a> - 学习资源和社区</li>
+<li><a href="/guides/shopify-handbook/liquid/project-summary/">项目实战总结</a> - 项目开发经验总结</li>
+</ol>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/cart-objects/"><span>上一篇</span><strong>购物车对象详解</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/environment-setup/"><span>下一篇</span><strong>开发环境搭建</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

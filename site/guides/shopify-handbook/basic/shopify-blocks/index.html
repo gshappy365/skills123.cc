@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify 主题中的块(blocks) · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify 主题中的块(blocks) 块(Blocks)概念 Shopify 中的块允许开发者通过将部分(sections)分解为更小、可重用的 Liquid 代码片段来创建灵活的布局。每个块都有自己的设置集，可以在部分内添加">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/basic/shopify-blocks/">
+  <meta property="og:title" content="Shopify 主题中的块(blocks) · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify 主题中的块(blocks) 块(Blocks)概念 Shopify 中的块允许开发者通过将部分(sections)分解为更小、可重用的 Liquid 代码片段来创建灵活的布局。每个块都有自己的设置集，可以在部分内添加">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/basic/">入门基础</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">入门基础 · 整理与归档</p>
+        <h1>Shopify 主题中的块(blocks)</h1>
+        <p>Shopify 主题中的块(blocks) 块(Blocks)概念 Shopify 中的块允许开发者通过将部分(sections)分解为更小、可重用的 Liquid 代码片段来创建灵活的布局。每个块都有自己的设置集，可以在部分内添加</p>
+      </header>
+      <div class="article-content"><h2 id="shopify-主题中的块-blocks">Shopify 主题中的块(blocks)</h2><h2 id="块-blocks-概念">块(Blocks)概念</h2><p>Shopify 中的块允许开发者通过将部分(sections)分解为更小、可重用的 Liquid 代码片段来创建灵活的布局。每个块都有自己的设置集，可以在部分内添加、删除和重新排序。</p>
+<p>Shopify 有三种类型的块：</p>
+<ul>
+<li>主题块(Theme blocks): 在 <code>/blocks</code> 文件夹中创建为独立的 <code>Liquid</code> 文件，可在主题的多个部分中重复使用。</li>
+<li>部分块(Section blocks): 在部分的 Liquid 文件内创建，仅限于在该部分内使用。</li>
+<li>应用块(App blocks): 由商店安装的应用提供的块。</li>
+</ul>
+<h2 id="如何创建一个主题块-theme-block">如何创建一个主题块(Theme block)</h2><h3 id="步骤-1-创建-blocks-文件夹和块文件">步骤 1: 创建 blocks 文件夹和块文件</h3><p>在主题根目录下创建一个 /blocks 文件夹(如果尚不存在) 在该文件夹中创建一个新的 Liquid 文件，例如 text.liquid</p>
+<h3 id="步骤-2-编写块的内容">步骤 2: 编写块的内容</h3><p>主题块文件包含两部分:</p>
+<ul>
+<li>标记(markup): 任何要在块中包含的 HTML 或 Liquid 内容</li>
+<li>模式(schema): 使用 {% schema %} Liquid 标签，用于配置块的设置和属性 以下是一个基本的文本块示例:</li>
+</ul>
+<pre><code>&lt;div class="{{ block.settings.text_style }}"&gt;
+    {{ block.settings.text }}
+&lt;/div&gt;
+ 
+{% schema %}
+{
+    "name": "Text",
+    "settings": [
+{
+    "type": "richtext",
+    "id": "text",
+    "label": "Text"
+},
+{
+    "type": "select",
+    "id": "text_style",
+    "label": "Text style",
+    "options": [
+{
+    "value": "body",
+    "label": "Regular"
+},
+{
+    "value": "subtitle",
+    "label": "Subtitle"
+}
+    ],
+    "default": "body"
+}
+    ],
+    "presets": [
+{
+    "name": "Text"
+},
+{
+    "name": "Content",
+    "settings": {
+    "text": "&lt;p&gt;Hello, World!&lt;/p&gt;"
+}
+}
+    ]
+}
+{% endschema %}
+</code></pre>
+<h3 id="步骤-3-添加预设-presets">步骤 3: 添加预设(Presets)</h3><p>预设需要在主题块的 schema 中定义，这样商家才能在主题编辑器的块选择器中使用它。可以为同一个主题块创建多个预设。在上面的例子中，文本主题块有两个名为<code>Text</code>和<code>Content</code>的预设。</p>
+<h2 id="在部分-section-中使用主题块">在部分(Section)中使用主题块</h2><p>创建主题块后，需要更新主题的部分以呈现这些块:</p>
+<h3 id="步骤-1-在部分的-liquid-文件中渲染块">步骤 1: 在部分的 Liquid 文件中渲染块</h3><p>使用以下代码在 section 文件中渲染块:</p>
+<pre><code>{% content_for 'blocks' %}
+</code></pre>
+<h3 id="步骤-2-更新部分的模式-schema">步骤 2: 更新部分的模式(schema)</h3><p>要接受所有主题块，请在部分的 schema 的 blocks 属性中添加类型 @theme:</p>
+<pre><code>"blocks": [
+    {
+        "type": "@theme"
+    },
+    {
+        "type": "@app"
+    }
+]
+</code></pre>
+<h3 id="如何在可视化编辑器中使用创建的块">如何在可视化编辑器中使用创建的块</h3><p><img src="/assets/images/shopify-handbook/3b39914e02f66c73.png" alt="Shopify\_theme\_add\_blocks" loading="lazy" /> <img src="/assets/images/shopify-handbook/48211e1a68a93dca.png" alt="Shopify\_theme\_add\_blocks" loading="lazy" /> <img src="/assets/images/shopify-handbook/7d5340a04b5c7e9f.png" alt="Shopify\_theme\_add\_blocks" loading="lazy" /></p>
+<p>一旦您创建了主题块并在部分中启用了它们，商家就可以在 <code>Shopify</code> 主题编辑器中使用这些块:</p>
+<ol>
+<li>在 Shopify 管理后台，转到”<code>在线商店</code>” &gt; “<code>主题</code>”</li>
+<li>点击您当前主题的”<code>自定义</code>”按钮</li>
+<li>导航到包含支持主题块的部分的页面</li>
+<li>选择该部分，点击”<code>添加块</code>”按钮</li>
+<li>在出现的块选择器中，您将看到您创建的块(由于您添加的预设)</li>
+<li>选择所需的块预设，它将被添加到部分中</li>
+<li>使用块配置面板调整块的设置</li>
+<li>您可以使用拖放功能重新排序块</li>
+</ol>
+<p>关键是，确保<code>块</code>在 <code>schema</code> 中有正确的 <code>presets</code> 定义，这样它们才会出现在主题编辑器的块选择器中，并且确保你的部分在其 <code>schema</code> 中接受 <code>@theme</code> 类型的块。 通过遵循这些步骤，您可以创建高度可定制的 Shopify 主题，让商家能够轻松地使用拖放界面来构建他们的页面。</p>
+<p>最后更新时间：</p>
+<p>2026年6月27日</p>
+<p><a href="/guides/shopify-handbook/basic/shopify-folders/">Shopify主题目录结构</a><a href="/guides/shopify-handbook/basic/shopify-404-redirect/">404页面与重定向设置教程</a></p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/shopify-folders/"><span>上一篇</span><strong>Shopify 主题目录结构（Liquid 文件）详解</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/shopify-vs-wordpress/"><span>下一篇</span><strong>Shopify vs WordPress+WooCommerce：什么情况下选哪个，附真实成本拆解</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

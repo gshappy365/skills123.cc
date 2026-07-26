@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>产品对象详解 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="产品对象详解 产品对象是 Shopify Liquid 中最重要和最复杂的对象之一。它包含了商品的所有信息，包括基本属性、变体、图片、选项等。掌握产品对象的使用对于构建功能完整的电商主题至关重要。 产品基本属性 基础信息 价格信息 ">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/product-objects/">
+  <meta property="og:title" content="产品对象详解 · Shopify 独立站手册">
+  <meta property="og:description" content="产品对象详解 产品对象是 Shopify Liquid 中最重要和最复杂的对象之一。它包含了商品的所有信息，包括基本属性、变体、图片、选项等。掌握产品对象的使用对于构建功能完整的电商主题至关重要。 产品基本属性 基础信息 价格信息 ">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>产品对象详解</h1>
+        <p>产品对象详解 产品对象是 Shopify Liquid 中最重要和最复杂的对象之一。它包含了商品的所有信息，包括基本属性、变体、图片、选项等。掌握产品对象的使用对于构建功能完整的电商主题至关重要。 产品基本属性 基础信息 价格信息 </p>
+      </header>
+      <div class="article-content"><h2 id="产品对象详解">产品对象详解</h2><p>产品对象是 Shopify Liquid 中最重要和最复杂的对象之一。它包含了商品的所有信息，包括基本属性、变体、图片、选项等。掌握产品对象的使用对于构建功能完整的电商主题至关重要。</p>
+<h2 id="产品基本属性">产品基本属性</h2><h3 id="基础信息">基础信息</h3><pre><code>&lt;!-- 产品基本信息 --&gt;
+&lt;div class="product-info" itemscope itemtype="http://schema.org/Product"&gt;
+  &lt;h1 itemprop="name"&gt;{{ product.title }}&lt;/h1&gt;
+ 
+  &lt;div class="product-meta"&gt;
+    &lt;p class="vendor"&gt;品牌: &lt;span itemprop="brand"&gt;{{ product.vendor }}&lt;/span&gt;&lt;/p&gt;
+    &lt;p class="product-type"&gt;分类: {{ product.type }}&lt;/p&gt;
+    &lt;p class="sku" itemprop="sku"&gt;SKU: {{ product.selected_or_first_available_variant.sku }}&lt;/p&gt;
+  &lt;/div&gt;
+ 
+  &lt;div class="product-description" itemprop="description"&gt;
+    {{ product.description }}
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="价格信息">价格信息</h3><pre><code>&lt;!-- 产品价格展示 --&gt;
+&lt;div class="product-price" itemscope itemtype="http://schema.org/Offer"&gt;
+  {% assign current_variant = product.selected_or_first_available_variant %}
+ 
+  &lt;meta itemprop="priceCurrency" content="{{ shop.currency }}"&gt;
+  &lt;meta itemprop="price" content="{{ current_variant.price | money_without_currency }}"&gt;
+ 
+  {% if current_variant.compare_at_price &gt; current_variant.price %}
+    &lt;span class="price-compare"&gt;
+      原价: &lt;s&gt;{{ current_variant.compare_at_price | money }}&lt;/s&gt;
+    &lt;/span&gt;
+    &lt;span class="price-current sale"&gt;
+      现价: {{ current_variant.price | money }}
+    &lt;/span&gt;
+    &lt;span class="price-save"&gt;
+      节省: {{ current_variant.compare_at_price | minus: current_variant.price | money }}
+      ({{ current_variant.compare_at_price | minus: current_variant.price | times: 100 | divided_by: current_variant.compare_at_price }}% OFF)
+    &lt;/span&gt;
+  {% else %}
+    &lt;span class="price-current"&gt;
+      {{ current_variant.price | money }}
+    &lt;/span&gt;
+  {% endif %}
+ 
+  {% comment %} 价格范围显示 {% endcomment %}
+  {% unless product.has_only_default_variant %}
+    &lt;div class="price-range"&gt;
+      {% if product.price_varies %}
+        &lt;span&gt;价格范围: {{ product.price_min | money }} - {{ product.price_max | money }}&lt;/span&gt;
+      {% endif %}
+ 
+      {% if product.compare_at_price_varies %}
+        &lt;span&gt;原价范围: {{ product.compare_at_price_min | money }} - {{ product.compare_at_price_max | money }}&lt;/span&gt;
+      {% endif %}
+    &lt;/div&gt;
+  {% endunless %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="库存状态">库存状态</h3><pre><code>&lt;!-- 库存信息 --&gt;
+&lt;div class="product-availability"&gt;
+  {% assign current_variant = product.selected_or_first_available_variant %}
+ 
+  {% if current_variant.available %}
+    &lt;span class="in-stock" itemprop="availability" content="http://schema.org/InStock"&gt;
+      {% if current_variant.inventory_management %}
+        {% if current_variant.inventory_quantity &gt; 0 %}
+          有库存 ({{ current_variant.inventory_quantity }} 件)
+        {% else %}
+          有库存
+        {% endif %}
+      {% else %}
+        有库存
+      {% endif %}
+    &lt;/span&gt;
+  {% else %}
+    &lt;span class="out-of-stock" itemprop="availability" content="http://schema.org/OutOfStock"&gt;
+      缺货
+    &lt;/span&gt;
+  {% endif %}
+ 
+  {% comment %} 低库存警告 {% endcomment %}
+  {% if current_variant.inventory_quantity &lt;= 5 and current_variant.inventory_qu...
+</code></pre>
+<h2 id="调试和测试">调试和测试</h2><h3 id="产品数据调试">产品数据调试</h3><pre><code>&lt;!-- 产品调试信息 --&gt;
+{% if request.design_mode %}
+  &lt;div class="product-debug" style="margin-top: 2rem; padding: 1rem; background: #f5f5f5; font-family: monospace; font-size: 12px;"&gt;
+    &lt;h4&gt;产品调试信息&lt;/h4&gt;
+ 
+    &lt;div&gt;&lt;strong&gt;基本信息:&lt;/strong&gt;&lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;ID: {{ product.id }}&lt;/li&gt;
+      &lt;li&gt;Handle: {{ product.handle }}&lt;/li&gt;
+      &lt;li&gt;Title: {{ product.title }}&lt;/li&gt;
+      &lt;li&gt;Vendor: {{ product.vendor }}&lt;/li&gt;
+      &lt;li&gt;Type: {{ product.type }}&lt;/li&gt;
+      &lt;li&gt;Available: {{ product.available }}&lt;/li&gt;
+      &lt;li&gt;Created: {{ product.created_at | date: '%Y-%m-%d %H:%M' }}&lt;/li&gt;
+      &lt;li&gt;Updated: {{ product.updated_at | date: '%Y-%m-%d %H:%M' }}&lt;/li&gt;
+    &lt;/ul&gt;
+ 
+    &lt;div&gt;&lt;strong&gt;价格信息:&lt;/strong&gt;&lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Price: {{ product.price | money }}&lt;/li&gt;
+      &lt;li&gt;Compare at price: {{ product.compare_at_price | money }}&lt;/li&gt;
+      &lt;li&gt;Price varies: {{ product.price_varies }}&lt;/li&gt;
+      &lt;li&gt;Price min: {{ product.price_min | money }}&lt;/li&gt;
+      &lt;li&gt;Price max: {{ product.price_max | money }}&lt;/li&gt;
+    &lt;/ul&gt;
+ 
+    &lt;div&gt;&lt;strong&gt;变体信息:&lt;/strong&gt;&lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Variants count: {{ product.variants.size }}&lt;/li&gt;
+      &lt;li&gt;Has only default variant: {{ product.has_only_default_variant }}&lt;/li&gt;
+      &lt;li&gt;Options: {{ product.options | join: ', ' }}&lt;/li&gt;
+    &lt;/ul&gt;
+ 
+    &lt;div&gt;&lt;strong&gt;媒体信息:&lt;/strong&gt;&lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Images count: {{ product.images.size }}&lt;/li&gt;
+      &lt;li&gt;Featured image: {% if product.featured_image %}{{ product.featured_image.alt }}{% else %}None{% endif %}&lt;/li&gt;
+    &lt;/ul&gt;
+ 
+    &lt;div&gt;&lt;strong&gt;分类信息:&lt;/strong&gt;&lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Collections: {{ product.collections | map: 'title' | join: ', ' }}&lt;/li&gt;
+      &lt;li&gt;Tags: {{ product.tags | join: ', ' }}&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+{% endif %}
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>现在您已经掌握了产品对象的详细使用，建议继续学习：</p>
+<ul>
+<li><a href="/guides/shopify-handbook/liquid/customer-objects/">客户对象详解</a> - 学习客户相关功能</li>
+<li><a href="/guides/shopify-handbook/liquid/cart-objects/">购物车对象详解</a> - 掌握购物车实现</li>
+<li><a href="/guides/shopify-handbook/liquid/global-objects/">全局对象详解</a> - 了解更多全局对象</li>
+<li><a href="/guides/shopify-handbook/liquid/advanced-liquid/">高级 Liquid 技巧</a> - 学习更高级的技巧</li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/testing-deployment/"><span>上一篇</span><strong>测试和部署</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/common-patterns/"><span>下一篇</span><strong>常见模式和解决方案</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

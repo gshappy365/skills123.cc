@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>5--- title: “过滤器完全指南” description: “全面掌握Shopify Liquid过滤器，包含所有过滤器的详细说明和实际代码示例” · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="5 title: “过滤器完全指南” description: “全面掌握Shopify Liquid过滤器，包含所有过滤器的详细说明和实际代码示例” 过滤器完全指南 过滤器是 Liquid 模板语言的核心功能之一，用于修改对象的输">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/filters/">
+  <meta property="og:title" content="5--- title: “过滤器完全指南” description: “全面掌握Shopify Liquid过滤器，包含所有过滤器的详细说明和实际代码示例” · Shopify 独立站手册">
+  <meta property="og:description" content="5 title: “过滤器完全指南” description: “全面掌握Shopify Liquid过滤器，包含所有过滤器的详细说明和实际代码示例” 过滤器完全指南 过滤器是 Liquid 模板语言的核心功能之一，用于修改对象的输">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>5--- title: “过滤器完全指南” description: “全面掌握Shopify Liquid过滤器，包含所有过滤器的详细说明和实际代码示例”</h1>
+        <p>5 title: “过滤器完全指南” description: “全面掌握Shopify Liquid过滤器，包含所有过滤器的详细说明和实际代码示例” 过滤器完全指南 过滤器是 Liquid 模板语言的核心功能之一，用于修改对象的输</p>
+      </header>
+      <div class="article-content"><h2 id="5-title-过滤器完全指南-description-全面掌握shopify-liquid过滤器-包含所有过滤器的详细说明和实际代码示例">5--- title: “过滤器完全指南” description: “全面掌握Shopify Liquid过滤器，包含所有过滤器的详细说明和实际代码示例”</h2><h2 id="过滤器完全指南">过滤器完全指南</h2><p>过滤器是 Liquid 模板语言的核心功能之一，用于修改对象的输出。本指南将详细介绍所有可用的 Shopify Liquid 过滤器，并提供实际的代码示例。</p>
+<h2 id="过滤器基础">过滤器基础</h2><h3 id="基本语法">基本语法</h3><pre><code>{{ object | filter_name }}
+{{ object | filter_name: parameter }}
+{{ object | filter_name: parameter1, parameter2 }}
+</code></pre>
+<h3 id="链式过滤器">链式过滤器</h3><pre><code>{{ product.title | downcase | replace: ' ', '-' | append: '.html' }}
+</code></pre>
+<h2 id="字符串过滤器">字符串过滤器</h2><h3 id="文本转换">文本转换</h3><h4 id="upcase-转换为大写"><code>upcase</code> - 转换为大写</h4><pre><code>{{ 'hello world' | upcase }}
+&lt;!-- 输出: HELLO WORLD --&gt;
+ 
+{{ product.title | upcase }}
+&lt;!-- 输出产品标题的大写形式 --&gt;
+</code></pre>
+<h4 id="downcase-转换为小写"><code>downcase</code> - 转换为小写</h4><pre><code>{{ 'HELLO WORLD' | downcase }}
+&lt;!-- 输出: hello world --&gt;
+ 
+{{ customer.email | downcase }}
+&lt;!-- 确保邮箱地址为小写 --&gt;
+</code></pre>
+<h4 id="capitalize-首字母大写"><code>capitalize</code> - 首字母大写</h4><pre><code>{{ 'hello world' | capitalize }}
+&lt;!-- 输出: Hello world --&gt;
+ 
+{{ customer.first_name | capitalize }}
+&lt;!-- 客户名字首字母大写 --&gt;
+</code></pre>
+<h4 id="strip-移除首尾空格"><code>strip</code> - 移除首尾空格</h4><pre><code>{{ '  hello world  ' | strip }}
+&lt;!-- 输出: hello world --&gt;
+</code></pre>
+<h3 id="文本处理">文本处理</h3><h4 id="truncate-截断文本"><code>truncate</code> - 截断文本</h4><pre><code>{{ product.description | truncate: 100 }}
+&lt;!-- 截断到100个字符 --&gt;
+ 
+{{ product.description | truncate: 100, '...' }}
+&lt;!-- 自定义截断标记 --&gt;
+ 
+{{ article.content | strip_html | truncate: 150 }}
+&lt;!-- 先移除HTML再截断 --&gt;
+</code></pre>
+<h4 id="strip-html-移除html标签"><code>strip_html</code> - 移除HTML标签</h4><pre><code>{{ product.description | strip_html }}
+&lt;!-- 移除所有HTML标签 --&gt;
+ 
+{{ article.content | strip_html | truncate: 200 }}
+&lt;!-- 移除HTML标签后截断 --&gt;
+</code></pre>
+<h4 id="strip-newlines-移除换行符"><code>strip_newlines</code> - 移除换行符</h4><pre><code>{{ product.description | strip_newlines }}
+&lt;!-- 移除所有换行符 --&gt;
+</code></pre>
+<h4 id="newline-to-br-换行符转换为-br"><code>newline_to_br</code> - 换行符转换为<code>&lt;br /&gt;</code></h4><pre><code>{{ product.description | newline_to_br }}
+&lt;!-- 将\n转换为&lt;br&gt;标签 --&gt;
+</code></pre>
+<h3 id="字符串操作">字符串操作</h3><h4 id="replace-替换文本"><code>replace</code> - 替换文本</h4><pre><code>{{ product.title | replace: 'iPhone', 'Apple iPhone' }}
+&lt;!-- 替换指定文本 --&gt;
+ 
+{{ product.handle | replace: '-', ' ' | capitalize }}
+&lt;!-- 将连字符替换为空格并首字母大写 --&gt;
+</code></pre>
+<h4 id="remove-移除文本"><code>remove</code> - 移除文本</h4><pre><code>{{ product.title | remove: 'Brand:' }}
+&lt;!-- 移除指定文本 --&gt;
+ 
+{{ product.tags | join: ', ' | remove: 'hidden' }}
+&lt;!-- 从标签列表中移除特定标签 --&gt;
+</code></pre>
+<h4 id="append-添加到末尾"><code>append</code> - 添加到末尾</h4><pre><code>{{ product.title | append: ' - 限时特价' }}
+&lt;!-- 在标题末尾添加文本 --&gt;
+ 
+{{ product.url | append: '?utm_source=newsletter' }}
+&lt;!-- 在URL后添加参数 --&gt;
+</code></pre>
+<h4 id="prepend-添加到开头"><code>prepend</code> - 添加到开头</h4><pre><code>{{ product.title | prepend: '热销商品: ' }}
+&lt;!-- 在标题开头添加文本 --&gt;
+</code></pre>
+<h4 id="split-分割字符串"><code>split</code> - 分割字符串</h4><pre><code>{{ product.tags | split: ',' }}
+&lt;!-- 将标签字符串分割为数组 --&gt;
+</code></pre>
+<h3 id="url和编码">URL和编码</h3><h4 id="url-encode-url编码"><code>url_encode</code> - URL编码</h4><pre><code>{{ product.title | url_encode }}
+&lt;!-- URL编码产品标题 --&gt;
+ 
+{{ search.terms | url_encode }}
+&lt;!-- 编码搜索词 --&gt;
+</code></pre>
+<h4 id="url-decode-url解码"><code>url_decode</code> - URL解码</h4><pre><code>{{ encoded_text | url_decode }}
+&lt;!-- URL解码 --&gt;
+</code></pre>
+<h4 id="escape-html转义"><code>escape</code> - HTML转义</h4><pre><code>{{ product.description | escape }}
+&lt;!-- 转义HTML特殊字符 --&gt;
+ 
+{{ customer.note | escape }}
+&lt;!-- 安全显示用户输入内容 --&gt;
+</code></pre>
+<h4 id="escape-once-html转义-只转义一次"><code>escape_once</code> - HTML转义(只转义一次)</h4><pre><code>{{ content | escape_once }}
+&lt;!-- 避免重复转义 --&gt;
+</code></pre>
+<h2 id="数字过滤器">数字过滤器</h2><h3 id="金额格式化">金额格式化</h3><h4 id="money-格式化为货币"><code>money</code> - 格式化为货币</h4><pre><code>{{ product.price | money }}
+&lt;!-- 输出: ¥99.00 --&gt;
+ 
+{{ cart.total_price | money }}
+&lt;!-- 购物车总价格式化 --&gt;
+</code></pre>
+<h4 id="money-without-currency-不显示货币符号"><code>money_without_currency</code> - 不显示货币符号</h4><pre><code>{{ product.price | money_without_currency }}
+&lt;!-- 输出: 99.00 --&gt;
+</code></pre>
+<h4 id="money-with-currency-显示货币代码"><code>money_with_currency</code> - 显示货币代码</h4><pre><code>{{ product.price | money_with_currency }}
+&lt;!-- 输出: ¥99.00 CNY --&gt;
+</code></pre>
+<h3 id="数学运算">数学运算</h3><h4 id="plus-加法"><code>plus</code> - 加法</h4><pre><code>{{ product.price | plus: 10 }}
+&lt;!-- 价格加10 --&gt;
+ 
+{{ cart.item_count | plus: 1 }}
+&lt;!-- 购物车数量加1 --&gt;
+</code></pre>
+<h4 id="minus-减法"><code>minus</code> - 减法</h4><pre><code>{{ product.compare_at_price | minus: product.price }}
+&lt;!-- 计算折扣金额 --&gt;
+</code></pre>
+<h4 id="times-乘法"><code>times</code> - 乘法</h4><pre><code>{{ product.price | times: 0.9 }}
+&lt;!-- 9折价格 --&gt;
+ 
+{{ item.quantity | times: item.price }}
+&lt;!-- 计算总价 --&gt;
+</code></pre>
+<h4 id="divided-by-除法"><code>divided_by</code> - 除法</h4><pre><code>{{ product.price | divided_by: 2 }}
+&lt;!-- 价格除以2 --&gt;
+ 
+{{ total_savings | divided_by: original_price | times: 100 }}
+&lt;!-- 计算折扣百分比 --&gt;
+</code></pre>
+<h4 id="modulo-取余"><code>modulo</code> - 取余</h4><pre><code>{{ forloop.index | modulo: 2 }}
+&lt;!-- 判断奇偶数 --&gt;
+</code></pre>
+<h3 id="数字格式化">数字格式化</h3><h4 id="round-四舍五入"><code>round</code> - 四舍五入</h4><pre><code>{{ 4.6 | round }}
+&lt;!-- 输出: 5 --&gt;
+ 
+{{ product.price | divided_by: 3 | round: 2 }}
+&lt;!-- 保留两位小数 --&gt;
+</code></pre>
+<h4 id="ceil-向上取整"><code>ceil</code> - 向上取整</h4><pre><code>{{ 4.2 | ceil }}
+&lt;!-- 输出: 5 --&gt;
+</code></pre>
+<h4 id="floor-向下取整"><code>floor</code> - 向下取整</h4><pre><code>{{ 4.8 | floor }}
+&lt;!-- 输出: 4 --&gt;
+</code></pre>
+<h4 id="abs-绝对值"><code>abs</code> - 绝对值</h4><pre><code>{{ -5 | abs }}
+&lt;!-- 输出: 5 --&gt;
+</code></pre>
+<h2 id="日期过滤器">日期过滤器</h2><h3 id="date-日期格式化"><code>date</code> - 日期格式化</h3><pre><code>&lt;!-- 基本格式 --&gt;
+{{ article.published_at | date: '%Y-%m-%d' }}
+&lt;!-- 输出: 2023-12-01 --&gt;
+ 
+{{ article.published_at | date: '%B %d, %Y' }}
+&lt;!-- 输出: December 01, 2023 --&gt;
+ 
+&lt;!-- 中文格式 --&gt;
+{{ article.published_at | date: '%Y年%m月%d日' }}
+&lt;!-- 输出: 2023年12月01日 --&gt;
+ 
+{{ article.published_at | date: '%m月%d日 %H:%M' }}
+&lt;!-- 输出: 12月01日 14:30 --&gt;
+ 
+&lt;!-- 完整示例 --&gt;
+{{ order.created_at | date: '%Y年%m月%d日 %H:%M:%S' }}
+&lt;!-- 订单创建时间 --&gt;
+ 
+{{ customer.created_at | date: '%Y年%m月' }}
+&lt;!-- 客户注册月份 --&gt;
+</code></pre>
+<h4 id="常用日期格式">常用日期格式</h4><pre><code>&lt;!-- 完整日期时间 --&gt;
+{{ 'now' | date: '%Y-%m-%d %H:%M:%S' }}
+ 
+&lt;!-- 短日期 --&gt;
+{{ 'now' | date: '%m/%d/%Y' }}
+ 
+&lt;!-- 长日期 --&gt;
+{{ 'now' | date: '%A, %B %d, %Y' }}
+ 
+&lt;!-- 时间戳 --&gt;
+{{ 'now' | date: '%s' }}
+ 
+&lt;!-- ISO 8601 格式 --&gt;
+{{ 'now' | date: '%Y-%m-%dT%H:%M:%S%z' }}
+</code></pre>
+<h2 id="数组过滤器">数组过滤器</h2><h3 id="数组信息">数组信息</h3><h4 id="size-获取数组长度"><code>size</code> - 获取数组长度</h4><pre><code>{{ collection.products | size }}
+&lt;!-- 集合中产品数量 --&gt;
+ 
+{{ cart.items | size }}
+&lt;!-- 购物车商品种类数 --&gt;
+ 
+{{ product.tags | size }}
+&lt;!-- 产品标签数量 --&gt;
+</code></pre>
+<h4 id="first-获取第一个元素"><code>first</code> - 获取第一个元素</h4><pre><code>{{ collection.products | first }}
+&lt;!-- 第一个产品 --&gt;
+ 
+{{ product.images | first | image_url: width: 300, height: 300 }}
+&lt;!-- 第一张产品图片 --&gt;
+</code></pre>
+<h4 id="last-获取最后一个元素"><code>last</code> - 获取最后一个元素</h4><pre><code>{{ collection.products | last }}
+&lt;!-- 最后一个产品 --&gt;
+ 
+{{ blog.articles | last }}
+&lt;!-- 最新文章 --&gt;
+</code></pre>
+<h3 id="数组操作">数组操作</h3><h4 id="join-连接数组元素"><code>join</code> - 连接数组元素</h4><pre><code>{{ product.tags | join: ', ' }}
+&lt;!-- 用逗号连接标签 --&gt;
+ 
+{{ breadcrumb | join: ' &gt; ' }}
+&lt;!-- 面包屑导航 --&gt;
+</code></pre>
+<h4 id="split-分割字符串为数组"><code>split</code> - 分割字符串为数组</h4><pre><code>{{ 'red,green,blue' | split: ',' }}
+&lt;!-- 分割为颜色数组 --&gt;
+ 
+{{ product.tags | split: ',' | join: ' | ' }}
+&lt;!-- 重新格式化标签 --&gt;
+</code></pre>
+<h4 id="reverse-反转数组"><code>reverse</code> - 反转数组</h4><pre><code>{% assign products = collection.products | reverse %}
+{% for product in products %}
+  &lt;!-- 从最新到最旧显示产品 --&gt;
+{% endfor %}
+</code></pre>
+<h4 id="sort-排序数组"><code>sort</code> - 排序数组</h4><pre><code>{{ product.tags | sort }}
+&lt;!-- 按字母顺序排序标签 --&gt;
+ 
+{% assign sorted_products = collection.products | sort: 'price' %}
+&lt;!-- 按价格排序产品 --&gt;
+</code></pre>
+<h4 id="sort-natural-自然排序"><code>sort_natural</code> - 自然排序</h4><pre><code>{{ product.tags | sort_natural }}
+&lt;!-- 自然排序(数字按数值排序) --&gt;
+</code></pre>
+<h4 id="uniq-去重"><code>uniq</code> - 去重</h4><pre><code>{{ all_tags | uniq }}
+&lt;!-- 移除重复标签 --&gt;
+</code></pre>
+<h3 id="数组筛选">数组筛选</h3><h4 id="where-筛选数组"><code>where</code> - 筛选数组</h4><pre><code>{% assign available_products = collection.products | where: 'available', true %}
+&lt;!-- 筛选有库存的产品 --&gt;
+ 
+{% assign featured_articles = blog.articles | where: 'tags', 'featured' %}
+&lt;!-- 筛选特色文章 --&gt;
+</code></pre>
+<h4 id="map-提取属性"><code>map</code> - 提取属性</h4><pre><code>{{ collection.products | map: 'title' }}
+&lt;!-- 提取所有产品标题 --&gt;
+ 
+{{ cart.items | map: 'product.vendor' | uniq %}
+&lt;!-- 获取购物车中所有供应商 --&gt;
+</code></pre>
+<h2 id="图片过滤器">图片过滤器</h2><h3 id="image-url-生成图片-url-推荐"><code>image_url</code> - 生成图片 URL（推荐）</h3><p>Shopify 主题应优先使用 <code>image_url</code>，替代已弃用的 <code>img_url</code>（旧主题仍可能见到 <code>img_url</code>，新代码请勿再写）。</p>
+<pre><code>&lt;!-- 固定宽高 --&gt;
+{{ product.featured_image | image_url: width: 300, height: 300 }}
+ 
+&lt;!-- 仅限制宽度，高度按比例 --&gt;
+{{ product.featured_image | image_url: width: 500 }}
+ 
+&lt;!-- 仅限制高度 --&gt;
+{{ product.featured_image | image_url: height: 400 }}
+ 
+&lt;!-- 指定格式（如 WebP），需 CDN 与主题版本支持 --&gt;
+{{ product.featured_image | image_url: width: 800, format: 'webp' }}
+ 
+&lt;!-- 响应式：密度或宽度描述符与 HTML 规范一致 --&gt;
+&lt;img src="{{ product.featured_image | image_url: width: 300 }}"
+     srcset="{{ product.featured_image | image_url: width: 300 }} 300w,
+             {{ product.featured_image | image_url: width: 600 }} 600w"
+     sizes="(max-width: 768px) 50vw, 300px"
+     alt="{{ product.featured_image.alt | escape }}"
+     loading="lazy"&gt;
+</code></pre>
+<p><strong>迁移对照（旧 → 新）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>旧写法（已弃用）</th>
+<th>新写法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td>img_url: '300x300'</td>
+</tr>
+<tr>
+<td></td>
+<td>img_url: '500x'</td>
+</tr>
+<tr>
+<td></td>
+<td>img_url: 'x400'</td>
+</tr>
+</tbody></table>
+<p><strong>旧版预设名（thumb、compact 等）：</strong> 请改为显式 <code>width</code> / <code>height</code> 数值，便于控制清晰度与性能。</p>
+<p>官方参考：<a href="https://shopify.dev/docs/api/liquid/filters/image_url" target="_blank" rel="noreferrer">Liquid image_url</a> 。</p>
+<h3 id="image-tag-生成完整-img-推荐"><code>image_tag</code> - 生成完整 <code>img</code>（推荐）</h3><pre><code>{{ product.featured_image | image_url: width: 600 | image_tag: alt: product.title, loading: 'lazy' }}
+</code></pre>
+<p>旧版 <code>img_tag: '300x300'</code> 在新主题中应改为与 <code>image_url</code> 组合或直接使用 <code>image_tag</code> 的命名参数（以当前 Shopify 文档为准）。</p>
+<h3 id="asset-img-url-主题资源图片"><code>asset_img_url</code> - 主题资源图片</h3><p>用于 <code>assets</code> 内图片，与 <code>image_url</code>（商品/媒体库）不同：</p>
+<pre><code>{{ 'logo.png' | asset_img_url: width: 200 }}
+</code></pre>
+<h2 id="颜色过滤器">颜色过滤器</h2><h3 id="color-to-rgb-转换为rgb"><code>color_to_rgb</code> - 转换为RGB</h3><pre><code>{{ '#ff0000' | color_to_rgb }}
+&lt;!-- 输出: rgb(255, 0, 0) --&gt;
+</code></pre>
+<h3 id="color-to-hsl-转换为hsl"><code>color_to_hsl</code> - 转换为HSL</h3><pre><code>{{ '#ff0000' | color_to_hsl }}
+&lt;!-- 输出: hsl(0, 100%, 50%) --&gt;
+</code></pre>
+<h3 id="color-to-hex-转换为hex"><code>color_to_hex</code> - 转换为HEX</h3><pre><code>{{ 'rgb(255, 0, 0)' | color_to_hex }}
+&lt;!-- 输出: #ff0000 --&gt;
+</code></pre>
+<h3 id="color-brightness-获取亮度"><code>color_brightness</code> - 获取亮度</h3><pre><code>{{ '#ffffff' | color_brightness }}
+&lt;!-- 输出亮度值 --&gt;
+</code></pre>
+<h3 id="color-lighten-调亮颜色"><code>color_lighten</code> - 调亮颜色</h3><pre><code>{{ '#ff0000' | color_lighten: 20 }}
+&lt;!-- 将红色调亮20% --&gt;
+</code></pre>
+<h3 id="color-darken-调暗颜色"><code>color_darken</code> - 调暗颜色</h3><pre><code>{{ '#ff0000' | color_darken: 20 }}
+&lt;!-- 将红色调暗20% --&gt;
+</code></pre>
+<h2 id="实际应用示例">实际应用示例</h2><h3 id="产品卡片完整示例">产品卡片完整示例</h3><pre><code>&lt;!-- snippets/product-card.liquid --&gt;
+&lt;div class="product-card" data-product-id="{{ product.id }}"&gt;
+  &lt;!-- 产品图片 --&gt;
+  &lt;div class="product-image"&gt;
+    &lt;a href="{{ product.url }}"&gt;
+      {% if product.featured_image %}
+        &lt;img src="{{ product.featured_image | image_url: width: 300, height: 300 }}"
+             srcset="{{ product.featured_image | image_url: width: 300, height: 300 }} 1x,
+                     {{ product.featured_image | image_url: width: 600, height: 600 }} 2x"
+             alt="{{ product.featured_image.alt | escape | default: product.title }}"
+             loading="lazy"&gt;
+      {% else %}
+        &lt;div class="no-image"&gt;暂无图片&lt;/div&gt;
+      {% endif %}
+    &lt;/a&gt;
+    
+    &lt;!-- 促销标签 --&gt;
+    {% if product.compare_at_price &gt; product.price %}
+      {% assign discount = product.compare_at_price | minus: product.price %}
+      {% assign discount_percent = discount | times: 100 | divided_by: product.compare_at_price | round %}
+      &lt;span class="sale-badge"&gt;-{{ discount_percent }}%&lt;/span&gt;
+    {% endif %}
+  &lt;/div&gt;
+ 
+  &lt;!-- 产品信息 --&gt;
+  &lt;div class="product-info"&gt;
+    &lt;!-- 供应商 --&gt;
+    {% if product.vendor != blank %}
+      &lt;div class="product-vendor"&gt;{{ product.vendor | upcase }}&lt;/div&gt;
+    {% endif %}
+ 
+    &lt;!-- 产品标题 --&gt;
+    &lt;h3 class="product-title"&gt;
+      &lt;a href="{{ product.url }}"&gt;
+        {{ product.title | truncate: 60 }}
+      &lt;/a&gt;
+    &lt;/h3&gt;
+ 
+    &lt;!-- 产品价格 --&gt;
+    &lt;div class="product-price"&gt;
+      {% if product.compare_at_price &gt; product.price %}
+        &lt;span class="price-compare"&gt;{{ product.compare_at_price | money }}&lt;/span&gt;
+        &lt;span class="price-sale"&gt;{{ product.price | money }}&lt;/span&gt;
+      {% else %}
+        &lt;span class="price"&gt;{{ product.price | money }}&lt;/span&gt;
+      {% endif %}
+    &lt;/div&gt;
+ 
+    &lt;!-- 产品标签 --&gt;
+    {% if product.tags.size &gt; 0 %}
+      &lt;div class="product-tags"&gt;
+        {% assign display_tags = product.tags | where_not: 'hidden' | slice: 0, 3 %}
+        {% for tag in display_tags %}
+          &lt;span class="tag"&gt;{{ tag | replace: '_', ' ' | capitalize }}&lt;/span&gt;
+        {% endfor %}
+      &lt;/div&gt;
+    {% endif %}
+ 
+    &lt;!-- 变体信息 --&gt;
+    {% if product.variants.size &gt; 1 %}
+      &lt;div class="variant-info"&gt;
+        {{ product.variants.size }} 个选项可选
+      &lt;/div&gt;
+    {% endif %}
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="购物车摘要示例">购物车摘要示例</h3><pre><code>&lt;!-- snippets/cart-summary.liquid --&gt;
+&lt;div class="cart-summary"&gt;
+  &lt;!-- 购物车商品数量 --&gt;
+  &lt;div class="cart-count"&gt;
+    购物车 ({{ cart.item_count }} {% if cart.item_count == 1 %}件商品{% else %}件商品{% endif %})
+  &lt;/div&gt;
+ 
+  &lt;!-- 商品列表 --&gt;
+  {% for item in cart.items limit: 5 %}
+    &lt;div class="cart-item-summary"&gt;
+      &lt;img src="{{ item.image | image_url: width: 60, height: 60 }}" 
+           alt="{{ item.title | escape }}"&gt;
+      &lt;div class="item-details"&gt;
+        &lt;div class="item-title"&gt;{{ item.product.title | truncate: 30 }}&lt;/div&gt;
+        {% unless item.variant.title contains 'Default' %}
+          &lt;div class="item-variant"&gt;{{ item.variant.title }}&lt;/div&gt;
+        {% endunless %}
+        &lt;div class="item-quantity-price"&gt;
+          {{ item.quantity }} × {{ item.price | money }}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  {% endfor %}
+ 
+  &lt;!-- 显示更多 --&gt;
+  {% if cart.item_count &gt; 5 %}
+    &lt;div class="more-items"&gt;
+      还有 {{ cart.item_count | minus: 5 }} 件商品...
+    &lt;/div&gt;
+  {% endif %}
+ 
+  &lt;!-- 总计 --&gt;
+  &lt;div class="cart-total"&gt;
+    &lt;div class="subtotal"&gt;
+      小计: {{ cart.total_price | money }}
+    &lt;/div&gt;
+    {% if cart.total_discounts &gt; 0 %}
+      &lt;div class="discounts"&gt;
+        折扣: -{{ cart.total_discounts | money }}
+      &lt;/div&gt;
+    {% endif %}
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h3 id="博客文章预览">博客文章预览</h3><pre><code>&lt;!-- snippets/article-preview.liquid --&gt;
+&lt;article class="article-preview"&gt;
+  &lt;!-- 文章图片 --&gt;
+  {% if article.image %}
+    &lt;div class="article-image"&gt;
+      &lt;a href="{{ article.url }}"&gt;
+        &lt;img src="{{ article.image | image_url: width: 400, height: 250 }}"
+             alt="{{ article.image.alt | escape | default: article.title }}"
+             loading="lazy"&gt;
+      &lt;/a&gt;
+    &lt;/div&gt;
+  {% endif %}
+ 
+  &lt;!-- 文章内容 --&gt;
+  &lt;div class="article-content"&gt;
+    &lt;!-- 文章标题 --&gt;
+    &lt;h2 class="article-title"&gt;
+      &lt;a href="{{ article.url }}"&gt;{{ article.title }}&lt;/a&gt;
+    &lt;/h2&gt;
+ 
+    &lt;!-- 文章元信息 --&gt;
+    &lt;div class="article-meta"&gt;
+      &lt;time datetime="{{ article.published_at | date: '%Y-%m-%d' }}"&gt;
+        {{ article.published_at | date: '%Y年%m月%d日' }}
+      &lt;/time&gt;
+      {% if article.author != blank %}
+        &lt;span class="author"&gt;作者: {{ article.author }}&lt;/span&gt;
+      {% endif %}
+      {% if article.tags.size &gt; 0 %}
+        &lt;div class="tags"&gt;
+          {% for tag in article.tags limit: 3 %}
+            &lt;span class="tag"&gt;{{ tag | replace: '_', ' ' | capitalize }}&lt;/span&gt;
+          {% endfor %}
+        &lt;/div&gt;
+      {% endif %}
+    &lt;/div&gt;
+ 
+    &lt;!-- 文章摘要 --&gt;
+    &lt;div class="article-excerpt"&gt;
+      {% if article.excerpt != blank %}
+        {{ article.excerpt | strip_html | truncate: 200 }}
+      {% else %}
+        {{ article.content | strip_html | truncate: 200 }}
+      {% endif %}
+    &lt;/div&gt;
+ 
+    &lt;!-- 阅读时间估算 --&gt;
+    {% assign reading_time = article.content | strip_html | split: ' ' | size | divided_by: 200 | at_least: 1 %}
+    &lt;div class="reading-time"&gt;
+      预计阅读时间: {{ reading_time }} 分钟
+    &lt;/div&gt;
+ 
+    &lt;a href="{{ article.url }}" class="read-more"&gt;阅读全文&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/article&gt;
+</code></pre>
+<h2 id="过滤器最佳实践">过滤器最佳实践</h2><h3 id="1-性能考虑">1. 性能考虑</h3><pre><code>&lt;!-- 好的做法：在循环外处理数据 --&gt;
+{% assign featured_products = collection.products | where: 'tags', 'featured' %}
+{% for product in featured_products %}
+  &lt;!-- 渲染产品 --&gt;
+{% endfor %}
+ 
+&lt;!-- 避免：在循环内重复处理 --&gt;
+{% for product in collection.products %}
+  {% if product.tags contains 'featured' %}
+    &lt;!-- 渲染产品 --&gt;
+  {% endif %}
+{% endfor %}
+</code></pre>
+<h3 id="2-安全性">2. 安全性</h3><pre><code>&lt;!-- 始终转义用户输入 --&gt;
+{{ customer.note | escape }}
+{{ search.terms | escape }}
+ 
+&lt;!-- 处理可能为空的值 --&gt;
+{{ product.featured_image.alt | escape | default: product.title }}
+</code></pre>
+<h3 id="3-可读性">3. 可读性</h3><pre><code>&lt;!-- 使用变量提高可读性 --&gt;
+{% assign discount_percent = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round %}
+ 
+&lt;!-- 而不是一行完成所有计算 --&gt;
+{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round }}%
+</code></pre>
+<h2 id="相关资源">相关资源</h2><ul>
+<li><a href="https://shopify.dev/docs/api/liquid/filters" target="_blank" rel="noreferrer">Shopify Liquid 过滤器官方文档</a> </li>
+<li><a href="/guides/shopify-handbook/liquid/syntax/">Liquid 语法详解</a></li>
+<li><a href="/guides/shopify-handbook/liquid/tags/">标签和控制结构</a></li>
+<li><a href="/guides/shopify-handbook/liquid/shopify-objects/">Shopify 对象参考</a></li>
+</ul>
+<p>掌握这些过滤器将让您能够创建强大而灵活的 Shopify 主题！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/shopify-objects/"><span>上一篇</span><strong>1\. 建议怎么读这篇</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/security/"><span>下一篇</span><strong>安全最佳实践</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

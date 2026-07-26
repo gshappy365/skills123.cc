@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Liquid 快速入门 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Liquid 快速入门 欢迎来到 Liquid 主题开发。本篇用最少概念跑通 输出 → 逻辑 → 加工 ，并给出可直接放进分区/片段的示例。更完整的导航与约定见 Liquid 开发指南。 阅读前必读 项 说明 运行上下文 produ">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/liquid/getting-started/">
+  <meta property="og:title" content="Liquid 快速入门 · Shopify 独立站手册">
+  <meta property="og:description" content="Liquid 快速入门 欢迎来到 Liquid 主题开发。本篇用最少概念跑通 输出 → 逻辑 → 加工 ，并给出可直接放进分区/片段的示例。更完整的导航与约定见 Liquid 开发指南。 阅读前必读 项 说明 运行上下文 produ">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/liquid/">Liquid 开发</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">Liquid 开发 · 整理与归档</p>
+        <h1>Liquid 快速入门</h1>
+        <p>Liquid 快速入门 欢迎来到 Liquid 主题开发。本篇用最少概念跑通 输出 → 逻辑 → 加工 ，并给出可直接放进分区/片段的示例。更完整的导航与约定见 Liquid 开发指南。 阅读前必读 项 说明 运行上下文 produ</p>
+      </header>
+      <div class="article-content"><h2 id="liquid-快速入门">Liquid 快速入门</h2><p>欢迎来到 Liquid 主题开发。本篇用最少概念跑通 <strong>输出 → 逻辑 → 加工</strong>，并给出可直接放进分区/片段的示例。更完整的导航与约定见 <a href="/guides/shopify-handbook/liquid/">Liquid 开发指南</a>。</p>
+<h2 id="阅读前必读">阅读前必读</h2><table>
+<thead>
+<tr>
+<th>项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>运行上下文</td>
+<td>product 只在产品模板等上下文存在；在首页分区里通常用 section.settings 或 collections</td>
+</tr>
+<tr>
+<td>图片</td>
+<td>新主题请使用 image_url，勿复制旧主题里的 img_url</td>
+</tr>
+<tr>
+<td>下一步</td>
+<td>语法细节见 语法基础，过滤器大全见 过滤器</td>
+</tr>
+</tbody></table>
+<h2 id="liquid-是什么">Liquid 是什么？</h2><p>Liquid 是由 Shopify 开发的开源模板语言，用于加载动态内容。它结合了三个主要组件：</p>
+<ol>
+<li><strong>对象 (Objects)</strong> - 告诉 Liquid 在哪里显示内容</li>
+<li><strong>标签 (Tags)</strong> - 创建模板的逻辑和控制流</li>
+<li><strong>过滤器 (Filters)</strong> - 修改 Liquid 对象的输出</li>
+</ol>
+<h2 id="基本语法">基本语法</h2><h3 id="1-对象输出语法">1. 对象输出语法</h3><p>使用双大括号 <code>{{ }}</code> 来输出对象内容：</p>
+<pre><code>{{ page.title }}
+{{ product.price }}
+{{ customer.first_name }}
+</code></pre>
+<p><strong>实际示例:</strong></p>
+<pre><code>&lt;!-- 在产品页面显示产品标题 --&gt;
+&lt;h1&gt;{{ product.title }}&lt;/h1&gt;
+ 
+&lt;!-- 显示当前页面标题 --&gt;
+&lt;title&gt;{{ page_title }} - {{ shop.name }}&lt;/title&gt;
+ 
+&lt;!-- 显示客户姓名 --&gt;
+&lt;p&gt;欢迎回来，{{ customer.first_name }}！&lt;/p&gt;
+</code></pre>
+<h3 id="2-标签语法">2. 标签语法</h3><p>使用大括号和百分号 <code>{% %}</code> 来创建逻辑：</p>
+<pre><code>{% if condition %}
+  &lt;!-- 内容 --&gt;
+{% endif %}
+ 
+{% for item in collection %}
+  &lt;!-- 循环内容 --&gt;
+{% endfor %}
+</code></pre>
+<p><strong>实际示例:</strong></p>
+<pre><code>&lt;!-- 条件显示内容 --&gt;
+{% if product.available %}
+  &lt;button type="submit"&gt;加入购物车&lt;/button&gt;
+{% else %}
+  &lt;button disabled&gt;缺货&lt;/button&gt;
+{% endif %}
+ 
+&lt;!-- 循环显示产品 --&gt;
+{% for product in collections.featured.products %}
+  &lt;div class="product-card"&gt;
+    &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+    &lt;p&gt;{{ product.price | money }}&lt;/p&gt;
+  &lt;/div&gt;
+{% endfor %}
+</code></pre>
+<h3 id="3-过滤器语法">3. 过滤器语法</h3><p>使用管道符 <code>|</code> 来应用过滤器：</p>
+<pre><code>{{ product.title | upcase }}
+{{ product.price | money }}
+{{ article.published_at | date: "%B %d, %Y" }}
+</code></pre>
+<p><strong>实际示例:</strong></p>
+<pre><code>&lt;!-- 格式化价格 --&gt;
+&lt;span class="price"&gt;{{ product.price | money }}&lt;/span&gt;
+ 
+&lt;!-- 日期格式化 --&gt;
+&lt;time&gt;{{ article.published_at | date: "%Y年%m月%d日" }}&lt;/time&gt;
+ 
+&lt;!-- 文本转换 --&gt;
+&lt;h2&gt;{{ section.settings.heading | upcase }}&lt;/h2&gt;
+ 
+&lt;!-- 图片处理 --&gt;
+&lt;img src="{{ product.featured_image | image_url: width: 300, height: 300 }}" 
+     alt="{{ product.featured_image.alt }}"&gt;
+</code></pre>
+<h2 id="第一个-liquid-模板">第一个 Liquid 模板</h2><p>让我们创建一个简单的产品卡片组件：</p>
+<pre><code>&lt;!-- snippets/product-card.liquid --&gt;
+&lt;div class="product-card" data-product-id="{{ product.id }}"&gt;
+  &lt;!-- 产品图片 --&gt;
+  {% if product.featured_image %}
+    &lt;div class="product-image"&gt;
+      &lt;img src="{{ product.featured_image | image_url: width: 300, height: 300 }}" 
+           alt="{{ product.featured_image.alt | escape }}"&gt;
+    &lt;/div&gt;
+  {% endif %}
+ 
+  &lt;!-- 产品信息 --&gt;
+  &lt;div class="product-info"&gt;
+    &lt;!-- 产品标题 --&gt;
+    &lt;h3 class="product-title"&gt;
+      &lt;a href="{{ product.url }}"&gt;{{ product.title }}&lt;/a&gt;
+    &lt;/h3&gt;
+ 
+    &lt;!-- 产品价格 --&gt;
+    &lt;div class="product-price"&gt;
+      {% if product.compare_at_price &gt; product.price %}
+        &lt;span class="price-compare"&gt;{{ product.compare_at_price | money }}&lt;/span&gt;
+        &lt;span class="price-sale"&gt;{{ product.price | money }}&lt;/span&gt;
+      {% else %}
+        &lt;span class="price"&gt;{{ product.price | money }}&lt;/span&gt;
+      {% endif %}
+    &lt;/div&gt;
+ 
+    &lt;!-- 库存状态 --&gt;
+    {% if product.available %}
+      &lt;div class="stock-status in-stock"&gt;有库存&lt;/div&gt;
+    {% else %}
+      &lt;div class="stock-status out-of-stock"&gt;缺货&lt;/div&gt;
+    {% endif %}
+ 
+    &lt;!-- 添加到购物车按钮 --&gt;
+    {% if product.available %}
+      &lt;form action="/cart/add" method="post" enctype="multipart/form-data"&gt;
+        &lt;input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}"&gt;
+        &lt;button type="submit" class="btn btn-primary"&gt;
+          加入购物车
+        &lt;/button&gt;
+      &lt;/form&gt;
+    {% endif %}
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="常用对象和属性">常用对象和属性</h2><p>根据 <a href="https://shopify.dev/docs/api/liquid" target="_blank" rel="noreferrer">Shopify Liquid 文档</a>  的参考，以下是一些常用的对象：</p>
+<h3 id="全局对象">全局对象</h3><pre><code>&lt;!-- 商店信息 --&gt;
+{{ shop.name }}              &lt;!-- 商店名称 --&gt;
+{{ shop.email }}             &lt;!-- 商店邮箱 --&gt;
+{{ shop.currency }}          &lt;!-- 商店货币 --&gt;
+ 
+&lt;!-- 页面信息 --&gt;
+{{ page_title }}             &lt;!-- 页面标题 --&gt;
+{{ canonical_url }}          &lt;!-- 标准URL --&gt;
+{{ request.page_type }}      &lt;!-- 页面类型 --&gt;
+</code></pre>
+<h3 id="产品对象">产品对象</h3><pre><code>{{ product.title }}          &lt;!-- 产品标题 --&gt;
+{{ product.description }}    &lt;!-- 产品描述 --&gt;
+{{ product.price }}          &lt;!-- 产品价格 --&gt;
+{{ product.vendor }}         &lt;!-- 供应商 --&gt;
+{{ product.type }}           &lt;!-- 产品类型 --&gt;
+{{ product.tags }}           &lt;!-- 产品标签 --&gt;
+{{ product.available }}      &lt;!-- 是否有库存 --&gt;
+{{ product.url }}            &lt;!-- 产品URL --&gt;
+</code></pre>
+<h3 id="客户对象">客户对象</h3><pre><code>{{ customer.first_name }}   &lt;!-- 客户名字 --&gt;
+{{ customer.last_name }}    &lt;!-- 客户姓氏 --&gt;
+{{ customer.email }}        &lt;!-- 客户邮箱 --&gt;
+{{ customer.phone }}        &lt;!-- 客户电话 --&gt;
+{{ customer.accepts_marketing }} &lt;!-- 是否接受营销 --&gt;
+</code></pre>
+<h3 id="购物车对象">购物车对象</h3><pre><code>{{ cart.item_count }}       &lt;!-- 购物车商品数量 --&gt;
+{{ cart.total_price }}      &lt;!-- 购物车总价 --&gt;
+{{ cart.items }}            &lt;!-- 购物车商品列表 --&gt;
+{{ cart.total_weight }}     &lt;!-- 购物车总重量 --&gt;
+</code></pre>
+<h2 id="常用过滤器">常用过滤器</h2><h3 id="字符串过滤器">字符串过滤器</h3><pre><code>{{ "hello world" | upcase }}           &lt;!-- HELLO WORLD --&gt;
+{{ "HELLO WORLD" | downcase }}         &lt;!-- hello world --&gt;
+{{ "hello world" | capitalize }}       &lt;!-- Hello world --&gt;
+{{ product.title | truncate: 50 }}     &lt;!-- 截断到50字符 --&gt;
+{{ product.description | strip_html }} &lt;!-- 移除HTML标签 --&gt;
+</code></pre>
+<h3 id="数字过滤器">数字过滤器</h3><pre><code>{{ product.price | money }}                    &lt;!-- ¥99.00 --&gt;
+{{ product.price | money_without_currency }}   &lt;!-- 99.00 --&gt;
+{{ 1234.56 | round: 1 }}                      &lt;!-- 1234.6 --&gt;
+{{ cart.item_count | plus: 1 }}               &lt;!-- 购物车数量+1 --&gt;
+</code></pre>
+<h3 id="日期过滤器">日期过滤器</h3><pre><code>{{ article.published_at | date: "%Y-%m-%d" }}     &lt;!-- 2023-12-01 --&gt;
+{{ article.published_at | date: "%B %d, %Y" }}    &lt;!-- December 01, 2023 --&gt;
+{{ "now" | date: "%Y年%m月%d日" }}                  &lt;!-- 2023年12月01日 --&gt;
+</code></pre>
+<h3 id="数组过滤器">数组过滤器</h3><pre><code>{{ collection.products | size }}               &lt;!-- 集合中产品数量 --&gt;
+{{ collection.products | first }}              &lt;!-- 第一个产品 --&gt;
+{{ collection.products | last }}               &lt;!-- 最后一个产品 --&gt;
+{{ product.tags | join: ", " }}                &lt;!-- 用逗号连接标签 --&gt;
+{{ product.tags | sort }}                      &lt;!-- 排序标签 --&gt;
+</code></pre>
+<h2 id="实际应用案例">实际应用案例</h2><h3 id="案例1-产品列表页面">案例1：产品列表页面</h3><pre><code>&lt;!-- templates/collection.liquid --&gt;
+&lt;div class="collection-page"&gt;
+  &lt;!-- 集合标题和描述 --&gt;
+  &lt;header class="collection-header"&gt;
+    &lt;h1&gt;{{ collection.title }}&lt;/h1&gt;
+    {% if collection.description != blank %}
+      &lt;p&gt;{{ collection.description }}&lt;/p&gt;
+    {% endif %}
+  &lt;/header&gt;
+ 
+  &lt;!-- 产品网格 --&gt;
+  &lt;div class="products-grid"&gt;
+    {% for product in collection.products %}
+      {% render 'product-card', product: product %}
+    {% else %}
+      &lt;p&gt;这个集合暂时没有产品。&lt;/p&gt;
+    {% endfor %}
+  &lt;/div&gt;
+ 
+  &lt;!-- 分页 --&gt;
+  {% if paginate.pages &gt; 1 %}
+    {% render 'pagination', paginate: paginate %}
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="案例2-购物车抽屉">案例2：购物车抽屉</h3><pre><code>&lt;!-- snippets/cart-drawer.liquid --&gt;
+&lt;div class="cart-drawer" id="cart-drawer"&gt;
+  &lt;div class="cart-header"&gt;
+    &lt;h2&gt;购物车 ({{ cart.item_count }})&lt;/h2&gt;
+    &lt;button class="cart-close" onclick="closeCartDrawer()"&gt;×&lt;/button&gt;
+  &lt;/div&gt;
+ 
+  &lt;div class="cart-items"&gt;
+    {% for item in cart.items %}
+      &lt;div class="cart-item" data-key="{{ item.key }}"&gt;
+        &lt;!-- 商品图片 --&gt;
+        &lt;div class="item-image"&gt;
+          &lt;img src="{{ item.image | image_url: width: 80, height: 80 }}" 
+               alt="{{ item.title | escape }}"&gt;
+        &lt;/div&gt;
+ 
+        &lt;!-- 商品信息 --&gt;
+        &lt;div class="item-details"&gt;
+          &lt;h4&gt;{{ item.product.title }}&lt;/h4&gt;
+          {% unless item.variant.title contains 'Default' %}
+            &lt;p class="variant"&gt;{{ item.variant.title }}&lt;/p&gt;
+          {% endunless %}
+          
+          &lt;!-- 数量和价格 --&gt;
+          &lt;div class="item-quantity"&gt;
+            &lt;input type="number" 
+                   value="{{ item.quantity }}" 
+                   min="0"
+                   data-key="{{ item.key }}"
+                   onchange="updateCartItem(this)"&gt;
+            &lt;span class="item-price"&gt;{{ item.final_line_price | money }}&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    {% else %}
+      &lt;p class="empty-cart"&gt;您的购物车是空的&lt;/p&gt;
+    {% endfor %}
+  &lt;/div&gt;
+ 
+  {% if cart.item_count &gt; 0 %}
+    &lt;div class="cart-footer"&gt;
+      &lt;div class="cart-total"&gt;
+        &lt;strong&gt;总计: {{ cart.total_price | money }}&lt;/strong&gt;
+      &lt;/div&gt;
+      &lt;a href="/checkout" class="checkout-btn"&gt;去结账&lt;/a&gt;
+    &lt;/div&gt;
+  {% endif %}
+&lt;/div&gt;
+</code></pre>
+<h3 id="案例3-博客文章列表">案例3：博客文章列表</h3><pre><code>&lt;!-- templates/blog.liquid --&gt;
+&lt;div class="blog-page"&gt;
+  &lt;header class="blog-header"&gt;
+    &lt;h1&gt;{{ blog.title }}&lt;/h1&gt;
+    {% if blog.description != blank %}
+      &lt;p&gt;{{ blog.description }}&lt;/p&gt;
+    {% endif %}
+  &lt;/header&gt;
+ 
+  &lt;div class="articles-grid"&gt;
+    {% for article in blog.articles %}
+      &lt;article class="article-card"&gt;
+        &lt;!-- 文章特色图片 --&gt;
+        {% if article.image %}
+          &lt;div class="article-image"&gt;
+            &lt;a href="{{ article.url }}"&gt;
+              &lt;img src="{{ article.image | image_url: width: 400, height: 250 }}" 
+                   alt="{{ article.image.alt | escape }}"&gt;
+            &lt;/a&gt;
+          &lt;/div&gt;
+        {% endif %}
+ 
+        &lt;!-- 文章内容 --&gt;
+        &lt;div class="article-content"&gt;
+          &lt;h2&gt;&lt;a href="{{ article.url }}"&gt;{{ article.title }}&lt;/a&gt;&lt;/h2&gt;
+          
+          &lt;!-- 文章元信息 --&gt;
+          &lt;div class="article-meta"&gt;
+            &lt;time&gt;{{ article.published_at | date: "%Y年%m月%d日" }}&lt;/time&gt;
+            {% if article.author != blank %}
+              &lt;span class="author"&gt;作者: {{ article.author }}&lt;/span&gt;
+            {% endif %}
+            {% if article.tags.size &gt; 0 %}
+              &lt;div class="tags"&gt;
+                {% for tag in article.tags %}
+                  &lt;span class="tag"&gt;{{ tag }}&lt;/span&gt;
+                {% endfor %}
+              &lt;/div&gt;
+            {% endif %}
+          &lt;/div&gt;
+ 
+          &lt;!-- 文章摘要 --&gt;
+          &lt;div class="article-excerpt"&gt;
+            {{ article.excerpt | default: article.content | strip_html | truncate: 150 }}
+          &lt;/div&gt;
+ 
+          &lt;a href="{{ article.url }}" class="read-more"&gt;阅读更多&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+    {% endfor %}
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="调试技巧">调试技巧</h2><h3 id="输出变量内容">输出变量内容</h3><pre><code>&lt;!-- 查看对象的所有属性 --&gt;
+&lt;pre&gt;{{ product | json }}&lt;/pre&gt;
+ 
+&lt;!-- 检查变量类型 --&gt;
+{{ product.title | debug }}
+ 
+&lt;!-- 显示变量是否存在 --&gt;
+{% if product.description %}
+  &lt;p&gt;产品有描述&lt;/p&gt;
+{% else %}
+  &lt;p&gt;产品没有描述&lt;/p&gt;
+{% endif %}
+</code></pre>
+<h3 id="使用注释">使用注释</h3><pre><code>{% comment %}
+  这是 Liquid 注释
+  不会在前端显示
+{% endcomment %}
+ 
+{% # 这是单行注释 %}
+</code></pre>
+<h2 id="下一步学习">下一步学习</h2><p>现在您已经掌握了 Liquid 的基础知识，建议继续学习：</p>
+<ol>
+<li><a href="/guides/shopify-handbook/liquid/syntax/">Liquid 语法详解</a> - 深入了解语法规则</li>
+<li><a href="/guides/shopify-handbook/liquid/variables/">变量和对象</a> - 学习变量使用和对象访问</li>
+<li><a href="/guides/shopify-handbook/liquid/filters/">过滤器完全指南</a> - 掌握所有可用的过滤器</li>
+<li><a href="/guides/shopify-handbook/liquid/tags/">标签和控制结构</a> - 学习逻辑控制和循环</li>
+</ol>
+<h2 id="练习建议">练习建议</h2><ol>
+<li><strong>创建一个简单的产品卡片</strong> - 使用上面的示例代码</li>
+<li><strong>修改现有主题</strong> - 尝试修改一些文本和样式</li>
+<li><strong>添加条件逻辑</strong> - 根据产品状态显示不同内容</li>
+<li><strong>使用过滤器</strong> - 格式化价格、日期和文本</li>
+</ol>
+<p>通过这些实际练习，您将更好地理解 Liquid 的工作原理和强大功能！</p>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/troubleshooting/"><span>上一篇</span><strong>Liquid 调试和故障排除</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/liquid/"><span>下一篇</span><strong>Liquid 模板语言指南</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

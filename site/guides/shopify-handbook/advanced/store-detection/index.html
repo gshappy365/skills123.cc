@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>独立站店铺技术栈检测与同行分析 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="独立站店铺技术栈检测与同行分析 做独立站的人多多少少都问过类似问题： “这家店是不是 Shopify？”、“他们用的什么主题？”、“那个特效是插件还是定制开发？“ ——这些不是好奇心，而是 决策依赖 ： 建站团队 用来定主题选型与报">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/store-detection/">
+  <meta property="og:title" content="独立站店铺技术栈检测与同行分析 · Shopify 独立站手册">
+  <meta property="og:description" content="独立站店铺技术栈检测与同行分析 做独立站的人多多少少都问过类似问题： “这家店是不是 Shopify？”、“他们用的什么主题？”、“那个特效是插件还是定制开发？“ ——这些不是好奇心，而是 决策依赖 ： 建站团队 用来定主题选型与报">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>独立站店铺技术栈检测与同行分析</h1>
+        <p>独立站店铺技术栈检测与同行分析 做独立站的人多多少少都问过类似问题： “这家店是不是 Shopify？”、“他们用的什么主题？”、“那个特效是插件还是定制开发？“ ——这些不是好奇心，而是 决策依赖 ： 建站团队 用来定主题选型与报</p>
+      </header>
+      <div class="article-content"><h2 id="独立站店铺技术栈检测与同行分析">独立站店铺技术栈检测与同行分析</h2><p>做独立站的人多多少少都问过类似问题：<strong>“这家店是不是 Shopify？”、“他们用的什么主题？”、“那个特效是插件还是定制开发？“</strong>——这些不是好奇心，而是<strong>决策依赖</strong>：</p>
+<ul>
+<li><strong>建站团队</strong>用来定主题选型与报价</li>
+<li><strong>运营</strong>用来判断对手的运营投入与渠道</li>
+<li><strong>开发</strong>用来反推某个特效 / 功能的实现路径</li>
+<li><strong>投资 / 选品</strong>用来评估市场成熟度与平台分布</li>
+</ul>
+<p>本文按”<strong>用什么工具 → 怎么解读 → 怎么转化为决策 → 合规边界</strong>”展开。文末有 FAQ 与红线清单。</p>
+<blockquote>
+<p><strong>一句结论</strong>：技术栈检测是<strong>起点不是终点</strong>——看见对手用某个主题不代表你也该用，看见竞品装 10 个 App 不代表你也要装。检测的价值在于<strong>给你提供假设来源</strong>，验证仍要看自己店铺数据。</p>
+</blockquote>
+<hr />
+<h2 id="一-检测工具对比">一、检测工具对比</h2><p>不同工具的检测范围与深度差别很大，按需组合使用：</p>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>平台检测</th>
+<th>主题检测</th>
+<th>插件检测</th>
+<th>第三方脚本</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>本站 店铺信息检测工具</td>
+<td>Shopify / WordPress</td>
+<td>✓</td>
+<td>✓</td>
+<td>部分</td>
+<td>中文体验、Shopify 信息更细致</td>
+</tr>
+<tr>
+<td>Wappalyzer</td>
+<td>全平台</td>
+<td>部分</td>
+<td>有限</td>
+<td>✓✓</td>
+<td>覆盖最广，浏览器扩展便捷</td>
+</tr>
+<tr>
+<td>BuiltWith</td>
+<td>全平台</td>
+<td>部分</td>
+<td>有限</td>
+<td>✓✓</td>
+<td>历史数据强，付费版有趋势分析</td>
+</tr>
+<tr>
+<td>Koala Inspector</td>
+<td>仅 Shopify</td>
+<td>✓✓</td>
+<td>✓✓</td>
+<td>✓</td>
+<td>Shopify 专精，能看 App 调用</td>
+</tr>
+<tr>
+<td>手动 View Source</td>
+<td>—</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>完全免费，需要懂 HTML / JS</td>
+</tr>
+</tbody></table>
+<p><strong>推荐组合</strong>：</p>
+<ul>
+<li><strong>快速判断</strong>：“本站工具 + Wappalyzer 浏览器扩展”通常 30 秒得结论</li>
+<li><strong>Shopify 深度分析</strong>：Koala Inspector + 手动 View Source 看 cdn.shopify.com 资源</li>
+<li><strong>市场趋势研究</strong>：BuiltWith 付费版（可看一个细分行业全部 Shopify 站的主题分布）</li>
+</ul>
+<hr />
+<h2 id="二-为什么值得做技术栈分析">二、为什么值得做技术栈分析</h2><table>
+<thead>
+<tr>
+<th>角色</th>
+<th>主要诉求</th>
+<th>决策示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>建站团队</td>
+<td>主题选型、报价依据</td>
+<td>看到对手用 Dawn + 5 个 App 实现 → 给客户的方案就有了对照</td>
+</tr>
+<tr>
+<td>运营 / 投放</td>
+<td>判断对手投入</td>
+<td>装了 Klaviyo + Yotpo + Recharge 通常预算较高</td>
+</tr>
+<tr>
+<td>开发</td>
+<td>反推某个功能实现</td>
+<td>看到对手用了 Tapcart → 知道是 PWA / 移动 App 方案</td>
+</tr>
+<tr>
+<td>选品 / 投资</td>
+<td>评估市场成熟度</td>
+<td>一个细分品类 80% 用 Shopify Plus → 已是成熟市场</td>
+</tr>
+<tr>
+<td>品牌 / 设计</td>
+<td>视觉趋势研究</td>
+<td>头部品牌都改用极简白底 → 视觉风向</td>
+</tr>
+</tbody></table>
+<p><strong>反过来，以下场景不值得做技术检测</strong>：</p>
+<ul>
+<li>你刚有想法，连定位都没定 → 先解决”做什么”</li>
+<li>你的目标是抄一家爆款 → 多数特效是组合 + 内容，看 App 看不到品牌力</li>
+<li>检测一次后不持续追踪 → 工具栈每 6 个月会更新一次</li>
+</ul>
+<hr />
+<h2 id="三-本站工具-店铺信息检测">三、本站工具：店铺信息检测</h2><p>我们开发的 <a href="/guides/shopify-handbook/tools/whatshop/">店铺信息检测工具</a> 可以快速识别任何网站的 Shopify / WordPress 信息。</p>
+<h3 id="3-1-工具能检测什么">3.1 工具能检测什么</h3><table>
+<thead>
+<tr>
+<th>信息类别</th>
+<th>Shopify 站点</th>
+<th>WordPress 站点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>平台识别</td>
+<td>✓ 含版本</td>
+<td>✓ 含核心版本</td>
+</tr>
+<tr>
+<td>主题</td>
+<td>名称 + 版本 + 商店链接</td>
+<td>名称 + 版本 + 库链接</td>
+</tr>
+<tr>
+<td>店铺基础</td>
+<td>店名、国家、货币、语言、CDN、自定义域名</td>
+<td>站点标题</td>
+</tr>
+<tr>
+<td>电商功能</td>
+<td>自动识别</td>
+<td>WooCommerce 检测</td>
+</tr>
+<tr>
+<td>插件</td>
+<td>—</td>
+<td>已安装插件列表</td>
+</tr>
+<tr>
+<td>多语言</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>SEO 插件</td>
+<td>—</td>
+<td>✓</td>
+</tr>
+</tbody></table>
+<h3 id="3-2-使用流程">3.2 使用流程</h3><ol>
+<li>访问 <a href="/guides/shopify-handbook/tools/whatshop/">店铺信息检测工具</a></li>
+<li>输入目标店铺 URL（如 <code>https://example.com</code>）</li>
+<li>点击”检测”，几秒内返回结果</li>
+<li>导出 / 截图保存到你的竞品分析表</li>
+</ol>
+<h3 id="3-3-检测原理-开发者参考">3.3 检测原理（开发者参考）</h3><p><strong>Shopify 识别依据</strong>（任一命中即判定）：</p>
+<ul>
+<li>HTML 源码包含 <code>cdn.shopify.com</code> 资源引用</li>
+<li><code>window.Shopify</code> 全局对象存在</li>
+<li>HTTP 响应头含 <code>X-Shopify-Stage</code></li>
+<li>资源路径形如 <code>/cdn/shop/t/&lt;theme-id&gt;/assets/</code></li>
+</ul>
+<p><strong>WordPress 识别依据</strong>：</p>
+<ul>
+<li>存在 <code>/wp-content/</code> 或 <code>/wp-includes/</code> 路径</li>
+<li>HTML 含 <code>&lt;meta name="generator" content="WordPress ..."&gt;</code></li>
+<li>加载 <code>wp-includes/js/jquery/jquery.js</code> 等核心脚本</li>
+</ul>
+<p><strong>主题识别</strong>：从 CSS / JS 资源路径（如 <code>/themes/dawn/assets/</code>）或 <code>theme_id</code> 反查 Shopify Theme Store。</p>
+<hr />
+<h2 id="四-检测结果如何转化为决策">四、检测结果如何转化为决策</h2><h3 id="4-1-创建竞品技术档案">4.1 创建竞品技术档案</h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>记录内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>基础</td>
+<td>域名、平台（Shopify Plus / Basic / WooCommerce）、主题名 + 版本</td>
+</tr>
+<tr>
+<td>核心 App</td>
+<td>评论（Yotpo / Loox / Stamped）、订阅（Recharge）、邮件（Klaviyo / Omnisend）、忠诚度（Smile / LoyaltyLion）</td>
+</tr>
+<tr>
+<td>运营信号</td>
+<td>多币种 / 多语言、Sticky cart、Bundle、Wishlist、AR 预览</td>
+</tr>
+<tr>
+<td>流量信号</td>
+<td>装了哪些追踪 Pixel（GA4、TikTok、Meta、Pinterest、Snap）</td>
+</tr>
+<tr>
+<td>结账信号</td>
+<td>Shop Pay、Apple Pay、PayPal、本地支付（如 Klarna）</td>
+</tr>
+</tbody></table>
+<h3 id="4-2-建立比较矩阵">4.2 建立比较矩阵</h3><p>5–8 家直接竞品做成表格，横轴技术维度、纵轴竞品名。<strong>重点看共同点和异常点</strong>——</p>
+<ul>
+<li>80% 的对手都装了某个 App → 行业标配，你大概率也需要</li>
+<li>只有 1 家装了某个 App → 可能是创新尝试，值得跟踪效果</li>
+<li>全部不装的 → 这个方向可能并不重要</li>
+</ul>
+<h3 id="4-3-转化为下一步动作">4.3 转化为下一步动作</h3><table>
+<thead>
+<tr>
+<th>发现</th>
+<th>可能的行动</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>头部对手 80% 用 Shopify Plus</td>
+<td>评估自己是否到了 Plus 门槛（参见 Shopify Plus 价值评估）</td>
+</tr>
+<tr>
+<td>主流主题集中在 Dawn / Impulse / Prestige</td>
+<td>选型时优先考虑这几个</td>
+</tr>
+<tr>
+<td>对手都装 Klaviyo</td>
+<td>EDM 已是标配 → 参见 营销自动化实践</td>
+</tr>
+<tr>
+<td>对手装了 AR 预览 / 3D</td>
+<td>视觉差异化已经卷起来了</td>
+</tr>
+<tr>
+<td>头部对手都没做 GEO</td>
+<td>这是机会窗口（参见 GEO 优化）</td>
+</tr>
+</tbody></table>
+<hr />
+<h2 id="五-合规与红线-重要">五、合规与红线（重要）</h2><p>技术栈检测本身合法（公开信息），但<strong>以下行为存在法律 / 合规风险</strong>：</p>
+<p>❌ <strong>不要做</strong>：</p>
+<ul>
+<li><strong>抓取产品库</strong>（价格、SKU、库存）用于商业用途——多数国家有数据库权利保护</li>
+<li><strong>抓取用户评论 / UGC</strong> 直接复制到自己店铺——侵犯著作权</li>
+<li><strong>抓取客户邮箱 / 联系方式</strong> 用于推销——违反 GDPR / CAN-SPAM / 各地隐私法</li>
+<li><strong>模拟登录</strong> 或绕过密码保护——可能构成”未授权访问”</li>
+<li><strong>暴力扫描 robots.txt 禁止路径</strong>——法律灰色地带</li>
+</ul>
+<p>✅ <strong>可以做</strong>：</p>
+<ul>
+<li>看公开页面源代码（任何浏览器 View Source 都能看）</li>
+<li>用工具检测平台、主题、插件（这些信息在 HTML 里就是公开的）</li>
+<li>浏览公开产品页学习展示方式</li>
+<li>订阅对手邮件查看营销节奏（用真实邮箱，不要伪造）</li>
+</ul>
+<p><strong>总原则</strong>：<strong>做对手做不到的事（创新）比做对手做过的事（模仿）更值得</strong>。技术检测是辅助，不是核心竞争力来源。</p>
+<hr />
+<h2 id="六-常见问题-faq">六、常见问题（FAQ）</h2><p><strong>Q：为什么有时候检测不出主题名？</strong> A：有三种原因：（1）主题是<strong>完全定制</strong>的（无 Theme Store 来源）；（2）开发者<strong>改了主题命名</strong>；（3）站点用了 <strong>Hydrogen / Headless</strong> 架构（无传统 Liquid 主题）。后者在 Shopify Plus 大客户中越来越常见，见 <a href="/guides/shopify-handbook/advanced/shopify-headless-intro/">Shopify Headless 介绍</a>。</p>
+<p><strong>Q：能检测出店铺月销吗？</strong> A：<strong>不能直接看</strong>。任何号称能”精确预估销量”的工具都是基于流量 + 行业平均转化率的反推，误差通常 30%+。可以看的代理指标：商品数量、评论增速、社媒粉丝、广告投放力度。</p>
+<p><strong>Q：检测显示是 “Online Store 2.0” 是什么意思？</strong> A：Shopify 在 2021 年推出的新主题架构，支持 Section Everywhere、App Block、JSON 模板等。<strong>OS 1.0 → OS 2.0 是迁移工作</strong>，老主题不会自动升级。详见 <a href="/guides/shopify-handbook/advanced/shopify-theme-development-guide/">Shopify 主题开发指南</a>。</p>
+<p><strong>Q：如何判断对手是 Shopify Plus 还是普通 Shopify？</strong> A：几个信号——（1）使用 <strong>Shopify Scripts</strong>（结账定制脚本，仅 Plus）；（2）域名带 <code>.myshopify.com</code> 但有特殊结账定制；（3）多店铺架构（同品牌多国版本）；（4）使用 <strong>Launchpad</strong> / <strong>Flow</strong> 自动化。普通 Plan 通常没这些。</p>
+<p><strong>Q：发现对手的主题特别好看，我能直接装一样的吗？</strong> A：可以装同款，但<strong>视觉同质化竞争劣势更大</strong>。建议：买同款主题做底，自己定制差异化首页 / 导航 / 产品页。<strong>用户记得的是品牌，不是主题</strong>。</p>
+<p><strong>Q：能看到对手的库存或销量数据吗？</strong> A：<strong>不能合法获取</strong>。某些工具号称能”反推”，本质是基于产品评论增速、社媒提及频率等代理指标——参考意义有限，且边界模糊（接近合规红线）。</p>
+<p><strong>Q：竞品分析多久做一次？</strong> A：建议<strong>季度一次</strong>完整盘点 + <strong>月度</strong> 关注 1–2 个核心对手的变化。技术栈每 6 个月有显著迭代，运营动作（新 App、新页面、新功能）每月都可能变。</p>
+<hr />
+<h2 id="七-延伸阅读">七、延伸阅读</h2><ul>
+<li><a href="/guides/shopify-handbook/advanced/shopify-plus/">Shopify Plus 价值评估</a> — 判断自己是否需要升级</li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-theme-development-guide/">Shopify 主题开发指南</a> — 主题架构与定制深度</li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-headless-intro/">Shopify Headless 介绍</a> — 检测不出主题的”无头”架构</li>
+<li><a href="/guides/shopify-handbook/advanced/independent-site-ongoing-operations/">独立站不是”一锤子买卖”</a> — 技术分析后还要持续运营</li>
+<li><a href="/guides/shopify-handbook/advanced/store-diagnosis-consulting/">店铺诊断与优化建议</a> — 自己店铺的健康体检</li>
+<li><a href="/guides/shopify-handbook/advanced/marketing-automation/">营销自动化实践</a> — 对手都装的 App 是不是也该装</li>
+</ul>
+<hr />
+<blockquote>
+<p><strong>小结</strong>：技术栈检测是<strong>轻成本、高信息密度</strong>的市场调研方式，但它的价值在于<strong>形成假设</strong>，不在于<strong>直接抄答案</strong>。最值得记住的一句话：<strong>对手用什么不重要，对手为什么用什么才重要</strong>。把”用了什么”翻译成”为了解决什么问题”，再判断你是否有同样的问题。</p>
+</blockquote>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/independent-site-ongoing-operations/"><span>上一篇</span><strong>独立站不是「一锤子买卖」：持续运营与典型误区</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/independent-site-pricing-expectations/"><span>下一篇</span><strong>独立站技术服务报价预期与需求评估说明</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify 主题目录结构（Liquid 文件）详解 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify 主题目录结构（Liquid 文件）详解 Shopify 使用 Liquid 模板语言来构建主题。每个 Shopify 主题都由多个文件夹组成，其中的 .liquid 文件是页面渲染的核心。本篇将为你详细介绍 Shop">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/basic/shopify-folders/">
+  <meta property="og:title" content="Shopify 主题目录结构（Liquid 文件）详解 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify 主题目录结构（Liquid 文件）详解 Shopify 使用 Liquid 模板语言来构建主题。每个 Shopify 主题都由多个文件夹组成，其中的 .liquid 文件是页面渲染的核心。本篇将为你详细介绍 Shop">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/basic/">入门基础</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">入门基础 · 整理与归档</p>
+        <h1>Shopify 主题目录结构（Liquid 文件）详解</h1>
+        <p>Shopify 主题目录结构（Liquid 文件）详解 Shopify 使用 Liquid 模板语言来构建主题。每个 Shopify 主题都由多个文件夹组成，其中的 .liquid 文件是页面渲染的核心。本篇将为你详细介绍 Shop</p>
+      </header>
+      <div class="article-content"><h2 id="shopify-主题目录结构-liquid-文件-详解">Shopify 主题目录结构（Liquid 文件）详解</h2><p>Shopify 使用 <a href="https://shopify.dev/docs/api/liquid" target="_blank" rel="noreferrer">Liquid</a>  模板语言来构建主题。每个 Shopify 主题都由多个文件夹组成，其中的 <code>.liquid</code> 文件是页面渲染的核心。本篇将为你详细介绍 Shopify 主题中主要目录及其 Liquid 文件的用途与开发建议。</p>
+<h2 id="视频教程">📺 视频教程</h2><p>配套视频教程：<a href="https://www.bilibili.com/video/BV1ebLczjEHs/" target="_blank" rel="noreferrer">Shopify 主题目录结构详解 - B站视频</a> </p>
+<p>通过视频和文档结合学习，能够更好地理解 Shopify 主题的目录结构和开发流程。</p>
+<hr />
+<h2 id="目录结构">目录结构</h2><p>2025最新主题代码目录有8个文件夹，分别具有不同的功能和用途。主题必须使用以下标准目录结构，不支持列出的子目录以外的子目录。</p>
+<p><strong>Shopify 主题目录结构</strong></p>
+<ul>
+<li><ul>
+<li><ul>
+<li>theme.liquid</li>
+<li>password.liquid</li>
+</ul>
+</li>
+<li><ul>
+<li>404.json</li>
+<li>index.json</li>
+<li>product.json</li>
+<li>collection.json</li>
+<li>article.json</li>
+<li>blog.json</li>
+<li><ul>
+<li>account.json</li>
+<li>login.json</li>
+<li>register.json</li>
+</ul>
+</li>
+<li><ul>
+<li>custom.json</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li>header.liquid</li>
+<li>footer.liquid</li>
+<li>main-product.liquid</li>
+<li>featured-collection.liquid</li>
+</ul>
+</li>
+<li><ul>
+<li>slide.liquid</li>
+<li>text-block.liquid</li>
+</ul>
+</li>
+<li><ul>
+<li>product-card.liquid</li>
+<li>price.liquid</li>
+</ul>
+</li>
+<li><ul>
+<li>base.css</li>
+<li>theme.js</li>
+<li>logo.png</li>
+</ul>
+</li>
+<li><ul>
+<li>settings_schema.json</li>
+<li>settings_data.json</li>
+</ul>
+</li>
+<li><ul>
+<li>en.default.json</li>
+<li>en.default.schema.json</li>
+<li>zh-CN.json</li>
+<li>zh-CN.schema.json</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="layout-布局目录">📁 Layout 布局目录</h2><h3 id="常见文件">常见文件：</h3><ul>
+<li><code>theme.liquid</code></li>
+<li><code>password.liquid</code></li>
+</ul>
+<h3 id="作用">作用：</h3><p>布局是主题的基础，所有模板都通过它呈现。默认布局文件是 <code>theme.liquid</code>，遵循标准 HTML 文档的结构。</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    ...
+    {{ content_for_header }}
+    ...
+  &lt;/head&gt;
+ 
+  &lt;body&gt;
+    ...
+    {{ content_for_layout }}
+    ...
+  &lt;/body&gt;
+ &lt;/html&gt;
+</code></pre>
+<p><code>password.liquid</code> 则为 “<strong>密码保护页面</strong>”的内容。</p>
+<h3 id="布局文件的关键对象">布局文件的关键对象：</h3><h4 id="content-for-header"><code>{{ content_for_header }}</code></h4><ul>
+<li><strong>必须</strong>放置在 HTML <code>&lt;head&gt;</code> 标签内</li>
+<li>用于动态加载 Shopify 所需的脚本（如 hCaptcha、Shopify 应用等）</li>
+<li>开发者不应尝试修改或解析此对象</li>
+</ul>
+<h4 id="content-for-layout"><code>{{ content_for_layout }}</code></h4><ul>
+<li>动态输出每个模板的内容</li>
+<li>需要在 <code>&lt;body&gt;</code> 标签内添加对它的引用</li>
+<li>这里是各个页面模板内容的插入点</li>
+</ul>
+<h3 id="开发建议">开发建议：</h3><ul>
+<li>使用 <code>{{ content_for_header }}</code> 插入 Shopify 自动注入的脚本</li>
+<li>用 <code>{{ content_for_layout }}</code> 保留页面具体内容的位置</li>
+<li>可以通过修改该文件，应用于所有非结帐页面</li>
+</ul>
+<hr />
+<h2 id="templates-模板目录">📁 Templates 模板目录</h2><h3 id="常见文件">常见文件：</h3><ul>
+<li><code>404.json</code>：404 页面</li>
+<li><code>index.json</code>：主页模板</li>
+<li><code>product.json</code>：产品详情页</li>
+<li><code>collection.json</code>：集合页面</li>
+<li><code>article.json</code>：文章页面</li>
+<li><code>blog.json</code>：博客页面</li>
+<li><code>cart.json</code>：购物车页面</li>
+<li><code>search.json</code>：搜索页</li>
+<li><code>page.json</code>：自定义页面</li>
+<li><code>customers/</code>：客户相关页面<ul>
+<li><code>account.json</code>：客户账户页</li>
+<li><code>login.json</code>：登录页</li>
+<li><code>register.json</code>：注册页</li>
+</ul>
+</li>
+<li><code>metaobject/</code>：元对象模板</li>
+</ul>
+<h3 id="可使用的模板类型">可使用的模板类型：</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>404</td>
+<td>渲染当客户输入商店的无效 URL 时显示的页面内容</td>
+</tr>
+<tr>
+<td>article</td>
+<td>渲染文章页面，包含文章的全部内容以及可选的客户评论部分</td>
+</tr>
+<tr>
+<td>blog</td>
+<td>渲染博客页面，列出博客中的所有文章</td>
+</tr>
+<tr>
+<td>cart</td>
+<td>渲染购物车页面</td>
+</tr>
+<tr>
+<td>collection</td>
+<td>渲染集合页面，显示产品列表</td>
+</tr>
+<tr>
+<td>customers</td>
+<td>渲染客户相关页面（登录、注册、账户等）</td>
+</tr>
+<tr>
+<td>gift_card</td>
+<td>渲染礼品卡页面</td>
+</tr>
+<tr>
+<td>index</td>
+<td>渲染商店主页</td>
+</tr>
+<tr>
+<td>list-collections</td>
+<td>渲染所有集合的列表页面</td>
+</tr>
+<tr>
+<td>page</td>
+<td>渲染自定义页面</td>
+</tr>
+<tr>
+<td>password</td>
+<td>渲染密码保护页面</td>
+</tr>
+<tr>
+<td>product</td>
+<td>渲染产品详情页</td>
+</tr>
+<tr>
+<td>search</td>
+<td>渲染搜索结果页面</td>
+</tr>
+</tbody></table>
+<p>主题模板有两种不同的文件类型：<code>JSON</code> 和 <code>Liquid</code>。这些模板文件类型可用于构建多种模板类型，每种模板类型代表商家在线商店中的一种内容类型。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JSON</td>
+<td>JSON 模板是带有文件扩展名的数据文件。这些模板可让您轻松地使用来自部分.json的内容填充模板。商家可以使用模板编辑器添加、删除或重新排列部分。如果您使用 JSON 模板，则任何 HTML 或 Liquid 代码都需要包含在模板引用的部分中。 JSON 模板</td>
+</tr>
+<tr>
+<td>Liquid</td>
+<td>Liquid 模板是Liquid标记文件，.liquid文件扩展名为。您可以直接将 Liquid 和 HTML 添加到 Liquid 模板中。Liquid 模板</td>
+</tr>
+</tbody></table>
+<h3 id="作用">作用：</h3><p>模板控制的是“<strong>页面类型的整体结构</strong>”。它会根据页面路径自动加载对应模板，并通过 <code>section</code> 渲染具体内容。</p>
+<h3 id="开发建议">开发建议：</h3><ul>
+<li>保持模板逻辑简洁，内容交给 Section 处理。</li>
+<li>使用 <code>template.[name].json</code>（Online Store 2.0）代替传统 <code>.liquid</code> 的灵活布局。</li>
+</ul>
+<hr />
+<h2 id="sections-分区目录">📁 Sections 分区目录</h2><h3 id="常见文件">常见文件：</h3><ul>
+<li><code>header.liquid</code>、<code>footer.liquid</code></li>
+<li><code>main-product.liquid</code></li>
+<li><code>main-collection-product-grid.liquid</code></li>
+<li><code>featured-collection.liquid</code></li>
+<li><code>rich-text.liquid</code>、<code>image-banner.liquid</code></li>
+</ul>
+<h3 id="作用">作用：</h3><p><strong>Sections 是构建页面的主要模块化单元</strong>，支持自定义排序、显示与隐藏。支持全局（所有页）或基于模板渲染的局部块。</p>
+<h3 id="sections-内容构成">Sections 内容构成：</h3><h4 id="1-主内容">1. 主内容</h4><p>可以包含任何 HTML 或 Liquid 内容。section 可以访问全局对象、标签和过滤器，以及特定的 <code>section</code> 和 <code>block</code> 对象。</p>
+<h4 id="2-资产">2. 资产</h4><p>section 可以使用特定的 Liquid 标签 <code>{% javascript %}</code> 和 <code>{% stylesheet %}</code> 来捆绑自己的 JavaScript 和样式表资产。</p>
+<h4 id="3-schema">3. Schema</h4><p>section 支持 <code>{% schema %}</code> Liquid 标签，用于定义 section 的属性和设置，如名称、标签、类、限制、设置、最大 section 数、预设、默认值、语言环境、启用于和禁用于等。</p>
+<h3 id="完整示例">完整示例：</h3><pre><code>// CSS 样式
+{{ 'section-main-page.css' | asset_url | stylesheet_tag }}
+ 
+{%- style -%}
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+ 
+// 主内容
+&lt;div class="page-width section-{{ section.id }}-padding"&gt;
+  {% if section.settings.show_title %}
+    &lt;h1&gt;
+      {{ page.title | escape }}
+    &lt;/h1&gt;
+  {% endif %}
+&lt;/div&gt;
+ 
+// Schema 配置
+{% schema %}
+  {
+    "name": "t:sections.main-page.name",
+    "tag": "section",
+    "class": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:sections.all.padding.section_padding_heading"
+      }, {
+        "type": "checkbox",
+        "id": "show_title",
+        "label": "Show title"
+      }
+    ]
+  }
+{% endschema %}
+</code></pre>
+<h3 id="开发建议">开发建议：</h3><ul>
+<li>利用 <code>schema</code> 字段配置设置项，支持 Shopify 主题编辑器（Theme Editor）</li>
+<li>合理使用 <code>settings</code> 与 <code>blocks</code> 提高模块灵活性</li>
+<li>使用 <code>{% stylesheet %}</code> 和 <code>{% javascript %}</code> 标签管理 section 专用资源</li>
+</ul>
+<h2 id="snippets-小片段目录">📁 Snippets 小片段目录</h2><h3 id="常见文件">常见文件：</h3><ul>
+<li><code>product-card.liquid</code></li>
+<li><code>price.liquid</code></li>
+</ul>
+<h3 id="作用">作用：</h3><p><strong>Snippets 主要目的是提供代码复用的功能</strong>，通常用于页面的局部渲染。</p>
+<h3 id="特点">特点：</h3><ul>
+<li><strong>无独立设置</strong>：snippets 没有自己的设置，但可以访问嵌入它们的 sections 的设置</li>
+<li><strong>灵活性</strong>：snippets 可以在不同的 sections、templates 和 layout 文件中引用</li>
+<li><strong>传递信息</strong>：sections 可以将信息传递给 snippets，确保正确显示数据</li>
+</ul>
+<h3 id="示例-创建一个产品卡片-并在多个页面中显示">示例：创建一个产品卡片，并在多个页面中显示</h3><pre><code>&lt;!-- snippets/product-card.liquid --&gt;
+&lt;div class="product-card"&gt;
+  &lt;img src="{{ product.featured_image | img_url: 'large' }}" alt="{{ product.title }}"&gt;
+  &lt;h3&gt;{{ product.title }}&lt;/h3&gt;
+  &lt;p&gt;{{ product.price | money }}&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<p>在需要的地方引用：</p>
+<pre><code>{% render 'product-card', product: product %}
+</code></pre>
+<h3 id="开发建议">开发建议：</h3><ul>
+<li>使用 <code>{% render 'snippet-name' %}</code> 引用 snippets（推荐）</li>
+<li>可以通过参数传递数据给 snippets</li>
+<li>保持 snippets 功能单一，便于复用和维护</li>
+</ul>
+<h2 id="config-配置目录">📁 Config 配置目录</h2><h3 id="常见文件">常见文件：</h3><ul>
+<li><code>settings_schema.json</code></li>
+<li><code>settings_data.json</code></li>
+</ul>
+<h3 id="作用">作用：</h3><p><strong>Config 目录包含主题的配置文件</strong>。配置文件定义主题编辑器的 Theme settings 区域中的设置，并存储其值。</p>
+<h3 id="配置文件类型">配置文件类型：</h3><h4 id="settings-schema-json"><code>settings_schema.json</code></h4><p>控制主题编辑器的 <strong>Theme settings</strong>（主题设置）区域的组织和内容。模板编辑器中的所有设置选择都保存在 <code>settings_data.json</code> 中。</p>
+<p>示例：</p>
+<pre><code>{
+  "name": "Colors",
+  "settings": [
+    {
+      "type": "color",
+      "id": "color_page_bg",
+      "label": "Page background",
+      "default": "#FFFFFF"
+    }
+  ]
+}
+</code></pre>
+<h4 id="settings-data-json"><code>settings_data.json</code></h4><p>包含基于 <code>settings_schema.json</code> 中包含的设置的主题设置值。每当在模板编辑器中更改设置值时，此文件会自动更新。</p>
+<p>示例：</p>
+<pre><code>{
+  "color_page_bg": "#FFFFFF"
+}
+</code></pre>
+<h3 id="在-liquid-中访问设置">在 Liquid 中访问设置：</h3><pre><code>{% if settings.favicon != blank %}
+  &lt;link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}"&gt;
+{% endif %}
+</code></pre>
+<h3 id="开发建议">开发建议：</h3><ul>
+<li>使用 <code>settings_schema.json</code> 定义设置项，支持 Shopify 主题编辑器（Theme Editor）</li>
+<li>通过 <code>settings</code> 对象在 Liquid 中访问所有主题设置</li>
+<li>合理设置默认值，提升用户体验</li>
+</ul>
+<h2 id="assets-资源目录">📁 Assets 资源目录</h2><h3 id="常见文件">常见文件：</h3><ul>
+<li><code>base.css</code>、<code>theme.css</code></li>
+<li><code>theme.js</code></li>
+<li><code>logo.png</code>、图片文件</li>
+</ul>
+<h3 id="作用">作用：</h3><p><strong>Assets 目录包含主题中使用的所有资源</strong>，包括图像、CSS 和 JavaScript 文件等静态资源。</p>
+<h3 id="使用方法">使用方法：</h3><p>使用 <code>asset_url</code> Liquid URL 过滤器在模板中引用资源：</p>
+<pre><code>{{ 'base.css' | asset_url | stylesheet_tag }}
+</code></pre>
+<p>输出：</p>
+<pre><code>&lt;link href="//polinas-potent-potions.myshopify.com/cdn/shop/t/4/assets/base.css?v=88290808517547527771663872409" rel="stylesheet" type="text/css" media="all" /&gt;
+</code></pre>
+<h3 id="开发建议">开发建议：</h3><ul>
+<li>使用 <code>asset_url</code> 过滤器引用静态资源</li>
+<li>使用 <code>stylesheet_tag</code> 和 <code>script_tag</code> 过滤器包装 CSS 和 JS 文件</li>
+<li>合理组织资源文件，便于维护和优化</li>
+</ul>
+<h2 id="locales-本地化目录">📁 Locales 本地化目录</h2><h3 id="常见文件">常见文件：</h3><ul>
+<li><code>en.default.json</code></li>
+<li><code>en.default.schema.json</code></li>
+<li><code>zh-CN.json</code></li>
+<li><code>zh-CN.schema.json</code></li>
+</ul>
+<h3 id="作用">作用：</h3><p><strong>Locales 目录提供多语言支持</strong>，允许开发者将主题和主题编辑器中的文本内容翻译成多种语言，方便国际商家和客户使用。集中管理文本内容，商家可以在 Shopify 语言编辑器中轻松编辑这些重复出现的文本。</p>
+<h3 id="文件类型">文件类型：</h3><h4 id="json-文件"><code>.json</code> 文件</h4><ul>
+<li>文件扩展名为 <code>.json</code>，用于控制<strong>前端内容的翻译</strong></li>
+<li>商家可以通过 Shopify 语言编辑器编辑这些翻译</li>
+</ul>
+<h4 id="schema-json-文件"><code>.schema.json</code> 文件</h4><ul>
+<li>文件扩展名为 <code>.schema.json</code>，用于控制<strong>主题编辑器设置的翻译</strong></li>
+<li>为主题编辑器中的设置标签和说明提供多语言支持</li>
+</ul>
+<h3 id="默认语言文件">默认语言文件：</h3><ul>
+<li>必须指定一个默认语言文件，格式为 <code>*.default.json</code>，其中 <code>*</code> 是选定的语言代码</li>
+<li>默认情况下，大多数主题使用 <code>en.default.json</code>，将主题的默认语言设置为英语</li>
+</ul>
+<h3 id="开发建议">开发建议：</h3><ul>
+<li>使用 <code>{{ 'key' | t }}</code> 在 Liquid 中引用本地化文本</li>
+<li>为所有用户可见的文本提供翻译键</li>
+<li>保持翻译键名称的语义化和一致性</li>
+</ul>
+<h2 id="blocks-区块目录-2025新增">📁 Blocks 区块目录(2025新增)</h2><p><a href="https://shopify.dev/docs/storefronts/themes/architecture/blocks" target="_blank" rel="noreferrer">官方文档连接</a> </p>
+<h3 id="常见文件">常见文件：</h3><ul>
+<li><code>slide.liquid</code></li>
+<li><code>text-block.liquid</code></li>
+</ul>
+<h3 id="作用">作用：</h3><p><strong>Blocks 是可复用的模块化单元</strong>，支持动态配置和动态渲染。 Blocks 允许开发者将区块拆分成更小、可重复使用的 Liquid 块，从而创建灵活的布局。每个区块都有各自的设置，并且可以在区块内进行添加、移除和重新排序。</p>
+<h3 id="三种类型的-blocks">三种类型的 Blocks：</h3><h4 id="1-theme-blocks-主题块">1. Theme Blocks（主题块）</h4><ul>
+<li>在 <code>/blocks</code> 文件夹中作为独立的 Liquid 文件创建</li>
+<li>可以在主题的多个 Section 中重复使用</li>
+<li>提供最大的灵活性，允许嵌套其他 blocks</li>
+<li>可以创建”Static blocks”，这些 blocks 在父 block 或 section 中的特定位置固定显示，商家可以隐藏但不能删除</li>
+</ul>
+<h4 id="2-section-blocks-分区块">2. Section Blocks（分区块）</h4><ul>
+<li>在 Section 的 Liquid 文件中直接定义</li>
+<li>在 Section 的 <code>{% schema %}</code> 标签中配置</li>
+<li>仅限于在定义它们的 Section 中使用，不能在其他地方使用</li>
+<li>只支持单层结构，不能嵌套</li>
+</ul>
+<h4 id="3-app-blocks-应用程序块">3. App Blocks（应用程序块）</h4><ul>
+<li>由商家安装的 Shopify 应用提供</li>
+<li>允许商家在主题中添加特定于应用的功能，如评论、评分或自定义表单</li>
+<li>这些功能由商家在其商店中安装的 Shopify 应用定义</li>
+</ul>
+<h3 id="添加应用程序块支持示例">添加应用程序块支持示例：</h3><pre><code>{% schema %}
+{
+  "name": "Slide",
+  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+  // Rest of your Schema code
+}
+{% endschema %}
+</code></pre>
+<h3 id="开发建议">开发建议：</h3><ul>
+<li>合理选择 block 类型，Theme Blocks 适合复用，Section Blocks 适合专用功能</li>
+<li>使用 <code>{ "type": "@app" }</code> 在 schema 中添加应用程序块支持</li>
+<li>为 blocks 设计清晰的设置选项，提升用户体验</li>
+</ul>
+<p><a href="/guides/shopify-handbook/basic/shopify-blocks/">详细了解Block</a></p>
+<hr />
+<h2 id="总结">总结</h2><table>
+<thead>
+<tr>
+<th>文件夹</th>
+<th>用途</th>
+<th>是否可视化编辑</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>layout</td>
+<td>页面框架，包含头部和主内容插槽</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>templates</td>
+<td>页面类型的整体结构</td>
+<td>✅（Online Store 2.0）</td>
+</tr>
+<tr>
+<td>sections</td>
+<td>页面构建模块，可复用和动态配置</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>blocks</td>
+<td>可复用的区块/程序块/主题块</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>snippets</td>
+<td>可复用的小片段</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>config</td>
+<td>设置 schema 和数据持久化</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>assets</td>
+<td>主题静态资源</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>locales</td>
+<td>本地化翻译</td>
+<td>✅</td>
+</tr>
+</tbody></table>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/inventory-management-basics/"><span>上一篇</span><strong>Shopify 库存管理的核心概念</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/basic/shopify-blocks/"><span>下一篇</span><strong>Shopify 主题中的块(blocks)</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>

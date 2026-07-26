@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shopify App 开发完整指南 · Shopify 独立站手册 · Skills123</title>
+  <meta name="description" content="Shopify App 开发完整指南 Shopify App 是扩展 Shopify 平台能力的标准方式——可以是 Shopify App Store 上架的公开应用、单店专用的 Custom App、或服务于内部业务的私有集成。S">
+  <link rel="canonical" href="https://skills123.cc/guides/shopify-handbook/advanced/shopify-app-development/">
+  <meta property="og:title" content="Shopify App 开发完整指南 · Shopify 独立站手册">
+  <meta property="og:description" content="Shopify App 开发完整指南 Shopify App 是扩展 Shopify 平台能力的标准方式——可以是 Shopify App Store 上架的公开应用、单店专用的 Custom App、或服务于内部业务的私有集成。S">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="/assets/css/site.css?v=20260726-3">
+  <link rel="stylesheet" href="/assets/css/shopify-handbook.css?v=20260726-1">
+</head>
+<body>
+  <div class="guide-shell">
+    <header class="site-header guide-site-header">
+      <a class="brand" href="/"><span class="mark">S</span>Skills123</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="/#skill-packages">技能包</a>
+        <a aria-current="page" href="/guides/shopify-handbook/">专题知识库</a>
+        <span>学习路径</span>
+        <span>关于</span>
+      </nav>
+    </header>
+    <main class="guide-article-layout">
+    <nav class="guide-breadcrumb" aria-label="面包屑">
+      <a href="/">Skills123</a><span>/</span>
+      <a href="/guides/shopify-handbook/">专题知识库</a><span>/</span>
+      <a href="/guides/shopify-handbook/advanced/">进阶经营</a>
+    </nav>
+    <article class="guide-article">
+      <header class="article-header">
+        <p class="guide-kicker">进阶经营 · 整理与归档</p>
+        <h1>Shopify App 开发完整指南</h1>
+        <p>Shopify App 开发完整指南 Shopify App 是扩展 Shopify 平台能力的标准方式——可以是 Shopify App Store 上架的公开应用、单店专用的 Custom App、或服务于内部业务的私有集成。S</p>
+      </header>
+      <div class="article-content"><h2 id="shopify-app-开发完整指南">Shopify App 开发完整指南</h2><p>Shopify App 是扩展 Shopify 平台能力的标准方式——可以是 Shopify App Store 上架的公开应用、单店专用的 Custom App、或服务于内部业务的私有集成。Shopify 自 2021 年起对 App 开发架构做了多次重大调整（Online Store 2.0、Checkout Extensibility、Theme App Extensions），现在的 App 开发与早期完全不同。</p>
+<p>本文是 App 开发的体系性入门。深度技术内容（API、Webhook、Functions）见各对应专题文章。</p>
+<blockquote>
+<p>若你在 Cursor / Claude Code / VS Code 等用 AI 辅助开发，推荐启用 <a href="https://shopify.dev/docs/apps/build/ai-toolkit" target="_blank" rel="noreferrer">Shopify AI Toolkit</a> ，本站导读：<a href="/guides/shopify-handbook/advanced/shopify-ai-toolkit/">Shopify AI Toolkit 使用指南</a>。</p>
+</blockquote>
+<h2 id="一-app-类型选择">一、App 类型选择</h2><h3 id="三种主要类型">三种主要类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>分发方式</th>
+<th>审核</th>
+<th>适用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Public App</td>
+<td>Shopify App Store</td>
+<td>必须</td>
+<td>面向所有商家</td>
+</tr>
+<tr>
+<td>Custom App</td>
+<td>单店私有</td>
+<td>否</td>
+<td>单一商家深度定制</td>
+</tr>
+<tr>
+<td>Private App（已废弃）</td>
+<td>单店 API key</td>
+<td>否</td>
+<td>已不推荐，逐步淘汰</td>
+</tr>
+</tbody></table>
+<h3 id="public-app-的两个亚类">Public App 的两个亚类</h3><ul>
+<li><strong>Listed</strong>：在 App Store 公开展示</li>
+<li><strong>Unlisted</strong>：通过私有链接安装（如内部工具、企业客户专用）</li>
+</ul>
+<h3 id="选型决策">选型决策</h3><pre><code>你的 App 是给：
+   ↓
+单一商家 + 内部业务（不上架）
+   → Custom App
+   ↓
+多个客户 + 内部分发（合作伙伴）
+   → Unlisted Public App
+   ↓
+开放给所有 Shopify 商家
+   → Listed Public App（需 App Store 审核）
+</code></pre>
+<h3 id="商业模型差异">商业模型差异</h3><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>Custom App</th>
+<th>Public App</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>收入</td>
+<td>按项目报价</td>
+<td>月费 / 一次性 / 免费</td>
+</tr>
+<tr>
+<td>客户关系</td>
+<td>直接合同</td>
+<td>Shopify 居间</td>
+</tr>
+<tr>
+<td>维护</td>
+<td>客户付费</td>
+<td>月度订阅持续支持</td>
+</tr>
+<tr>
+<td>Shopify 抽成</td>
+<td>0</td>
+<td>0-20%</td>
+</tr>
+</tbody></table>
+<h2 id="二-开发环境搭建">二、开发环境搭建</h2><h3 id="shopify-cli-安装">Shopify CLI 安装</h3><pre><code>npm install -g @shopify/cli @shopify/app
+</code></pre>
+<h3 id="初始化项目">初始化项目</h3><pre><code>shopify app init my-app
+# 选择模板：
+#   - Remix（推荐，Shopify 官方默认）
+#   - Node + Vite + React
+#   - 仅扩展（无后端）
+</code></pre>
+<h3 id="项目结构-remix-模板">项目结构（Remix 模板）</h3><pre><code>my-app/
+├── app/                       # Remix 路由 + 业务逻辑
+│   ├── routes/
+│   ├── shopify.server.ts     # Shopify 连接配置
+│   └── db.server.ts          # 数据库
+├── extensions/                # App Extensions
+│   ├── theme-extension/      # 主题扩展
+│   ├── checkout-extension/   # 结账扩展
+│   ├── admin-extension/      # Admin UI 扩展
+│   └── function/             # Shopify Functions
+├── prisma/                    # 数据库 schema
+├── shopify.app.toml          # App 配置
+└── package.json
+</code></pre>
+<h3 id="本地开发">本地开发</h3><pre><code># 启动开发服务
+shopify app dev
+ 
+# 自动完成：
+# - 创建临时 dev s...
+</code></pre>
+<h2 id="十三-相关教程">十三、相关教程</h2><ul>
+<li><a href="/guides/shopify-handbook/advanced/shopify-api-advanced/">Shopify API 深度应用</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-webhooks-guide/">Shopify Webhook 完整指南</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-scripts/">Shopify Scripts 与 Functions</a></li>
+<li><a href="/guides/shopify-handbook/advanced/headless-commerce-architecture/">Headless Commerce 架构</a></li>
+<li><a href="/guides/shopify-handbook/advanced/shopify-ai-toolkit/">Shopify AI Toolkit</a></li>
+<li><a href="/guides/shopify-handbook/advanced/gdpr-compliance-guide/">GDPR 合规完整指南</a></li>
+<li><a href="https://shopify.dev/docs/apps" target="_blank" rel="noreferrer">Shopify App 官方开发文档</a> </li>
+<li><a href="https://shopify.dev/docs/themes/tools/cli" target="_blank" rel="noreferrer">Shopify CLI</a> </li>
+<li><a href="https://polaris.shopify.com/" target="_blank" rel="noreferrer">Shopify Polaris 设计系统</a></li>
+</ul>
+</div>
+      <nav class="article-neighbors" aria-label="相邻文章">
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-ai-toolkit/"><span>上一篇</span><strong>Shopify AI Toolkit 使用指南</strong></a>
+        <a class="article-neighbor" href="/guides/shopify-handbook/advanced/shopify-discount-function-buy-gift/"><span>下一篇</span><strong>Shopify Discount Function 实现买赠（买A赠B / 满X赠B）</strong></a>
+      </nav>
+    </article>
+  </main>
+    <footer class="site-footer guide-footer">
+      <span>Skills123 · 专题知识库</span>
+      <strong>整理与归档</strong>
+    </footer>
+  </div>
+  <script type="module" src="/assets/js/shopify-handbook.js?v=20260726-1"></script>
+</body>
+</html>
