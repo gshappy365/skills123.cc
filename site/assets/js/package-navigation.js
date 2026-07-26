@@ -2,7 +2,7 @@ import {
   buildPackageGroups,
   loadPackageSkills,
   searchCatalogue,
-} from "./catalogue-search.js?v=20260726-1";
+} from "./catalogue-search.js?v=20260726-2";
 
 const state = {
   catalog: null,
