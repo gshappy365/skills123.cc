@@ -57,7 +57,7 @@ function validateExtendedFields(skill) {
   }
   if (skill.license !== undefined) {
     assert(
-      ["MIT", "CC BY-NC 4.0", "unconfirmed"].includes(skill.license),
+      ["MIT", "Apache-2.0", "CC BY-NC 4.0", "unconfirmed"].includes(skill.license),
       `skill "${skill.id}" has an invalid license`
     );
   }
@@ -85,7 +85,7 @@ function validateCatalogShell(catalog) {
     }
     if (pkg.license !== undefined) {
       assert(
-        ["MIT", "CC BY-NC 4.0", "unconfirmed"].includes(pkg.license),
+        ["MIT", "Apache-2.0", "CC BY-NC 4.0", "unconfirmed"].includes(pkg.license),
         `package "${pkg.id}" has an invalid license`
       );
     }

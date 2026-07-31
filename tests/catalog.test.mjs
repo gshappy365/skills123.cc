@@ -12,7 +12,7 @@ async function loadCatalog() {
   return JSON.parse(await readFile(catalogUrl, "utf8"));
 }
 
-test("launch catalog exposes the nine active packages and scenario statuses", async () => {
+test("launch catalog exposes the ten active packages and scenario statuses", async () => {
   const catalog = await loadCatalog();
   const activePackages = catalog.packages.filter((item) => item.status === "active");
   const scenarios = Object.fromEntries(catalog.scenarios.map((item) => [item.id, item]));
@@ -21,6 +21,7 @@ test("launch catalog exposes the nine active packages and scenario statuses", as
     activePackages.map((item) => item.id).sort(),
     [
       "development",
+      "financial-services",
       "founder-project-evaluator",
       "investment-research",
       "last30days",
@@ -61,6 +62,16 @@ test("founder project evaluator is catalogued as a research Gate Review skill", 
   assert.equal(pkg.skillCount, 1);
   assert.equal(pkg.workspace.skillsUrl, "/assets/data/founder-project-evaluator-skills.json");
   assert.equal(pkg.workspace.groupLabels["founder-evaluation"], "创业项目评估");
+});
+
+test("financial services package preserves its source snapshot and coverage", async () => {
+  const catalog = await loadCatalog();
+  const pkg = catalog.packages.find((item) => item.id === "financial-services");
+  assert.equal(pkg.scenario, "research");
+  assert.equal(pkg.skillCount, 66);
+  assert.equal(pkg.license, "Apache-2.0");
+  assert.equal(pkg.source.commit, "eb0c1ea962d4c6cee07f4920e36b1aa7a025d320");
+  assert.equal(pkg.workspace.groupLabels["financial-analysis"], "财务建模与分析");
 });
 
 test("PM Skills package preserves its operations placement and upstream snapshot", async () => {

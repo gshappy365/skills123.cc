@@ -69,6 +69,21 @@
       }
     },
     {
+      "id":"financial-services",
+      "name":"Claude for Financial Services 金融服务技能包",
+      "scenario":"research",
+      "description":"Anthropic 面向投行、股票研究、私募股权、财富管理和基金管理的金融服务工作流技能集合。",
+      "skillCount":66,
+      "tags":["金融服务","财务建模","投行","股票研究","私募股权"],
+      "status":"active",
+      "installCommand":"claude plugin marketplace add anthropics/financial-services && claude plugin install financial-analysis@claude-for-financial-services",
+      "platform":"Claude Code / Cowork / Managed Agents",
+      "license":"Apache-2.0",
+      "source":{"name":"anthropics/financial-services","url":"https://github.com/anthropics/financial-services","commit":"eb0c1ea962d4c6cee07f4920e36b1aa7a025d320"},
+      "groups":["财务建模与分析","投资银行","股票研究","私募股权","财富管理","基金管理","运营与合规","LSEG 数据工作流","S&P Global 数据工作流"],
+      "workspace":{"skillsUrl":"/assets/data/financial-services-skills.json","eyebrow":"CLAUDE FOR FINANCIAL SERVICES","groupFacetLabel":"金融方向","groupLabels":{"financial-analysis":"财务建模与分析","investment-banking":"投资银行","equity-research":"股票研究","private-equity":"私募股权","wealth-management":"财富管理","fund-admin":"基金管理","operations":"运营与合规","lseg":"LSEG 数据工作流","spglobal":"S&P Global 数据工作流"},"lifecycleLabels":{"published":"已发布"},"invocationModeLabels":{"model-allowed":"模型可调用"}}
+    },
+    {
       "id":"rayskills",
       "name":"Rayskills 内容技能包",
       "scenario":"content",
