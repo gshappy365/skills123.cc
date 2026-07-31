@@ -42,7 +42,7 @@
     {
       "id":"shopify-ai-toolkit",
       "name":"Shopify AI Toolkit 开发技能包",
-      "scenario":"development",
+      "scenario":"operations",
       "description":"Shopify 官方 agent 工具包，覆盖 Admin API、Storefront、Liquid、Hydrogen、Functions、Polaris、CLI 和应用发布审核。",
       "skillCount":21,
       "tags":["Shopify 开发","Admin API","Liquid","Hydrogen","CLI"],

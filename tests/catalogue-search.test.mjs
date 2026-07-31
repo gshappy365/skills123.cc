@@ -80,7 +80,7 @@ test("package groups use the approved order and retain coming-soon groups", asyn
   assert.equal(groups[2].status, "active");
   assert.equal(groups[2].packages[0].id, "rayskills");
   assert.equal(groups[3].status, "active");
-  assert.equal(groups[3].packages[0].id, "pm-skills");
+  assert.equal(groups[3].packages[0].id, "shopify-ai-toolkit");
 });
 
 test("global search distinguishes package matches from owned skill matches", async () => {

@@ -105,12 +105,12 @@ test("GBrain package preserves its content placement, scope and upstream snapsho
   assert.equal(gbrain.source.commit, "c6dc0adf26a2d20df1147d2ec87c8922ca86d410");
 });
 
-test("Shopify AI Toolkit package preserves its development placement and snapshot", async () => {
+test("Shopify AI Toolkit package preserves its operations placement and snapshot", async () => {
   const catalog = await loadCatalog();
   const shopify = catalog.packages.find((item) => item.id === "shopify-ai-toolkit");
 
   assert.equal(shopify.name, "Shopify AI Toolkit 开发技能包");
-  assert.equal(shopify.scenario, "development");
+  assert.equal(shopify.scenario, "operations");
   assert.equal(shopify.skillCount, 21);
   assert.equal(shopify.installCommand, "codex plugin add shopify@openai-curated");
   assert.equal(shopify.license, "MIT");
