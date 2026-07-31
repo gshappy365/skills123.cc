@@ -12,7 +12,7 @@ async function loadCatalog() {
   return JSON.parse(await readFile(catalogUrl, "utf8"));
 }
 
-test("launch catalog exposes the nine active packages and scenario statuses", async () => {
+test("launch catalog exposes the ten active packages and scenario statuses", async () => {
   const catalog = await loadCatalog();
   const activePackages = catalog.packages.filter((item) => item.status === "active");
   const scenarios = Object.fromEntries(catalog.scenarios.map((item) => [item.id, item]));
@@ -22,6 +22,7 @@ test("launch catalog exposes the nine active packages and scenario statuses", as
     [
       "development",
       "founder-project-evaluator",
+      "gbrain",
       "investment-research",
       "last30days",
       "ljg-skills",
@@ -87,6 +88,19 @@ test("Rayskills package preserves its content placement, scope, license and snap
   assert.equal(rayskills.license, "CC BY-NC 4.0");
   assert.equal(rayskills.workspace.groupFacetLabel, "技能方向");
   assert.equal(rayskills.source.commit, "454bff330bb3ddae9d3c639bd0f791e6c61dd830");
+});
+
+test("GBrain package preserves its content placement, scope and upstream snapshot", async () => {
+  const catalog = await loadCatalog();
+  const gbrain = catalog.packages.find((item) => item.id === "gbrain");
+
+  assert.equal(gbrain.name, "GBrain Agent Brain 知识技能包");
+  assert.equal(gbrain.scenario, "content");
+  assert.equal(gbrain.skillCount, 53);
+  assert.equal(gbrain.installCommand, "bun install -g github:garrytan/gbrain && gbrain init --pglite");
+  assert.equal(gbrain.license, "MIT");
+  assert.equal(gbrain.workspace.groupFacetLabel, "技能方向");
+  assert.equal(gbrain.source.commit, "c6dc0adf26a2d20df1147d2ec87c8922ca86d410");
 });
 
 test("development package retains the Atlas catalogue boundary", async () => {

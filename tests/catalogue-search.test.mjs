@@ -27,9 +27,10 @@ const last30daysUrl = new URL("../site/assets/data/last30days-skills.json", impo
 const wazaUrl = new URL("../site/assets/data/waza-skills.json", import.meta.url);
 const ljgUrl = new URL("../site/assets/data/ljg-skills.json", import.meta.url);
 const founderEvaluatorUrl = new URL("../site/assets/data/founder-project-evaluator-skills.json", import.meta.url);
+const gbrainUrl = new URL("../site/assets/data/gbrain-skills.json", import.meta.url);
 
 async function fixtures() {
-  const [catalog, atlasSkills, researchSkills, rayskills, pmSkills, wigoloSkills, last30daysSkills, wazaSkills, ljgSkills, founderEvaluatorSkills] = await Promise.all([
+  const [catalog, atlasSkills, researchSkills, rayskills, pmSkills, wigoloSkills, last30daysSkills, wazaSkills, ljgSkills, founderEvaluatorSkills, gbrainSkills] = await Promise.all([
     readFile(catalogUrl, "utf8").then(JSON.parse),
     readFile(atlasUrl, "utf8").then(JSON.parse),
     readFile(researchUrl, "utf8").then(JSON.parse),
@@ -40,6 +41,7 @@ async function fixtures() {
     readFile(wazaUrl, "utf8").then(JSON.parse),
     readFile(ljgUrl, "utf8").then(JSON.parse),
     readFile(founderEvaluatorUrl, "utf8").then(JSON.parse),
+    readFile(gbrainUrl, "utf8").then(JSON.parse),
   ]);
   const packageSkills = await loadPackageSkills(catalog, async (url) => {
     if (url === "/assets/data/atlas-skills.json") return atlasSkills;
@@ -51,6 +53,7 @@ async function fixtures() {
     if (url === "/assets/data/waza-skills.json") return wazaSkills;
     if (url === "/assets/data/ljg-skills.json") return ljgSkills;
     if (url === "/assets/data/founder-project-evaluator-skills.json") return founderEvaluatorSkills;
+    if (url === "/assets/data/gbrain-skills.json") return gbrainSkills;
     assert.fail(`Unexpected skills URL: ${url}`);
   });
   return { catalog, packageSkills };
@@ -167,6 +170,16 @@ test("global search reaches the founder evaluator and its Gate Review skill", as
   assert.ok(match);
   assert.equal(match.package.id, "founder-project-evaluator");
   assert.equal(match.href, "/packages/founder-project-evaluator/?skill=founder-project-evaluator");
+});
+
+test("global search reaches GBrain skills and retains content package ownership", async () => {
+  const { catalog, packageSkills } = await fixtures();
+  const result = searchCatalogue({ catalog, packageSkills, query: "query" });
+  const match = result.skillMatches.find((item) => item.id === "query");
+
+  assert.ok(match);
+  assert.equal(match.package.id, "gbrain");
+  assert.equal(match.href, "/packages/gbrain/?skill=query");
 });
 
 test("loading featured skills does not mutate a shared package data source", async () => {

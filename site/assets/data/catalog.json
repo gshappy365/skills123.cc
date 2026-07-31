@@ -100,6 +100,28 @@
       }
     },
     {
+      "id":"gbrain",
+      "name":"GBrain Agent Brain 知识技能包",
+      "scenario":"content",
+      "description":"面向 OpenClaw、Hermes、Claude Code 和 Codex 的知识库与 agent 记忆工作流，覆盖采集、检索、综合、知识图谱、维护和技能治理。",
+      "skillCount":53,
+      "tags":["知识库","Agent 记忆","研究综合","知识图谱","OpenClaw","Hermes"],
+      "status":"active",
+      "installCommand":"bun install -g github:garrytan/gbrain && gbrain init --pglite",
+      "platform":"OpenClaw / Hermes / Claude Code / Codex",
+      "license":"MIT",
+      "source":{"name":"garrytan/gbrain","url":"https://github.com/garrytan/gbrain","commit":"c6dc0adf26a2d20df1147d2ec87c8922ca86d410"},
+      "groups":["知识库核心","研究与综合","采集与工作流","系统与架构","技能工程"],
+      "workspace":{
+        "skillsUrl":"/assets/data/gbrain-skills.json",
+        "eyebrow":"GBRAIN AGENT BRAIN",
+        "groupFacetLabel":"技能方向",
+        "groupLabels":{"brain-core":"知识库核心","research-synthesis":"研究与综合","capture-workflows":"采集与工作流","system-architecture":"系统与架构","skill-engineering":"技能工程"},
+        "lifecycleLabels":{"published":"已发布"},
+        "invocationModeLabels":{"model-allowed":"自然语言触发"}
+      }
+    },
+    {
       "id":"pm-skills",
       "name":"PM Skills 产品管理技能包",
       "scenario":"operations",

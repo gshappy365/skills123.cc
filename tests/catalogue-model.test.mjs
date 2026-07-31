@@ -25,6 +25,7 @@ test("catalogue model loads and validates every package through one boundary", a
     "/assets/data/waza-skills.json": await readJson("waza-skills.json"),
     "/assets/data/ljg-skills.json": await readJson("ljg-skills.json"),
     "/assets/data/founder-project-evaluator-skills.json": await readJson("founder-project-evaluator-skills.json"),
+    "/assets/data/gbrain-skills.json": await readJson("gbrain-skills.json"),
   };
   const model = await createCatalogueModel(catalog, async (url) => sources[url]);
 
@@ -32,6 +33,7 @@ test("catalogue model loads and validates every package through one boundary", a
     "development",
     "investment-research",
     "rayskills",
+    "gbrain",
     "pm-skills",
     "wigolo",
     "last30days",
@@ -46,6 +48,7 @@ test("catalogue model loads and validates every package through one boundary", a
   assert.equal(getPackageWorkspaceModel(model, "waza").skills.length, 8);
   assert.equal(getPackageWorkspaceModel(model, "ljg-skills").skills.length, 21);
   assert.equal(getPackageWorkspaceModel(model, "founder-project-evaluator").skills.length, 1);
+  assert.equal(getPackageWorkspaceModel(model, "gbrain").skills.length, 53);
 });
 
 test("catalogue boundary rejects a skill whose group has no package label", async () => {
