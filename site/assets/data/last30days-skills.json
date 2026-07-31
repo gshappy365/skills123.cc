@@ -1,0 +1,3 @@
+[
+  {"id":"last30days","name":"Last 30 Days","descriptionZh":"研究任意主题在最近 30 天内跨 Reddit、X、YouTube、Hacker News、Polymarket 和网页的真实动态，并综合成有依据的摘要。","group":"multi-source-research","command":"/last30days","lifecycle":"published","invocationMode":"model-allowed","tags":["近况研究","Reddit","X","YouTube","Hacker News"],"platform":"Codex / Claude Code / Cursor / Gemini CLI","license":"MIT","sourceUrl":"https://github.com/mvanhorn/last30days-skill/tree/a22c8e7576c2c69885b895002cc15968cd4cb25a/skills/last30days","upstreamCommit":"a22c8e7576c2c69885b895002cc15968cd4cb25a"}
+]

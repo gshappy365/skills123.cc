@@ -12,17 +12,46 @@ async function loadCatalog() {
   return JSON.parse(await readFile(catalogUrl, "utf8"));
 }
 
-test("launch catalog exposes the five active packages and scenario statuses", async () => {
+test("launch catalog exposes the nine active packages and scenario statuses", async () => {
   const catalog = await loadCatalog();
   const activePackages = catalog.packages.filter((item) => item.status === "active");
   const scenarios = Object.fromEntries(catalog.scenarios.map((item) => [item.id, item]));
 
   assert.deepEqual(
     activePackages.map((item) => item.id).sort(),
-    ["dair-academy", "development", "investment-research", "pm-skills", "rayskills"]
+    [
+      "dair-academy",
+      "development",
+      "investment-research",
+      "last30days",
+      "ljg-skills",
+      "pm-skills",
+      "rayskills",
+      "waza",
+      "wigolo",
+    ]
   );
   assert.equal(scenarios.content.status, "active");
   assert.equal(scenarios.operations.status, "active");
+});
+
+test("new upstream libraries preserve their package placement and snapshots", async () => {
+  const catalog = await loadCatalog();
+  const expected = {
+    wigolo: ["research", 11, "unconfirmed", "56da0c80d52bba51cc428545f468ec0dbd6651c3"],
+    last30days: ["research", 1, "MIT", "a22c8e7576c2c69885b895002cc15968cd4cb25a"],
+    waza: ["development", 8, "MIT", "9c97ccb6d96e776bf814e27498d0afc0ed3d1e94"],
+    "ljg-skills": ["content", 21, "unconfirmed", "c41540f7a5a9770698e2fe15f1f6f2243eec5128"],
+  };
+
+  for (const [id, [scenario, skillCount, license, commit]] of Object.entries(expected)) {
+    const pkg = catalog.packages.find((item) => item.id === id);
+    assert.equal(pkg.scenario, scenario);
+    assert.equal(pkg.skillCount, skillCount);
+    assert.equal(pkg.license, license);
+    assert.equal(pkg.source.commit, commit);
+    assert.equal(pkg.status, "active");
+  }
 });
 
 test("PM Skills package preserves its operations placement and upstream snapshot", async () => {

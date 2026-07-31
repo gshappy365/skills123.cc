@@ -26,15 +26,23 @@ const pmSkillsUrl = new URL(
   "../site/assets/data/pm-skills.json",
   import.meta.url
 );
+const wigoloUrl = new URL("../site/assets/data/wigolo-skills.json", import.meta.url);
+const last30daysUrl = new URL("../site/assets/data/last30days-skills.json", import.meta.url);
+const wazaUrl = new URL("../site/assets/data/waza-skills.json", import.meta.url);
+const ljgUrl = new URL("../site/assets/data/ljg-skills.json", import.meta.url);
 
 async function fixtures() {
-  const [catalog, atlasSkills, researchSkills, dairSkills, rayskills, pmSkills] = await Promise.all([
+  const [catalog, atlasSkills, researchSkills, dairSkills, rayskills, pmSkills, wigoloSkills, last30daysSkills, wazaSkills, ljgSkills] = await Promise.all([
     readFile(catalogUrl, "utf8").then(JSON.parse),
     readFile(atlasUrl, "utf8").then(JSON.parse),
     readFile(researchUrl, "utf8").then(JSON.parse),
     readFile(dairUrl, "utf8").then(JSON.parse),
     readFile(rayskillsUrl, "utf8").then(JSON.parse),
     readFile(pmSkillsUrl, "utf8").then(JSON.parse),
+    readFile(wigoloUrl, "utf8").then(JSON.parse),
+    readFile(last30daysUrl, "utf8").then(JSON.parse),
+    readFile(wazaUrl, "utf8").then(JSON.parse),
+    readFile(ljgUrl, "utf8").then(JSON.parse),
   ]);
   const packageSkills = await loadPackageSkills(catalog, async (url) => {
     if (url === "/assets/data/atlas-skills.json") return atlasSkills;
@@ -42,6 +50,10 @@ async function fixtures() {
     if (url === "/assets/data/dair-academy-skills.json") return dairSkills;
     if (url === "/assets/data/rayskills-skills.json") return rayskills;
     if (url === "/assets/data/pm-skills.json") return pmSkills;
+    if (url === "/assets/data/wigolo-skills.json") return wigoloSkills;
+    if (url === "/assets/data/last30days-skills.json") return last30daysSkills;
+    if (url === "/assets/data/waza-skills.json") return wazaSkills;
+    if (url === "/assets/data/ljg-skills.json") return ljgSkills;
     assert.fail(`Unexpected skills URL: ${url}`);
   });
   return { catalog, packageSkills };
@@ -152,6 +164,21 @@ test("global search matches a PM skill and retains operations package ownership"
     result.skillMatches.find((item) => item.id === "create-prd").package.id,
     "pm-skills"
   );
+});
+
+test("global search reaches the four newly catalogued packages", async () => {
+  const { catalog, packageSkills } = await fixtures();
+  for (const [query, packageId, skillId] of [
+    ["网页搜索", "wigolo", "wigolo-search"],
+    ["近况研究", "last30days", "last30days"],
+    ["根因分析", "waza", "hunt"],
+    ["投资", "ljg-skills", "ljg-invest"],
+  ]) {
+    const result = searchCatalogue({ catalog, packageSkills, query });
+    const match = result.skillMatches.find((item) => item.id === skillId);
+    assert.ok(match, `${query} should find ${skillId}`);
+    assert.equal(match.package.id, packageId);
+  }
 });
 
 test("loading featured skills does not mutate a shared package data source", async () => {
