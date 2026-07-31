@@ -18,56 +18,34 @@ test("catalogue model loads and validates every package through one boundary", a
   const sources = {
     "/assets/data/atlas-skills.json": await readJson("atlas-skills.json"),
     "/assets/data/research-skills.json": await readJson("research-skills.json"),
-    "/assets/data/dair-academy-skills.json": await readJson(
-      "dair-academy-skills.json"
-    ),
     "/assets/data/rayskills-skills.json": await readJson("rayskills-skills.json"),
     "/assets/data/pm-skills.json": await readJson("pm-skills.json"),
+    "/assets/data/wigolo-skills.json": await readJson("wigolo-skills.json"),
+    "/assets/data/last30days-skills.json": await readJson("last30days-skills.json"),
+    "/assets/data/waza-skills.json": await readJson("waza-skills.json"),
+    "/assets/data/ljg-skills.json": await readJson("ljg-skills.json"),
+    "/assets/data/founder-project-evaluator-skills.json": await readJson("founder-project-evaluator-skills.json"),
   };
   const model = await createCatalogueModel(catalog, async (url) => sources[url]);
 
   assert.deepEqual(Object.keys(model.packageSkills), [
     "development",
     "investment-research",
-    "dair-academy",
     "rayskills",
     "pm-skills",
+    "wigolo",
+    "last30days",
+    "founder-project-evaluator",
+    "waza",
+    "ljg-skills",
   ]);
   assert.equal(getPackageWorkspaceModel(model, "development").skills.length, 42);
-    assert.equal(getPackageWorkspaceModel(model, "dair-academy").skills.length, 8);
   assert.equal(getPackageWorkspaceModel(model, "pm-skills").skills.length, 68);
-});
-
-test("DAIR Academy skills expose the confirmed plugin detail contract", async () => {
-  const catalog = await readJson("catalog.json");
-  const dairSkills = await readJson("dair-academy-skills.json");
-  const model = await createCatalogueModel(catalog, async (url) => {
-    if (url === "/assets/data/dair-academy-skills.json") return dairSkills;
-    if (url === "/assets/data/rayskills-skills.json") return readJson("rayskills-skills.json");
-    if (url === "/assets/data/pm-skills.json") return readJson("pm-skills.json");
-    return url.includes("atlas") ? await readJson("atlas-skills.json") : await readJson("research-skills.json");
-  });
-  const workspace = getPackageWorkspaceModel(model, "dair-academy");
-
-  assert.equal(workspace.package.name, "DAIR Academy 技能包");
-  assert.deepEqual(Object.values(workspace.labels.groups), [
-    "视觉生成",
-    "学习与课程",
-    "研究与调研",
-    "知识管理",
-    "情报监控",
-  ]);
-  for (const skill of workspace.skills) {
-    assert.match(skill.installCommand, /^\/plugin install /);
-    assert.equal(skill.platform, "Claude Code plugin");
-    assert.ok(Array.isArray(skill.requirements));
-    assert.ok(Array.isArray(skill.environmentVariables));
-    assert.ok(Array.isArray(skill.outputs) && skill.outputs.length > 0);
-    assert.match(skill.sourceUrl, /^https:\/\/github\.com\/dair-ai\//);
-    assert.equal(skill.upstreamCommit.length, 40);
-    assert.ok(["MIT", "unconfirmed"].includes(skill.license));
-  }
-  assert.equal(workspace.skills.filter((skill) => skill.license === "MIT").length, 2);
+  assert.equal(getPackageWorkspaceModel(model, "wigolo").skills.length, 11);
+  assert.equal(getPackageWorkspaceModel(model, "last30days").skills.length, 1);
+  assert.equal(getPackageWorkspaceModel(model, "waza").skills.length, 8);
+  assert.equal(getPackageWorkspaceModel(model, "ljg-skills").skills.length, 21);
+  assert.equal(getPackageWorkspaceModel(model, "founder-project-evaluator").skills.length, 1);
 });
 
 test("catalogue boundary rejects a skill whose group has no package label", async () => {

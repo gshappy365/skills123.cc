@@ -1,0 +1,19 @@
+[
+  {
+    "id":"founder-project-evaluator",
+    "name":"Founder Project Evaluator",
+    "descriptionZh":"用阶段化 Gate Review 评估创业项目：先诊断 Idea、MVP、Launch 或 Scale 阶段，再按五个维度评分、主动证伪，最后给出有证据的推进判决。",
+    "group":"founder-evaluation",
+    "command":"/founder-project-evaluator",
+    "lifecycle":"published",
+    "invocationMode":"model-allowed",
+    "tags":["创业评估","Gate Review","阶段判断","证据审查","90 天留存"],
+    "platform":"Codex",
+    "license":"unconfirmed",
+    "requirements":["项目阶段和当前目标","用户、收入、留存、渠道或成本证据（如有）","已知行业模板或业务背景"],
+    "usageExamples":["评估一个 Idea 是否具备进入 MVP 的证据","复盘 MVP 到 Launch 的真实使用、付费和留存","审查 Scale 前的 90 天留存、单位经济和渠道可重复性"],
+    "outputs":["阶段判定：Idea / MVP / Launch / Scale","五维评分与总分 /10","最强证据、最大反证和本轮已尝试推翻路径","缺失证据与下一步 3 个可观察动作","Gate 判决：停留、小步推进、进入下一阶段或禁止晋级"],
+    "safetyNotes":["不包装愿景，不把未经验证的判断升级成证据","Idea 阶段总分低于 8 禁止进入 MVP","Launch 阶段总分低于 8 禁止进入 Scale","薄输入也先给低分 Gate，不用问卷阻塞判断","金融、医疗、法律等高风险判断仍需人工核验"],
+    "readingUrl":"/packages/founder-project-evaluator/skills/founder-project-evaluator/"
+  }
+]

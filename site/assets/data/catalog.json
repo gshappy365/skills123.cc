@@ -69,31 +69,6 @@
       }
     },
     {
-      "id":"dair-academy",
-      "name":"DAIR Academy 技能包",
-      "scenario":"research",
-      "description":"面向学习、研究与知识生产的 8 项 Claude Code 插件，覆盖课程、调研、知识库、视觉生成与情报监控。",
-      "skillCount":8,
-      "tags":["DAIR.AI","Claude Code","学习研究","知识生产"],
-      "status":"active",
-      "source":{"name":"DAIR Academy Plugins","url":"https://github.com/dair-ai/dair-academy-plugins","commit":"945b237049a08765c0cd164774f974647a6b7f97"},
-      "groups":["视觉生成","学习与课程","研究与调研","知识管理","情报监控"],
-      "workspace":{
-        "skillsUrl":"/assets/data/dair-academy-skills.json",
-        "eyebrow":"DAIR ACADEMY PACKAGE",
-        "groupFacetLabel":"技能方向",
-        "groupLabels":{
-          "visual-content":"视觉生成",
-          "learning":"学习与课程",
-          "research-generation":"研究与调研",
-          "knowledge-management":"知识管理",
-          "intelligence-monitoring":"情报监控"
-        },
-        "lifecycleLabels":{"published":"已发布"},
-        "invocationModeLabels":{"model-allowed":"自然语言触发"}
-      }
-    },
-    {
       "id":"rayskills",
       "name":"Rayskills 内容技能包",
       "scenario":"content",
@@ -155,6 +130,79 @@
         "lifecycleLabels":{"published":"已发布"},
         "invocationModeLabels":{"model-allowed":"自然语言触发"}
       }
+    },
+    {
+      "id":"wigolo",
+      "name":"Wigolo 网页情报技能包",
+      "scenario":"research",
+      "description":"本地优先的网页搜索、抓取、抽取、缓存与研究工作流，帮助 AI agent 建立可复用的网络情报能力。",
+      "skillCount":11,
+      "tags":["网页情报","本地优先","搜索研究","MCP"],
+      "status":"active",
+      "installCommand":"npx wigolo init --agents=codex",
+      "platform":"Codex / Claude Code / Cursor / Gemini CLI",
+      "license":"unconfirmed",
+      "source":{"name":"KnockOutEZ/wigolo","url":"https://github.com/KnockOutEZ/wigolo","commit":"56da0c80d52bba51cc428545f468ec0dbd6651c3"},
+      "groups":["网页情报","研究工作流","知识维护"],
+      "workspace":{"skillsUrl":"/assets/data/wigolo-skills.json","eyebrow":"WIGOLO WEB INTELLIGENCE","groupFacetLabel":"技能方向","groupLabels":{"web-intelligence":"网页情报","research-workflow":"研究工作流","knowledge-maintenance":"知识维护"},"lifecycleLabels":{"published":"已发布"},"invocationModeLabels":{"model-allowed":"自然语言触发"}}
+    },
+    {
+      "id":"last30days",
+      "name":"Last 30 Days 多源研究技能包",
+      "scenario":"research",
+      "description":"跨 Reddit、X、YouTube、Hacker News、Polymarket 与网页，研究近 30 天的主题变化并生成有依据的综合摘要。",
+      "skillCount":1,
+      "tags":["多源研究","趋势监测","情报摘要","近况分析"],
+      "status":"active",
+      "installCommand":"npx -y skills add mvanhorn/last30days-skill -g",
+      "platform":"Codex / Claude Code / Cursor / Gemini CLI",
+      "license":"MIT",
+      "source":{"name":"mvanhorn/last30days-skill","url":"https://github.com/mvanhorn/last30days-skill","commit":"a22c8e7576c2c69885b895002cc15968cd4cb25a"},
+      "groups":["多源研究"],
+      "workspace":{"skillsUrl":"/assets/data/last30days-skills.json","eyebrow":"LAST 30 DAYS RESEARCH","groupFacetLabel":"技能方向","groupLabels":{"multi-source-research":"多源研究"},"lifecycleLabels":{"published":"已发布"},"invocationModeLabels":{"model-allowed":"自然语言触发"}}
+    },
+    {
+      "id":"founder-project-evaluator",
+      "name":"Founder Project Evaluator 创业项目评估技能包",
+      "scenario":"research",
+      "description":"面向创始人项目的阶段化 Gate Review：诊断阶段、评分证据、主动证伪，并给出停留、推进或禁止晋级的判断。",
+      "skillCount":1,
+      "tags":["创业评估","Gate Review","证据审查","单位经济"],
+      "status":"active",
+      "platform":"Codex",
+      "license":"unconfirmed",
+      "groups":["创业项目评估"],
+      "workspace":{"skillsUrl":"/assets/data/founder-project-evaluator-skills.json","eyebrow":"FOUNDER PROJECT EVALUATOR","groupFacetLabel":"技能方向","groupLabels":{"founder-evaluation":"创业项目评估"},"lifecycleLabels":{"published":"已发布"},"invocationModeLabels":{"model-allowed":"自然语言触发"}}
+    },
+    {
+      "id":"waza",
+      "name":"Waza 工程习惯技能包",
+      "scenario":"development",
+      "description":"把工程师已经熟悉的思考、设计、调试、审查、学习、阅读、写作与健康检查习惯，变成 AI agent 可执行的技能。",
+      "skillCount":8,
+      "tags":["工程习惯","代码质量","调试","产品设计"],
+      "status":"active",
+      "installCommand":"npx -y skills add tw93/Waza -a codex -g -y",
+      "platform":"Codex / Claude Code / Cursor",
+      "license":"MIT",
+      "source":{"name":"tw93/Waza","url":"https://github.com/tw93/Waza","commit":"9c97ccb6d96e776bf814e27498d0afc0ed3d1e94"},
+      "groups":["工程质量","思考学习","研究写作","界面设计"],
+      "workspace":{"skillsUrl":"/assets/data/waza-skills.json","eyebrow":"WAZA ENGINEERING HABITS","groupFacetLabel":"技能方向","groupLabels":{"engineering-quality":"工程质量","thinking-learning":"思考学习","research-writing":"研究写作","interface-design":"界面设计"},"lifecycleLabels":{"published":"已发布"},"invocationModeLabels":{"model-allowed":"自然语言触发"}}
+    },
+    {
+      "id":"ljg-skills",
+      "name":"ljg-skills 内容与思考技能包",
+      "scenario":"content",
+      "description":"面向 Codex 的中文自定义技能集，覆盖阅读、学习、写作、卡片、演讲、投资分析、关系分析与知识结构化。",
+      "skillCount":21,
+      "tags":["中文知识库","内容生产","学习研究","结构化思考"],
+      "status":"active",
+      "installCommand":"bunx skills add lijigang/ljg-skills -g -a codex --skill '*' -y",
+      "platform":"Codex",
+      "license":"unconfirmed",
+      "source":{"name":"lijigang/ljg-skills","url":"https://github.com/lijigang/ljg-skills","commit":"c41540f7a5a9770698e2fe15f1f6f2243eec5128"},
+      "groups":["内容生产","思考学习","分析决策","工具协作"],
+      "workspace":{"skillsUrl":"/assets/data/ljg-skills.json","eyebrow":"LJG-SKILLS KNOWLEDGE TOOLKIT","groupFacetLabel":"技能方向","groupLabels":{"content-production":"内容生产","thinking-learning":"思考学习","analysis-decision":"分析决策","tooling-collaboration":"工具协作"},"lifecycleLabels":{"published":"已发布"},"invocationModeLabels":{"model-allowed":"自然语言触发"}}
     }
   ]
 }

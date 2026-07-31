@@ -76,6 +76,8 @@ function validateCatalogShell(catalog) {
       assert(
         typeof pkg.installCommand === "string" &&
           (pkg.installCommand.startsWith("npx -y skills add ") ||
+            pkg.installCommand.startsWith("npx wigolo init ") ||
+            pkg.installCommand.startsWith("bunx skills add ") ||
             pkg.installCommand.startsWith("codex plugin marketplace add ") ||
             pkg.installCommand.startsWith("claude plugin marketplace add ")),
         `package "${pkg.id}" has an invalid installCommand`
