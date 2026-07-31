@@ -14,6 +14,7 @@ const researchUrl = new URL(
   "../site/assets/data/research-skills.json",
   import.meta.url
 );
+const financialServicesUrl = new URL("../site/assets/data/financial-services-skills.json", import.meta.url);
 const rayskillsUrl = new URL(
   "../site/assets/data/rayskills-skills.json",
   import.meta.url
@@ -29,10 +30,11 @@ const ljgUrl = new URL("../site/assets/data/ljg-skills.json", import.meta.url);
 const founderEvaluatorUrl = new URL("../site/assets/data/founder-project-evaluator-skills.json", import.meta.url);
 
 async function fixtures() {
-  const [catalog, atlasSkills, researchSkills, rayskills, pmSkills, wigoloSkills, last30daysSkills, wazaSkills, ljgSkills, founderEvaluatorSkills] = await Promise.all([
+  const [catalog, atlasSkills, researchSkills, financialServicesSkills, rayskills, pmSkills, wigoloSkills, last30daysSkills, wazaSkills, ljgSkills, founderEvaluatorSkills] = await Promise.all([
     readFile(catalogUrl, "utf8").then(JSON.parse),
     readFile(atlasUrl, "utf8").then(JSON.parse),
     readFile(researchUrl, "utf8").then(JSON.parse),
+    readFile(financialServicesUrl, "utf8").then(JSON.parse),
     readFile(rayskillsUrl, "utf8").then(JSON.parse),
     readFile(pmSkillsUrl, "utf8").then(JSON.parse),
     readFile(wigoloUrl, "utf8").then(JSON.parse),
@@ -44,6 +46,7 @@ async function fixtures() {
   const packageSkills = await loadPackageSkills(catalog, async (url) => {
     if (url === "/assets/data/atlas-skills.json") return atlasSkills;
     if (url === "/assets/data/research-skills.json") return researchSkills;
+    if (url === "/assets/data/financial-services-skills.json") return financialServicesSkills;
     if (url === "/assets/data/rayskills-skills.json") return rayskills;
     if (url === "/assets/data/pm-skills.json") return pmSkills;
     if (url === "/assets/data/wigolo-skills.json") return wigoloSkills;
@@ -167,6 +170,15 @@ test("global search reaches the founder evaluator and its Gate Review skill", as
   assert.ok(match);
   assert.equal(match.package.id, "founder-project-evaluator");
   assert.equal(match.href, "/packages/founder-project-evaluator/?skill=founder-project-evaluator");
+});
+
+test("global search reaches financial services skills and preserves package ownership", async () => {
+  const { catalog, packageSkills } = await fixtures();
+  const result = searchCatalogue({ catalog, packageSkills, query: "comps" });
+  const match = result.skillMatches.find((item) => item.id === "comps-analysis");
+  assert.ok(match);
+  assert.equal(match.package.id, "financial-services");
+  assert.equal(match.href, "/packages/financial-services/?skill=comps-analysis");
 });
 
 test("loading featured skills does not mutate a shared package data source", async () => {
