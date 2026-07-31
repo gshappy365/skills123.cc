@@ -177,61 +177,6 @@ test("research package uses the shared workspace and exposes Serenity reading co
   await page.close();
 });
 
-test("DAIR Academy package filters directions and copies a skill install command", async () => {
-  const context = await browser.newContext({
-    permissions: ["clipboard-read", "clipboard-write"],
-    viewport: { width: 1440, height: 900 },
-  });
-  const page = await context.newPage();
-  await page.goto(`${baseUrl}/packages/dair-academy/?skill=survey-generator`, {
-    waitUntil: "networkidle",
-  });
-
-  assert.equal(await page.locator("#package-name").innerText(), "DAIR Academy 技能包");
-  assert.equal(await page.locator(".skill-row").count(), 8);
-  assert.equal(await page.locator("#group-filter-label").innerText(), "技能方向");
-  assert.deepEqual(await page.locator("#group-filters button").allTextContents(), [
-    "视觉生成",
-    "学习与课程",
-    "研究与调研",
-    "知识管理",
-    "情报监控",
-  ]);
-  assert.equal(await page.locator(".workspace-detail h2").innerText(), "Survey Generator");
-  assert.match(await page.locator(".workspace-detail").innerText(), /FIREWORKS_API_KEY/);
-  assert.match(await page.locator(".workspace-detail").innerText(), /许可证\s*MIT/);
-  assert.equal(await page.locator("#copy-command").innerText(), "复制安装命令");
-  await page.locator("#copy-command").click();
-  assert.equal(
-    await page.evaluate(() => navigator.clipboard.readText()),
-    "/plugin install survey-generator@dair-academy-plugins"
-  );
-
-  await page.locator("#skill-search").fill("知识管理");
-  assert.deepEqual(await page.locator(".skill-row").allTextContents().then((rows) => rows.map((row) => row.match(/wiki-builder|youtube-notetaker/)[0]).sort()), [
-    "wiki-builder",
-    "youtube-notetaker",
-  ].sort());
-  await context.close();
-});
-
-test("global search finds a DAIR skill and reports its package", async () => {
-  const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
-  await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
-
-  await page.getByPlaceholder("搜索技能包、技能或 /command").fill("情报监控");
-  assert.equal(await page.locator(".catalogue-result.skill-result").count(), 1);
-  assert.match(
-    await page.locator(".catalogue-result.skill-result").innerText(),
-    /X Agent Intelligence/
-  );
-  assert.match(
-    await page.locator(".catalogue-result.skill-result").innerText(),
-    /归属 · DAIR Academy 技能包/
-  );
-  await page.close();
-});
-
 test("Shopify 专题在全局搜索中只显示入口，专题内搜索正确隐藏文章", async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });

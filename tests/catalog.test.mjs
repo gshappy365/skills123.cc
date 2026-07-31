@@ -20,8 +20,8 @@ test("launch catalog exposes the nine active packages and scenario statuses", as
   assert.deepEqual(
     activePackages.map((item) => item.id).sort(),
     [
-      "dair-academy",
       "development",
+      "founder-project-evaluator",
       "investment-research",
       "last30days",
       "ljg-skills",
@@ -54,6 +54,15 @@ test("new upstream libraries preserve their package placement and snapshots", as
   }
 });
 
+test("founder project evaluator is catalogued as a research Gate Review skill", async () => {
+  const catalog = await loadCatalog();
+  const pkg = catalog.packages.find((item) => item.id === "founder-project-evaluator");
+  assert.equal(pkg.scenario, "research");
+  assert.equal(pkg.skillCount, 1);
+  assert.equal(pkg.workspace.skillsUrl, "/assets/data/founder-project-evaluator-skills.json");
+  assert.equal(pkg.workspace.groupLabels["founder-evaluation"], "创业项目评估");
+});
+
 test("PM Skills package preserves its operations placement and upstream snapshot", async () => {
   const catalog = await loadCatalog();
   const pmSkills = catalog.packages.find((item) => item.id === "pm-skills");
@@ -78,20 +87,6 @@ test("Rayskills package preserves its content placement, scope, license and snap
   assert.equal(rayskills.license, "CC BY-NC 4.0");
   assert.equal(rayskills.workspace.groupFacetLabel, "技能方向");
   assert.equal(rayskills.source.commit, "454bff330bb3ddae9d3c639bd0f791e6c61dd830");
-});
-
-test("DAIR Academy package keeps its approved identity and fixed upstream snapshot", async () => {
-  const catalog = await loadCatalog();
-  const dair = catalog.packages.find((item) => item.id === "dair-academy");
-
-  assert.equal(dair.name, "DAIR Academy 技能包");
-  assert.equal(dair.scenario, "research");
-  assert.equal(dair.skillCount, 8);
-  assert.equal(dair.workspace.groupFacetLabel, "技能方向");
-  assert.equal(
-    dair.source.commit,
-    "945b237049a08765c0cd164774f974647a6b7f97"
-  );
 });
 
 test("development package retains the Atlas catalogue boundary", async () => {
