@@ -79,6 +79,7 @@ function validateCatalogShell(catalog) {
             pkg.installCommand.startsWith("npx wigolo init ") ||
             pkg.installCommand.startsWith("bunx skills add ") ||
             pkg.installCommand.startsWith("bun install -g github:") ||
+            pkg.installCommand.startsWith("codex plugin add ") ||
             pkg.installCommand.startsWith("codex plugin marketplace add ") ||
             pkg.installCommand.startsWith("claude plugin marketplace add ")),
         `package "${pkg.id}" has an invalid installCommand`

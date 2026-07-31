@@ -1,0 +1,674 @@
+[
+  {
+    "id": "shopify-admin",
+    "name": "shopify-admin",
+    "descriptionZh": "面向 Shopify API、客户数据、支付、函数与店铺数据访问的开发能力。 聚焦 shopify-admin 的具体流程。",
+    "descriptionEn": "Write or explain **Admin GraphQL** queries and mutations for apps and integrations that extend the Shopify admin. Use when the user wants to **understand, design, or generate** the operation itself—even before deciding how to run it. Do **not** choose `admin` first for **app or extension config validation** —use **`use-shopify-cli`**. Do **not** choose `admin` first to **execute** Admin GraphQL **now via Shopify CLI** or for CLI setup/troubleshooting on store workflows—use **`use-shopify-cli`** (store auth/execute, handle/SKU/location lookups, inventory changes).",
+    "group": "api-data",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "API 与数据",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-admin 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-admin/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-app-store-review",
+    "name": "shopify-app-store-review",
+    "descriptionZh": "用于 Shopify 应用发布前的审核和合规检查。 聚焦 shopify-app-store-review 的具体流程。",
+    "descriptionEn": "Run a pre-submission compliance check against your Shopify app's codebase. Reviews App Store requirements and surfaces likely issues before you submit for official review.",
+    "group": "release-review",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "发布与审核",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-app-store-review 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-app-store-review/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-custom-data",
+    "name": "shopify-custom-data",
+    "descriptionZh": "面向 Shopify API、客户数据、支付、函数与店铺数据访问的开发能力。 聚焦 shopify-custom-data 的具体流程。",
+    "descriptionEn": "MUST be used first when prompts mention Metafields or Metaobjects. Use Metafields and Metaobjects to model and store custom data for your app. Metafields extend built-in Shopify data types like products or customers, Metaobjects are custom data types that can be used to store bespoke data structures. Metafield and Metaobject definitions provide a schema and configuration for values to follow.",
+    "group": "api-data",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "API 与数据",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-custom-data 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-custom-data/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-customer",
+    "name": "shopify-customer",
+    "descriptionZh": "面向 Shopify API、客户数据、支付、函数与店铺数据访问的开发能力。 聚焦 shopify-customer 的具体流程。",
+    "descriptionEn": "The Customer Account API allows customers to access their own data including orders, payment methods, and addresses.",
+    "group": "api-data",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "API 与数据",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-customer 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-customer/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-dev",
+    "name": "shopify-dev",
+    "descriptionZh": "用于 Shopify 应用开发、CLI 工作流和商户接入。 聚焦 shopify-dev 的具体流程。",
+    "descriptionEn": "Search Shopify developer documentation across all APIs. Use only when no API-specific skill applies.",
+    "group": "development-cli",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "开发与 CLI",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-dev 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-dev/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-functions",
+    "name": "shopify-functions",
+    "descriptionZh": "面向 Shopify API、客户数据、支付、函数与店铺数据访问的开发能力。 聚焦 shopify-functions 的具体流程。",
+    "descriptionEn": "Shopify Functions allow developers to customize the backend logic that powers parts of Shopify. Available APIs: Discount, Cart and Checkout Validation, Cart Transform, Pickup Point Delivery Option Generator, Delivery Customization, Fulfillment Constraints, Local Pickup Delivery Option Generator, Order Routing Location Rule, Payment Customization",
+    "group": "api-data",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "API 与数据",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-functions 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-functions/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-hydrogen",
+    "name": "shopify-hydrogen",
+    "descriptionZh": "用于 Liquid 主题和 Hydrogen 店面的构建与定制。 聚焦 shopify-hydrogen 的具体流程。",
+    "descriptionEn": "Hydrogen storefront implementation cookbooks. Some of the available recipes are: B2B Commerce, Bundles, Combined Listings, Custom Cart Method, Dynamic Content with Metaobjects, Express Server, Google Tag Manager Integration, Infinite Scroll, Legacy Customer Account Flow, Markets, Partytown + Google Tag Manager, Subscriptions, Third-party API Queries and Caching. MANDATORY: Use this API for ANY Hydrogen storefront question - do NOT use Storefront GraphQL when 'Hydrogen' is mentioned.",
+    "group": "theme-hydrogen",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "主题与 Hydrogen",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-hydrogen 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-hydrogen/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-liquid",
+    "name": "shopify-liquid",
+    "descriptionZh": "用于 Liquid 主题和 Hydrogen 店面的构建与定制。 聚焦 shopify-liquid 的具体流程。",
+    "descriptionEn": "Liquid is an open-source templating language created by Shopify. It is the backbone of Shopify themes and is used to load dynamic content on storefronts. Keywords: liquid, theme, shopify-theme, liquid-component, liquid-block, liquid-section, liquid-snippet, liquid-schemas, shopify-theme-schemas",
+    "group": "theme-hydrogen",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "主题与 Hydrogen",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-liquid 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-liquid/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-onboarding-dev",
+    "name": "shopify-onboarding-dev",
+    "descriptionZh": "用于 Shopify 应用开发、CLI 工作流和商户接入。 聚焦 shopify-onboarding-dev 的具体流程。",
+    "descriptionEn": "Get started building on Shopify. Use when a developer asks to build an app, build a theme, create a dev store, set up a partner account, scaffold a project, or get started developing for Shopify. NOT for merchants managing stores.",
+    "group": "development-cli",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "开发与 CLI",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-onboarding-dev 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-onboarding-dev/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-onboarding-merchant",
+    "name": "shopify-onboarding-merchant",
+    "descriptionZh": "用于 Shopify 应用开发、CLI 工作流和商户接入。 聚焦 shopify-onboarding-merchant 的具体流程。",
+    "descriptionEn": "Set up and connect a Shopify store from your AI assistant. Use when the user wants to start selling online, open a first Shopify store, try Shopify before they have an account, or get merchant-facing next steps after a preview store is created, including how to keep it, save it, or make it real. This is for store owners — not developers. Preview-store creation for brand-new merchants belongs here via `shopify store create preview`; explicit CLI troubleshooting and named-store command execution belong in **`use-shopify-cli`**.",
+    "group": "development-cli",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "开发与 CLI",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-onboarding-merchant 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-onboarding-merchant/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-partner",
+    "name": "shopify-partner",
+    "descriptionZh": "面向 Shopify API、客户数据、支付、函数与店铺数据访问的开发能力。 聚焦 shopify-partner 的具体流程。",
+    "descriptionEn": "The Partner API lets you programmatically access data about your Partner Dashboard, including your apps, themes, and affiliate referrals.",
+    "group": "api-data",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "API 与数据",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-partner 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-partner/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-payments-apps",
+    "name": "shopify-payments-apps",
+    "descriptionZh": "面向 Shopify API、客户数据、支付、函数与店铺数据访问的开发能力。 聚焦 shopify-payments-apps 的具体流程。",
+    "descriptionEn": "The Payments Apps API enables payment providers to integrate their payment solutions with Shopify's checkout.",
+    "group": "api-data",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "API 与数据",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-payments-apps 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-payments-apps/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-polaris-admin-extensions",
+    "name": "shopify-polaris-admin-extensions",
+    "descriptionZh": "用于 Polaris、结账、客户账户和 POS 界面的开发。 聚焦 shopify-polaris-admin-extensions 的具体流程。",
+    "descriptionEn": "Add custom actions and blocks from your app at contextually relevant spots throughout the Shopify Admin. Admin UI Extensions also supports scaffolding new adminextensions using Shopify CLI commands.",
+    "group": "app-interfaces",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "应用界面",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-polaris-admin-extensions 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-polaris-admin-extensions/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-polaris-app-home",
+    "name": "shopify-polaris-app-home",
+    "descriptionZh": "用于 Polaris、结账、客户账户和 POS 界面的开发。 聚焦 shopify-polaris-app-home 的具体流程。",
+    "descriptionEn": "Build your app's primary user interface embedded in the Shopify admin. If the prompt just mentions `Polaris` and you can't tell based off of the context what API they meant, assume they meant this API.",
+    "group": "app-interfaces",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "应用界面",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-polaris-app-home 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-polaris-app-home/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-polaris-checkout-extensions",
+    "name": "shopify-polaris-checkout-extensions",
+    "descriptionZh": "用于 Polaris、结账、客户账户和 POS 界面的开发。 聚焦 shopify-polaris-checkout-extensions 的具体流程。",
+    "descriptionEn": "Build custom functionality that merchants can install at defined points in the checkout flow, including product information, shipping, payment, order summary, and Shop Pay. Checkout UI Extensions also supports scaffolding new checkout extensions using Shopify CLI commands.",
+    "group": "app-interfaces",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "应用界面",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-polaris-checkout-extensions 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-polaris-checkout-extensions/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-polaris-customer-account-extensions",
+    "name": "shopify-polaris-customer-account-extensions",
+    "descriptionZh": "用于 Polaris、结账、客户账户和 POS 界面的开发。 聚焦 shopify-polaris-customer-account-extensions 的具体流程。",
+    "descriptionEn": "Build custom functionality that merchants can install at defined points on the Order index, Order status, and Profile pages in customer accounts. Customer Account UI Extensions also supports scaffolding new customer account extensions using Shopify CLI commands.",
+    "group": "app-interfaces",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "应用界面",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-polaris-customer-account-extensions 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-polaris-customer-account-extensions/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-pos-ui",
+    "name": "shopify-pos-ui",
+    "descriptionZh": "用于 Polaris、结账、客户账户和 POS 界面的开发。 聚焦 shopify-pos-ui 的具体流程。",
+    "descriptionEn": "Build retail point-of-sale applications using Shopify's POS UI components. These components provide a consistent and familiar interface for POS applications. POS UI Extensions also supports scaffolding new POS extensions using Shopify CLI commands. Keywords: POS, Retail, smart grid",
+    "group": "app-interfaces",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "应用界面",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-pos-ui 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-pos-ui/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-shopifyql",
+    "name": "shopify-shopifyql",
+    "descriptionZh": "面向 Shopify API、客户数据、支付、函数与店铺数据访问的开发能力。 聚焦 shopify-shopifyql 的具体流程。",
+    "descriptionEn": "Answer a merchant's **analytics and reporting** questions with **ShopifyQL** — Shopify's query language for aggregated store metrics that the Admin GraphQL API cannot compute. Choose this (not `admin`) whenever the ask is for **numbers, totals, trends, or breakdowns** rather than fetching or mutating individual records: including but not limited to total/gross/net sales and revenue, order counts, average order value, refunds, quantity sold, sessions, conversion rate, and traffic — sliced by product, channel, region, or customer, trended over time, or compared period-over-period. Examples: \\\"total sales last 7 days\\\", \\\"orders by sales channel this month\\\", \\\"top products by revenue\\\", \\\"conversion rate this week\\\", \\\"sales this year vs last year\\\". This topic covers writing the ShopifyQL query; if the merchant wants to run it against their store, execution is handed off to `use-shopify-cli`. Not for general Admin GraphQL record operations — fetching or mutating individual resources (use `admin`).",
+    "group": "api-data",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "API 与数据",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-shopifyql 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-shopifyql/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-storefront-graphql",
+    "name": "shopify-storefront-graphql",
+    "descriptionZh": "面向 Shopify API、客户数据、支付、函数与店铺数据访问的开发能力。 聚焦 shopify-storefront-graphql 的具体流程。",
+    "descriptionEn": "Use for custom storefronts requiring direct GraphQL queries/mutations for data fetching and cart operations. Choose this when you need full control over data fetching and rendering your own UI. NOT for Web Components - if the prompt mentions HTML tags like <shopify-store>, <shopify-cart>, use storefront-web-components instead.",
+    "group": "api-data",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "API 与数据",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-storefront-graphql 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-storefront-graphql/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "shopify-use-shopify-cli",
+    "name": "shopify-use-shopify-cli",
+    "descriptionZh": "用于 Shopify 应用开发、CLI 工作流和商户接入。 聚焦 shopify-use-shopify-cli 的具体流程。",
+    "descriptionEn": "Choose when the user needs **Shopify CLI** to run or fix something now: validate app or extension config on disk (`shopify.app.toml`, `shopify.app.<name>.toml`, `shopify.extension.toml`); run or troubleshoot store workflows (`shopify store auth`, `shopify store execute`); or perform explicit store-scoped reads/writes on a named store domain (for example, show/list/find the first 10 products on my store at `foo.myshopify.com`, or inventory and product changes by handle, SKU, or location name). Emphasize **commands and operational steps**, not only authoring GraphQL. Skip for API-only understanding or codegen with no CLI execution, and skip for brand-new merchant asks to start a Shopify store or try Shopify before they have an account. Examples: validate configuration before deploy; run an existing query via CLI; show the first 10 products on `foo.myshopify.com`; missing `shopify store execute`.",
+    "group": "development-cli",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "开发与 CLI",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-use-shopify-cli 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/shopify-use-shopify-cli/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  },
+  {
+    "id": "ucp",
+    "name": "ucp",
+    "descriptionZh": "面向 Shopify API、客户数据、支付、函数与店铺数据访问的开发能力。 聚焦 ucp 的具体流程。",
+    "descriptionEn": "Use when the user wants to use the UCP CLI to find, compare, buy, or track products from online merchants, or to set up and troubleshoot the local UCP profile required for merchant-scoped operations. Covers global catalog search (\\\"find me X under $Y\\\"), named-merchant transactions (\\\"buy this from Z.com\\\"), order tracking, `ucp profile init`, `ucp doctor`, carts, checkout, orders, and UCP setup/help. Falls back to merchant-hosted handoff when direct in-protocol checkout isn't available.",
+    "group": "api-data",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "API 与数据",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 ucp 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Codex / Claude Code / Cursor / VS Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/Shopify/Shopify-AI-Toolkit/blob/0e06bc35611e505e372de7f8cdf265e6d6dbc311/skills/ucp/SKILL.md",
+    "upstreamCommit": "0e06bc35611e505e372de7f8cdf265e6d6dbc311"
+  }
+]

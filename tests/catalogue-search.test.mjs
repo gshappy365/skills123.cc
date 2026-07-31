@@ -10,6 +10,7 @@ import {
 
 const catalogUrl = new URL("../site/assets/data/catalog.json", import.meta.url);
 const atlasUrl = new URL("../site/assets/data/atlas-skills.json", import.meta.url);
+const shopifyUrl = new URL("../site/assets/data/shopify-ai-toolkit-skills.json", import.meta.url);
 const researchUrl = new URL(
   "../site/assets/data/research-skills.json",
   import.meta.url
@@ -28,11 +29,13 @@ const wazaUrl = new URL("../site/assets/data/waza-skills.json", import.meta.url)
 const ljgUrl = new URL("../site/assets/data/ljg-skills.json", import.meta.url);
 const founderEvaluatorUrl = new URL("../site/assets/data/founder-project-evaluator-skills.json", import.meta.url);
 const gbrainUrl = new URL("../site/assets/data/gbrain-skills.json", import.meta.url);
+const ecomUrl = new URL("../site/assets/data/awesome-ecom-skills.json", import.meta.url);
 
 async function fixtures() {
-  const [catalog, atlasSkills, researchSkills, rayskills, pmSkills, wigoloSkills, last30daysSkills, wazaSkills, ljgSkills, founderEvaluatorSkills, gbrainSkills] = await Promise.all([
+  const [catalog, atlasSkills, shopifySkills, researchSkills, rayskills, pmSkills, wigoloSkills, last30daysSkills, wazaSkills, ljgSkills, founderEvaluatorSkills, gbrainSkills, ecomSkills] = await Promise.all([
     readFile(catalogUrl, "utf8").then(JSON.parse),
     readFile(atlasUrl, "utf8").then(JSON.parse),
+    readFile(shopifyUrl, "utf8").then(JSON.parse),
     readFile(researchUrl, "utf8").then(JSON.parse),
     readFile(rayskillsUrl, "utf8").then(JSON.parse),
     readFile(pmSkillsUrl, "utf8").then(JSON.parse),
@@ -42,9 +45,11 @@ async function fixtures() {
     readFile(ljgUrl, "utf8").then(JSON.parse),
     readFile(founderEvaluatorUrl, "utf8").then(JSON.parse),
     readFile(gbrainUrl, "utf8").then(JSON.parse),
+    readFile(ecomUrl, "utf8").then(JSON.parse),
   ]);
   const packageSkills = await loadPackageSkills(catalog, async (url) => {
     if (url === "/assets/data/atlas-skills.json") return atlasSkills;
+    if (url === "/assets/data/shopify-ai-toolkit-skills.json") return shopifySkills;
     if (url === "/assets/data/research-skills.json") return researchSkills;
     if (url === "/assets/data/rayskills-skills.json") return rayskills;
     if (url === "/assets/data/pm-skills.json") return pmSkills;
@@ -54,6 +59,7 @@ async function fixtures() {
     if (url === "/assets/data/ljg-skills.json") return ljgSkills;
     if (url === "/assets/data/founder-project-evaluator-skills.json") return founderEvaluatorSkills;
     if (url === "/assets/data/gbrain-skills.json") return gbrainSkills;
+    if (url === "/assets/data/awesome-ecom-skills.json") return ecomSkills;
     assert.fail(`Unexpected skills URL: ${url}`);
   });
   return { catalog, packageSkills };
@@ -180,6 +186,19 @@ test("global search reaches GBrain skills and retains content package ownership"
   assert.ok(match);
   assert.equal(match.package.id, "gbrain");
   assert.equal(match.href, "/packages/gbrain/?skill=query");
+});
+
+test("global search reaches both Shopify packages and retains ownership", async () => {
+  const { catalog, packageSkills } = await fixtures();
+  const toolkit = searchCatalogue({ catalog, packageSkills, query: "Admin GraphQL" });
+  const toolkitMatch = toolkit.skillMatches.find((item) => item.id === "shopify-admin");
+  assert.ok(toolkitMatch);
+  assert.equal(toolkitMatch.package.id, "shopify-ai-toolkit");
+
+  const ecom = searchCatalogue({ catalog, packageSkills, query: "shopify-catalog-audit" });
+  const ecomMatch = ecom.skillMatches.find((item) => item.id === "shopify-catalog-audit");
+  assert.ok(ecomMatch);
+  assert.equal(ecomMatch.package.id, "awesome-ecom-skills");
 });
 
 test("loading featured skills does not mutate a shared package data source", async () => {

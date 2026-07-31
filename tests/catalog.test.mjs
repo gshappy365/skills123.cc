@@ -12,7 +12,7 @@ async function loadCatalog() {
   return JSON.parse(await readFile(catalogUrl, "utf8"));
 }
 
-test("launch catalog exposes the ten active packages and scenario statuses", async () => {
+test("launch catalog exposes the twelve active packages and scenario statuses", async () => {
   const catalog = await loadCatalog();
   const activePackages = catalog.packages.filter((item) => item.status === "active");
   const scenarios = Object.fromEntries(catalog.scenarios.map((item) => [item.id, item]));
@@ -20,6 +20,7 @@ test("launch catalog exposes the ten active packages and scenario statuses", asy
   assert.deepEqual(
     activePackages.map((item) => item.id).sort(),
     [
+      "awesome-ecom-skills",
       "development",
       "founder-project-evaluator",
       "gbrain",
@@ -28,6 +29,7 @@ test("launch catalog exposes the ten active packages and scenario statuses", asy
       "ljg-skills",
       "pm-skills",
       "rayskills",
+      "shopify-ai-toolkit",
       "waza",
       "wigolo",
     ]
@@ -101,6 +103,30 @@ test("GBrain package preserves its content placement, scope and upstream snapsho
   assert.equal(gbrain.license, "MIT");
   assert.equal(gbrain.workspace.groupFacetLabel, "技能方向");
   assert.equal(gbrain.source.commit, "c6dc0adf26a2d20df1147d2ec87c8922ca86d410");
+});
+
+test("Shopify AI Toolkit package preserves its development placement and snapshot", async () => {
+  const catalog = await loadCatalog();
+  const shopify = catalog.packages.find((item) => item.id === "shopify-ai-toolkit");
+
+  assert.equal(shopify.name, "Shopify AI Toolkit 开发技能包");
+  assert.equal(shopify.scenario, "development");
+  assert.equal(shopify.skillCount, 21);
+  assert.equal(shopify.installCommand, "codex plugin add shopify@openai-curated");
+  assert.equal(shopify.license, "MIT");
+  assert.equal(shopify.source.commit, "0e06bc35611e505e372de7f8cdf265e6d6dbc311");
+});
+
+test("Awesome Ecom Skills package preserves its operations placement and snapshot", async () => {
+  const catalog = await loadCatalog();
+  const ecom = catalog.packages.find((item) => item.id === "awesome-ecom-skills");
+
+  assert.equal(ecom.name, "Awesome Ecom Skills 电商运营技能包");
+  assert.equal(ecom.scenario, "operations");
+  assert.equal(ecom.skillCount, 9);
+  assert.equal(ecom.installCommand, "claude plugin marketplace add kgelster/awesome-ecom-skills && claude plugin install ecom@kgelster");
+  assert.equal(ecom.license, "MIT");
+  assert.equal(ecom.source.commit, "6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688");
 });
 
 test("development package retains the Atlas catalogue boundary", async () => {
