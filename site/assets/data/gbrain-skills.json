@@ -1,0 +1,1645 @@
+[
+  {
+    "id": "academic-verify",
+    "name": "academic-verify",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 academic-verify 的具体流程。",
+    "descriptionEn": "Verify a research claim or academic citation by tracing it through publication → methodology → raw data → independent replication. Routes through perplexity-research for the actual web lookup, then formats results as a citation-checked brain page. Use when a book/article/conversation cites a study and you want to confirm the claim is real, replicated, and accurately characterized.",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 academic-verify 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/academic-verify/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "archive-crawler",
+    "name": "archive-crawler",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 archive-crawler 的具体流程。",
+    "descriptionEn": "Universal archivist for personal file archives (Dropbox/B2/Gmail-takeout/local-mount/hard-drive-dump). Filters for high-value content (the user's own writing, ideas, relationships) and surfaces it interactively. REFUSES TO RUN without an explicit gbrain.yml `archive-crawler.scan_paths:` allow-list.",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 archive-crawler 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/archive-crawler/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "article-enrichment",
+    "name": "article-enrichment",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 article-enrichment 的具体流程。",
+    "descriptionEn": "Transform raw article text dumps in the brain into structured pages with executive summary, verbatim quotes, key insights, why-it-matters, and cross-references. Replaces walls-of-text with quotable, actionable brain pages.",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 article-enrichment 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/article-enrichment/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "ask-user",
+    "name": "ask-user",
+    "descriptionZh": "用于创建、优化、检查和编排 GBrain 技能。 聚焦 ask-user 的具体流程。",
+    "descriptionEn": "|",
+    "group": "skill-engineering",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "技能工程",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 ask-user 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/ask-user/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "book-mirror",
+    "name": "book-mirror",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 book-mirror 的具体流程。",
+    "descriptionEn": "Take any book (EPUB/PDF), produce a personalized chapter-by-chapter analysis with two-column tables. Left column preserves the chapter content; right column maps every idea to the reader's actual life using brain context. Output is a single brain page at media/books/<slug>-personalized.md plus an optional PDF via brain-pdf.",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 book-mirror 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/book-mirror/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "brain-ops",
+    "name": "brain-ops",
+    "descriptionZh": "维护、查询和管理 GBrain 知识库的核心能力。 聚焦 brain-ops 的具体流程。",
+    "descriptionEn": "|",
+    "group": "brain-core",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "知识库核心",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 brain-ops 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/brain-ops/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "brain-pdf",
+    "name": "brain-pdf",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 brain-pdf 的具体流程。",
+    "descriptionEn": "Generate a publication-quality PDF from any brain page via the gstack make-pdf binary. Strips YAML frontmatter, sanitizes emoji, applies running headers and page numbers. Brain page is always the source of truth; PDF is a rendering.",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 brain-pdf 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/brain-pdf/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "brain-taxonomist",
+    "name": "brain-taxonomist",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 brain-taxonomist 的具体流程。",
+    "descriptionEn": "|",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 brain-taxonomist 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/brain-taxonomist/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "briefing",
+    "name": "briefing",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 briefing 的具体流程。",
+    "descriptionEn": "Compile daily briefing with meeting context, active deals, and citation tracking",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 briefing 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/briefing/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "capture",
+    "name": "capture",
+    "descriptionZh": "维护、查询和管理 GBrain 知识库的核心能力。 聚焦 capture 的具体流程。",
+    "descriptionEn": "Save any thought or content into the brain via one CLI command. The single human-facing entrypoint that replaces \"put_page vs commit-then-sync vs autopilot-wait\" with one command that just works.",
+    "group": "brain-core",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "知识库核心",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 capture 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/capture/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "citation-fixer",
+    "name": "citation-fixer",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 citation-fixer 的具体流程。",
+    "descriptionEn": "|",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 citation-fixer 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/citation-fixer/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "cold-start",
+    "name": "cold-start",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 cold-start 的具体流程。",
+    "descriptionEn": "|",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 cold-start 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/cold-start/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "concept-synthesis",
+    "name": "concept-synthesis",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 concept-synthesis 的具体流程。",
+    "descriptionEn": "Deduplicate and synthesize raw concept stubs into a tiered intellectual map (T1 Canon to T4 Riff), tracing idea evolution across sources over time. Transforms thousands of raw concept pages into a curated intellectual fingerprint.",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 concept-synthesis 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/concept-synthesis/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "cron-scheduler",
+    "name": "cron-scheduler",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 cron-scheduler 的具体流程。",
+    "descriptionEn": "|",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 cron-scheduler 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/cron-scheduler/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "cross-modal-review",
+    "name": "cross-modal-review",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 cross-modal-review 的具体流程。",
+    "descriptionEn": "|",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 cross-modal-review 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/cross-modal-review/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "daily-task-manager",
+    "name": "daily-task-manager",
+    "descriptionZh": "把想法、会议、媒体和外部输入采集进知识库。 聚焦 daily-task-manager 的具体流程。",
+    "descriptionEn": "|",
+    "group": "capture-workflows",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "采集与工作流",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 daily-task-manager 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/daily-task-manager/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "daily-task-prep",
+    "name": "daily-task-prep",
+    "descriptionZh": "把想法、会议、媒体和外部输入采集进知识库。 聚焦 daily-task-prep 的具体流程。",
+    "descriptionEn": "|",
+    "group": "capture-workflows",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "采集与工作流",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 daily-task-prep 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/daily-task-prep/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "data-research",
+    "name": "data-research",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 data-research 的具体流程。",
+    "descriptionEn": "|",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 data-research 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/data-research/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "eiirp",
+    "name": "eiirp",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 eiirp 的具体流程。",
+    "descriptionEn": "|",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 eiirp 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/eiirp/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "enrich",
+    "name": "enrich",
+    "descriptionZh": "维护、查询和管理 GBrain 知识库的核心能力。 聚焦 enrich 的具体流程。",
+    "descriptionEn": "|",
+    "group": "brain-core",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "知识库核心",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 enrich 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/enrich/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "frontmatter-guard",
+    "name": "frontmatter-guard",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 frontmatter-guard 的具体流程。",
+    "descriptionEn": "|",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 frontmatter-guard 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/frontmatter-guard/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "functional-area-resolver",
+    "name": "functional-area-resolver",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 functional-area-resolver 的具体流程。",
+    "descriptionEn": "|",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 functional-area-resolver 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/functional-area-resolver/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "gbrain-advisor",
+    "name": "gbrain-advisor",
+    "descriptionZh": "维护、查询和管理 GBrain 知识库的核心能力。 聚焦 gbrain-advisor 的具体流程。",
+    "descriptionEn": "|",
+    "group": "brain-core",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "知识库核心",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 gbrain-advisor 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/gbrain-advisor/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "gbrain-upgrade",
+    "name": "gbrain-upgrade",
+    "descriptionZh": "维护、查询和管理 GBrain 知识库的核心能力。 聚焦 gbrain-upgrade 的具体流程。",
+    "descriptionEn": "|",
+    "group": "brain-core",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "知识库核心",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 gbrain-upgrade 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/gbrain-upgrade/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "idea-ingest",
+    "name": "idea-ingest",
+    "descriptionZh": "把想法、会议、媒体和外部输入采集进知识库。 聚焦 idea-ingest 的具体流程。",
+    "descriptionEn": "|",
+    "group": "capture-workflows",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "采集与工作流",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 idea-ingest 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/idea-ingest/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "idea-lineage",
+    "name": "idea-lineage",
+    "descriptionZh": "把想法、会议、媒体和外部输入采集进知识库。 聚焦 idea-lineage 的具体流程。",
+    "descriptionEn": "|",
+    "group": "capture-workflows",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "采集与工作流",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 idea-lineage 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/idea-lineage/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "ingest",
+    "name": "ingest",
+    "descriptionZh": "维护、查询和管理 GBrain 知识库的核心能力。 聚焦 ingest 的具体流程。",
+    "descriptionEn": "Route content to specialized ingestion skills. Detects input type and delegates.",
+    "group": "brain-core",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "知识库核心",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 ingest 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/ingest/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "install",
+    "name": "install",
+    "descriptionZh": "维护、查询和管理 GBrain 知识库的核心能力。 聚焦 install 的具体流程。",
+    "descriptionEn": "install skill from GBrain.",
+    "group": "brain-core",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "知识库核心",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 install 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/install/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "maintain",
+    "name": "maintain",
+    "descriptionZh": "维护、查询和管理 GBrain 知识库的核心能力。 聚焦 maintain 的具体流程。",
+    "descriptionEn": "|",
+    "group": "brain-core",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "知识库核心",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 maintain 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/maintain/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "media-ingest",
+    "name": "media-ingest",
+    "descriptionZh": "把想法、会议、媒体和外部输入采集进知识库。 聚焦 media-ingest 的具体流程。",
+    "descriptionEn": "|",
+    "group": "capture-workflows",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "采集与工作流",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 media-ingest 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/media-ingest/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "meeting-ingestion",
+    "name": "meeting-ingestion",
+    "descriptionZh": "把想法、会议、媒体和外部输入采集进知识库。 聚焦 meeting-ingestion 的具体流程。",
+    "descriptionEn": "|",
+    "group": "capture-workflows",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "采集与工作流",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 meeting-ingestion 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/meeting-ingestion/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "migrate",
+    "name": "migrate",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 migrate 的具体流程。",
+    "descriptionEn": "Universal migration from Obsidian, Notion, Logseq, markdown, CSV, JSON, Roam",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 migrate 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/migrate/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "minion-orchestrator",
+    "name": "minion-orchestrator",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 minion-orchestrator 的具体流程。",
+    "descriptionEn": "|",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 minion-orchestrator 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/minion-orchestrator/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "perplexity-research",
+    "name": "perplexity-research",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 perplexity-research 的具体流程。",
+    "descriptionEn": "Brain-augmented web research. Sends brain context about a topic to Perplexity, which searches the web with citations and returns what is NEW vs what the brain already knows. Use for entity enrichment, current-state checks, deal monitoring, and freshness deltas. NOT for simple URL fetches (use web_fetch) or brain-only queries (use gbrain query).",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 perplexity-research 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/perplexity-research/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "publish",
+    "name": "publish",
+    "descriptionZh": "维护、查询和管理 GBrain 知识库的核心能力。 聚焦 publish 的具体流程。",
+    "descriptionEn": "Share brain pages as beautiful password-protected HTML with zero LLM calls",
+    "group": "brain-core",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "知识库核心",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 publish 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/publish/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "query",
+    "name": "query",
+    "descriptionZh": "维护、查询和管理 GBrain 知识库的核心能力。 聚焦 query 的具体流程。",
+    "descriptionEn": "|",
+    "group": "brain-core",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "知识库核心",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 query 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/query/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "repo-architecture",
+    "name": "repo-architecture",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 repo-architecture 的具体流程。",
+    "descriptionEn": "|",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 repo-architecture 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/repo-architecture/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "reports",
+    "name": "reports",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 reports 的具体流程。",
+    "descriptionEn": "|",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 reports 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/reports/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "schema-author",
+    "name": "schema-author",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 schema-author 的具体流程。",
+    "descriptionEn": "Evolve your brain's schema pack. Add page types, propose new ones from corpus scans, backfill page.type on existing pages, audit pack health. Triggers when an agent notices untyped pages, custom domains needing typed entities (researcher, contract, deposition), or wants to see what types the pack declares.",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 schema-author 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/schema-author/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "schema-unify",
+    "name": "schema-unify",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 schema-unify 的具体流程。",
+    "descriptionEn": "Migrate a brain from gbrain-base (or any pack) to gbrain-base-v2's 14-canonical-type taxonomy via gbrain onboard --check + the unify-types Minion handler. Collapses 94 noisy types to 15 canonical with subtypes, alias rows, and link rows. Triggers when an agent notices pack_upgrade_available, type_proliferation, or asks \"what is the canonical taxonomy / how do I clean up my page types\".",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 schema-unify 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/schema-unify/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "setup",
+    "name": "setup",
+    "descriptionZh": "维护、查询和管理 GBrain 知识库的核心能力。 聚焦 setup 的具体流程。",
+    "descriptionEn": "Set up GBrain with auto-provision Supabase or PGLite, AGENTS.md injection, first import",
+    "group": "brain-core",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "知识库核心",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 setup 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/setup/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "signal-detector",
+    "name": "signal-detector",
+    "descriptionZh": "维护、查询和管理 GBrain 知识库的核心能力。 聚焦 signal-detector 的具体流程。",
+    "descriptionEn": "|",
+    "group": "brain-core",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "知识库核心",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 signal-detector 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/signal-detector/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "skill-creator",
+    "name": "skill-creator",
+    "descriptionZh": "用于创建、优化、检查和编排 GBrain 技能。 聚焦 skill-creator 的具体流程。",
+    "descriptionEn": "|",
+    "group": "skill-engineering",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "技能工程",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 skill-creator 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/skill-creator/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "skill-optimizer",
+    "name": "skill-optimizer",
+    "descriptionZh": "用于创建、优化、检查和编排 GBrain 技能。 聚焦 skill-optimizer 的具体流程。",
+    "descriptionEn": "Self-evolving skill optimization via SkillOpt-paper-grounded text-space optimizer.",
+    "group": "skill-engineering",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "技能工程",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 skill-optimizer 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/skill-optimizer/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "skillify",
+    "name": "skillify",
+    "descriptionZh": "用于创建、优化、检查和编排 GBrain 技能。 聚焦 skillify 的具体流程。",
+    "descriptionEn": "|",
+    "group": "skill-engineering",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "技能工程",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 skillify 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/skillify/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "skillpack-check",
+    "name": "skillpack-check",
+    "descriptionZh": "用于创建、优化、检查和编排 GBrain 技能。 聚焦 skillpack-check 的具体流程。",
+    "descriptionEn": "|",
+    "group": "skill-engineering",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "技能工程",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 skillpack-check 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/skillpack-check/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "skillpack-harvest",
+    "name": "skillpack-harvest",
+    "descriptionZh": "用于创建、优化、检查和编排 GBrain 技能。 聚焦 skillpack-harvest 的具体流程。",
+    "descriptionEn": "|",
+    "group": "skill-engineering",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "技能工程",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 skillpack-harvest 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/skillpack-harvest/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "smoke-test",
+    "name": "smoke-test",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 smoke-test 的具体流程。",
+    "descriptionEn": "|",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 smoke-test 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/smoke-test/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "soul-audit",
+    "name": "soul-audit",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 soul-audit 的具体流程。",
+    "descriptionEn": "|",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 soul-audit 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/soul-audit/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "strategic-reading",
+    "name": "strategic-reading",
+    "descriptionZh": "用于研究资料的验证、综合与可引用输出。 聚焦 strategic-reading 的具体流程。",
+    "descriptionEn": "Read a book, article, transcript, or case study through the lens of a specific strategic problem you're facing. Produces an applied playbook that maps the source onto the problem and gives short/medium/long-term recommendations. NOT for general book summaries.",
+    "group": "research-synthesis",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "研究与综合",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 strategic-reading 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/strategic-reading/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "testing",
+    "name": "testing",
+    "descriptionZh": "用于知识库架构、模式、迁移和质量控制。 聚焦 testing 的具体流程。",
+    "descriptionEn": "|",
+    "group": "system-architecture",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "系统与架构",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 testing 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/testing/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "voice-note-ingest",
+    "name": "voice-note-ingest",
+    "descriptionZh": "把想法、会议、媒体和外部输入采集进知识库。 聚焦 voice-note-ingest 的具体流程。",
+    "descriptionEn": "Ingest a voice note with exact-phrasing preservation (never paraphrased). Routes content to originals/, concepts/, people/, companies/, ideas/, personal/, or voice-notes/ based on a decision tree. The user's exact words are the signal.",
+    "group": "capture-workflows",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "采集与工作流",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 voice-note-ingest 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/voice-note-ingest/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  },
+  {
+    "id": "webhook-transforms",
+    "name": "webhook-transforms",
+    "descriptionZh": "把想法、会议、媒体和外部输入采集进知识库。 聚焦 webhook-transforms 的具体流程。",
+    "descriptionEn": "|",
+    "group": "capture-workflows",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "采集与工作流",
+      "GBrain",
+      "Agent 记忆"
+    ],
+    "usageExamples": [
+      "使用 webhook-transforms 处理对应的知识库任务"
+    ],
+    "requirements": [
+      "已安装 GBrain 并完成初始化"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的知识库操作结果"
+    ],
+    "safetyNotes": [
+      "涉及写入、发布或远程同步时需先确认范围"
+    ],
+    "platform": "OpenClaw / Hermes / Claude Code / Codex",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/garrytan/gbrain/blob/c6dc0adf26a2d20df1147d2ec87c8922ca86d410/skills/webhook-transforms/SKILL.md",
+    "upstreamCommit": "c6dc0adf26a2d20df1147d2ec87c8922ca86d410"
+  }
+]

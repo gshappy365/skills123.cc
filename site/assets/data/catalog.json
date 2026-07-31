@@ -40,6 +40,28 @@
       }
     },
     {
+      "id":"shopify-ai-toolkit",
+      "name":"Shopify AI Toolkit 开发技能包",
+      "scenario":"operations",
+      "description":"Shopify 官方 agent 工具包，覆盖 Admin API、Storefront、Liquid、Hydrogen、Functions、Polaris、CLI 和应用发布审核。",
+      "skillCount":21,
+      "tags":["Shopify 开发","Admin API","Liquid","Hydrogen","CLI"],
+      "status":"active",
+      "installCommand":"codex plugin add shopify@openai-curated",
+      "platform":"Codex / Claude Code / Cursor / VS Code",
+      "license":"MIT",
+      "source":{"name":"Shopify/Shopify-AI-Toolkit","url":"https://github.com/Shopify/Shopify-AI-Toolkit","commit":"0e06bc35611e505e372de7f8cdf265e6d6dbc311"},
+      "groups":["API 与数据","开发与 CLI","主题与 Hydrogen","应用界面","发布与审核"],
+      "workspace":{
+        "skillsUrl":"/assets/data/shopify-ai-toolkit-skills.json",
+        "eyebrow":"SHOPIFY AI TOOLKIT",
+        "groupFacetLabel":"技能方向",
+        "groupLabels":{"api-data":"API 与数据","development-cli":"开发与 CLI","theme-hydrogen":"主题与 Hydrogen","app-interfaces":"应用界面","release-review":"发布与审核"},
+        "lifecycleLabels":{"published":"已发布"},
+        "invocationModeLabels":{"model-allowed":"自然语言触发"}
+      }
+    },
+    {
       "id":"investment-research",
       "name":"Serenity.skill",
       "scenario":"research",
@@ -100,6 +122,28 @@
       }
     },
     {
+      "id":"gbrain",
+      "name":"GBrain Agent Brain 知识技能包",
+      "scenario":"content",
+      "description":"面向 OpenClaw、Hermes、Claude Code 和 Codex 的知识库与 agent 记忆工作流，覆盖采集、检索、综合、知识图谱、维护和技能治理。",
+      "skillCount":53,
+      "tags":["知识库","Agent 记忆","研究综合","知识图谱","OpenClaw","Hermes"],
+      "status":"active",
+      "installCommand":"bun install -g github:garrytan/gbrain && gbrain init --pglite",
+      "platform":"OpenClaw / Hermes / Claude Code / Codex",
+      "license":"MIT",
+      "source":{"name":"garrytan/gbrain","url":"https://github.com/garrytan/gbrain","commit":"c6dc0adf26a2d20df1147d2ec87c8922ca86d410"},
+      "groups":["知识库核心","研究与综合","采集与工作流","系统与架构","技能工程"],
+      "workspace":{
+        "skillsUrl":"/assets/data/gbrain-skills.json",
+        "eyebrow":"GBRAIN AGENT BRAIN",
+        "groupFacetLabel":"技能方向",
+        "groupLabels":{"brain-core":"知识库核心","research-synthesis":"研究与综合","capture-workflows":"采集与工作流","system-architecture":"系统与架构","skill-engineering":"技能工程"},
+        "lifecycleLabels":{"published":"已发布"},
+        "invocationModeLabels":{"model-allowed":"自然语言触发"}
+      }
+    },
+    {
       "id":"pm-skills",
       "name":"PM Skills 产品管理技能包",
       "scenario":"operations",
@@ -127,6 +171,28 @@
           "toolkit":"工具箱",
           "ai-shipping":"AI 交付"
         },
+        "lifecycleLabels":{"published":"已发布"},
+        "invocationModeLabels":{"model-allowed":"自然语言触发"}
+      }
+    },
+    {
+      "id":"awesome-ecom-skills",
+      "name":"Awesome Ecom Skills 电商运营技能包",
+      "scenario":"operations",
+      "description":"面向 Shopify 商家和代理商的电商运营 playbook，覆盖目录审计、分类治理、SEO、图片替代文本、结构化数据、批量导入和迁移重定向。",
+      "skillCount":9,
+      "tags":["电商运营","Shopify","目录治理","SEO","批量数据"],
+      "status":"active",
+      "installCommand":"claude plugin marketplace add kgelster/awesome-ecom-skills && claude plugin install ecom@kgelster",
+      "platform":"Claude Code",
+      "license":"MIT",
+      "source":{"name":"kgelster/awesome-ecom-skills","url":"https://github.com/kgelster/awesome-ecom-skills","commit":"6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688"},
+      "groups":["目录治理","SEO 与内容","迁移与批量数据"],
+      "workspace":{
+        "skillsUrl":"/assets/data/awesome-ecom-skills.json",
+        "eyebrow":"AWESOME ECOM SKILLS",
+        "groupFacetLabel":"技能方向",
+        "groupLabels":{"catalog-governance":"目录治理","seo-content":"SEO 与内容","bulk-migration":"迁移与批量数据"},
         "lifecycleLabels":{"published":"已发布"},
         "invocationModeLabels":{"model-allowed":"自然语言触发"}
       }

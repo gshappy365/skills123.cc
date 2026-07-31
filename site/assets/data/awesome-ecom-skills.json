@@ -1,0 +1,290 @@
+[
+  {
+    "id": "ecom-landing-pages",
+    "name": "ecom-landing-pages",
+    "descriptionZh": "用于 SEO 元数据、图片替代文本、结构化数据和电商落地页。 聚焦 ecom-landing-pages 的具体流程。",
+    "descriptionEn": "Use when someone wants landing page ideas, concepts, or angles for a store: \"give me landing page concepts\", \"LP ideas\", \"landing page angles\", a campaign or ad landing page, pages for a new audience/segment, a seasonal/event/promo page, or a geo/local page. Also use when a chosen concept gets picked and needs building out into an actual page (section-by-section blueprint), or when auditing an existing landing page against best practice. The core insight: one product becomes dozens of pages by varying the ANGLE, not the product. Not for full-site information architecture, product detail pages, collection pages, or blog/SEO content (a landing page has ONE goal, no site chrome). Use an SEO/content skill. Not for the ad or email creative itself, though message match with the page matters.",
+    "group": "seo-content",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "SEO 与内容",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 ecom-landing-pages 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Claude Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/kgelster/awesome-ecom-skills/blob/6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688/skills/ecom-landing-pages/SKILL.md",
+    "upstreamCommit": "6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688"
+  },
+  {
+    "id": "shopify-alt-text",
+    "name": "shopify-alt-text",
+    "descriptionZh": "用于 SEO 元数据、图片替代文本、结构化数据和电商落地页。 聚焦 shopify-alt-text 的具体流程。",
+    "descriptionEn": "Use when backfilling missing image alt text on a Shopify store: images with no alt attribute, accessibility alt text for product images, alt text for Files library images, image SEO, or a WCAG/accessibility pass that flags images missing text alternatives. Triggers: \"backfill alt text\", \"fill in missing alt text\", \"images have no alt\", \"add alt attributes for accessibility\", \"image SEO sweep\". One mutation, fileUpdate, covers both product media and the Files library. Not for meta titles/descriptions (use shopify-seo-metadata).",
+    "group": "seo-content",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "SEO 与内容",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-alt-text 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Claude Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/kgelster/awesome-ecom-skills/blob/6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688/skills/shopify-alt-text/SKILL.md",
+    "upstreamCommit": "6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688"
+  },
+  {
+    "id": "shopify-catalog-audit",
+    "name": "shopify-catalog-audit",
+    "descriptionZh": "用于识别、清理和规范化 Shopify 商品目录。 聚焦 shopify-catalog-audit 的具体流程。",
+    "descriptionEn": "Use when someone wants to find product-data problems across a Shopify catalog: \"audit my catalog\", \"find PDP problems\", \"which products have missing photos / thin or missing descriptions / pricing anomalies\", \"$0 or compare-at-inverted prices\", \"products missing type or vendor\", \"catalog quality sweep\", \"product data health check\", \"which listings are broken\", \"run a catalog audit before a big sale\". Read-only: it locates and ranks problems, it does not change anything. Not for FIXING the problems it finds (use shopify-catalog-cleanup for debris/archiving, shopify-seo-metadata for missing SEO meta, shopify-alt-text for missing image alt text).",
+    "group": "catalog-governance",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "目录治理",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-catalog-audit 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Claude Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/kgelster/awesome-ecom-skills/blob/6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688/skills/shopify-catalog-audit/SKILL.md",
+    "upstreamCommit": "6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688"
+  },
+  {
+    "id": "shopify-catalog-cleanup",
+    "name": "shopify-catalog-cleanup",
+    "descriptionZh": "用于识别、清理和规范化 Shopify 商品目录。 聚焦 shopify-catalog-cleanup 的具体流程。",
+    "descriptionEn": "Use when fixing the debris an audit found in a Shopify catalog: bulk-archive dead/discontinued/zero-inventory products, clean up catalog debris, kill ghost review stars (empty star ratings a theme still renders after a review app was uninstalled), remove orphaned metafields left by an uninstalled app, strip HTML artifacts from product descriptions (double-nested bold, fully-bold paragraphs, empty tags), or fix messed-up / mangled product descriptions in bulk. Mutating cleanup work: archive vs delete, metafieldsDelete, description rewrites. Not for FINDING what's wrong (use shopify-catalog-audit) or filling missing metadata like SEO titles and alt text (use shopify-seo-metadata).",
+    "group": "catalog-governance",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "目录治理",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-catalog-cleanup 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Claude Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/kgelster/awesome-ecom-skills/blob/6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688/skills/shopify-catalog-cleanup/SKILL.md",
+    "upstreamCommit": "6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688"
+  },
+  {
+    "id": "shopify-category-taxonomy",
+    "name": "shopify-category-taxonomy",
+    "descriptionZh": "用于识别、清理和规范化 Shopify 商品目录。 聚焦 shopify-category-taxonomy 的具体流程。",
+    "descriptionEn": "Use when you assign the Shopify Standard Product Taxonomy category, \"set the product category\", \"categorize the catalog\", or fill the category / taxonomy metafields: the admin \"Category metafields\" panel (Color, Size, Material, Caffeine content), a.k.a. product category attributes / taxonomy attributes, including the attributes a Google feed asks for. Covers bulk classification, discovering a category's attributes and allowed values, minting the reserved value metaobjects, and writing them safely. Also: \"category metafields show blank/null\", \"my Color attribute won't save\". Not for bulk CSV data loads (Matrixify can't do this; see shopify-matrixify for bulk data).",
+    "group": "catalog-governance",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "目录治理",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-category-taxonomy 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Claude Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/kgelster/awesome-ecom-skills/blob/6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688/skills/shopify-category-taxonomy/SKILL.md",
+    "upstreamCommit": "6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688"
+  },
+  {
+    "id": "shopify-json-ld",
+    "name": "shopify-json-ld",
+    "descriptionZh": "用于 SEO 元数据、图片替代文本、结构化数据和电商落地页。 聚焦 shopify-json-ld 的具体流程。",
+    "descriptionEn": "Use when adding structured data / JSON-LD / schema markup to a Shopify store: recipe, FAQ, Article/BlogPosting, CollectionPage, AboutPage, or Organization schema; chasing Google rich-results / rich-snippet eligibility; debugging a Search Console \"Invalid object type\" or \"missing field\" schema error; or a request like \"add schema to my store\", \"add recipe schema\", or \"why isn't my product showing rich results\". This skill adds SUPPLEMENTAL JSON-LD the theme cannot emit dynamically, stored in a metafield and rendered by one Liquid snippet. Not for meta titles, meta descriptions, canonical tags, or Open Graph (use shopify-seo-metadata for those).",
+    "group": "seo-content",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "SEO 与内容",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-json-ld 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Claude Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/kgelster/awesome-ecom-skills/blob/6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688/skills/shopify-json-ld/SKILL.md",
+    "upstreamCommit": "6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688"
+  },
+  {
+    "id": "shopify-matrixify",
+    "name": "shopify-matrixify",
+    "descriptionZh": "用于批量数据处理、Matrixify 导入和迁移后的重定向。 聚焦 shopify-matrixify 的具体流程。",
+    "descriptionEn": "Use when a store owner is doing bulk data work through the Matrixify (formerly Excelify) app: bulk import/export, \"migrate my catalog\", \"bulk update prices\", \"bulk edit metafields\", CSV or Excel import, \"my import deleted my metafields\", \"my import wiped my tags\", MERGE vs REPLACE vs UPDATE, \"how do I undo an import\", building a Matrixify sheet by hand or programmatically, or a data migration between stores/platforms. Covers products, variants, metafields, collections, redirects, customers, and menus. Not for minting category (taxonomy) metafields, which Matrixify cannot do (use shopify-category-taxonomy); not for one-off single-record edits via the Admin API (use the relevant entity skill).",
+    "group": "bulk-migration",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "迁移与批量数据",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-matrixify 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Claude Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/kgelster/awesome-ecom-skills/blob/6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688/skills/shopify-matrixify/SKILL.md",
+    "upstreamCommit": "6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688"
+  },
+  {
+    "id": "shopify-redirect-mapping",
+    "name": "shopify-redirect-mapping",
+    "descriptionZh": "用于批量数据处理、Matrixify 导入和迁移后的重定向。 聚焦 shopify-redirect-mapping 的具体流程。",
+    "descriptionEn": "Use when you need to map a pile of old URLs to live pages and turn them into 301 redirects on a Shopify store: fix 404s, bulk redirects after a migration/replatform/catalog restructure, turn a Google Search Console 404 export into live redirects, or WordPress→Shopify URL transforms (/YYYY/MM/slug/ → /products/slug). Trigger phrases: \"map old URLs\", \"fix our 404s\", \"redirect the dead links\", \"we relaunched and lost our rankings\". Recovers SEO equity and rescues users after a URL structure changes. Not for creating a single one-off redirect (do it in admin).",
+    "group": "bulk-migration",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "迁移与批量数据",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-redirect-mapping 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Claude Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/kgelster/awesome-ecom-skills/blob/6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688/skills/shopify-redirect-mapping/SKILL.md",
+    "upstreamCommit": "6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688"
+  },
+  {
+    "id": "shopify-seo-metadata",
+    "name": "shopify-seo-metadata",
+    "descriptionZh": "用于 SEO 元数据、图片替代文本、结构化数据和电商落地页。 聚焦 shopify-seo-metadata 的具体流程。",
+    "descriptionEn": "Use when a store has missing SEO titles or meta descriptions and you want to backfill them: \"backfill missing SEO titles/descriptions\", \"meta description sweep\", \"SEO meta backfill across products/collections/pages/blog posts\", \"missing page titles\", \"fix blank search-appearance metadata\", \"generate SEO meta for products\". Safe-mode: fills only the empty search-appearance fields (SEO title, meta description) on products, collections, pages, and blog articles, never touching human-written values. Not for image alt text (use shopify-alt-text) or JSON-LD (use shopify-json-ld).",
+    "group": "seo-content",
+    "lifecycle": "published",
+    "invocationMode": "model-allowed",
+    "tags": [
+      "SEO 与内容",
+      "Shopify",
+      "电商"
+    ],
+    "usageExamples": [
+      "使用 shopify-seo-metadata 处理对应的 Shopify 工作"
+    ],
+    "requirements": [
+      "已安装对应技能包",
+      "按技能说明配置 Shopify CLI 或 Admin API 访问"
+    ],
+    "environmentVariables": [],
+    "outputs": [
+      "可交接的 Shopify 工作结果"
+    ],
+    "safetyNotes": [
+      "涉及真实店铺写入时先预览、确认范围并核对权限"
+    ],
+    "platform": "Claude Code",
+    "license": "MIT",
+    "sourceUrl": "https://github.com/kgelster/awesome-ecom-skills/blob/6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688/skills/shopify-seo-metadata/SKILL.md",
+    "upstreamCommit": "6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688"
+  }
+]

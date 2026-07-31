@@ -2,7 +2,7 @@ import {
   buildPackageGroups,
   loadPackageSkills,
   searchCatalogue,
-} from "./catalogue-search.js?v=20260731-1";
+} from "./catalogue-search.js?v=20260731-3";
 
 const state = {
   catalog: null,
@@ -169,8 +169,8 @@ function bindEvents() {
 
 async function init() {
   [state.catalog, state.guides] = await Promise.all([
-    fetch("/assets/data/catalog.json?v=20260731-1").then((response) => response.json()),
-    fetch("/assets/data/guides.json?v=20260731-1").then((response) => response.json()),
+    fetch("/assets/data/catalog.json?v=20260731-3").then((response) => response.json()),
+    fetch("/assets/data/guides.json?v=20260731-3").then((response) => response.json()),
   ]);
   state.packageSkills = await loadPackageSkills(state.catalog, (url) =>
     fetch(url).then((response) => response.json())
