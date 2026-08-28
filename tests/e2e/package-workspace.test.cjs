@@ -3,10 +3,8 @@ const { readFile } = require("node:fs/promises");
 const { createServer } = require("node:http");
 const path = require("node:path");
 const { after, before, test } = require("node:test");
-
 const playwrightModule = process.env.PLAYWRIGHT_MODULE || "playwright";
 const { chromium } = require(playwrightModule);
-
 const siteRoot = path.resolve(__dirname, "../../site");
 const contentTypes = {
   ".css": "text/css; charset=utf-8",
@@ -15,11 +13,9 @@ const contentTypes = {
   ".json": "application/json; charset=utf-8",
   ".png": "image/png",
 };
-
 let browser;
 let server;
 let baseUrl;
-
 before(async () => {
   server = createServer(async (request, response) => {
     try {
@@ -45,17 +41,14 @@ before(async () => {
   baseUrl = `http://127.0.0.1:${server.address().port}`;
   browser = await chromium.launch({ headless: true });
 });
-
 after(async () => {
   await browser?.close();
   await new Promise((resolve) => server?.close(resolve));
 });
-
 test("development package supports desktop browsing, filtering and search", async () => {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.goto(`${baseUrl}/packages/development/`, { waitUntil: "networkidle" });
-
-  assert.equal(await page.locator(".skill-row").count(), 42);
+  assert.equal(await page.locator(".skill-row").count(), 35);
   assert.match(await page.locator(".skill-row.is-selected").innerText(), /ask-matt/);
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "ask-matt");
   assert.match(
@@ -66,34 +59,26 @@ test("development package supports desktop browsing, filtering and search", asyn
     "软件工程",
     "进行中",
     "效率方法",
-    "个人知识",
     "工具配置",
-    "已弃用",
   ]);
-
   await page.getByRole("button", { name: "软件工程", exact: true }).click();
-  assert.equal(await page.locator(".skill-row").count(), 19);
-
+  assert.equal(await page.locator(".skill-row").count(), 18);
   await page.locator("#skill-search").fill("prototype");
   assert.equal(await page.locator(".skill-row").count(), 1);
   assert.match(await page.locator(".skill-row.is-selected").innerText(), /prototype/);
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "prototype");
-
   await page.locator("#skill-search").fill("一次性原型");
   assert.equal(await page.locator(".skill-row").count(), 1);
   assert.match(await page.locator(".skill-row.is-selected").innerText(), /prototype/);
-
   const horizontalOverflow = await page.evaluate(
     () => document.documentElement.scrollWidth > document.documentElement.clientWidth
   );
   assert.equal(horizontalOverflow, false);
   await page.close();
 });
-
 test("grouped navigation searches owned skills and restores search on back", async () => {
   const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
   await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
-
   assert.deepEqual(await page.locator(".package-index-group h2").allTextContents(), [
     "开发",
     "研究",
@@ -105,7 +90,6 @@ test("grouped navigation searches owned skills and restores search on back", asy
     await page.locator(".package-index-group.is-coming-soon a").count(),
     0
   );
-
   await page.getByPlaceholder("搜索技能包、技能或 /command").fill("prototype");
   assert.equal(await page.locator(".catalogue-result.skill-result").count(), 1);
   assert.match(
@@ -113,10 +97,8 @@ test("grouped navigation searches owned skills and restores search on back", asy
     /归属 · Mattpocock 技能包/
   );
   await page.locator(".catalogue-result.skill-result").click();
-
   assert.equal(new URL(page.url()).searchParams.get("skill"), "prototype");
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "prototype");
-
   await page.goBack({ waitUntil: "networkidle" });
   assert.equal(new URL(page.url()).searchParams.get("q"), "prototype");
   assert.equal(
@@ -124,7 +106,6 @@ test("grouped navigation searches owned skills and restores search on back", asy
     "prototype"
   );
   assert.equal(await page.locator(".catalogue-result.skill-result").count(), 1);
-
   await page.getByPlaceholder("搜索技能包、技能或 /command").fill("serenity");
   assert.match(
     await page.locator(".catalogue-result.skill-result").innerText(),
@@ -136,31 +117,26 @@ test("grouped navigation searches owned skills and restores search on back", asy
   assert.match(await page.locator(".skill-row.is-selected").innerText(), /serenity-skill/);
   await page.close();
 });
-
 test("workspace direct URL and browser history resolve the same selected skill", async () => {
   const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
   await page.goto(`${baseUrl}/packages/development/?skill=prototype`, {
     waitUntil: "networkidle",
   });
-
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "prototype");
   await page.locator('[data-skill-id="ask-matt"]').click();
   assert.equal(new URL(page.url()).searchParams.get("skill"), "ask-matt");
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "ask-matt");
-
   await page.goBack();
   assert.equal(new URL(page.url()).searchParams.get("skill"), "prototype");
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "prototype");
   await page.close();
 });
-
 test("research package uses the shared workspace and exposes Serenity reading context", async () => {
   const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
   await page.goto(
     `${baseUrl}/packages/investment-research/?skill=serenity-skill`,
     { waitUntil: "networkidle" }
   );
-
   assert.equal(await page.locator("#package-name").innerText(), "Serenity.skill");
   assert.equal(await page.locator(".skill-row").count(), 1);
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "Serenity.skill");
@@ -169,24 +145,20 @@ test("research package uses the shared workspace and exposes Serenity reading co
     await page.locator(".reading-link").getAttribute("href"),
     "/packages/investment-research/skills/serenity-skill/"
   );
-
   await page.locator("#skill-search").fill("证据验证");
   assert.equal(await page.locator(".skill-row").count(), 1);
   await page.getByRole("button", { name: "行业研究", exact: true }).click();
   assert.equal(await page.locator(".skill-row").count(), 1);
   await page.close();
 });
-
 test("Shopify 专题在全局搜索中只显示入口，专题内搜索正确隐藏文章", async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
-
   await page.getByPlaceholder("搜索技能包、技能或 /command").fill("Liquid");
   assert.equal(await page.locator(".catalogue-result.guide-result").count(), 1);
   assert.equal(await page.locator(".catalogue-result.skill-result").count(), 0);
   await page.locator(".catalogue-result.guide-result").click();
   await page.waitForLoadState("networkidle");
-
   assert.equal(await page.locator("[data-guide-card]").count(), 157);
   await page.getByPlaceholder("搜索 Shopify、SEO、Liquid…").fill("SEO");
   const visibleCards = page.locator("[data-guide-card]:visible");
@@ -209,13 +181,11 @@ test("Shopify 专题在全局搜索中只显示入口，专题内搜索正确隐
   );
   await page.close();
 });
-
 test("Shopify 深层技术文章可直达并保留代码与表格阅读结构", async () => {
   const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
   await page.goto(`${baseUrl}/guides/shopify-handbook/liquid/getting-started/`, {
     waitUntil: "networkidle",
   });
-
   assert.match(await page.locator(".guide-article h1").innerText(), /Liquid/);
   assert.ok((await page.locator(".article-content pre code").count()) > 0);
   assert.ok((await page.locator(".article-content table").count()) > 0);
@@ -227,7 +197,6 @@ test("Shopify 深层技术文章可直达并保留代码与表格阅读结构", 
   );
   await page.close();
 });
-
 test("Rayskills package shows the complete directory and separates package install from member call", async () => {
   const context = await browser.newContext({
     permissions: ["clipboard-read", "clipboard-write"],
@@ -237,7 +206,6 @@ test("Rayskills package shows the complete directory and separates package insta
   await page.goto(`${baseUrl}/packages/rayskills/?skill=ray-writer`, {
     waitUntil: "networkidle",
   });
-
   assert.equal(await page.locator("#package-name").innerText(), "Rayskills 内容技能包");
   assert.equal(await page.locator(".skill-row").count(), 21);
   assert.deepEqual(await page.locator("#group-filters button").allTextContents(), [
@@ -256,7 +224,6 @@ test("Rayskills package shows the complete directory and separates package insta
   assert.equal(await page.locator("#copy-command").innerText(), "复制");
   assert.match(await page.locator(".workspace-detail").innerText(), /CC BY-NC 4.0/);
   assert.match(await page.locator(".workspace-detail").innerText(), /验证|恢复|确认/);
-
   await page.locator("#copy-package-command").click();
   assert.equal(
     await page.evaluate(() => navigator.clipboard.readText()),
@@ -264,13 +231,11 @@ test("Rayskills package shows the complete directory and separates package insta
   );
   await context.close();
 });
-
 test("research package opens Serenity detail in the mobile drawer", async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await page.goto(`${baseUrl}/packages/investment-research/`, {
     waitUntil: "networkidle",
   });
-
   await page.locator('[data-skill-id="serenity-skill"]').click();
   await page.waitForTimeout(220);
   assert.equal(
@@ -289,14 +254,12 @@ test("research package opens Serenity detail in the mobile drawer", async () => 
   );
   await page.close();
 });
-
 test("mobile Serenity deep links open the selected detail drawer", async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await page.goto(
     `${baseUrl}/packages/investment-research/?skill=serenity-skill`,
     { waitUntil: "networkidle" }
   );
-
   assert.equal(
     await page
       .locator(".workspace-detail")
@@ -306,17 +269,14 @@ test("mobile Serenity deep links open the selected detail drawer", async () => {
   assert.equal(await page.locator(".reading-link").isVisible(), true);
   await page.close();
 });
-
 test("mobile detail drawer closes without losing workspace selection", async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   await page.goto(`${baseUrl}/packages/development/`, { waitUntil: "networkidle" });
-
   await page.locator('[data-skill-id="implement"]').click();
   await page.waitForTimeout(220);
   assert.equal(await page.locator(".workspace-detail").evaluate((node) => node.classList.contains("is-open")), true);
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "implement");
   const directoryPosition = await page.evaluate(() => window.scrollY);
-
   await page.locator("#detail-close").click();
   await page.waitForTimeout(220);
   assert.equal(await page.locator(".workspace-detail").evaluate((node) => node.classList.contains("is-open")), false);
@@ -330,13 +290,11 @@ test("mobile detail drawer closes without losing workspace selection", async () 
   );
   await page.close();
 });
-
 test("Serenity full reading returns to the complete research workspace state", async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 240 } });
   await page.goto(`${baseUrl}/packages/investment-research/`, {
     waitUntil: "networkidle",
   });
-
   await page.locator("#skill-search").fill("证据验证");
   await page.getByRole("button", { name: "行业研究", exact: true }).click();
   await page.getByRole("button", { name: "已发布", exact: true }).click();
@@ -347,7 +305,6 @@ test("Serenity full reading returns to the complete research workspace state", a
   await page.locator('[data-skill-id="serenity-skill"]').click();
   await page.locator(".reading-link").click();
   await page.waitForLoadState("networkidle");
-
   assert.match(page.url(), /\/skills\/serenity-skill\//);
   assert.equal(await page.locator(".package-reading-bar").count(), 1);
   assert.match(await page.locator("main").innerText(), /Serenity 是什么/);
@@ -357,7 +314,6 @@ test("Serenity full reading returns to the complete research workspace state", a
     ),
     false
   );
-
   await page.locator("#returnToWorkspace").click();
   await page.waitForLoadState("networkidle");
   assert.equal(await page.locator("#skill-search").inputValue(), "证据验证");
@@ -376,14 +332,12 @@ test("Serenity full reading returns to the complete research workspace state", a
   );
   await page.close();
 });
-
 test("direct Serenity reading has a package return path and stable browser history", async () => {
   const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
   await page.goto(
     `${baseUrl}/packages/investment-research/skills/serenity-skill/`,
     { waitUntil: "networkidle" }
   );
-
   assert.equal(
     new URL(await page.locator("#returnToWorkspace").getAttribute("href")).searchParams.get("skill"),
     "serenity-skill"
@@ -391,7 +345,6 @@ test("direct Serenity reading has a package return path and stable browser histo
   await page.locator("#returnToWorkspace").click();
   await page.waitForLoadState("networkidle");
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "Serenity.skill");
-
   await page.goBack({ waitUntil: "networkidle" });
   assert.match(page.url(), /\/skills\/serenity-skill\/$/);
   await page.goForward({ waitUntil: "networkidle" });

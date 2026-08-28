@@ -10,28 +10,29 @@
       "id":"development",
       "name":"Mattpocock 技能包",
       "scenario":"development",
-      "description":"以 Skills Atlas 为参考，组织从设计、构建、测试到交付的 42 项 AI 工作技能。",
-      "skillCount":42,
-      "tags":["软件工程","产品设计","流程协作"],
+      "description":"Matt Pocock 的工程级 AI 技能集 v1.2.3，覆盖需求对齐、规格驱动、TDD、代码审查、架构深化、调试诊断和交接协作的 35 项技能。",
+      "skillCount":35,
+      "tags":["软件工程","TDD","需求对齐","代码审查","架构设计"],
       "status":"active",
-      "source":{"name":"Mattpocock","url":"https://github.com/mattpocock/skills/commits?author=mattpocock"},
-      "groups":["软件工程","进行中","效率方法","个人知识","工具配置","已弃用"],
+      "installCommand":"npx -y skills add mattpocock/skills",
+      "platform":"Claude Code / Codex / Cursor",
+      "license":"MIT",
+      "source":{"name":"mattpocock/skills","url":"https://github.com/mattpocock/skills","commit":"6acc160e4e0cd062dbbbd7a1b26ae92855edf07e"},
+      "groups":["软件工程","进行中","效率方法","工具配置"],
       "workspace":{
         "skillsUrl":"/assets/data/atlas-skills.json",
-        "eyebrow":"DEVELOPMENT PACKAGE",
+        "eyebrow":"MATTPocock ENGINEERING SKILLS",
+        "groupFacetLabel":"技能方向",
         "groupLabels":{
           "engineering":"软件工程",
           "in-progress":"进行中",
           "productivity":"效率方法",
-          "personal":"个人知识",
-          "misc":"工具配置",
-          "deprecated":"已弃用"
+          "misc":"工具配置"
         },
         "lifecycleLabels":{
           "published":"已发布",
           "experimental":"实验中",
-          "repository-only":"仓库内",
-          "deprecated":"已弃用"
+          "repository-only":"仓库内"
         },
         "invocationModeLabels":{
           "user-only":"用户触发",

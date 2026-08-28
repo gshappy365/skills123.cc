@@ -5,7 +5,6 @@ import {
   getPackageWorkspaceNavigationFromUrl,
 } from "./package-workspace-state.js";
 import { createPackageWorkspaceModel } from "./catalogue-model.js?v=20260731-3";
-
 const packageId = document.body.dataset.packageId;
 const workspaceInput = {
   packageId,
@@ -15,16 +14,13 @@ const workspaceInput = {
   reading: false,
   directoryPosition: 0,
 };
-
 let packageData;
 let skills = [];
 let labels = {};
 let detailOpen = false;
-
 function usesDetailDrawer() {
   return window.matchMedia("(max-width: 900px)").matches;
 }
-
 const elements = {
   shell: document.querySelector(".workspace-shell"),
   packageName: document.querySelector("#package-name"),
@@ -45,7 +41,6 @@ const elements = {
   detailBackdrop: document.querySelector("#detail-backdrop"),
   detailEmptyTemplate: document.querySelector("#detail-empty-template"),
 };
-
 function escapeHtml(value = "") {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -54,11 +49,9 @@ function escapeHtml(value = "") {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
-
 function optionsFor(facet) {
   return [...new Set(skills.map((skill) => skill[facet]).filter(Boolean))];
 }
-
 function toggleFilter(filterName, value) {
   const values = workspaceInput.filters[filterName];
   workspaceInput.filters = {
@@ -69,7 +62,6 @@ function toggleFilter(filterName, value) {
   };
   render({ syncUrl: true });
 }
-
 function renderFilterGroup(container, filterName, facet, facetLabels) {
   const selectedValues = workspaceInput.filters[filterName];
   const availableValues = optionsFor(facet);
@@ -86,7 +78,6 @@ function renderFilterGroup(container, filterName, facet, facetLabels) {
     })
     .join("");
 }
-
 function renderList(state) {
   elements.list.innerHTML = state.visibleSkills
     .map((skill, index) => {
@@ -105,14 +96,12 @@ function renderList(state) {
   elements.visibleCount.textContent = state.visibleSkills.length;
   elements.empty.hidden = state.visibleSkills.length > 0;
 }
-
 function renderDetail(state) {
   const detail = state.selectedDetail;
   if (!detail) {
     elements.detailContent.replaceChildren(elements.detailEmptyTemplate.content.cloneNode(true));
     return;
   }
-
   const tagMarkup = detail.tags
     .map((tag) => `<span>${escapeHtml(tag)}</span>`)
     .join("");
@@ -171,7 +160,6 @@ function renderDetail(state) {
        ${renderList("验证与边界", detail.safetyNotes, "按宿主默认边界执行")}
        <a class="source-link" href="${escapeHtml(detail.sourceUrl)}" target="_blank" rel="noreferrer"><span>固定上游版本</span><strong>查看源文件 →</strong><small>${escapeHtml(detail.upstreamCommit.slice(0, 7))}</small></a>`
     : "";
-
   elements.detailContent.innerHTML = `
     <p class="detail-eyebrow">SELECTED SKILL</p>
     <h2 id="detail-title">${escapeHtml(detail.name)}</h2>
@@ -192,14 +180,12 @@ function renderDetail(state) {
       ${relationshipMarkup}${relatedMarkup || (!relationshipMarkup ? "<p>当前没有关联信息。</p>" : "")}
     </section>`;
 }
-
 function setDetailOpen(open) {
   detailOpen = open;
   elements.detail.classList.toggle("is-open", open);
   elements.detailBackdrop.classList.toggle("is-open", open);
   document.body.classList.toggle("has-detail-drawer", open);
 }
-
 function updateSelectedSkillUrl(selectedSkillId, historyMode = "replaceState") {
   const nextUrl = createPackageWorkspaceUrl(location.href, {
     ...workspaceInput,
@@ -207,7 +193,6 @@ function updateSelectedSkillUrl(selectedSkillId, historyMode = "replaceState") {
   });
   history[historyMode]({}, "", nextUrl);
 }
-
 function selectSkill(
   skillId,
   { openDetail = true, historyMode = "pushState" } = {}
@@ -218,7 +203,6 @@ function selectSkill(
   updateSelectedSkillUrl(state.navigation.selectedSkillId, historyMode);
   if (openDetail) setDetailOpen(true);
 }
-
 function render({ syncUrl = false } = {}) {
   const state = derivePackageWorkspaceState({
     ...workspaceInput,
@@ -238,20 +222,16 @@ function render({ syncUrl = false } = {}) {
   if (syncUrl) updateSelectedSkillUrl(state.navigation.selectedSkillId);
   return state;
 }
-
 function bindEvents() {
   elements.search.addEventListener("input", (event) => {
     workspaceInput.query = event.target.value;
     render({ syncUrl: true });
   });
-
   document.addEventListener("click", async (event) => {
     const filter = event.target.closest("[data-filter]");
     if (filter) toggleFilter(filter.dataset.filter, filter.dataset.value);
-
     const skill = event.target.closest("[data-skill-id]");
     if (skill) selectSkill(skill.dataset.skillId);
-
     const related = event.target.closest("[data-related-id]");
     if (related) {
       workspaceInput.query = "";
@@ -259,21 +239,18 @@ function bindEvents() {
       elements.search.value = "";
       selectSkill(related.dataset.relatedId, { openDetail: false });
     }
-
     const copy = event.target.closest("#copy-command");
     if (copy) {
       const command = copy.closest(".command-bar")?.querySelector("code")?.textContent ?? "";
       await navigator.clipboard.writeText(command);
       copy.textContent = "已复制";
     }
-
     const packageCopy = event.target.closest("#copy-package-command");
     if (packageCopy) {
       const command = packageCopy.closest(".package-install-banner")?.querySelector("code")?.textContent ?? "";
       await navigator.clipboard.writeText(command);
       packageCopy.textContent = "已复制";
     }
-
     const readingLink = event.target.closest(".reading-link");
     if (readingLink) {
       event.preventDefault();
@@ -291,14 +268,12 @@ function bindEvents() {
       );
     }
   });
-
   elements.clearFilters.addEventListener("click", () => {
     workspaceInput.query = "";
     workspaceInput.filters = { groups: [], lifecycles: [] };
     elements.search.value = "";
     render({ syncUrl: true });
   });
-
   const closeDetail = () => {
     setDetailOpen(false);
     requestAnimationFrame(() => window.scrollTo({ top: workspaceInput.directoryPosition }));
@@ -322,7 +297,6 @@ function bindEvents() {
     );
   });
 }
-
 async function init() {
   const fetchJson = async (url) => {
     const response = await fetch(url);
@@ -334,12 +308,17 @@ async function init() {
   packageData = workspace.package;
   skills = workspace.skills;
   labels = workspace.labels;
-
   elements.packageName.textContent = packageData.name;
   elements.groupFilterLabel.textContent = packageData.workspace.groupFacetLabel ?? "领域";
-  if (packageData.installCommand) {
+  if (packageData.installCommand || packageData.source?.url) {
     elements.packageInstall.hidden = false;
-    elements.packageInstall.innerHTML = `<span><strong>安装整个技能包</strong><small>${escapeHtml(packageData.license ?? "")}</small></span><code>${escapeHtml(packageData.installCommand)}</code><button type="button" id="copy-package-command">复制整包安装命令</button>`;
+    const sourceLink = packageData.source?.url
+      ? `<a class="package-source-link" href="${escapeHtml(packageData.source.url)}" target="_blank" rel="noopener" title="${escapeHtml(packageData.source.url)}">GitHub 源码 ↗</a>`
+      : "";
+    const installRow = packageData.installCommand
+      ? `<div class="package-install-row"><span><strong>安装整个技能包</strong><small>${escapeHtml(packageData.license ?? "")}</small></span><code>${escapeHtml(packageData.installCommand)}</code><button type="button" id="copy-package-command">复制整包安装命令</button></div>`
+      : "";
+    elements.packageInstall.innerHTML = `${installRow}${sourceLink}`;
   }
   elements.totalCount.textContent = skills.length;
   elements.directoryTotal.textContent = skills.length;
@@ -359,7 +338,6 @@ async function init() {
     );
   }
 }
-
 init().catch((error) => {
   console.error(error);
   elements.list.innerHTML = '<li class="load-error">技能目录暂时无法加载，请稍后重试。</li>';

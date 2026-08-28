@@ -1,18 +1,14 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-
 import {
   createCatalogueModel,
   getPackageWorkspaceModel,
 } from "../site/assets/js/catalogue-model.js";
-
 const siteData = new URL("../site/assets/data/", import.meta.url);
-
 async function readJson(name) {
   return JSON.parse(await readFile(new URL(name, siteData), "utf8"));
 }
-
 test("catalogue model loads and validates every package through one boundary", async () => {
   const catalog = await readJson("catalog.json");
   const sources = {
@@ -30,7 +26,6 @@ test("catalogue model loads and validates every package through one boundary", a
     "/assets/data/awesome-ecom-skills.json": await readJson("awesome-ecom-skills.json"),
   };
   const model = await createCatalogueModel(catalog, async (url) => sources[url]);
-
   assert.deepEqual(Object.keys(model.packageSkills), [
     "development",
     "shopify-ai-toolkit",
@@ -45,7 +40,7 @@ test("catalogue model loads and validates every package through one boundary", a
     "waza",
     "ljg-skills",
   ]);
-  assert.equal(getPackageWorkspaceModel(model, "development").skills.length, 42);
+  assert.equal(getPackageWorkspaceModel(model, "development").skills.length, 35);
   assert.equal(getPackageWorkspaceModel(model, "shopify-ai-toolkit").skills.length, 21);
   assert.equal(getPackageWorkspaceModel(model, "pm-skills").skills.length, 68);
   assert.equal(getPackageWorkspaceModel(model, "wigolo").skills.length, 11);
@@ -56,7 +51,6 @@ test("catalogue model loads and validates every package through one boundary", a
   assert.equal(getPackageWorkspaceModel(model, "gbrain").skills.length, 53);
   assert.equal(getPackageWorkspaceModel(model, "awesome-ecom-skills").skills.length, 9);
 });
-
 test("catalogue boundary rejects a skill whose group has no package label", async () => {
   const catalog = {
     scenarios: [{ id: "research", name: "研究", status: "active" }],
@@ -76,7 +70,6 @@ test("catalogue boundary rejects a skill whose group has no package label", asyn
       },
     ],
   };
-
   await assert.rejects(
     createCatalogueModel(catalog, async () => [
       {
@@ -89,7 +82,6 @@ test("catalogue boundary rejects a skill whose group has no package label", asyn
     /unknown group "missing"/
   );
 });
-
 test("catalogue boundary rejects incomplete install details before rendering", async () => {
   const catalog = {
     scenarios: [{ id: "research", name: "研究", status: "active" }],
@@ -109,7 +101,6 @@ test("catalogue boundary rejects incomplete install details before rendering", a
       },
     ],
   };
-
   await assert.rejects(
     createCatalogueModel(catalog, async () => [
       {

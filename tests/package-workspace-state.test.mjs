@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-
 import {
   createPackageWorkspaceUrl,
   createReadingUrl,
@@ -10,21 +9,17 @@ import {
   getPackageWorkspaceNavigationFromUrl,
   getSelectedSkillIdFromUrl,
 } from "../site/assets/js/package-workspace-state.js";
-
 const skillsUrl = new URL("../site/assets/data/atlas-skills.json", import.meta.url);
-
 async function loadSkills() {
   return JSON.parse(await readFile(skillsUrl, "utf8"));
 }
-
 test("development workspace exposes the complete catalogue and a stable default selection", async () => {
   const skills = await loadSkills();
   const state = derivePackageWorkspaceState({
     packageId: "development",
     skills,
   });
-
-  assert.equal(state.visibleSkills.length, 42);
+  assert.equal(state.visibleSkills.length, 35);
   assert.equal(state.selectedSkill.id, "ask-matt");
   assert.equal(state.selectedDetail.command, "/ask-matt");
   assert.deepEqual(state.selectedDetail.relatedSkillIds, [
@@ -33,7 +28,6 @@ test("development workspace exposes the complete catalogue and a stable default 
     "diagnosing-bugs",
   ]);
 });
-
 test("query searches skill identity, description and command then selects the first visible skill", async () => {
   const skills = await loadSkills();
   const state = derivePackageWorkspaceState({
@@ -42,12 +36,10 @@ test("query searches skill identity, description and command then selects the fi
     query: "prototype",
     selectedSkillId: "ask-matt",
   });
-
   assert.deepEqual(state.visibleSkills.map((skill) => skill.id), ["prototype"]);
   assert.equal(state.selectedSkill.id, "prototype");
   assert.equal(state.navigation.selectedSkillId, "prototype");
 });
-
 test("filters preserve a valid selection and use a deterministic fallback when it becomes invalid", async () => {
   const skills = await loadSkills();
   const filtered = derivePackageWorkspaceState({
@@ -56,24 +48,20 @@ test("filters preserve a valid selection and use a deterministic fallback when i
     filters: { groups: ["engineering"], lifecycles: ["published"] },
     selectedSkillId: "implement",
   });
-
   assert.equal(filtered.selectedSkill.id, "implement");
   assert.deepEqual(filtered.visibleSkills.slice(0, 3).map((skill) => skill.id), [
     "ask-matt",
     "code-review",
     "codebase-design",
   ]);
-
   const fallback = derivePackageWorkspaceState({
     packageId: "development",
     skills,
     filters: { groups: ["productivity"] },
     selectedSkillId: "implement",
   });
-
   assert.equal(fallback.selectedSkill.id, "grill-me");
 });
-
 test("empty results and navigation state remain explicit", async () => {
   const skills = await loadSkills();
   const state = derivePackageWorkspaceState({
@@ -85,7 +73,6 @@ test("empty results and navigation state remain explicit", async () => {
     reading: true,
     directoryPosition: 620,
   });
-
   assert.deepEqual(state.visibleSkills, []);
   assert.equal(state.selectedSkill, null);
   assert.equal(state.selectedDetail, null);
@@ -98,13 +85,11 @@ test("empty results and navigation state remain explicit", async () => {
     directoryPosition: 620,
   });
 });
-
 test("selected skill URL state round-trips for search entry and direct loading", () => {
   const selectedUrl = createSelectedSkillUrl(
     "https://skills123.cc/packages/development/",
     "prototype"
   );
-
   assert.equal(
     selectedUrl,
     "https://skills123.cc/packages/development/?skill=prototype"
@@ -115,7 +100,6 @@ test("selected skill URL state round-trips for search entry and direct loading",
     "https://skills123.cc/packages/development/"
   );
 });
-
 test("reading URLs round-trip the complete package workspace state", () => {
   const navigation = {
     query: "证据验证",
@@ -127,7 +111,6 @@ test("reading URLs round-trip the complete package workspace state", () => {
     "https://skills123.cc/packages/investment-research/skills/serenity-skill/",
     navigation
   );
-
   assert.deepEqual(getPackageWorkspaceNavigationFromUrl(readingUrl), navigation);
   assert.equal(
     createPackageWorkspaceUrl(
@@ -137,7 +120,6 @@ test("reading URLs round-trip the complete package workspace state", () => {
     "https://skills123.cc/packages/investment-research/?skill=serenity-skill&q=%E8%AF%81%E6%8D%AE%E9%AA%8C%E8%AF%81&group=industry-research&lifecycle=published&position=486"
   );
 });
-
 test("a direct reading URL has empty state for a deterministic package fallback", () => {
   assert.deepEqual(
     getPackageWorkspaceNavigationFromUrl(
