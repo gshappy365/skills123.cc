@@ -10,14 +10,14 @@
       "id":"development",
       "name":"Mattpocock 技能包",
       "scenario":"development",
-      "description":"Matt Pocock 的工程级 AI 技能集 v1.2.3，覆盖需求对齐、规格驱动、TDD、代码审查、架构深化、调试诊断和交接协作的 35 项技能。",
-      "skillCount":35,
+      "description":"Matt Pocock 的工程级 AI 技能集 v1.3.1，覆盖需求对齐、规格驱动、TDD、代码审查、架构深化、调试诊断和交接协作的 37 项技能。",
+      "skillCount":37,
       "tags":["软件工程","TDD","需求对齐","代码审查","架构设计"],
       "status":"active",
       "installCommand":"npx -y skills add mattpocock/skills",
       "platform":"Claude Code / Codex / Cursor",
       "license":"MIT",
-      "source":{"name":"mattpocock/skills","url":"https://github.com/mattpocock/skills","commit":"6acc160e4e0cd062dbbbd7a1b26ae92855edf07e"},
+      "source":{"name":"mattpocock/skills","url":"https://github.com/mattpocock/skills","version":"1.3.1","commit":"24fe0ef7737efae15c87225755e9f6f5965e4888"},
       "groups":["软件工程","进行中","效率方法","工具配置"],
       "workspace":{
         "skillsUrl":"/assets/data/atlas-skills.json",
@@ -38,6 +38,34 @@
           "user-only":"用户触发",
           "model-allowed":"模型可调用"
         }
+      }
+    },
+    {
+      "id":"pstack",
+      "name":"PStack 工程技能包",
+      "scenario":"development",
+      "description":"Cursor 插件 PStack v0.15.10，汇集 agent 工作流、软件工程原则、验证审查、技术写作和界面构建，共 51 项技能。",
+      "skillCount":51,
+      "tags":["工程工作流","软件工程原则","验证与审查","代码质量","Cursor"],
+      "status":"active",
+      "installCommand":"/add-plugin pstack",
+      "platform":"Cursor",
+      "license":"MIT",
+      "source":{"name":"cursor/plugins/pstack","url":"https://github.com/cursor/plugins/tree/4e5b1cf2ccb0ea3716f08c8ee0a5856b5ab93536/pstack","version":"0.15.10","type":"plugin","commit":"4e5b1cf2ccb0ea3716f08c8ee0a5856b5ab93536"},
+      "groups":["工作流与协作","工程原则","质量与验证","写作与表达","产品与界面"],
+      "workspace":{
+        "skillsUrl":"/assets/data/pstack-skills.json",
+        "eyebrow":"PSTACK ENGINEERING SKILLS",
+        "groupFacetLabel":"技能方向",
+        "groupLabels":{
+          "workflow-collaboration":"工作流与协作",
+          "engineering-principles":"工程原则",
+          "quality-verification":"质量与验证",
+          "writing-communication":"写作与表达",
+          "product-design":"产品与界面"
+        },
+        "lifecycleLabels":{"published":"已发布"},
+        "invocationModeLabels":{"user-only":"用户触发","model-allowed":"模型可调用"}
       }
     },
     {

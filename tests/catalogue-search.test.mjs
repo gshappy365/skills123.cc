@@ -10,6 +10,7 @@ import {
 
 const catalogUrl = new URL("../site/assets/data/catalog.json", import.meta.url);
 const atlasUrl = new URL("../site/assets/data/atlas-skills.json", import.meta.url);
+const pstackUrl = new URL("../site/assets/data/pstack-skills.json", import.meta.url);
 const shopifyUrl = new URL("../site/assets/data/shopify-ai-toolkit-skills.json", import.meta.url);
 const researchUrl = new URL(
   "../site/assets/data/research-skills.json",
@@ -32,9 +33,10 @@ const gbrainUrl = new URL("../site/assets/data/gbrain-skills.json", import.meta.
 const ecomUrl = new URL("../site/assets/data/awesome-ecom-skills.json", import.meta.url);
 
 async function fixtures() {
-  const [catalog, atlasSkills, shopifySkills, researchSkills, rayskills, pmSkills, wigoloSkills, last30daysSkills, wazaSkills, ljgSkills, founderEvaluatorSkills, gbrainSkills, ecomSkills] = await Promise.all([
+  const [catalog, atlasSkills, pstackSkills, shopifySkills, researchSkills, rayskills, pmSkills, wigoloSkills, last30daysSkills, wazaSkills, ljgSkills, founderEvaluatorSkills, gbrainSkills, ecomSkills] = await Promise.all([
     readFile(catalogUrl, "utf8").then(JSON.parse),
     readFile(atlasUrl, "utf8").then(JSON.parse),
+    readFile(pstackUrl, "utf8").then(JSON.parse),
     readFile(shopifyUrl, "utf8").then(JSON.parse),
     readFile(researchUrl, "utf8").then(JSON.parse),
     readFile(rayskillsUrl, "utf8").then(JSON.parse),
@@ -49,6 +51,7 @@ async function fixtures() {
   ]);
   const packageSkills = await loadPackageSkills(catalog, async (url) => {
     if (url === "/assets/data/atlas-skills.json") return atlasSkills;
+    if (url === "/assets/data/pstack-skills.json") return pstackSkills;
     if (url === "/assets/data/shopify-ai-toolkit-skills.json") return shopifySkills;
     if (url === "/assets/data/research-skills.json") return researchSkills;
     if (url === "/assets/data/rayskills-skills.json") return rayskills;
@@ -100,12 +103,24 @@ test("global search distinguishes package matches from owned skill matches", asy
     packageSkills,
     query: "prototype",
   });
-  assert.deepEqual(skillResult.skillMatches.map((item) => item.id), ["prototype"]);
+  assert.deepEqual(skillResult.skillMatches.map((item) => item.id), [
+    "prototype",
+    "principle-exhaust-the-design-space",
+  ]);
   assert.equal(skillResult.skillMatches[0].package.id, "development");
   assert.equal(
     skillResult.skillMatches[0].href,
     "/packages/development/?skill=prototype"
   );
+  assert.equal(skillResult.skillMatches[1].package.id, "pstack");
+});
+
+test("identically named skills remain discoverable under each source package", async () => {
+  const { catalog, packageSkills } = await fixtures();
+  const result = searchCatalogue({ catalog, packageSkills, query: "teach" });
+  const matches = result.skillMatches.filter((item) => item.id === "teach");
+
+  assert.deepEqual(matches.map((item) => item.package.id), ["development", "pstack"]);
 });
 
 test("global search matches commands and reports Serenity package ownership", async () => {
@@ -152,6 +167,16 @@ test("global search matches a PM skill and retains operations package ownership"
     result.skillMatches.find((item) => item.id === "create-prd").package.id,
     "pm-skills"
   );
+});
+
+test("global search reaches PStack skills and retains development package ownership", async () => {
+  const { catalog, packageSkills } = await fixtures();
+  const result = searchCatalogue({ catalog, packageSkills, query: "验证关键假设" });
+  const match = result.skillMatches.find((item) => item.id === "blast-radius");
+
+  assert.ok(match);
+  assert.equal(match.package.id, "pstack");
+  assert.equal(match.href, "/packages/pstack/?skill=blast-radius");
 });
 
 test("global search reaches the four newly catalogued packages", async () => {

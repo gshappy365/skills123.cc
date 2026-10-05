@@ -9,7 +9,7 @@ const atlasSkillsUrl = new URL(
 async function loadCatalog() {
   return JSON.parse(await readFile(catalogUrl, "utf8"));
 }
-test("launch catalog exposes the twelve active packages and scenario statuses", async () => {
+test("launch catalog exposes the thirteen active packages and scenario statuses", async () => {
   const catalog = await loadCatalog();
   const activePackages = catalog.packages.filter((item) => item.status === "active");
   const scenarios = Object.fromEntries(catalog.scenarios.map((item) => [item.id, item]));
@@ -24,6 +24,7 @@ test("launch catalog exposes the twelve active packages and scenario statuses", 
       "last30days",
       "ljg-skills",
       "pm-skills",
+      "pstack",
       "rayskills",
       "shopify-ai-toolkit",
       "waza",
@@ -111,17 +112,18 @@ test("Awesome Ecom Skills package preserves its operations placement and snapsho
   assert.equal(ecom.license, "MIT");
   assert.equal(ecom.source.commit, "6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688");
 });
-test("development package is updated to mattpocock/skills v1.2.3", async () => {
+test("development package is updated to mattpocock/skills v1.3.1", async () => {
   const catalog = await loadCatalog();
   const development = catalog.packages.find((item) => item.id === "development");
-  assert.equal(development.skillCount, 35);
+  assert.equal(development.skillCount, 37);
   assert.equal(development.name, "Mattpocock 技能包");
   assert.equal(development.installCommand, "npx -y skills add mattpocock/skills");
   assert.equal(development.license, "MIT");
   assert.equal(development.platform, "Claude Code / Codex / Cursor");
   assert.equal(development.source.name, "mattpocock/skills");
   assert.equal(development.source.url, "https://github.com/mattpocock/skills");
-  assert.equal(development.source.commit, "6acc160e4e0cd062dbbbd7a1b26ae92855edf07e");
+  assert.equal(development.source.version, "1.3.1");
+  assert.equal(development.source.commit, "24fe0ef7737efae15c87225755e9f6f5965e4888");
   assert.equal(development.groups.length, 4);
   assert.equal(development.workspace.skillsUrl, "/assets/data/atlas-skills.json");
   assert.equal(development.workspace.groupLabels.engineering, "软件工程");
@@ -130,11 +132,84 @@ test("development package is updated to mattpocock/skills v1.2.3", async () => {
 });
 test("every development skill has a Chinese introduction and keeps its English source", async () => {
   const skills = JSON.parse(await readFile(atlasSkillsUrl, "utf8"));
-  assert.equal(skills.length, 35);
+  assert.equal(skills.length, 37);
+  assert.ok(skills.some((skill) => skill.id === "implement-spec"));
+  assert.ok(skills.some((skill) => skill.id === "pr"));
+  assert.ok(skills.some((skill) => skill.id === "retro"));
+  assert.ok(!skills.some((skill) => skill.id === "resolving-merge-conflicts"));
+  assert.deepEqual(
+    Object.fromEntries(
+      ["engineering", "in-progress", "productivity", "misc"].map((group) => [
+        group,
+        skills.filter((skill) => skill.group === group).length,
+      ])
+    ),
+    { engineering: 20, "in-progress": 6, productivity: 7, misc: 4 }
+  );
+  for (const [id, invocationMode] of [
+    ["implement-spec", "user-only"],
+    ["pr", "model-allowed"],
+    ["retro", "user-only"],
+  ]) {
+    const skill = skills.find((item) => item.id === id);
+    assert.equal(skill.group, "engineering");
+    assert.equal(skill.invocationMode, invocationMode);
+    assert.equal(skill.lifecycle, "published");
+  }
   for (const skill of skills) {
     assert.match(skill.descriptionZh, /[\u3400-\u9fff]/, `${skill.id} 缺少中文介绍`);
     assert.ok(skill.descriptionEn, `${skill.id} 缺少英文来源介绍`);
   }
+});
+
+test("PStack package preserves its Cursor plugin snapshot and all 51 skills", async () => {
+  const catalog = await loadCatalog();
+  const pstack = catalog.packages.find((item) => item.id === "pstack");
+  assert.equal(pstack.name, "PStack 工程技能包");
+  assert.equal(pstack.scenario, "development");
+  assert.equal(pstack.skillCount, 51);
+  assert.equal(pstack.installCommand, "/add-plugin pstack");
+  assert.equal(pstack.platform, "Cursor");
+  assert.equal(pstack.license, "MIT");
+  assert.equal(pstack.source.type, "plugin");
+  assert.equal(pstack.source.version, "0.15.10");
+  assert.equal(pstack.source.commit, "4e5b1cf2ccb0ea3716f08c8ee0a5856b5ab93536");
+  assert.equal(pstack.workspace.skillsUrl, "/assets/data/pstack-skills.json");
+  assert.deepEqual(pstack.groups, Object.values(pstack.workspace.groupLabels));
+});
+
+test("PStack has localized descriptions, pinned skill sources, and a static package route", async () => {
+  const skills = JSON.parse(
+    await readFile(new URL("../site/assets/data/pstack-skills.json", import.meta.url), "utf8")
+  );
+  assert.equal(skills.length, 51);
+  assert.deepEqual(
+    Object.fromEntries(
+      [
+        "workflow-collaboration",
+        "engineering-principles",
+        "quality-verification",
+        "writing-communication",
+        "product-design",
+      ].map((group) => [group, skills.filter((skill) => skill.group === group).length])
+    ),
+    {
+      "workflow-collaboration": 14,
+      "engineering-principles": 24,
+      "quality-verification": 8,
+      "writing-communication": 4,
+      "product-design": 1,
+    }
+  );
+  for (const skill of skills) {
+    assert.match(skill.descriptionZh, /[\u3400-\u9fff]/, `${skill.id} 缺少中文介绍`);
+    assert.ok(skill.descriptionEn, `${skill.id} 缺少上游英文描述`);
+    assert.match(skill.sourceUrl, /4e5b1cf2ccb0ea3716f08c8ee0a5856b5ab93536/);
+    assert.equal(skill.upstreamCommit, "4e5b1cf2ccb0ea3716f08c8ee0a5856b5ab93536");
+  }
+  await assert.doesNotReject(
+    readFile(new URL("../site/packages/pstack/index.html", import.meta.url), "utf8")
+  );
 });
 test("investment research package makes Serenity discoverable", async () => {
   const catalog = await loadCatalog();
