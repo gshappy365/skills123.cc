@@ -10,7 +10,7 @@
   },
   {
     "id": "code-review",
-    "descriptionEn": "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes — Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/PRD asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\".",
+    "descriptionEn": "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\".",
     "descriptionZh": "从指定提交、分支、标签或合并基点开始，分别按代码规范和需求符合度审查变更，并并列呈现两类审查结果。",
     "group": "engineering",
     "command": "/code-review",
@@ -37,7 +37,7 @@
   },
   {
     "id": "domain-modeling",
-    "descriptionEn": "Build and sharpen a project's domain model. Use when the user wants to pin down domain terminology or a ubiquitous language, record an architectural decision, or when another skill needs to maintain the domain model.",
+    "descriptionEn": "Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing a GLOSSARY.md, or recording or editing an ADR.",
     "descriptionZh": "建立并完善项目领域模型，统一领域术语和通用语言，并记录相关架构决策。",
     "group": "engineering",
     "command": "/domain-modeling",
@@ -63,12 +63,30 @@
     "lifecycle": "published"
   },
   {
+    "id": "implement-spec",
+    "descriptionEn": "Implement the result of /to-spec and /to-tickets in code.",
+    "descriptionZh": "读取规格和任务依赖，组织并行实现，逐步完成整份规格并进行代码审查。",
+    "group": "engineering",
+    "command": "/implement-spec",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
     "id": "improve-codebase-architecture",
     "descriptionEn": "Scan a codebase for deepening opportunities, present them as a visual HTML report, then grill through whichever one you pick.",
     "descriptionZh": "扫描代码库中的架构深化机会，以可视化 HTML 报告呈现，并针对选定方向展开深入评审。",
     "group": "engineering",
     "command": "/improve-codebase-architecture",
     "invocationMode": "user-only",
+    "lifecycle": "published"
+  },
+  {
+    "id": "pr",
+    "descriptionEn": "Use when writing a PR body.",
+    "descriptionZh": "按统一结构撰写 Pull Request 说明，突出变更摘要、验证证据和合并风险。",
+    "group": "engineering",
+    "command": "/pr",
+    "invocationMode": "model-allowed",
     "lifecycle": "published"
   },
   {
@@ -90,17 +108,17 @@
     "lifecycle": "published"
   },
   {
-    "id": "resolving-merge-conflicts",
-    "descriptionEn": "Use when you need to resolve an in-progress git merge/rebase conflict.",
-    "descriptionZh": "处理正在进行的 Git 合并或变基冲突。",
+    "id": "retro",
+    "descriptionEn": "Conduct a retrospective on a coding session.",
+    "descriptionZh": "回顾一次编码会话，找出可改进的工具、流程、自动化检查和项目指引。",
     "group": "engineering",
-    "command": "/resolving-merge-conflicts",
-    "invocationMode": "model-allowed",
-    "lifecycle": "repository-only"
+    "command": "/retro",
+    "invocationMode": "user-only",
+    "lifecycle": "published"
   },
   {
     "id": "setup-matt-pocock-skills",
-    "descriptionEn": "Configure this repo for the engineering skills — set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.",
+    "descriptionEn": "Configure this repo for the engineering skills: set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.",
     "descriptionZh": "为工程技能初始化仓库，配置任务跟踪、分诊标签体系和领域文档结构。",
     "group": "engineering",
     "command": "/setup-matt-pocock-skills",
@@ -118,7 +136,7 @@
   },
   {
     "id": "to-spec",
-    "descriptionEn": "Turn the current conversation into a spec and publish it to the project issue tracker — no interview, just synthesis of what you've already discussed.",
+    "descriptionEn": "Turn the current conversation into a spec and publish it to the project issue tracker: no interview, just synthesis of what you've already discussed.",
     "descriptionZh": "把当前对话直接归纳为规格说明，并发布到项目任务跟踪系统。",
     "group": "engineering",
     "command": "/to-spec",
@@ -127,7 +145,7 @@
   },
   {
     "id": "to-tickets",
-    "descriptionEn": "Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker — edges as text in a local file, or native blocking links on a real tracker.",
+    "descriptionEn": "Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker (edges as text in one file per ticket locally, or native blocking links on a real tracker).",
     "descriptionZh": "把计划、规格或对话拆成一组示踪弹任务，明确任务间阻塞关系并发布到已配置的跟踪系统。",
     "group": "engineering",
     "command": "/to-tickets",
@@ -136,7 +154,7 @@
   },
   {
     "id": "triage",
-    "descriptionEn": "Move issues and external PRs through a state machine of triage roles — categorise, verify, grill if needed, and write agent-ready briefs.",
+    "descriptionEn": "Move issues and external PRs through a state machine of triage roles, categorise, verify, grill if needed, and write agent-ready briefs.",
     "descriptionZh": "通过分诊状态机处理 Issue 和外部 PR，完成分类、验证、追问并生成可由智能体执行的任务简报。",
     "group": "engineering",
     "command": "/triage",
@@ -145,7 +163,7 @@
   },
   {
     "id": "wayfinder",
-    "descriptionEn": "Plan a huge chunk of work — more than one agent session can hold — as a shared map of investigation tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear.",
+    "descriptionEn": "Plan a huge chunk of work (more than one agent session can hold) as a shared map of decision tickets on your issue tracker, and resolve them one at a time until the way to the destination is clear.",
     "descriptionZh": "把超出单次智能体会话容量的大型工作规划成共享调查任务地图，并逐项解决直到实施路径清晰。",
     "group": "engineering",
     "command": "/wayfinder",
@@ -154,12 +172,66 @@
   },
   {
     "id": "wizard",
-    "descriptionEn": "Generate an interactive bash wizard that walks a human through steps only they can perform: provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover.",
+    "descriptionEn": "Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. Don't invoke this for steps the agent can perform itself.",
     "descriptionZh": "生成交互式 Bash 向导，引导用户完成仅能由人操作的步骤：基础设施配置、凭证或 CI Secret 设置、第三方后台操作，或一次性迁移与切换。",
     "group": "engineering",
     "command": "/wizard",
-    "invocationMode": "user-only",
+    "invocationMode": "model-allowed",
     "lifecycle": "published"
+  },
+  {
+    "id": "claude-handoff",
+    "descriptionEn": "Hand the current conversation off to a fresh background agent that picks up the work immediately.",
+    "descriptionZh": "把当前对话交接给新的后台智能体，使其立即接续现有工作。",
+    "group": "in-progress",
+    "command": "/claude-handoff",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
+  },
+  {
+    "id": "loop-me",
+    "descriptionEn": "Grill me about specs for the workflows I want to build, within this workspace.",
+    "descriptionZh": "围绕当前工作区中准备构建的工作流，持续追问并完善其规格说明。",
+    "group": "in-progress",
+    "command": "/loop-me",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
+  },
+  {
+    "id": "setup-ts-deep-modules",
+    "descriptionEn": "Wire dependency-cruiser into a TypeScript repo so each package is a deep module, with implementation hidden in subfolders and reachable only through its entry-point files. User-invoked.",
+    "descriptionZh": "为 TypeScript 项目配置深模块设计：设置路径别名、桶导出和模块边界，使行为隐藏在位于清晰接缝处的小型接口之后。",
+    "group": "in-progress",
+    "command": "/setup-ts-deep-modules",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
+  },
+  {
+    "id": "writing-beats",
+    "descriptionEn": "Writing, exploit; assemble raw material into a journey of beats, grounding each term before a beat leans on it.",
+    "descriptionZh": "写作收敛阶段：把原始材料组织成连贯的内容节拍，并在使用术语前建立清晰语境。",
+    "group": "in-progress",
+    "command": "/writing-beats",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
+  },
+  {
+    "id": "writing-fragments",
+    "descriptionEn": "Writing, explore: mine raw fragments, no structure yet.",
+    "descriptionZh": "写作探索阶段：挖掘原始片段和想法，暂不强加结构。",
+    "group": "in-progress",
+    "command": "/writing-fragments",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
+  },
+  {
+    "id": "writing-shape",
+    "descriptionEn": "Writing, exploit: shape raw material into an article, paragraph by paragraph.",
+    "descriptionZh": "写作收敛阶段：逐段塑造原始材料，形成结构完整的文章。",
+    "group": "in-progress",
+    "command": "/writing-shape",
+    "invocationMode": "user-only",
+    "lifecycle": "experimental"
   },
   {
     "id": "grill-me",
@@ -172,7 +244,7 @@
   },
   {
     "id": "grilling",
-    "descriptionEn": "Grill the user relentlessly about a plan or design. Use when the user wants to stress-test a plan before building, or uses any 'grill' trigger phrases.",
+    "descriptionEn": "Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.",
     "descriptionZh": "对计划或设计进行高强度追问，在实施前暴露假设、缺口和风险。",
     "group": "productivity",
     "command": "/grilling",
@@ -199,7 +271,7 @@
   },
   {
     "id": "to-questionnaire",
-    "descriptionEn": "Turn a decision you can't answer alone into a Markdown questionnaire for the one person who can — filled in async, or together over a meeting. It grills you about the send (who it's for, what you need back), not the subject.",
+    "descriptionEn": "Turn a decision you can't fully answer into a questionnaire for someone else to fill in.",
     "descriptionZh": "把无法独立决策的问题转化为 Markdown 问卷，发给唯一能回答的人异步填写或会议中共同完成。重点追问发送对象和所需反馈，而非问题本身。",
     "group": "productivity",
     "command": "/to-questionnaire",
@@ -208,7 +280,7 @@
   },
   {
     "id": "wait-what",
-    "descriptionEn": "Fire this the moment a message doesn't land. The agent re-pitches it with the context you're missing, in plain English, using your CONTEXT.md vocabulary.",
+    "descriptionEn": "Stop. That last message did not land: re-pitch it.",
     "descriptionZh": "当一条消息没有传达清楚时立即触发，智能体会用你缺失的上下文和 CONTEXT.md 中的术语，以平实语言重新解释。",
     "group": "productivity",
     "command": "/wait-what",
@@ -217,66 +289,12 @@
   },
   {
     "id": "writing-for-agents",
-    "descriptionEn": "Writing documents for agents: skills, AGENTS.md/CLAUDE.md, and any doc an agent reaches by a pointer.",
+    "descriptionEn": "Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md.",
     "descriptionZh": "为智能体编写文档：技能、AGENTS.md/CLAUDE.md，以及任何智能体通过指针访问的文档。",
     "group": "productivity",
     "command": "/writing-for-agents",
     "invocationMode": "model-allowed",
     "lifecycle": "published"
-  },
-  {
-    "id": "claude-handoff",
-    "descriptionEn": "Hand the current conversation off to a fresh background agent that picks up the work immediately.",
-    "descriptionZh": "把当前对话交接给新的后台智能体，使其立即接续现有工作。",
-    "group": "in-progress",
-    "command": "/claude-handoff",
-    "invocationMode": "user-only",
-    "lifecycle": "experimental"
-  },
-  {
-    "id": "loop-me",
-    "descriptionEn": "Grill me about specs for the workflows I want to build, within this workspace.",
-    "descriptionZh": "围绕当前工作区中准备构建的工作流，持续追问并完善其规格说明。",
-    "group": "in-progress",
-    "command": "/loop-me",
-    "invocationMode": "user-only",
-    "lifecycle": "experimental"
-  },
-  {
-    "id": "setup-ts-deep-modules",
-    "descriptionEn": "Set up a TypeScript project for deep-module design: configure path aliases, barrel exports, and module boundaries so that behaviour stays behind small interfaces at clean seams.",
-    "descriptionZh": "为 TypeScript 项目配置深模块设计：设置路径别名、桶导出和模块边界，使行为隐藏在位于清晰接缝处的小型接口之后。",
-    "group": "in-progress",
-    "command": "/setup-ts-deep-modules",
-    "invocationMode": "user-only",
-    "lifecycle": "experimental"
-  },
-  {
-    "id": "writing-beats",
-    "descriptionEn": "Writing, exploit — assemble raw material into a journey of beats, grounding each term before a beat leans on it.",
-    "descriptionZh": "写作收敛阶段：把原始材料组织成连贯的内容节拍，并在使用术语前建立清晰语境。",
-    "group": "in-progress",
-    "command": "/writing-beats",
-    "invocationMode": "user-only",
-    "lifecycle": "experimental"
-  },
-  {
-    "id": "writing-fragments",
-    "descriptionEn": "Writing, explore — mine raw fragments, no structure yet.",
-    "descriptionZh": "写作探索阶段：挖掘原始片段和想法，暂不强加结构。",
-    "group": "in-progress",
-    "command": "/writing-fragments",
-    "invocationMode": "user-only",
-    "lifecycle": "experimental"
-  },
-  {
-    "id": "writing-shape",
-    "descriptionEn": "Writing, exploit — shape raw material into an article, paragraph by paragraph.",
-    "descriptionZh": "写作收敛阶段：逐段塑造原始材料，形成结构完整的文章。",
-    "group": "in-progress",
-    "command": "/writing-shape",
-    "invocationMode": "user-only",
-    "lifecycle": "experimental"
   },
   {
     "id": "git-guardrails-claude-code",

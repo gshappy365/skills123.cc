@@ -48,7 +48,7 @@ after(async () => {
 test("development package supports desktop browsing, filtering and search", async () => {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   await page.goto(`${baseUrl}/packages/development/`, { waitUntil: "networkidle" });
-  assert.equal(await page.locator(".skill-row").count(), 35);
+  assert.equal(await page.locator(".skill-row").count(), 37);
   assert.match(await page.locator(".skill-row.is-selected").innerText(), /ask-matt/);
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "ask-matt");
   assert.match(
@@ -62,7 +62,7 @@ test("development package supports desktop browsing, filtering and search", asyn
     "工具配置",
   ]);
   await page.getByRole("button", { name: "软件工程", exact: true }).click();
-  assert.equal(await page.locator(".skill-row").count(), 18);
+  assert.equal(await page.locator(".skill-row").count(), 20);
   await page.locator("#skill-search").fill("prototype");
   assert.equal(await page.locator(".skill-row").count(), 1);
   assert.match(await page.locator(".skill-row.is-selected").innerText(), /prototype/);
@@ -74,6 +74,27 @@ test("development package supports desktop browsing, filtering and search", asyn
     () => document.documentElement.scrollWidth > document.documentElement.clientWidth
   );
   assert.equal(horizontalOverflow, false);
+  await page.close();
+});
+test("PStack package loads its Cursor plugin details and all 51 skills", async () => {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.goto(`${baseUrl}/packages/pstack/`, { waitUntil: "networkidle" });
+  assert.equal(await page.locator("#package-name").innerText(), "PStack 工程技能包");
+  assert.equal(await page.locator(".skill-row").count(), 51);
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "architect");
+  assert.deepEqual(await page.locator("#group-filters button").allTextContents(), [
+    "工作流与协作",
+    "工程原则",
+    "质量与验证",
+    "写作与表达",
+    "产品与界面",
+  ]);
+  assert.equal(await page.locator(".package-install-row code").innerText(), "/add-plugin pstack");
+  await page.getByRole("button", { name: "质量与验证", exact: true }).click();
+  assert.equal(await page.locator(".skill-row").count(), 8);
+  await page.locator("#skill-search").fill("验证关键假设");
+  assert.equal(await page.locator(".skill-row").count(), 1);
+  assert.match(await page.locator(".skill-row.is-selected").innerText(), /blast-radius/);
   await page.close();
 });
 test("grouped navigation searches owned skills and restores search on back", async () => {
@@ -91,12 +112,16 @@ test("grouped navigation searches owned skills and restores search on back", asy
     0
   );
   await page.getByPlaceholder("搜索技能包、技能或 /command").fill("prototype");
-  assert.equal(await page.locator(".catalogue-result.skill-result").count(), 1);
+  assert.equal(await page.locator(".catalogue-result.skill-result").count(), 2);
   assert.match(
-    await page.locator(".catalogue-result.skill-result").innerText(),
+    await page.locator(".catalogue-result.skill-result").nth(0).innerText(),
     /归属 · Mattpocock 技能包/
   );
-  await page.locator(".catalogue-result.skill-result").click();
+  assert.match(
+    await page.locator(".catalogue-result.skill-result").nth(1).innerText(),
+    /归属 · PStack 工程技能包/
+  );
+  await page.locator(".catalogue-result.skill-result").nth(0).click();
   assert.equal(new URL(page.url()).searchParams.get("skill"), "prototype");
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "prototype");
   await page.goBack({ waitUntil: "networkidle" });
@@ -105,7 +130,7 @@ test("grouped navigation searches owned skills and restores search on back", asy
     await page.getByPlaceholder("搜索技能包、技能或 /command").inputValue(),
     "prototype"
   );
-  assert.equal(await page.locator(".catalogue-result.skill-result").count(), 1);
+  assert.equal(await page.locator(".catalogue-result.skill-result").count(), 2);
   await page.getByPlaceholder("搜索技能包、技能或 /command").fill("serenity");
   assert.match(
     await page.locator(".catalogue-result.skill-result").innerText(),
@@ -156,7 +181,6 @@ test("Shopify 专题在全局搜索中只显示入口，专题内搜索正确隐
   await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
   await page.getByPlaceholder("搜索技能包、技能或 /command").fill("Liquid");
   assert.equal(await page.locator(".catalogue-result.guide-result").count(), 1);
-  assert.equal(await page.locator(".catalogue-result.skill-result").count(), 0);
   await page.locator(".catalogue-result.guide-result").click();
   await page.waitForLoadState("networkidle");
   assert.equal(await page.locator("[data-guide-card]").count(), 157);

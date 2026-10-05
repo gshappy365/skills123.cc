@@ -13,6 +13,7 @@ test("catalogue model loads and validates every package through one boundary", a
   const catalog = await readJson("catalog.json");
   const sources = {
     "/assets/data/atlas-skills.json": await readJson("atlas-skills.json"),
+    "/assets/data/pstack-skills.json": await readJson("pstack-skills.json"),
     "/assets/data/shopify-ai-toolkit-skills.json": await readJson("shopify-ai-toolkit-skills.json"),
     "/assets/data/research-skills.json": await readJson("research-skills.json"),
     "/assets/data/rayskills-skills.json": await readJson("rayskills-skills.json"),
@@ -28,6 +29,7 @@ test("catalogue model loads and validates every package through one boundary", a
   const model = await createCatalogueModel(catalog, async (url) => sources[url]);
   assert.deepEqual(Object.keys(model.packageSkills), [
     "development",
+    "pstack",
     "shopify-ai-toolkit",
     "investment-research",
     "rayskills",
@@ -40,7 +42,8 @@ test("catalogue model loads and validates every package through one boundary", a
     "waza",
     "ljg-skills",
   ]);
-  assert.equal(getPackageWorkspaceModel(model, "development").skills.length, 35);
+  assert.equal(getPackageWorkspaceModel(model, "development").skills.length, 37);
+  assert.equal(getPackageWorkspaceModel(model, "pstack").skills.length, 51);
   assert.equal(getPackageWorkspaceModel(model, "shopify-ai-toolkit").skills.length, 21);
   assert.equal(getPackageWorkspaceModel(model, "pm-skills").skills.length, 68);
   assert.equal(getPackageWorkspaceModel(model, "wigolo").skills.length, 11);

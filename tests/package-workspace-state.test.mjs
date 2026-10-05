@@ -19,7 +19,7 @@ test("development workspace exposes the complete catalogue and a stable default 
     packageId: "development",
     skills,
   });
-  assert.equal(state.visibleSkills.length, 35);
+  assert.equal(state.visibleSkills.length, 37);
   assert.equal(state.selectedSkill.id, "ask-matt");
   assert.equal(state.selectedDetail.command, "/ask-matt");
   assert.deepEqual(state.selectedDetail.relatedSkillIds, [
