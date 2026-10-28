@@ -1,10 +1,8 @@
-import { createCatalogueModel } from "./catalogue-model.js?v=20261005-1";
+import { createCatalogueModel } from "./catalogue-model.js?v=20261028-1";
 
 export const PACKAGE_GROUP_ORDER = Object.freeze([
   "development",
   "research",
-  "content",
-  "operations",
 ]);
 
 function normalizedText(values) {

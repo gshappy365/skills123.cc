@@ -103,8 +103,6 @@ test("grouped navigation searches owned skills and restores search on back", asy
   assert.deepEqual(await page.locator(".package-index-group h2").allTextContents(), [
     "开发",
     "研究",
-    "内容",
-    "运营",
   ]);
   assert.equal(await page.locator(".package-index-group.is-coming-soon").count(), 0);
   assert.equal(
@@ -220,40 +218,6 @@ test("Shopify 深层技术文章可直达并保留代码与表格阅读结构", 
     false
   );
   await page.close();
-});
-test("Rayskills package shows the complete directory and separates package install from member call", async () => {
-  const context = await browser.newContext({
-    permissions: ["clipboard-read", "clipboard-write"],
-    viewport: { width: 1440, height: 900 },
-  });
-  const page = await context.newPage();
-  await page.goto(`${baseUrl}/packages/rayskills/?skill=ray-writer`, {
-    waitUntil: "networkidle",
-  });
-  assert.equal(await page.locator("#package-name").innerText(), "Rayskills 内容技能包");
-  assert.equal(await page.locator(".skill-row").count(), 21);
-  assert.deepEqual(await page.locator("#group-filters button").allTextContents(), [
-    "路由",
-    "基建",
-    "知识库",
-    "内容",
-    "咨询",
-    "产品",
-    "协作",
-    "内务",
-  ]);
-  assert.equal(await page.locator("#package-install").count(), 1);
-  assert.match(await page.locator("#package-install").innerText(), /npx -y skills add imraywang\/rayskills -g --all/);
-  assert.equal(await page.locator(".workspace-detail h2").innerText(), "ray-writer");
-  assert.equal(await page.locator("#copy-command").innerText(), "复制");
-  assert.match(await page.locator(".workspace-detail").innerText(), /CC BY-NC 4.0/);
-  assert.match(await page.locator(".workspace-detail").innerText(), /验证|恢复|确认/);
-  await page.locator("#copy-package-command").click();
-  assert.equal(
-    await page.evaluate(() => navigator.clipboard.readText()),
-    "npx -y skills add imraywang/rayskills -g --all"
-  );
-  await context.close();
 });
 test("research package opens Serenity detail in the mobile drawer", async () => {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
@@ -374,4 +338,13 @@ test("direct Serenity reading has a package return path and stable browser histo
   await page.goForward({ waitUntil: "networkidle" });
   assert.equal(await page.locator(".workspace-detail h2").innerText(), "Serenity.skill");
   await page.close();
+});
+
+test("Addy Osmani package shows all 25 skills", async () => {
+ const page=await browser.newPage();
+ await page.goto(`${baseUrl}/packages/addyosmani-agent-skills/?skill=test-driven-development`,{waitUntil:"networkidle"});
+ assert.equal(await page.locator("#package-name").innerText(),"Addy Osmani 工程技能包");
+ assert.equal(await page.locator(".skill-row").count(),25);
+ assert.equal(await page.locator(".workspace-detail h2").innerText(),"test-driven-development");
+ await page.close();
 });
