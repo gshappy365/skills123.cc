@@ -13,46 +13,32 @@ test("catalogue model loads and validates every package through one boundary", a
   const catalog = await readJson("catalog.json");
   const sources = {
     "/assets/data/atlas-skills.json": await readJson("atlas-skills.json"),
+    "/assets/data/addyosmani-agent-skills.json": await readJson("addyosmani-agent-skills.json"),
     "/assets/data/pstack-skills.json": await readJson("pstack-skills.json"),
-    "/assets/data/shopify-ai-toolkit-skills.json": await readJson("shopify-ai-toolkit-skills.json"),
     "/assets/data/research-skills.json": await readJson("research-skills.json"),
-    "/assets/data/rayskills-skills.json": await readJson("rayskills-skills.json"),
-    "/assets/data/pm-skills.json": await readJson("pm-skills.json"),
     "/assets/data/wigolo-skills.json": await readJson("wigolo-skills.json"),
     "/assets/data/last30days-skills.json": await readJson("last30days-skills.json"),
     "/assets/data/waza-skills.json": await readJson("waza-skills.json"),
-    "/assets/data/ljg-skills.json": await readJson("ljg-skills.json"),
     "/assets/data/founder-project-evaluator-skills.json": await readJson("founder-project-evaluator-skills.json"),
-    "/assets/data/gbrain-skills.json": await readJson("gbrain-skills.json"),
-    "/assets/data/awesome-ecom-skills.json": await readJson("awesome-ecom-skills.json"),
   };
   const model = await createCatalogueModel(catalog, async (url) => sources[url]);
   assert.deepEqual(Object.keys(model.packageSkills), [
     "development",
     "pstack",
-    "shopify-ai-toolkit",
+    "addyosmani-agent-skills",
     "investment-research",
-    "rayskills",
-    "gbrain",
-    "pm-skills",
-    "awesome-ecom-skills",
     "wigolo",
     "last30days",
     "founder-project-evaluator",
     "waza",
-    "ljg-skills",
   ]);
   assert.equal(getPackageWorkspaceModel(model, "development").skills.length, 37);
   assert.equal(getPackageWorkspaceModel(model, "pstack").skills.length, 51);
-  assert.equal(getPackageWorkspaceModel(model, "shopify-ai-toolkit").skills.length, 21);
-  assert.equal(getPackageWorkspaceModel(model, "pm-skills").skills.length, 68);
+  assert.equal(getPackageWorkspaceModel(model, "addyosmani-agent-skills").skills.length, 25);
   assert.equal(getPackageWorkspaceModel(model, "wigolo").skills.length, 11);
   assert.equal(getPackageWorkspaceModel(model, "last30days").skills.length, 1);
   assert.equal(getPackageWorkspaceModel(model, "waza").skills.length, 8);
-  assert.equal(getPackageWorkspaceModel(model, "ljg-skills").skills.length, 21);
   assert.equal(getPackageWorkspaceModel(model, "founder-project-evaluator").skills.length, 1);
-  assert.equal(getPackageWorkspaceModel(model, "gbrain").skills.length, 53);
-  assert.equal(getPackageWorkspaceModel(model, "awesome-ecom-skills").skills.length, 9);
 });
 test("catalogue boundary rejects a skill whose group has no package label", async () => {
   const catalog = {

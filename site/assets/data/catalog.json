@@ -1,303 +1,356 @@
 {
   "scenarios": [
-    {"id":"research","name":"研究","description":"投研、行业、市场与尽调","status":"active"},
-    {"id":"content","name":"内容","description":"写作、叙事与分发","status":"active"},
-    {"id":"development","name":"开发","description":"构建、测试与交付","status":"active"},
-    {"id":"operations","name":"运营","description":"流程、协作与增长","status":"active"}
+    {
+      "id": "research",
+      "name": "研究",
+      "description": "投研、行业、市场与尽调",
+      "status": "active"
+    },
+    {
+      "id": "development",
+      "name": "开发",
+      "description": "构建、测试与交付",
+      "status": "active"
+    }
   ],
   "packages": [
     {
-      "id":"development",
-      "name":"Mattpocock 技能包",
-      "scenario":"development",
-      "description":"Matt Pocock 的工程级 AI 技能集 v1.3.1，覆盖需求对齐、规格驱动、TDD、代码审查、架构深化、调试诊断和交接协作的 37 项技能。",
-      "skillCount":37,
-      "tags":["软件工程","TDD","需求对齐","代码审查","架构设计"],
-      "status":"active",
-      "installCommand":"npx -y skills add mattpocock/skills",
-      "platform":"Claude Code / Codex / Cursor",
-      "license":"MIT",
-      "source":{"name":"mattpocock/skills","url":"https://github.com/mattpocock/skills","version":"1.3.1","commit":"24fe0ef7737efae15c87225755e9f6f5965e4888"},
-      "groups":["软件工程","进行中","效率方法","工具配置"],
-      "workspace":{
-        "skillsUrl":"/assets/data/atlas-skills.json",
-        "eyebrow":"MATTPocock ENGINEERING SKILLS",
-        "groupFacetLabel":"技能方向",
-        "groupLabels":{
-          "engineering":"软件工程",
-          "in-progress":"进行中",
-          "productivity":"效率方法",
-          "misc":"工具配置"
-        },
-        "lifecycleLabels":{
-          "published":"已发布",
-          "experimental":"实验中",
-          "repository-only":"仓库内"
-        },
-        "invocationModeLabels":{
-          "user-only":"用户触发",
-          "model-allowed":"模型可调用"
-        }
-      }
-    },
-    {
-      "id":"pstack",
-      "name":"PStack 工程技能包",
-      "scenario":"development",
-      "description":"Cursor 插件 PStack v0.15.10，汇集 agent 工作流、软件工程原则、验证审查、技术写作和界面构建，共 51 项技能。",
-      "skillCount":51,
-      "tags":["工程工作流","软件工程原则","验证与审查","代码质量","Cursor"],
-      "status":"active",
-      "installCommand":"/add-plugin pstack",
-      "platform":"Cursor",
-      "license":"MIT",
-      "source":{"name":"cursor/plugins/pstack","url":"https://github.com/cursor/plugins/tree/4e5b1cf2ccb0ea3716f08c8ee0a5856b5ab93536/pstack","version":"0.15.10","type":"plugin","commit":"4e5b1cf2ccb0ea3716f08c8ee0a5856b5ab93536"},
-      "groups":["工作流与协作","工程原则","质量与验证","写作与表达","产品与界面"],
-      "workspace":{
-        "skillsUrl":"/assets/data/pstack-skills.json",
-        "eyebrow":"PSTACK ENGINEERING SKILLS",
-        "groupFacetLabel":"技能方向",
-        "groupLabels":{
-          "workflow-collaboration":"工作流与协作",
-          "engineering-principles":"工程原则",
-          "quality-verification":"质量与验证",
-          "writing-communication":"写作与表达",
-          "product-design":"产品与界面"
-        },
-        "lifecycleLabels":{"published":"已发布"},
-        "invocationModeLabels":{"user-only":"用户触发","model-allowed":"模型可调用"}
-      }
-    },
-    {
-      "id":"shopify-ai-toolkit",
-      "name":"Shopify AI Toolkit 开发技能包",
-      "scenario":"operations",
-      "description":"Shopify 官方 agent 工具包，覆盖 Admin API、Storefront、Liquid、Hydrogen、Functions、Polaris、CLI 和应用发布审核。",
-      "skillCount":21,
-      "tags":["Shopify 开发","Admin API","Liquid","Hydrogen","CLI"],
-      "status":"active",
-      "installCommand":"codex plugin add shopify@openai-curated",
-      "platform":"Codex / Claude Code / Cursor / VS Code",
-      "license":"MIT",
-      "source":{"name":"Shopify/Shopify-AI-Toolkit","url":"https://github.com/Shopify/Shopify-AI-Toolkit","commit":"0e06bc35611e505e372de7f8cdf265e6d6dbc311"},
-      "groups":["API 与数据","开发与 CLI","主题与 Hydrogen","应用界面","发布与审核"],
-      "workspace":{
-        "skillsUrl":"/assets/data/shopify-ai-toolkit-skills.json",
-        "eyebrow":"SHOPIFY AI TOOLKIT",
-        "groupFacetLabel":"技能方向",
-        "groupLabels":{"api-data":"API 与数据","development-cli":"开发与 CLI","theme-hydrogen":"主题与 Hydrogen","app-interfaces":"应用界面","release-review":"发布与审核"},
-        "lifecycleLabels":{"published":"已发布"},
-        "invocationModeLabels":{"model-allowed":"自然语言触发"}
-      }
-    },
-    {
-      "id":"investment-research",
-      "name":"Serenity.skill",
-      "scenario":"research",
-      "description":"从产业链拆解、证据验证到研究优先级，组织可复用的行业研究方法。",
-      "skillCount":1,
-      "tags":["投研","行业研究","金融"],
-      "status":"active",
-      "featuredSkill":{
-        "id":"serenity-skill",
-        "name":"Serenity.skill",
-        "descriptionZh":"供应链瓶颈投研方法：从热点判断推进到证据验证。",
-        "command":"/serenity-skill",
-        "tags":["供应链","证据验证","行业研究"]
+      "id": "development",
+      "name": "Mattpocock 技能包",
+      "scenario": "development",
+      "description": "Matt Pocock 的工程级 AI 技能集 v1.3.1，覆盖需求对齐、规格驱动、TDD、代码审查、架构深化、调试诊断和交接协作的 37 项技能。",
+      "skillCount": 37,
+      "tags": [
+        "软件工程",
+        "TDD",
+        "需求对齐",
+        "代码审查",
+        "架构设计"
+      ],
+      "status": "active",
+      "installCommand": "npx -y skills add mattpocock/skills",
+      "platform": "Claude Code / Codex / Cursor",
+      "license": "MIT",
+      "source": {
+        "name": "mattpocock/skills",
+        "url": "https://github.com/mattpocock/skills",
+        "version": "1.3.1",
+        "commit": "24fe0ef7737efae15c87225755e9f6f5965e4888"
       },
-      "workspace":{
-        "skillsUrl":"/assets/data/research-skills.json",
-        "eyebrow":"INVESTMENT RESEARCH PACKAGE",
-        "groupLabels":{
-          "industry-research":"行业研究"
+      "groups": [
+        "软件工程",
+        "进行中",
+        "效率方法",
+        "工具配置"
+      ],
+      "workspace": {
+        "skillsUrl": "/assets/data/atlas-skills.json",
+        "eyebrow": "MATTPocock ENGINEERING SKILLS",
+        "groupFacetLabel": "技能方向",
+        "groupLabels": {
+          "engineering": "软件工程",
+          "in-progress": "进行中",
+          "productivity": "效率方法",
+          "misc": "工具配置"
         },
-        "lifecycleLabels":{
-          "published":"已发布"
+        "lifecycleLabels": {
+          "published": "已发布",
+          "experimental": "实验中",
+          "repository-only": "仓库内"
         },
-        "invocationModeLabels":{
-          "user-only":"用户触发"
+        "invocationModeLabels": {
+          "user-only": "用户触发",
+          "model-allowed": "模型可调用"
         }
       }
     },
     {
-      "id":"rayskills",
-      "name":"Rayskills 内容技能包",
-      "scenario":"content",
-      "description":"面向 Claude Code 和 Codex 的 builder 实战工具箱，将内容、知识库、咨询、产品、协作与运维流程组织成可执行、可验证、可恢复的 21 项 Skill。",
-      "skillCount":21,
-      "tags":["AI Builder","内容生产","知识库","咨询","可验证工作流"],
-      "status":"active",
-      "installCommand":"npx -y skills add imraywang/rayskills -g --all",
-      "platform":"Claude Code / Codex",
-      "license":"CC BY-NC 4.0",
-      "source":{"name":"imraywang/rayskills","url":"https://github.com/imraywang/rayskills","commit":"454bff330bb3ddae9d3c639bd0f791e6c61dd830"},
-      "groups":["路由","基建","知识库","内容","咨询","产品","协作","内务"],
-      "workspace":{
-        "skillsUrl":"/assets/data/rayskills-skills.json",
-        "eyebrow":"RAYSKILLS BUILDER TOOLKIT",
-        "groupFacetLabel":"技能方向",
-        "groupLabels":{
-          "routing":"路由",
-          "infrastructure":"基建",
-          "knowledge":"知识库",
-          "content":"内容",
-          "consulting":"咨询",
-          "product":"产品",
-          "collaboration":"协作",
-          "operations":"内务"
+      "id": "pstack",
+      "name": "PStack 工程技能包",
+      "scenario": "development",
+      "description": "Cursor 插件 PStack v0.15.10，汇集 agent 工作流、软件工程原则、验证审查、技术写作和界面构建，共 51 项技能。",
+      "skillCount": 51,
+      "tags": [
+        "工程工作流",
+        "软件工程原则",
+        "验证与审查",
+        "代码质量",
+        "Cursor"
+      ],
+      "status": "active",
+      "installCommand": "/add-plugin pstack",
+      "platform": "Cursor",
+      "license": "MIT",
+      "source": {
+        "name": "cursor/plugins/pstack",
+        "url": "https://github.com/cursor/plugins/tree/4e5b1cf2ccb0ea3716f08c8ee0a5856b5ab93536/pstack",
+        "version": "0.15.10",
+        "type": "plugin",
+        "commit": "4e5b1cf2ccb0ea3716f08c8ee0a5856b5ab93536"
+      },
+      "groups": [
+        "工作流与协作",
+        "工程原则",
+        "质量与验证",
+        "写作与表达",
+        "产品与界面"
+      ],
+      "workspace": {
+        "skillsUrl": "/assets/data/pstack-skills.json",
+        "eyebrow": "PSTACK ENGINEERING SKILLS",
+        "groupFacetLabel": "技能方向",
+        "groupLabels": {
+          "workflow-collaboration": "工作流与协作",
+          "engineering-principles": "工程原则",
+          "quality-verification": "质量与验证",
+          "writing-communication": "写作与表达",
+          "product-design": "产品与界面"
         },
-        "lifecycleLabels":{"published":"已发布"},
-        "invocationModeLabels":{"model-allowed":"自然语言触发"}
-      }
-    },
-    {
-      "id":"gbrain",
-      "name":"GBrain Agent Brain 知识技能包",
-      "scenario":"content",
-      "description":"面向 OpenClaw、Hermes、Claude Code 和 Codex 的知识库与 agent 记忆工作流，覆盖采集、检索、综合、知识图谱、维护和技能治理。",
-      "skillCount":53,
-      "tags":["知识库","Agent 记忆","研究综合","知识图谱","OpenClaw","Hermes"],
-      "status":"active",
-      "installCommand":"bun install -g github:garrytan/gbrain && gbrain init --pglite",
-      "platform":"OpenClaw / Hermes / Claude Code / Codex",
-      "license":"MIT",
-      "source":{"name":"garrytan/gbrain","url":"https://github.com/garrytan/gbrain","commit":"c6dc0adf26a2d20df1147d2ec87c8922ca86d410"},
-      "groups":["知识库核心","研究与综合","采集与工作流","系统与架构","技能工程"],
-      "workspace":{
-        "skillsUrl":"/assets/data/gbrain-skills.json",
-        "eyebrow":"GBRAIN AGENT BRAIN",
-        "groupFacetLabel":"技能方向",
-        "groupLabels":{"brain-core":"知识库核心","research-synthesis":"研究与综合","capture-workflows":"采集与工作流","system-architecture":"系统与架构","skill-engineering":"技能工程"},
-        "lifecycleLabels":{"published":"已发布"},
-        "invocationModeLabels":{"model-allowed":"自然语言触发"}
-      }
-    },
-    {
-      "id":"pm-skills",
-      "name":"PM Skills 产品管理技能包",
-      "scenario":"operations",
-      "description":"覆盖产品发现、策略、执行、研究、数据分析、上市增长和 AI 交付的 68 项产品管理技能。",
-      "skillCount":68,
-      "tags":["产品管理","产品策略","用户研究","增长","项目执行"],
-      "status":"active",
-      "installCommand":"codex plugin marketplace add phuryn/pm-skills && codex plugin add pm-toolkit@pm-skills && codex plugin add pm-product-strategy@pm-skills && codex plugin add pm-product-discovery@pm-skills && codex plugin add pm-market-research@pm-skills && codex plugin add pm-data-analytics@pm-skills && codex plugin add pm-marketing-growth@pm-skills && codex plugin add pm-go-to-market@pm-skills && codex plugin add pm-execution@pm-skills && codex plugin add pm-ai-shipping@pm-skills",
-      "platform":"Claude Code / Codex",
-      "license":"MIT",
-      "source":{"name":"phuryn/pm-skills","url":"https://github.com/phuryn/pm-skills","commit":"18468a95b427e70e258b51389796367c6f684e7d"},
-      "groups":["产品发现","产品策略","产品执行","用户研究","数据分析","上市增长","产品营销","工具箱","AI 交付"],
-      "workspace":{
-        "skillsUrl":"/assets/data/pm-skills.json",
-        "eyebrow":"PM SKILLS MARKETPLACE",
-        "groupFacetLabel":"技能方向",
-        "groupLabels":{
-          "product-discovery":"产品发现",
-          "product-strategy":"产品策略",
-          "execution":"产品执行",
-          "market-research":"用户研究",
-          "data-analytics":"数据分析",
-          "go-to-market":"上市增长",
-          "marketing-growth":"产品营销",
-          "toolkit":"工具箱",
-          "ai-shipping":"AI 交付"
+        "lifecycleLabels": {
+          "published": "已发布"
         },
-        "lifecycleLabels":{"published":"已发布"},
-        "invocationModeLabels":{"model-allowed":"自然语言触发"}
+        "invocationModeLabels": {
+          "user-only": "用户触发",
+          "model-allowed": "模型可调用"
+        }
       }
     },
     {
-      "id":"awesome-ecom-skills",
-      "name":"Awesome Ecom Skills 电商运营技能包",
-      "scenario":"operations",
-      "description":"面向 Shopify 商家和代理商的电商运营 playbook，覆盖目录审计、分类治理、SEO、图片替代文本、结构化数据、批量导入和迁移重定向。",
-      "skillCount":9,
-      "tags":["电商运营","Shopify","目录治理","SEO","批量数据"],
-      "status":"active",
-      "installCommand":"claude plugin marketplace add kgelster/awesome-ecom-skills && claude plugin install ecom@kgelster",
-      "platform":"Claude Code",
-      "license":"MIT",
-      "source":{"name":"kgelster/awesome-ecom-skills","url":"https://github.com/kgelster/awesome-ecom-skills","commit":"6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688"},
-      "groups":["目录治理","SEO 与内容","迁移与批量数据"],
-      "workspace":{
-        "skillsUrl":"/assets/data/awesome-ecom-skills.json",
-        "eyebrow":"AWESOME ECOM SKILLS",
-        "groupFacetLabel":"技能方向",
-        "groupLabels":{"catalog-governance":"目录治理","seo-content":"SEO 与内容","bulk-migration":"迁移与批量数据"},
-        "lifecycleLabels":{"published":"已发布"},
-        "invocationModeLabels":{"model-allowed":"自然语言触发"}
+      "id": "addyosmani-agent-skills",
+      "name": "Addy Osmani 工程技能包",
+      "scenario": "development",
+      "description": "覆盖需求、设计、开发、测试、审查和上线的 25 项 AI 编程代理技能。",
+      "skillCount": 25,
+      "tags": [
+        "软件工程",
+        "需求规划",
+        "测试",
+        "代码审查",
+        "持续交付"
+      ],
+      "status": "active",
+      "installCommand": "npx -y skills add addyosmani/agent-skills",
+      "platform": "Claude Code / Codex / Cursor",
+      "license": "MIT",
+      "source": {
+        "name": "addyosmani/agent-skills",
+        "url": "https://github.com/addyosmani/agent-skills",
+        "commit": "aeac41d4d005999432bb7312f7ff06383a91d59d"
+      },
+      "groups": [
+        "软件工程"
+      ],
+      "workspace": {
+        "skillsUrl": "/assets/data/addyosmani-agent-skills.json",
+        "eyebrow": "ADDY OSMANI AGENT SKILLS",
+        "groupFacetLabel": "技能方向",
+        "groupLabels": {
+          "engineering": "软件工程"
+        },
+        "lifecycleLabels": {
+          "published": "已发布"
+        },
+        "invocationModeLabels": {
+          "model-allowed": "自然语言触发"
+        }
       }
     },
     {
-      "id":"wigolo",
-      "name":"Wigolo 网页情报技能包",
-      "scenario":"research",
-      "description":"本地优先的网页搜索、抓取、抽取、缓存与研究工作流，帮助 AI agent 建立可复用的网络情报能力。",
-      "skillCount":11,
-      "tags":["网页情报","本地优先","搜索研究","MCP"],
-      "status":"active",
-      "installCommand":"npx wigolo init --agents=codex",
-      "platform":"Codex / Claude Code / Cursor / Gemini CLI",
-      "license":"unconfirmed",
-      "source":{"name":"KnockOutEZ/wigolo","url":"https://github.com/KnockOutEZ/wigolo","commit":"56da0c80d52bba51cc428545f468ec0dbd6651c3"},
-      "groups":["网页情报","研究工作流","知识维护"],
-      "workspace":{"skillsUrl":"/assets/data/wigolo-skills.json","eyebrow":"WIGOLO WEB INTELLIGENCE","groupFacetLabel":"技能方向","groupLabels":{"web-intelligence":"网页情报","research-workflow":"研究工作流","knowledge-maintenance":"知识维护"},"lifecycleLabels":{"published":"已发布"},"invocationModeLabels":{"model-allowed":"自然语言触发"}}
+      "id": "investment-research",
+      "name": "Serenity.skill",
+      "scenario": "research",
+      "description": "从产业链拆解、证据验证到研究优先级，组织可复用的行业研究方法。",
+      "skillCount": 1,
+      "tags": [
+        "投研",
+        "行业研究",
+        "金融"
+      ],
+      "status": "active",
+      "featuredSkill": {
+        "id": "serenity-skill",
+        "name": "Serenity.skill",
+        "descriptionZh": "供应链瓶颈投研方法：从热点判断推进到证据验证。",
+        "command": "/serenity-skill",
+        "tags": [
+          "供应链",
+          "证据验证",
+          "行业研究"
+        ]
+      },
+      "workspace": {
+        "skillsUrl": "/assets/data/research-skills.json",
+        "eyebrow": "INVESTMENT RESEARCH PACKAGE",
+        "groupLabels": {
+          "industry-research": "行业研究"
+        },
+        "lifecycleLabels": {
+          "published": "已发布"
+        },
+        "invocationModeLabels": {
+          "user-only": "用户触发"
+        }
+      }
     },
     {
-      "id":"last30days",
-      "name":"Last 30 Days 多源研究技能包",
-      "scenario":"research",
-      "description":"跨 Reddit、X、YouTube、Hacker News、Polymarket 与网页，研究近 30 天的主题变化并生成有依据的综合摘要。",
-      "skillCount":1,
-      "tags":["多源研究","趋势监测","情报摘要","近况分析"],
-      "status":"active",
-      "installCommand":"npx -y skills add mvanhorn/last30days-skill -g",
-      "platform":"Codex / Claude Code / Cursor / Gemini CLI",
-      "license":"MIT",
-      "source":{"name":"mvanhorn/last30days-skill","url":"https://github.com/mvanhorn/last30days-skill","commit":"a22c8e7576c2c69885b895002cc15968cd4cb25a"},
-      "groups":["多源研究"],
-      "workspace":{"skillsUrl":"/assets/data/last30days-skills.json","eyebrow":"LAST 30 DAYS RESEARCH","groupFacetLabel":"技能方向","groupLabels":{"multi-source-research":"多源研究"},"lifecycleLabels":{"published":"已发布"},"invocationModeLabels":{"model-allowed":"自然语言触发"}}
+      "id": "wigolo",
+      "name": "Wigolo 网页情报技能包",
+      "scenario": "research",
+      "description": "本地优先的网页搜索、抓取、抽取、缓存与研究工作流，帮助 AI agent 建立可复用的网络情报能力。",
+      "skillCount": 11,
+      "tags": [
+        "网页情报",
+        "本地优先",
+        "搜索研究",
+        "MCP"
+      ],
+      "status": "active",
+      "installCommand": "npx wigolo init --agents=codex",
+      "platform": "Codex / Claude Code / Cursor / Gemini CLI",
+      "license": "unconfirmed",
+      "source": {
+        "name": "KnockOutEZ/wigolo",
+        "url": "https://github.com/KnockOutEZ/wigolo",
+        "commit": "56da0c80d52bba51cc428545f468ec0dbd6651c3"
+      },
+      "groups": [
+        "网页情报",
+        "研究工作流",
+        "知识维护"
+      ],
+      "workspace": {
+        "skillsUrl": "/assets/data/wigolo-skills.json",
+        "eyebrow": "WIGOLO WEB INTELLIGENCE",
+        "groupFacetLabel": "技能方向",
+        "groupLabels": {
+          "web-intelligence": "网页情报",
+          "research-workflow": "研究工作流",
+          "knowledge-maintenance": "知识维护"
+        },
+        "lifecycleLabels": {
+          "published": "已发布"
+        },
+        "invocationModeLabels": {
+          "model-allowed": "自然语言触发"
+        }
+      }
     },
     {
-      "id":"founder-project-evaluator",
-      "name":"Founder Project Evaluator 创业项目评估技能包",
-      "scenario":"research",
-      "description":"面向创始人项目的阶段化 Gate Review：诊断阶段、评分证据、主动证伪，并给出停留、推进或禁止晋级的判断。",
-      "skillCount":1,
-      "tags":["创业评估","Gate Review","证据审查","单位经济"],
-      "status":"active",
-      "platform":"Codex",
-      "license":"unconfirmed",
-      "groups":["创业项目评估"],
-      "workspace":{"skillsUrl":"/assets/data/founder-project-evaluator-skills.json","eyebrow":"FOUNDER PROJECT EVALUATOR","groupFacetLabel":"技能方向","groupLabels":{"founder-evaluation":"创业项目评估"},"lifecycleLabels":{"published":"已发布"},"invocationModeLabels":{"model-allowed":"自然语言触发"}}
+      "id": "last30days",
+      "name": "Last 30 Days 多源研究技能包",
+      "scenario": "research",
+      "description": "跨 Reddit、X、YouTube、Hacker News、Polymarket 与网页，研究近 30 天的主题变化并生成有依据的综合摘要。",
+      "skillCount": 1,
+      "tags": [
+        "多源研究",
+        "趋势监测",
+        "情报摘要",
+        "近况分析"
+      ],
+      "status": "active",
+      "installCommand": "npx -y skills add mvanhorn/last30days-skill -g",
+      "platform": "Codex / Claude Code / Cursor / Gemini CLI",
+      "license": "MIT",
+      "source": {
+        "name": "mvanhorn/last30days-skill",
+        "url": "https://github.com/mvanhorn/last30days-skill",
+        "commit": "a22c8e7576c2c69885b895002cc15968cd4cb25a"
+      },
+      "groups": [
+        "多源研究"
+      ],
+      "workspace": {
+        "skillsUrl": "/assets/data/last30days-skills.json",
+        "eyebrow": "LAST 30 DAYS RESEARCH",
+        "groupFacetLabel": "技能方向",
+        "groupLabels": {
+          "multi-source-research": "多源研究"
+        },
+        "lifecycleLabels": {
+          "published": "已发布"
+        },
+        "invocationModeLabels": {
+          "model-allowed": "自然语言触发"
+        }
+      }
     },
     {
-      "id":"waza",
-      "name":"Waza 工程习惯技能包",
-      "scenario":"development",
-      "description":"把工程师已经熟悉的思考、设计、调试、审查、学习、阅读、写作与健康检查习惯，变成 AI agent 可执行的技能。",
-      "skillCount":8,
-      "tags":["工程习惯","代码质量","调试","产品设计"],
-      "status":"active",
-      "installCommand":"npx -y skills add tw93/Waza -a codex -g -y",
-      "platform":"Codex / Claude Code / Cursor",
-      "license":"MIT",
-      "source":{"name":"tw93/Waza","url":"https://github.com/tw93/Waza","commit":"9c97ccb6d96e776bf814e27498d0afc0ed3d1e94"},
-      "groups":["工程质量","思考学习","研究写作","界面设计"],
-      "workspace":{"skillsUrl":"/assets/data/waza-skills.json","eyebrow":"WAZA ENGINEERING HABITS","groupFacetLabel":"技能方向","groupLabels":{"engineering-quality":"工程质量","thinking-learning":"思考学习","research-writing":"研究写作","interface-design":"界面设计"},"lifecycleLabels":{"published":"已发布"},"invocationModeLabels":{"model-allowed":"自然语言触发"}}
+      "id": "founder-project-evaluator",
+      "name": "Founder Project Evaluator 创业项目评估技能包",
+      "scenario": "research",
+      "description": "面向创始人项目的阶段化 Gate Review：诊断阶段、评分证据、主动证伪，并给出停留、推进或禁止晋级的判断。",
+      "skillCount": 1,
+      "tags": [
+        "创业评估",
+        "Gate Review",
+        "证据审查",
+        "单位经济"
+      ],
+      "status": "active",
+      "platform": "Codex",
+      "license": "unconfirmed",
+      "groups": [
+        "创业项目评估"
+      ],
+      "workspace": {
+        "skillsUrl": "/assets/data/founder-project-evaluator-skills.json",
+        "eyebrow": "FOUNDER PROJECT EVALUATOR",
+        "groupFacetLabel": "技能方向",
+        "groupLabels": {
+          "founder-evaluation": "创业项目评估"
+        },
+        "lifecycleLabels": {
+          "published": "已发布"
+        },
+        "invocationModeLabels": {
+          "model-allowed": "自然语言触发"
+        }
+      }
     },
     {
-      "id":"ljg-skills",
-      "name":"ljg-skills 内容与思考技能包",
-      "scenario":"content",
-      "description":"面向 Codex 的中文自定义技能集，覆盖阅读、学习、写作、卡片、演讲、投资分析、关系分析与知识结构化。",
-      "skillCount":21,
-      "tags":["中文知识库","内容生产","学习研究","结构化思考"],
-      "status":"active",
-      "installCommand":"bunx skills add lijigang/ljg-skills -g -a codex --skill '*' -y",
-      "platform":"Codex",
-      "license":"unconfirmed",
-      "source":{"name":"lijigang/ljg-skills","url":"https://github.com/lijigang/ljg-skills","commit":"c41540f7a5a9770698e2fe15f1f6f2243eec5128"},
-      "groups":["内容生产","思考学习","分析决策","工具协作"],
-      "workspace":{"skillsUrl":"/assets/data/ljg-skills.json","eyebrow":"LJG-SKILLS KNOWLEDGE TOOLKIT","groupFacetLabel":"技能方向","groupLabels":{"content-production":"内容生产","thinking-learning":"思考学习","analysis-decision":"分析决策","tooling-collaboration":"工具协作"},"lifecycleLabels":{"published":"已发布"},"invocationModeLabels":{"model-allowed":"自然语言触发"}}
+      "id": "waza",
+      "name": "Waza 工程习惯技能包",
+      "scenario": "development",
+      "description": "把工程师已经熟悉的思考、设计、调试、审查、学习、阅读、写作与健康检查习惯，变成 AI agent 可执行的技能。",
+      "skillCount": 8,
+      "tags": [
+        "工程习惯",
+        "代码质量",
+        "调试",
+        "产品设计"
+      ],
+      "status": "active",
+      "installCommand": "npx -y skills add tw93/Waza -a codex -g -y",
+      "platform": "Codex / Claude Code / Cursor",
+      "license": "MIT",
+      "source": {
+        "name": "tw93/Waza",
+        "url": "https://github.com/tw93/Waza",
+        "commit": "9c97ccb6d96e776bf814e27498d0afc0ed3d1e94"
+      },
+      "groups": [
+        "工程质量",
+        "思考学习",
+        "研究写作",
+        "界面设计"
+      ],
+      "workspace": {
+        "skillsUrl": "/assets/data/waza-skills.json",
+        "eyebrow": "WAZA ENGINEERING HABITS",
+        "groupFacetLabel": "技能方向",
+        "groupLabels": {
+          "engineering-quality": "工程质量",
+          "thinking-learning": "思考学习",
+          "research-writing": "研究写作",
+          "interface-design": "界面设计"
+        },
+        "lifecycleLabels": {
+          "published": "已发布"
+        },
+        "invocationModeLabels": {
+          "model-allowed": "自然语言触发"
+        }
+      }
     }
   ]
 }

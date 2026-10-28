@@ -9,38 +9,12 @@ const atlasSkillsUrl = new URL(
 async function loadCatalog() {
   return JSON.parse(await readFile(catalogUrl, "utf8"));
 }
-test("launch catalog exposes the thirteen active packages and scenario statuses", async () => {
-  const catalog = await loadCatalog();
-  const activePackages = catalog.packages.filter((item) => item.status === "active");
-  const scenarios = Object.fromEntries(catalog.scenarios.map((item) => [item.id, item]));
-  assert.deepEqual(
-    activePackages.map((item) => item.id).sort(),
-    [
-      "awesome-ecom-skills",
-      "development",
-      "founder-project-evaluator",
-      "gbrain",
-      "investment-research",
-      "last30days",
-      "ljg-skills",
-      "pm-skills",
-      "pstack",
-      "rayskills",
-      "shopify-ai-toolkit",
-      "waza",
-      "wigolo",
-    ]
-  );
-  assert.equal(scenarios.content.status, "active");
-  assert.equal(scenarios.operations.status, "active");
-});
 test("new upstream libraries preserve their package placement and snapshots", async () => {
   const catalog = await loadCatalog();
   const expected = {
     wigolo: ["research", 11, "unconfirmed", "56da0c80d52bba51cc428545f468ec0dbd6651c3"],
     last30days: ["research", 1, "MIT", "a22c8e7576c2c69885b895002cc15968cd4cb25a"],
     waza: ["development", 8, "MIT", "9c97ccb6d96e776bf814e27498d0afc0ed3d1e94"],
-    "ljg-skills": ["content", 21, "unconfirmed", "c41540f7a5a9770698e2fe15f1f6f2243eec5128"],
   };
   for (const [id, [scenario, skillCount, license, commit]] of Object.entries(expected)) {
     const pkg = catalog.packages.find((item) => item.id === id);
@@ -58,59 +32,6 @@ test("founder project evaluator is catalogued as a research Gate Review skill", 
   assert.equal(pkg.skillCount, 1);
   assert.equal(pkg.workspace.skillsUrl, "/assets/data/founder-project-evaluator-skills.json");
   assert.equal(pkg.workspace.groupLabels["founder-evaluation"], "创业项目评估");
-});
-test("PM Skills package preserves its operations placement and upstream snapshot", async () => {
-  const catalog = await loadCatalog();
-  const pmSkills = catalog.packages.find((item) => item.id === "pm-skills");
-  assert.equal(pmSkills.name, "PM Skills 产品管理技能包");
-  assert.equal(pmSkills.scenario, "operations");
-  assert.equal(pmSkills.skillCount, 68);
-  assert.match(pmSkills.installCommand, /^codex plugin marketplace add phuryn\/pm-skills && codex plugin add pm-toolkit@pm-skills/);
-  assert.match(pmSkills.installCommand, /codex plugin add pm-ai-shipping@pm-skills$/);
-  assert.equal(pmSkills.license, "MIT");
-  assert.equal(pmSkills.source.commit, "18468a95b427e70e258b51389796367c6f684e7d");
-});
-test("Rayskills package preserves its content placement, scope, license and snapshot", async () => {
-  const catalog = await loadCatalog();
-  const rayskills = catalog.packages.find((item) => item.id === "rayskills");
-  assert.equal(rayskills.name, "Rayskills 内容技能包");
-  assert.equal(rayskills.scenario, "content");
-  assert.equal(rayskills.skillCount, 21);
-  assert.equal(rayskills.installCommand, "npx -y skills add imraywang/rayskills -g --all");
-  assert.equal(rayskills.license, "CC BY-NC 4.0");
-  assert.equal(rayskills.workspace.groupFacetLabel, "技能方向");
-  assert.equal(rayskills.source.commit, "454bff330bb3ddae9d3c639bd0f791e6c61dd830");
-});
-test("GBrain package preserves its content placement, scope and upstream snapshot", async () => {
-  const catalog = await loadCatalog();
-  const gbrain = catalog.packages.find((item) => item.id === "gbrain");
-  assert.equal(gbrain.name, "GBrain Agent Brain 知识技能包");
-  assert.equal(gbrain.scenario, "content");
-  assert.equal(gbrain.skillCount, 53);
-  assert.equal(gbrain.installCommand, "bun install -g github:garrytan/gbrain && gbrain init --pglite");
-  assert.equal(gbrain.license, "MIT");
-  assert.equal(gbrain.workspace.groupFacetLabel, "技能方向");
-  assert.equal(gbrain.source.commit, "c6dc0adf26a2d20df1147d2ec87c8922ca86d410");
-});
-test("Shopify AI Toolkit package preserves its operations placement and snapshot", async () => {
-  const catalog = await loadCatalog();
-  const shopify = catalog.packages.find((item) => item.id === "shopify-ai-toolkit");
-  assert.equal(shopify.name, "Shopify AI Toolkit 开发技能包");
-  assert.equal(shopify.scenario, "operations");
-  assert.equal(shopify.skillCount, 21);
-  assert.equal(shopify.installCommand, "codex plugin add shopify@openai-curated");
-  assert.equal(shopify.license, "MIT");
-  assert.equal(shopify.source.commit, "0e06bc35611e505e372de7f8cdf265e6d6dbc311");
-});
-test("Awesome Ecom Skills package preserves its operations placement and snapshot", async () => {
-  const catalog = await loadCatalog();
-  const ecom = catalog.packages.find((item) => item.id === "awesome-ecom-skills");
-  assert.equal(ecom.name, "Awesome Ecom Skills 电商运营技能包");
-  assert.equal(ecom.scenario, "operations");
-  assert.equal(ecom.skillCount, 9);
-  assert.equal(ecom.installCommand, "claude plugin marketplace add kgelster/awesome-ecom-skills && claude plugin install ecom@kgelster");
-  assert.equal(ecom.license, "MIT");
-  assert.equal(ecom.source.commit, "6d6f1d4e5e0f9ece9e66a3c859d5fbbc99558688");
 });
 test("development package is updated to mattpocock/skills v1.3.1", async () => {
   const catalog = await loadCatalog();
@@ -226,4 +147,17 @@ test("investment research package makes Serenity discoverable", async () => {
     investmentResearch.workspace.groupLabels["industry-research"],
     "行业研究"
   );
+});
+
+test("catalog contains only development and research packages and includes Addy Osmani skills", async () => {
+  const catalog = await loadCatalog();
+  assert.deepEqual(catalog.scenarios.map(s => s.id).sort(), ["development", "research"]);
+  assert.ok(catalog.packages.every(p => ["development", "research"].includes(p.scenario)));
+  const pkg = catalog.packages.find(p => p.id === "addyosmani-agent-skills");
+  const skills = JSON.parse(await readFile(new URL("../site/assets/data/addyosmani-agent-skills.json", import.meta.url), "utf8"));
+  assert.equal(pkg.skillCount, 25);
+  assert.equal(skills.length, 25);
+  assert.ok(skills.every(s => s.descriptionZh && s.descriptionEn && s.sourceUrl.includes(pkg.source.commit)));
+  assert.ok(skills.some(s => s.id === "test-driven-development"));
+  await assert.doesNotReject(readFile(new URL("../site/packages/addyosmani-agent-skills/index.html", import.meta.url)));
 });

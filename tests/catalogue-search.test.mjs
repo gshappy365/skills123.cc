@@ -9,62 +9,9 @@ import {
 } from "../site/assets/js/catalogue-search.js";
 
 const catalogUrl = new URL("../site/assets/data/catalog.json", import.meta.url);
-const atlasUrl = new URL("../site/assets/data/atlas-skills.json", import.meta.url);
-const pstackUrl = new URL("../site/assets/data/pstack-skills.json", import.meta.url);
-const shopifyUrl = new URL("../site/assets/data/shopify-ai-toolkit-skills.json", import.meta.url);
-const researchUrl = new URL(
-  "../site/assets/data/research-skills.json",
-  import.meta.url
-);
-const rayskillsUrl = new URL(
-  "../site/assets/data/rayskills-skills.json",
-  import.meta.url
-);
-const pmSkillsUrl = new URL(
-  "../site/assets/data/pm-skills.json",
-  import.meta.url
-);
-const wigoloUrl = new URL("../site/assets/data/wigolo-skills.json", import.meta.url);
-const last30daysUrl = new URL("../site/assets/data/last30days-skills.json", import.meta.url);
-const wazaUrl = new URL("../site/assets/data/waza-skills.json", import.meta.url);
-const ljgUrl = new URL("../site/assets/data/ljg-skills.json", import.meta.url);
-const founderEvaluatorUrl = new URL("../site/assets/data/founder-project-evaluator-skills.json", import.meta.url);
-const gbrainUrl = new URL("../site/assets/data/gbrain-skills.json", import.meta.url);
-const ecomUrl = new URL("../site/assets/data/awesome-ecom-skills.json", import.meta.url);
-
 async function fixtures() {
-  const [catalog, atlasSkills, pstackSkills, shopifySkills, researchSkills, rayskills, pmSkills, wigoloSkills, last30daysSkills, wazaSkills, ljgSkills, founderEvaluatorSkills, gbrainSkills, ecomSkills] = await Promise.all([
-    readFile(catalogUrl, "utf8").then(JSON.parse),
-    readFile(atlasUrl, "utf8").then(JSON.parse),
-    readFile(pstackUrl, "utf8").then(JSON.parse),
-    readFile(shopifyUrl, "utf8").then(JSON.parse),
-    readFile(researchUrl, "utf8").then(JSON.parse),
-    readFile(rayskillsUrl, "utf8").then(JSON.parse),
-    readFile(pmSkillsUrl, "utf8").then(JSON.parse),
-    readFile(wigoloUrl, "utf8").then(JSON.parse),
-    readFile(last30daysUrl, "utf8").then(JSON.parse),
-    readFile(wazaUrl, "utf8").then(JSON.parse),
-    readFile(ljgUrl, "utf8").then(JSON.parse),
-    readFile(founderEvaluatorUrl, "utf8").then(JSON.parse),
-    readFile(gbrainUrl, "utf8").then(JSON.parse),
-    readFile(ecomUrl, "utf8").then(JSON.parse),
-  ]);
-  const packageSkills = await loadPackageSkills(catalog, async (url) => {
-    if (url === "/assets/data/atlas-skills.json") return atlasSkills;
-    if (url === "/assets/data/pstack-skills.json") return pstackSkills;
-    if (url === "/assets/data/shopify-ai-toolkit-skills.json") return shopifySkills;
-    if (url === "/assets/data/research-skills.json") return researchSkills;
-    if (url === "/assets/data/rayskills-skills.json") return rayskills;
-    if (url === "/assets/data/pm-skills.json") return pmSkills;
-    if (url === "/assets/data/wigolo-skills.json") return wigoloSkills;
-    if (url === "/assets/data/last30days-skills.json") return last30daysSkills;
-    if (url === "/assets/data/waza-skills.json") return wazaSkills;
-    if (url === "/assets/data/ljg-skills.json") return ljgSkills;
-    if (url === "/assets/data/founder-project-evaluator-skills.json") return founderEvaluatorSkills;
-    if (url === "/assets/data/gbrain-skills.json") return gbrainSkills;
-    if (url === "/assets/data/awesome-ecom-skills.json") return ecomSkills;
-    assert.fail(`Unexpected skills URL: ${url}`);
-  });
+  const catalog = JSON.parse(await readFile(catalogUrl, "utf8"));
+  const packageSkills = await loadPackageSkills(catalog, async (url) => JSON.parse(await readFile(new URL("../site" + url, import.meta.url), "utf8")));
   return { catalog, packageSkills };
 }
 
@@ -75,15 +22,9 @@ test("package groups use the approved order and retain coming-soon groups", asyn
   assert.deepEqual(groups.map((group) => group.id), [
     "development",
     "research",
-    "content",
-    "operations",
   ]);
   assert.equal(groups[0].packages[0].id, "development");
   assert.equal(groups[1].packages[0].id, "investment-research");
-  assert.equal(groups[2].status, "active");
-  assert.equal(groups[2].packages[0].id, "rayskills");
-  assert.equal(groups[3].status, "active");
-  assert.equal(groups[3].packages[0].id, "shopify-ai-toolkit");
 });
 
 test("global search distinguishes package matches from owned skill matches", async () => {
@@ -139,35 +80,7 @@ test("global search matches commands and reports Serenity package ownership", as
   );
 });
 
-test("global search matches a Rayskills direction and retains content package ownership", async () => {
-  const { catalog, packageSkills } = await fixtures();
-  const result = searchCatalogue({
-    catalog,
-    packageSkills,
-    query: "内容",
-  });
 
-  assert.ok(result.skillMatches.some((item) => item.id === "ray-writer"));
-  assert.equal(
-    result.skillMatches.find((item) => item.id === "ray-writer").package.id,
-    "rayskills"
-  );
-});
-
-test("global search matches a PM skill and retains operations package ownership", async () => {
-  const { catalog, packageSkills } = await fixtures();
-  const result = searchCatalogue({
-    catalog,
-    packageSkills,
-    query: "产品需求文档",
-  });
-
-  assert.ok(result.skillMatches.some((item) => item.id === "create-prd"));
-  assert.equal(
-    result.skillMatches.find((item) => item.id === "create-prd").package.id,
-    "pm-skills"
-  );
-});
 
 test("global search reaches PStack skills and retains development package ownership", async () => {
   const { catalog, packageSkills } = await fixtures();
@@ -185,7 +98,6 @@ test("global search reaches the four newly catalogued packages", async () => {
     ["网页搜索", "wigolo", "wigolo-search"],
     ["近况研究", "last30days", "last30days"],
     ["根因分析", "waza", "hunt"],
-    ["投资", "ljg-skills", "ljg-invest"],
   ]) {
     const result = searchCatalogue({ catalog, packageSkills, query });
     const match = result.skillMatches.find((item) => item.id === skillId);
@@ -203,28 +115,7 @@ test("global search reaches the founder evaluator and its Gate Review skill", as
   assert.equal(match.href, "/packages/founder-project-evaluator/?skill=founder-project-evaluator");
 });
 
-test("global search reaches GBrain skills and retains content package ownership", async () => {
-  const { catalog, packageSkills } = await fixtures();
-  const result = searchCatalogue({ catalog, packageSkills, query: "query" });
-  const match = result.skillMatches.find((item) => item.id === "query");
 
-  assert.ok(match);
-  assert.equal(match.package.id, "gbrain");
-  assert.equal(match.href, "/packages/gbrain/?skill=query");
-});
-
-test("global search reaches both Shopify packages and retains ownership", async () => {
-  const { catalog, packageSkills } = await fixtures();
-  const toolkit = searchCatalogue({ catalog, packageSkills, query: "Admin GraphQL" });
-  const toolkitMatch = toolkit.skillMatches.find((item) => item.id === "shopify-admin");
-  assert.ok(toolkitMatch);
-  assert.equal(toolkitMatch.package.id, "shopify-ai-toolkit");
-
-  const ecom = searchCatalogue({ catalog, packageSkills, query: "shopify-catalog-audit" });
-  const ecomMatch = ecom.skillMatches.find((item) => item.id === "shopify-catalog-audit");
-  assert.ok(ecomMatch);
-  assert.equal(ecomMatch.package.id, "awesome-ecom-skills");
-});
 
 test("loading featured skills does not mutate a shared package data source", async () => {
   const sourceSkills = [{ id: "existing" }];
@@ -268,4 +159,12 @@ test("loading featured skills does not mutate a shared package data source", asy
     "existing",
     "featured",
   ]);
+});
+
+test("global search finds an Addy Osmani skill and excludes removed packages", async () => {
+ const {catalog, packageSkills} = await fixtures();
+ const match=searchCatalogue({catalog,packageSkills,query:"test-driven-development"}).skillMatches.find(s=>s.package.id === "addyosmani-agent-skills");
+ assert.equal(match?.id,"test-driven-development");
+ assert.equal(match.href,"/packages/addyosmani-agent-skills/?skill=test-driven-development");
+ assert.equal(searchCatalogue({catalog,packageSkills,query:"ray-writer"}).skillMatches.length,0);
 });
