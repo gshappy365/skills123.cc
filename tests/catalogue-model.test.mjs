@@ -103,3 +103,46 @@ test("catalogue boundary rejects incomplete install details before rendering", a
     /is missing platform/
   );
 });
+test("catalogue boundary accepts a dated source snapshot and rejects a non-date syncedAt", async () => {
+  const buildCatalog = (syncedAt) => ({
+    scenarios: [{ id: "research", name: "研究", status: "active" }],
+    packages: [
+      {
+        id: "dated",
+        name: "Dated",
+        scenario: "research",
+        skillCount: 1,
+        status: "active",
+        installCommand: "npx -y skills add example/skills",
+        license: "MIT",
+        source: {
+          name: "example/skills",
+          url: "https://github.com/example/skills",
+          commit: "a".repeat(40),
+          ...(syncedAt === undefined ? {} : { syncedAt }),
+        },
+        workspace: {
+          skillsUrl: "/dated.json",
+          groupLabels: { research: "研究" },
+          lifecycleLabels: { published: "已发布" },
+          invocationModeLabels: { "user-only": "用户触发" },
+        },
+      },
+    ],
+  });
+  const skill = {
+    id: "dated-skill",
+    group: "research",
+    lifecycle: "published",
+    invocationMode: "user-only",
+  };
+  const model = await createCatalogueModel(buildCatalog("2026-10-05"), async () => [skill]);
+  assert.equal(
+    getPackageWorkspaceModel(model, "dated").package.source.syncedAt,
+    "2026-10-05"
+  );
+  await assert.rejects(
+    createCatalogueModel(buildCatalog("2026/10/05"), async () => [skill]),
+    /invalid source syncedAt/
+  );
+});

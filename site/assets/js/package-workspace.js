@@ -131,6 +131,9 @@ function renderDetail(state) {
     !detail.installCommand && packageData.installCommand
       ? `<div class="command-bar command-bar-package"><span class="command-bar-note">整包安装</span><code>${escapeHtml(packageData.installCommand)}</code><button type="button" id="copy-package-install">复制整包安装命令</button></div>`
       : "";
+  const verifyMarkup = detail.command
+    ? `<p class="detail-verify">装完自检：在宿主输入 <code>${escapeHtml(detail.command)}</code>，能被识别即安装成功。</p>`
+    : "";
   const licenseLabel = detail.license === "unconfirmed" ? "未确认" : detail.license;
   const extraFacts = [
     detail.platform ? ["适用平台", detail.platform] : null,
@@ -166,7 +169,7 @@ function renderDetail(state) {
     : "";
   const packageSourceMarkup =
     !detail.sourceUrl && detail.packageSource?.url
-      ? `<a class="source-link" href="${escapeHtml(detail.packageSource.url)}" target="_blank" rel="noreferrer"><span>上游来源 · ${escapeHtml(detail.packageSource.name || "GitHub")}</span><strong>查看源码 →</strong><small>v${escapeHtml(detail.packageSource.version ?? "?")} · ${escapeHtml((detail.packageSource.commit ?? "").slice(0, 7))}</small></a>`
+      ? `<a class="source-link" href="${escapeHtml(detail.packageSource.url)}" target="_blank" rel="noreferrer"><span>上游来源 · ${escapeHtml(detail.packageSource.name || "GitHub")}</span><strong>查看源码 →</strong><small>v${escapeHtml(detail.packageSource.version ?? "?")} · ${escapeHtml((detail.packageSource.commit ?? "").slice(0, 7))}${detail.packageSource.syncedAt ? ` · 快照 ${escapeHtml(detail.packageSource.syncedAt)}` : ""}</small></a>`
       : "";
   const summaryEnMarkup =
     detail.descriptionEn && detail.descriptionEn !== detail.summary
@@ -180,6 +183,7 @@ function renderDetail(state) {
     <div class="detail-tags">${tagMarkup}</div>
     ${commandMarkup}
     ${packageInstallMarkup}
+    ${verifyMarkup}
     ${readingMarkup}
     <dl class="detail-facts">
       <div><dt>${escapeHtml(packageData.workspace.groupFacetLabel ?? "领域")}</dt><dd>${escapeHtml(detail.groupLabel)}</dd></div>
@@ -192,6 +196,7 @@ function renderDetail(state) {
     ${packageSourceMarkup}
     <section class="related-skills" aria-labelledby="related-title">
       <h3 id="related-title">关联信息</h3>
+      <p class="related-note">「${escapeHtml(detail.groupLabel)}」${escapeHtml(packageData.workspace.groupFacetLabel ?? "领域")}共 ${detail.groupCount} 项技能。</p>
       ${relationshipMarkup}${relatedMarkup || (!relationshipMarkup ? "<p>当前没有关联信息。</p>" : "")}
     </section>`;
 }
