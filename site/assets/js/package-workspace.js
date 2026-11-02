@@ -4,7 +4,7 @@ import {
   derivePackageWorkspaceState,
   getPackageWorkspaceNavigationFromUrl,
 } from "./package-workspace-state.js";
-import { createPackageWorkspaceModel } from "./catalogue-model.js?v=20261028-1";
+import { createPackageWorkspaceModel } from "./catalogue-model.js?v=20261102-1";
 const packageId = document.body.dataset.packageId;
 const workspaceInput = {
   packageId,
@@ -123,10 +123,14 @@ function renderDetail(state) {
     ? `<a class="reading-link" href="${escapeHtml(detail.readingUrl)}"><span>完整方法、证据与案例</span><strong>完整阅读 →</strong></a>`
     : "";
   const command = detail.installCommand ?? detail.command;
-  const copyLabel = detail.installCommand ? "复制安装命令" : "复制";
+  const copyLabel = detail.installCommand ? "复制安装命令" : "复制调用命令";
   const commandMarkup = command
     ? `<div class="command-bar"><code>${escapeHtml(command)}</code><button type="button" id="copy-command">${copyLabel}</button></div>`
     : "";
+  const packageInstallMarkup =
+    !detail.installCommand && packageData.installCommand
+      ? `<div class="command-bar command-bar-package"><span class="command-bar-note">整包安装</span><code>${escapeHtml(packageData.installCommand)}</code><button type="button" id="copy-package-install">复制整包安装命令</button></div>`
+      : "";
   const licenseLabel = detail.license === "unconfirmed" ? "未确认" : detail.license;
   const extraFacts = [
     detail.platform ? ["适用平台", detail.platform] : null,
@@ -160,12 +164,22 @@ function renderDetail(state) {
        ${renderList("验证与边界", detail.safetyNotes, "按宿主默认边界执行")}
        <a class="source-link" href="${escapeHtml(detail.sourceUrl)}" target="_blank" rel="noreferrer"><span>固定上游版本</span><strong>查看源文件 →</strong><small>${escapeHtml(detail.upstreamCommit.slice(0, 7))}</small></a>`
     : "";
+  const packageSourceMarkup =
+    !detail.sourceUrl && detail.packageSource?.url
+      ? `<a class="source-link" href="${escapeHtml(detail.packageSource.url)}" target="_blank" rel="noreferrer"><span>上游来源 · ${escapeHtml(detail.packageSource.name || "GitHub")}</span><strong>查看源码 →</strong><small>v${escapeHtml(detail.packageSource.version ?? "?")} · ${escapeHtml((detail.packageSource.commit ?? "").slice(0, 7))}</small></a>`
+      : "";
+  const summaryEnMarkup =
+    detail.descriptionEn && detail.descriptionEn !== detail.summary
+      ? `<p class="detail-summary-en" lang="en">${escapeHtml(detail.descriptionEn)}</p>`
+      : "";
   elements.detailContent.innerHTML = `
     <p class="detail-eyebrow">SELECTED SKILL</p>
     <h2 id="detail-title">${escapeHtml(detail.name)}</h2>
     <p class="detail-summary">${escapeHtml(detail.summary)}</p>
+    ${summaryEnMarkup}
     <div class="detail-tags">${tagMarkup}</div>
     ${commandMarkup}
+    ${packageInstallMarkup}
     ${readingMarkup}
     <dl class="detail-facts">
       <div><dt>${escapeHtml(packageData.workspace.groupFacetLabel ?? "领域")}</dt><dd>${escapeHtml(detail.groupLabel)}</dd></div>
@@ -175,6 +189,7 @@ function renderDetail(state) {
       ${extraFacts}
     </dl>
     ${pluginDetailMarkup}
+    ${packageSourceMarkup}
     <section class="related-skills" aria-labelledby="related-title">
       <h3 id="related-title">关联信息</h3>
       ${relationshipMarkup}${relatedMarkup || (!relationshipMarkup ? "<p>当前没有关联信息。</p>" : "")}
@@ -206,6 +221,7 @@ function selectSkill(
 function render({ syncUrl = false } = {}) {
   const state = derivePackageWorkspaceState({
     ...workspaceInput,
+    packageInfo: packageData,
     skills,
     labels,
   });
@@ -244,6 +260,13 @@ function bindEvents() {
       const command = copy.closest(".command-bar")?.querySelector("code")?.textContent ?? "";
       await navigator.clipboard.writeText(command);
       copy.textContent = "已复制";
+    }
+    const packageInstallCopy = event.target.closest("#copy-package-install");
+    if (packageInstallCopy) {
+      const command =
+        packageInstallCopy.closest(".command-bar")?.querySelector("code")?.textContent ?? "";
+      await navigator.clipboard.writeText(command);
+      packageInstallCopy.textContent = "已复制";
     }
     const packageCopy = event.target.closest("#copy-package-command");
     if (packageCopy) {

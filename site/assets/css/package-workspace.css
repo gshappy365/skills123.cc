@@ -355,10 +355,21 @@ button {
   font: 750 25px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 .detail-summary,
+.detail-summary-en,
 .detail-empty > p:last-child {
   color: var(--muted);
   font-size: 12px;
   line-height: 1.65;
+}
+.detail-summary-en {
+  margin: 8px 0 0;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.command-bar .command-bar-note {
+  color: var(--muted);
+  font-size: 9px;
+  white-space: nowrap;
 }
 .detail-tags {
   display: flex;

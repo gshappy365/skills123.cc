@@ -28,6 +28,55 @@ test("development workspace exposes the complete catalogue and a stable default 
     "diagnosing-bugs",
   ]);
 });
+test("detail inherits package facts and keeps entry values ahead of them", async () => {
+  const skills = await loadSkills();
+  const catalogUrl = new URL("../site/assets/data/catalog.json", import.meta.url);
+  const catalog = JSON.parse(await readFile(catalogUrl, "utf8"));
+  const pkg = catalog.packages.find((item) => item.id === "development");
+  const state = derivePackageWorkspaceState({
+    packageId: "development",
+    packageInfo: pkg,
+    skills,
+  });
+  const detail = state.selectedDetail;
+  assert.equal(detail.descriptionEn, skills[0].descriptionEn);
+  assert.notEqual(detail.descriptionEn, detail.summary);
+  assert.equal(detail.platform, pkg.platform);
+  assert.equal(detail.license, pkg.license);
+  assert.equal(detail.upstreamVersion, pkg.source.version);
+  assert.deepEqual(detail.packageSource, pkg.source);
+  assert.equal(detail.sourceUrl, null);
+  assert.equal(detail.upstreamCommit, null);
+
+  const entry = {
+    ...skills[0],
+    platform: "Claude Code",
+    license: "MIT",
+    upstreamVersion: "9.9.9",
+    sourceUrl: "https://example.com/skill.md",
+    upstreamCommit: "a".repeat(40),
+  };
+  const override = derivePackageWorkspaceState({
+    packageId: "development",
+    packageInfo: pkg,
+    skills: [entry, ...skills.slice(1)],
+  });
+  assert.equal(override.selectedDetail.platform, "Claude Code");
+  assert.equal(override.selectedDetail.upstreamVersion, "9.9.9");
+  assert.equal(override.selectedDetail.sourceUrl, "https://example.com/skill.md");
+  assert.deepEqual(override.selectedDetail.packageSource, pkg.source);
+});
+test("detail omits package facts when no package is supplied", async () => {
+  const skills = await loadSkills();
+  const state = derivePackageWorkspaceState({
+    packageId: "development",
+    skills,
+  });
+  assert.equal(state.selectedDetail.platform, null);
+  assert.equal(state.selectedDetail.license, null);
+  assert.equal(state.selectedDetail.upstreamVersion, null);
+  assert.equal(state.selectedDetail.packageSource, null);
+});
 test("query searches skill identity, description and command then selects the first visible skill", async () => {
   const skills = await loadSkills();
   const state = derivePackageWorkspaceState({
