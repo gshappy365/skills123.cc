@@ -529,6 +529,21 @@ button {
   font-size: 9px;
   font-weight: 500;
 }
+.related-note {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.detail-verify {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+.detail-verify code {
+  color: var(--blue);
+  font-size: 10px;
+}
 .related-skills button {
   display: flex;
   gap: 12px;

@@ -95,6 +95,9 @@ function validateCatalogShell(catalog) {
     if (pkg.source?.commit !== undefined) {
       assert(/^[a-f0-9]{40}$/.test(pkg.source.commit), `package "${pkg.id}" has an invalid source commit`);
     }
+    if (pkg.source?.syncedAt !== undefined) {
+      assert(/^\d{4}-\d{2}-\d{2}$/.test(pkg.source.syncedAt), `package "${pkg.id}" has an invalid source syncedAt`);
+    }
   }
 }
 
