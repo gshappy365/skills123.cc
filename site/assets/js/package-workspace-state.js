@@ -121,6 +121,7 @@ function createDetail(skill, skills, labels, pkg = null) {
     .filter((candidate) => candidate.group === skill.group && candidate.id !== skill.id)
     .slice(0, 3)
     .map((candidate) => candidate.id);
+  const groupCount = skills.filter((candidate) => candidate.group === skill.group).length;
 
   return {
     id: skill.id,
@@ -152,6 +153,7 @@ function createDetail(skill, skills, labels, pkg = null) {
           url: pkg.source.url ?? null,
           version: pkg.source.version ?? null,
           commit: pkg.source.commit ?? null,
+          syncedAt: pkg.source.syncedAt ?? null,
         }
       : null,
     requirements: uniqueStrings(skill.requirements),
@@ -168,6 +170,7 @@ function createDetail(skill, skills, labels, pkg = null) {
       label,
     })),
     relatedSkillIds,
+    groupCount,
   };
 }
 

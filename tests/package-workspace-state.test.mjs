@@ -45,8 +45,10 @@ test("detail inherits package facts and keeps entry values ahead of them", async
   assert.equal(detail.license, pkg.license);
   assert.equal(detail.upstreamVersion, pkg.source.version);
   assert.deepEqual(detail.packageSource, pkg.source);
+  assert.equal(detail.packageSource.syncedAt, "2026-10-05");
   assert.equal(detail.sourceUrl, null);
   assert.equal(detail.upstreamCommit, null);
+  assert.equal(detail.groupCount, 20);
 
   const entry = {
     ...skills[0],
