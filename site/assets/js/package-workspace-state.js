@@ -114,7 +114,7 @@ function labelFor(labels, facet, value) {
   return labels?.[facet]?.[value] ?? value;
 }
 
-function createDetail(skill, skills, labels) {
+function createDetail(skill, skills, labels, pkg = null) {
   if (!skill) return null;
 
   const relatedSkillIds = skills
@@ -126,6 +126,7 @@ function createDetail(skill, skills, labels) {
     id: skill.id,
     name: skill.name ?? skill.id,
     summary: skill.descriptionZh ?? skill.descriptionEn ?? "",
+    descriptionEn: skill.descriptionEn ?? null,
     command: skill.command,
     group: skill.group,
     groupLabel: labelFor(labels, "groups", skill.group),
@@ -141,7 +142,18 @@ function createDetail(skill, skills, labels) {
     ]),
     readingUrl: skill.readingUrl ?? null,
     installCommand: skill.installCommand ?? null,
-    platform: skill.platform ?? null,
+    // Entry-level values win; the owning package fills the gaps so slim entries still show facts.
+    platform: skill.platform ?? pkg?.platform ?? null,
+    license: skill.license ?? pkg?.license ?? null,
+    upstreamVersion: skill.upstreamVersion ?? pkg?.source?.version ?? null,
+    packageSource: pkg?.source
+      ? {
+          name: pkg.source.name ?? "",
+          url: pkg.source.url ?? null,
+          version: pkg.source.version ?? null,
+          commit: pkg.source.commit ?? null,
+        }
+      : null,
     requirements: uniqueStrings(skill.requirements),
     environmentVariables: (skill.environmentVariables ?? []).map(
       ({ name, description }) => ({ name, description })
@@ -149,9 +161,7 @@ function createDetail(skill, skills, labels) {
     outputs: uniqueStrings(skill.outputs),
     usageExamples: uniqueStrings(skill.usageExamples),
     safetyNotes: uniqueStrings(skill.safetyNotes),
-    license: skill.license ?? null,
     sourceUrl: skill.sourceUrl ?? null,
-    upstreamVersion: skill.upstreamVersion ?? null,
     upstreamCommit: skill.upstreamCommit ?? null,
     relationships: (skill.relationships ?? []).map(({ type, label }) => ({
       type,
@@ -163,6 +173,7 @@ function createDetail(skill, skills, labels) {
 
 export function derivePackageWorkspaceState({
   packageId,
+  packageInfo = null,
   skills = [],
   query = "",
   filters,
@@ -184,7 +195,7 @@ export function derivePackageWorkspaceState({
     visibleSkills.find((skill) => skill.id === selectedSkillId) ??
     visibleSkills[0] ??
     null;
-  const selectedDetail = createDetail(selectedSkill, skills, labels);
+  const selectedDetail = createDetail(selectedSkill, skills, labels, packageInfo);
 
   return {
     packageId,
