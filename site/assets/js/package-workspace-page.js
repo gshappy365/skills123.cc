@@ -40,6 +40,10 @@ app.innerHTML = `
       <div class="workspace-section-head directory-head">
         <span>02</span>
         <div><small>CATALOGUE</small><h2 id="directory-title">技能目录</h2></div>
+        <div class="view-toggle" role="group" aria-label="切换技能目录视图">
+          <button type="button" id="view-directory" aria-pressed="true">目录</button>
+          <button type="button" id="view-graph" aria-pressed="false">关系图</button>
+        </div>
         <p><strong id="visible-count">0</strong> / <span id="directory-total">0</span></p>
       </div>
       <ol class="skill-list" id="skill-list"></ol>
@@ -48,6 +52,7 @@ app.innerHTML = `
         <p>清除搜索词或减少筛选条件后再试。</p>
         <button type="button" id="clear-filters">清除筛选</button>
       </div>
+      <div class="skill-graph" id="skill-graph" hidden></div>
     </section>
 
     <button class="detail-backdrop" id="detail-backdrop" type="button" aria-label="关闭技能详情" tabindex="-1"></button>
@@ -65,4 +70,4 @@ app.innerHTML = `
     </div>
   </template>`;
 
-await import("./package-workspace.js?v=20261102-1");
+await import("./package-workspace.js?v=20261106-1");

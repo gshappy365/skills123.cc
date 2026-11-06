@@ -22,6 +22,7 @@ export function getPackageWorkspaceNavigationFromUrl(url) {
       lifecycles: uniqueStrings(params.getAll("lifecycle")),
     },
     selectedSkillId: params.get("skill"),
+    view: params.get("view") === "graph" ? "graph" : "directory",
     directoryPosition:
       Number.isFinite(directoryPosition) && directoryPosition > 0
         ? directoryPosition
@@ -43,6 +44,11 @@ export function createPackageWorkspaceUrl(url, navigation = {}) {
     nextUrl.searchParams.set("skill", navigation.selectedSkillId);
   } else {
     nextUrl.searchParams.delete("skill");
+  }
+  if (navigation.view === "graph") {
+    nextUrl.searchParams.set("view", "graph");
+  } else {
+    nextUrl.searchParams.delete("view");
   }
   if (query) nextUrl.searchParams.set("q", query);
   else nextUrl.searchParams.delete("q");
@@ -178,6 +184,7 @@ export function derivePackageWorkspaceState({
   query = "",
   filters,
   selectedSkillId = null,
+  view = "directory",
   reading = false,
   directoryPosition = 0,
   labels = {},
@@ -209,6 +216,7 @@ export function derivePackageWorkspaceState({
       query: String(query),
       filters: normalizedFilters,
       selectedSkillId: selectedSkill?.id ?? null,
+      view: view === "graph" ? "graph" : "directory",
       reading: Boolean(reading),
       directoryPosition:
         Number.isFinite(directoryPosition) && directoryPosition > 0
