@@ -3,14 +3,19 @@ import {
   createReadingUrl,
   derivePackageWorkspaceState,
   getPackageWorkspaceNavigationFromUrl,
-} from "./package-workspace-state.js";
-import { createPackageWorkspaceModel } from "./catalogue-model.js?v=20261102-1";
+} from "./package-workspace-state.js?v=20261106-1";
+import { createPackageWorkspaceModel } from "./catalogue-model.js?v=20261106-1";
+import {
+  createSkillRelationshipGraph,
+  skillRelationshipGraphSvg,
+} from "./skill-relationship-graph.js?v=20261106-1";
 const packageId = document.body.dataset.packageId;
 const workspaceInput = {
   packageId,
   query: "",
   filters: { groups: [], lifecycles: [] },
   selectedSkillId: null,
+  view: "directory",
   reading: false,
   directoryPosition: 0,
 };
@@ -40,6 +45,9 @@ const elements = {
   detailClose: document.querySelector("#detail-close"),
   detailBackdrop: document.querySelector("#detail-backdrop"),
   detailEmptyTemplate: document.querySelector("#detail-empty-template"),
+  viewDirectory: document.querySelector("#view-directory"),
+  viewGraph: document.querySelector("#view-graph"),
+  graph: document.querySelector("#skill-graph"),
 };
 function escapeHtml(value = "") {
   return String(value)
@@ -195,6 +203,26 @@ function renderDetail(state) {
       ${relationshipMarkup}${relatedMarkup || (!relationshipMarkup ? "<p>当前没有关联信息。</p>" : "")}
     </section>`;
 }
+function renderView(state) {
+  const graphView = state.navigation.view === "graph";
+  elements.viewDirectory.setAttribute("aria-pressed", String(!graphView));
+  elements.viewGraph.setAttribute("aria-pressed", String(graphView));
+  elements.list.hidden = graphView;
+  elements.graph.hidden = !graphView;
+  if (!graphView) {
+    elements.empty.hidden = state.visibleSkills.length > 0;
+    return;
+  }
+  elements.empty.hidden = true;
+  const graph = createSkillRelationshipGraph({
+    packageInfo: packageData,
+    skills,
+    labels,
+  });
+  elements.graph.innerHTML = skillRelationshipGraphSvg(graph, {
+    selectedSkillId: state.navigation.selectedSkillId,
+  });
+}
 function setDetailOpen(open) {
   detailOpen = open;
   elements.detail.classList.toggle("is-open", open);
@@ -235,6 +263,7 @@ function render({ syncUrl = false } = {}) {
   );
   renderList(state);
   renderDetail(state);
+  renderView(state);
   if (syncUrl) updateSelectedSkillUrl(state.navigation.selectedSkillId);
   return state;
 }
@@ -296,6 +325,19 @@ function bindEvents() {
     workspaceInput.filters = { groups: [], lifecycles: [] };
     elements.search.value = "";
     render({ syncUrl: true });
+  });
+  const setView = (view) => {
+    workspaceInput.view = view;
+    render({ syncUrl: true });
+  };
+  elements.viewDirectory.addEventListener("click", () => setView("directory"));
+  elements.viewGraph.addEventListener("click", () => setView("graph"));
+  elements.graph.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    const chip = event.target.closest("[data-skill-id]");
+    if (!chip) return;
+    event.preventDefault();
+    selectSkill(chip.dataset.skillId);
   });
   const closeDetail = () => {
     setDetailOpen(false);

@@ -178,7 +178,7 @@ button {
   line-height: 1.25;
 }
 .directory-head {
-  grid-template-columns: 28px 1fr auto;
+  grid-template-columns: 28px 1fr auto auto;
 }
 .directory-head p {
   margin: 0;
@@ -573,6 +573,150 @@ button {
 .detail-backdrop {
   display: none;
 }
+.view-toggle {
+  display: inline-flex;
+  gap: 2px;
+  align-self: center;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--paper);
+}
+.view-toggle button {
+  min-height: 26px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  cursor: pointer;
+}
+.view-toggle button[aria-pressed="true"] {
+  background: var(--blue);
+  color: #fff;
+  font-weight: 700;
+}
+.skill-graph {
+  padding: 16px 15px 20px;
+  overflow-x: auto;
+}
+.skill-graph[hidden] {
+  display: none !important;
+}
+.skill-graph-svg {
+  display: block;
+  min-width: 720px;
+  max-width: none;
+}
+.skill-graph-svg text {
+  font-family: inherit;
+}
+.skill-graph-band .band-rect {
+  fill: var(--workspace-alt);
+  opacity: 0.45;
+}
+.pack-spine,
+.band-link {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+.band-joint {
+  fill: var(--gold);
+}
+.skill-graph-pack .pack-rect {
+  fill: var(--blue);
+}
+.pack-eyebrow {
+  fill: rgb(255 255 255 / 62%);
+  font: 700 8px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+}
+.pack-name {
+  fill: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+.pack-count {
+  fill: rgb(255 255 255 / 78%);
+  font: 700 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.direction-rect {
+  fill: var(--surface);
+  stroke: var(--line);
+}
+.direction-label {
+  font-size: 11px;
+  font-weight: 700;
+}
+.direction-count {
+  fill: var(--muted);
+  font: 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.skill-graph-chip {
+  cursor: pointer;
+  outline: none;
+}
+.skill-graph-chip .chip-rect {
+  fill: var(--surface);
+  stroke: var(--line);
+  transition: stroke 120ms ease;
+}
+.chip-name {
+  font-size: 11px;
+  font-weight: 600;
+}
+.chip-command {
+  fill: var(--muted);
+  font: 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.skill-graph-chip:focus-visible .chip-rect {
+  stroke: var(--blue);
+  stroke-width: 2;
+}
+.skill-graph-chip:hover .chip-rect,
+.skill-graph-chip.is-selected .chip-rect {
+  stroke: var(--blue);
+  stroke-width: 1.5;
+}
+.skill-graph-chip.is-selected .chip-name {
+  fill: var(--blue);
+}
+.skill-graph-chip.invocation-user-only .chip-rect {
+  fill: var(--blue-soft);
+  stroke: transparent;
+}
+.skill-graph-chip.invocation-user-only .chip-name {
+  fill: var(--blue);
+}
+.chip-status.lifecycle-experimental {
+  fill: var(--gold);
+}
+.chip-status.lifecycle-repository-only {
+  fill: var(--surface);
+  stroke: var(--muted);
+}
+.legend-title {
+  fill: var(--gold);
+  font: 700 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.legend-swatch {
+  fill: var(--surface);
+  stroke: var(--line);
+}
+.legend-swatch.invocation-user-only {
+  fill: var(--blue-soft);
+  stroke: transparent;
+}
+.legend-swatch.lifecycle-experimental,
+.legend-swatch.lifecycle-repository-only {
+  stroke-dasharray: 3 2;
+}
+.legend-label {
+  fill: var(--muted);
+  font-size: 10px;
+}
 @media (max-width: 900px) {
   .package-install-banner {
     flex-direction: column;
@@ -686,6 +830,15 @@ button {
   .skill-status {
     grid-column: 3;
     grid-row: 1;
+  }
+  .directory-head {
+    grid-template-columns: 28px 1fr auto;
+    row-gap: 8px;
+  }
+  .view-toggle {
+    grid-column: 2 / -1;
+    grid-row: 2;
+    justify-self: start;
   }
   .workspace-detail {
     top: auto;

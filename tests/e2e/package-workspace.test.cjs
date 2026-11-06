@@ -348,3 +348,52 @@ test("Addy Osmani package shows all 25 skills", async () => {
  assert.equal(await page.locator(".workspace-detail h2").innerText(),"test-driven-development");
  await page.close();
 });
+
+test("relationship graph maps the whole package and opens skill details", async () => {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.goto(`${baseUrl}/packages/waza/`, { waitUntil: "networkidle" });
+  assert.equal(await page.locator(".skill-row").count(), 8);
+  assert.equal(await page.locator("#skill-graph").isHidden(), true);
+  await page.getByRole("button", { name: "关系图" }).click();
+  assert.equal(await page.locator("#skill-graph").isVisible(), true);
+  assert.equal(await page.locator(".skill-graph-chip").count(), 8);
+  assert.equal(new URL(page.url()).searchParams.get("view"), "graph");
+  assert.equal(await page.locator(".skill-graph-direction").count(), 4);
+  await page.locator('.skill-graph-chip[data-skill-id="check"]').click();
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "Check");
+  assert.equal(new URL(page.url()).searchParams.get("skill"), "check");
+  assert.equal(await page.locator(".skill-graph-chip.is-selected").count(), 1);
+  await page.locator('.skill-graph-chip[data-skill-id="ui"]').focus();
+  await page.keyboard.press("Enter");
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "UI");
+  assert.equal(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+    ),
+    false
+  );
+  await page.getByRole("button", { name: "目录", exact: true }).click();
+  assert.equal(await page.locator("#skill-graph").isHidden(), true);
+  assert.equal(await page.locator(".skill-row").count(), 8);
+  assert.equal(new URL(page.url()).searchParams.get("view"), null);
+  await page.close();
+});
+test("a direct graph URL opens the relationship map with the requested selection", async () => {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.goto(`${baseUrl}/packages/development/?view=graph&skill=prototype`, {
+    waitUntil: "networkidle",
+  });
+  assert.equal(await page.locator("#skill-graph").isVisible(), true);
+  assert.equal(await page.locator(".skill-graph-chip").count(), 37);
+  assert.equal(await page.locator(".skill-graph-chip.is-selected").count(), 1);
+  assert.match(
+    await page.locator(".skill-graph-chip.is-selected").getAttribute("class"),
+    /is-selected/
+  );
+  assert.equal(await page.locator(".workspace-detail h2").innerText(), "prototype");
+  const horizontalOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > document.documentElement.clientWidth
+  );
+  assert.equal(horizontalOverflow, false);
+  await page.close();
+});
