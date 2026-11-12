@@ -35,7 +35,8 @@
         "name": "mattpocock/skills",
         "url": "https://github.com/mattpocock/skills",
         "version": "1.3.1",
-        "commit": "24fe0ef7737efae15c87225755e9f6f5965e4888"
+        "commit": "24fe0ef7737efae15c87225755e9f6f5965e4888",
+        "syncedAt": "2026-10-05"
       },
       "groups": [
         "软件工程",
@@ -86,7 +87,8 @@
         "url": "https://github.com/cursor/plugins/tree/4e5b1cf2ccb0ea3716f08c8ee0a5856b5ab93536/pstack",
         "version": "0.15.10",
         "type": "plugin",
-        "commit": "4e5b1cf2ccb0ea3716f08c8ee0a5856b5ab93536"
+        "commit": "4e5b1cf2ccb0ea3716f08c8ee0a5856b5ab93536",
+        "syncedAt": "2026-10-05"
       },
       "groups": [
         "工作流与协作",
@@ -135,7 +137,8 @@
       "source": {
         "name": "addyosmani/agent-skills",
         "url": "https://github.com/addyosmani/agent-skills",
-        "commit": "aeac41d4d005999432bb7312f7ff06383a91d59d"
+        "commit": "aeac41d4d005999432bb7312f7ff06383a91d59d",
+        "syncedAt": "2026-10-28"
       },
       "groups": [
         "软件工程"
@@ -211,7 +214,8 @@
       "source": {
         "name": "KnockOutEZ/wigolo",
         "url": "https://github.com/KnockOutEZ/wigolo",
-        "commit": "56da0c80d52bba51cc428545f468ec0dbd6651c3"
+        "commit": "56da0c80d52bba51cc428545f468ec0dbd6651c3",
+        "syncedAt": "2026-07-31"
       },
       "groups": [
         "网页情报",
@@ -254,7 +258,8 @@
       "source": {
         "name": "mvanhorn/last30days-skill",
         "url": "https://github.com/mvanhorn/last30days-skill",
-        "commit": "a22c8e7576c2c69885b895002cc15968cd4cb25a"
+        "commit": "a22c8e7576c2c69885b895002cc15968cd4cb25a",
+        "syncedAt": "2026-07-31"
       },
       "groups": [
         "多源研究"
@@ -326,7 +331,8 @@
       "source": {
         "name": "tw93/Waza",
         "url": "https://github.com/tw93/Waza",
-        "commit": "9c97ccb6d96e776bf814e27498d0afc0ed3d1e94"
+        "commit": "9c97ccb6d96e776bf814e27498d0afc0ed3d1e94",
+        "syncedAt": "2026-07-31"
       },
       "groups": [
         "工程质量",
