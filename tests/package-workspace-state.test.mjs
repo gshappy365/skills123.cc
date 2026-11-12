@@ -132,6 +132,7 @@ test("empty results and navigation state remain explicit", async () => {
     query: "no-such-skill-123",
     filters: { groups: ["engineering"], lifecycles: [] },
     selectedSkillId: null,
+    view: "directory",
     reading: true,
     directoryPosition: 620,
   });
@@ -156,6 +157,7 @@ test("reading URLs round-trip the complete package workspace state", () => {
     query: "证据验证",
     filters: { groups: ["industry-research"], lifecycles: ["published"] },
     selectedSkillId: "serenity-skill",
+    view: "directory",
     directoryPosition: 486,
   };
   const readingUrl = createReadingUrl(
@@ -180,7 +182,47 @@ test("a direct reading URL has empty state for a deterministic package fallback"
       query: "",
       filters: { groups: [], lifecycles: [] },
       selectedSkillId: null,
+      view: "directory",
       directoryPosition: 0,
     }
   );
+});
+test("graph view state round-trips through workspace URLs and stays out of directory URLs", () => {
+  const graphUrl = createPackageWorkspaceUrl(
+    "https://skills123.cc/packages/waza/",
+    { view: "graph", selectedSkillId: "check" }
+  );
+  assert.equal(
+    graphUrl,
+    "https://skills123.cc/packages/waza/?skill=check&view=graph"
+  );
+  assert.deepEqual(getPackageWorkspaceNavigationFromUrl(graphUrl), {
+    query: "",
+    filters: { groups: [], lifecycles: [] },
+    selectedSkillId: "check",
+    view: "graph",
+    directoryPosition: 0,
+  });
+  const directoryUrl = createPackageWorkspaceUrl(graphUrl, { view: "directory" });
+  assert.equal(directoryUrl, "https://skills123.cc/packages/waza/");
+  assert.equal(
+    getPackageWorkspaceNavigationFromUrl(
+      "https://skills123.cc/packages/waza/?view=timeline"
+    ).view,
+    "directory"
+  );
+});
+test("derivePackageWorkspaceState carries the requested view into navigation", async () => {
+  const skills = await loadSkills();
+  const graphState = derivePackageWorkspaceState({
+    packageId: "development",
+    skills,
+    view: "graph",
+  });
+  assert.equal(graphState.navigation.view, "graph");
+  const directoryState = derivePackageWorkspaceState({
+    packageId: "development",
+    skills,
+  });
+  assert.equal(directoryState.navigation.view, "directory");
 });
