@@ -35,5 +35,22 @@
     "topicCount": 6,
     "href": "/guides/dsh-superagent/",
     "tags": ["dsh-superagent", "DeepSeek", "AI 编程", "GitHub", "智能体"]
+  },
+  {
+    "id": "rea-handbook",
+    "name": "REA 新手教程",
+    "description": "让 AI 助手看懂别人的软件：从安装、选分析引擎到读懂证据与重建的中文入门教程。",
+    "label": "入门与实践",
+    "articleCount": 54,
+    "topicCount": 6,
+    "href": "/guides/rea-handbook/",
+    "tags": [
+      "REA",
+      "逆向工程",
+      "MCP",
+      "AI 助手",
+      "二进制分析",
+      "Electron"
+    ]
   }
 ]

@@ -1,0 +1,200 @@
+---
+// 首页：先讲清它是什么、值不值得学，再把人分流到「新手三课」和「完整教程」。
+import Site from "../layouts/Site.astro";
+import { BRAND, TAGLINE, navGroups, articleCount } from "../data/nav.js";
+import { href, groupItems } from "../lib/content.js";
+
+const lessons = groupItems("start").filter((p) => p.href !== "/start");
+const headings = [
+  { id: "tu-pain", text: "你是不是也卡在这里", depth: 2 },
+  { id: "tu-diff", text: "和另外两条路比", depth: 2 },
+  { id: "tu-flow", text: "一次调查怎么走", depth: 2 },
+  { id: "tu-lessons", text: "新手只要三课", depth: 2 },
+  { id: "tu-paths", text: "两条路，自己选", depth: 2 },
+  { id: "tu-fit", text: "适不适合你", depth: 2 },
+  { id: "tu-inside", text: "站里有什么", depth: 2 },
+];
+
+const PAIN = [
+  { t: "问 AI「这个功能怎么做的」，它编了一段", d: "说得特别顺，一个具体的函数名都拿不出来。" },
+  { t: "装了反汇编器，打开一看全是汇编", d: "能看懂几行，但不知道从哪儿下手。" },
+  { t: "查了一下午，第二天全忘了", d: "没有记录，同一个坑又踩一遍。" },
+  { t: "结论拿给同事，被问「依据呢」", d: "说不出是哪一步看到的，只能回一句「应该是」。" },
+];
+
+const DIFF = [
+  ["有没有真的看过这个程序", "没有，靠训练记忆猜", "看过，但要你自己翻", "看过，还把结论整理好了"],
+  ["结论有没有出处", "常常没有", "有，靠你自己记", "每条带证据编号和覆盖范围"],
+  ["不懂汇编能不能用", "能，但可能被编", "不能", "能：伪代码和模块图都能读"],
+  ["一次调查能不能接着上次", "不能", "能，手工记录", "能，会话内有一本账"],
+  ["会不会记下「不知道」", "不会", "要你自己判断", "会，明确记成未知项"],
+  ["要不要装引擎", "不用", "必须", "只有原生二进制才要"],
+];
+
+const FLOW = [
+  { n: "1", t: "你说一句", d: "「看看它的搜索怎么做的」" },
+  { n: "2", t: "模型选工具", d: "按工作流说明挑：先打开，再搜" },
+  { n: "3", t: "REA 打开目标", d: "选引擎，导入，就绪" },
+  { n: "4", t: "引擎分析", d: "Ghidra / Hopper / 自带解析器" },
+  { n: "5", t: "归一成证据", d: "编号、覆盖、限制，写进账本" },
+  { n: "6", t: "你决定信不信", d: "看证据，不看语气" },
+];
+
+const CAT_ORDER = ["start", "guide", "howto", "wiki", "faq", "reference"];
+const inside = CAT_ORDER.map((id) => navGroups.find((g) => g.id === id)).filter(Boolean);
+---
+
+<Site title={BRAND} description={TAGLINE} headings={headings} activeHref="/">
+  <div class="tu-home">
+    <section class="tu-hero">
+      <p class="tu-hero__eyebrow">非官方中文教程 · 核对到 rea 6.7.0 · {articleCount} 篇</p>
+      <h1>看到一个功能，<br />想知道它是怎么做的？</h1>
+      <p class="tu-hero__lead">
+        <strong>REA</strong> 是一个给 AI 助手用的 MCP 服务器：你说一句「查查它的导出是怎么做的」，
+        它自己去打开那个应用、翻字符串、追调用链、反编译关键函数，然后把结论连同<strong>证据</strong>交给你。
+        不用会汇编，也不用先装一堆逆向工具。
+      </p>
+      <div class="tu-hero__cta">
+        <a class="tu-btn" href={href("/start/1-what")}>新手三课，20 分钟 <i data-xxd-icon="ArrowRight" data-size="16"></i></a>
+        <a class="tu-btn tu-btn--ghost" href={href("/guide/0-what")}>我会动手，看完整教程</a>
+        <a class="tu-btn tu-btn--plain" href={href("/reference/fit")}>先判断适不适合我</a>
+      </div>
+      <p class="tu-hero__note">本站不是官方文档。命令与行为以 <a href="https://github.com/morluto/rea">官方仓库</a> 为准。</p>
+    </section>
+
+    <div class="tu-note tu-note--warn tu-home__warn">
+      <strong>先说清楚三件事</strong>
+      <p>它给你的是<strong>证据和方向，不是成品源码</strong>；原生二进制<strong>要另装引擎</strong>（JavaScript 和 .NET 不用）；只拿它分析<strong>你有权分析的目标</strong>——自己的、授权的、开源的。</p>
+    </div>
+
+    <section class="tu-section">
+      <h2 id="tu-pain">你是不是也卡在这里</h2>
+      <ul class="tu-pains">
+        {PAIN.map((p) => (
+          <li><strong>{p.t}</strong><span>{p.d}</span></li>
+        ))}
+      </ul>
+      <p class="tu-section__lead">问题通常不在聪明程度，而在<mark>有没有真的打开那个程序</mark>，以及<mark>说不说得清依据</mark>。REA 解决的正是这两件事。</p>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-diff">和另外两条路比</h2>
+      <div class="tu-table-wrap">
+        <table class="tu-table">
+          <thead><tr><th>什么时候</th><th>直接问 AI</th><th>只给你一个反汇编器</th><th>REA</th></tr></thead>
+          <tbody>
+            {DIFF.map(([a, b, c, d]) => (
+              <tr><th>{a}</th><td>{b}</td><td>{c}</td><td class="tu-table__hi">{d}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-flow">一次调查怎么走</h2>
+      <ol class="tu-flow">
+        {FLOW.map((f) => (
+          <li><span class="tu-flow__n">{f.n}</span><strong>{f.t}</strong><span>{f.d}</span></li>
+        ))}
+      </ol>
+      <p class="tu-section__lead">完整链路（含每一层出错时是什么样子）在 <a href={href("/reference/flow")}>概念全景图</a>。</p>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-lessons">新手只要三课</h2>
+      <p class="tu-section__lead">不会写代码也能顺着走完。每课都写了「你应该看到什么」，不对也有地方查。</p>
+      <div class="tu-lessons">
+        {lessons.map((l) => (
+          <a class="tu-lesson" href={href(l.href)}>
+            <span class="tu-lesson__n">{l.nav_order}</span>
+            <span class="tu-lesson__body">
+              <strong>{l.title}</strong>
+              <span>{l.description}</span>
+            </span>
+            <span class="tu-lesson__min">{l.reading_minutes} 分钟 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-paths">两条路，自己选</h2>
+      <div class="tu-paths">
+        <a class="tu-path" href={href("/start")}>
+          <span class="tu-path__k">没写过代码</span>
+          <strong>从这里开始</strong>
+          <span>三课 20 分钟：它能帮你什么 → 装上它 → 第一次调查。只记一句话：<em>要查什么 · 什么算查清 · 给我看什么</em>。</span>
+          <span class="tu-path__go">进入新手入门 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+        </a>
+        <a class="tu-path" href={href("/guide")}>
+          <span class="tu-path__k">会动手</span>
+          <strong>看完整教程</strong>
+          <span>九步：架构 → 环境 → 安装 → 引擎 → 完整案子 → 证据 → 工具 → 命令行 → 重建 → 维护。</span>
+          <span class="tu-path__go">进入完整教程 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-fit">适不适合你</h2>
+      <div class="tu-fit">
+        <div class="tu-fit__card tu-fit__card--yes">
+          <strong>适合</strong>
+          <ul>
+            <li>想「看懂」一个功能，不是「拿到源码」</li>
+            <li>目标是装在自己机器上的应用，或自己的产物</li>
+            <li>已经有 AI 客户端，愿意多装一个 MCP 服务器</li>
+            <li>能接受慢一点、贵一点，换结论有出处</li>
+            <li>要给自己的发布做检查（source map、符号、凭证）</li>
+          </ul>
+        </div>
+        <div class="tu-fit__card tu-fit__card--no">
+          <strong>先别用</strong>
+          <ul>
+            <li>想要一键出源码</li>
+            <li>目标是加壳、强混淆、服务端逻辑</li>
+            <li>只想改自己项目里的 bug</li>
+            <li>机器上连 Node 都装不了</li>
+          </ul>
+        </div>
+      </div>
+      <p class="tu-section__lead">拿不准就看 <a href={href("/reference/fit")}>适不适合你</a>，两分钟有结论。</p>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-inside">站里有什么</h2>
+      <div class="tu-cats">
+        {inside.map((g) => (
+          <a class="tu-cat" href={g.href}>
+            <span class="tu-cat__top"><i data-xxd-icon={g.icon} data-size="20"></i><span>{g.count} 页</span></span>
+            <strong>{g.short}</strong>
+            <span class="tu-cat__sum">{g.sum}</span>
+            <span class="tu-cat__go">进入 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2>现在就试一句话</h2>
+      <p class="tu-section__lead">装好之后，把下面这段发给你的 AI 助手。尖括号换成你自己的内容。</p>
+      <div class="tu-codewrap">
+        <pre><code>用 rea 查一下 &lt;这个应用&gt; 里 &lt;某个功能&gt; 是怎么实现的。
+
+查清的标准：能说清它从点击到出结果经过哪几个模块，每一步有证据。
+给我看：关键函数的伪代码或源码片段、主进程和渲染进程各自负责什么、
+以及你没能查清的部分。</code></pre>
+      </div>
+      <p class="tu-section__lead">更多场景在 <a href={href("/howto/")}>How-to 实操</a>，每个都能直接照抄。</p>
+    </section>
+
+    <footer class="tu-home__foot">
+      <p>
+        非官方中文教程。内容依据官方仓库的 <code>README.md</code>、<code>docs/getting-started/</code> 与
+        <code>docs/reference/mcp-contracts.md</code>，并在本机 rea 6.7.0 上核对过命令与输出。
+        信息架构参考自公开的 xxd-pstack 教程方法。详见 <a href={href("/reference/about")}>关于与致谢</a>。
+      </p>
+    </footer>
+  </div>
+</Site>
