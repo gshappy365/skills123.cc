@@ -1,0 +1,102 @@
+---
+// 首页：讲清这是什么站、内容来自哪，再把人分流到六个栏目。
+import Site from "../layouts/Site.astro";
+import { BRAND, TAGLINE, navGroups, articleCount, REPO } from "../data/nav.js";
+import { href } from "../lib/content.js";
+
+const headings = [
+  { id: "tu-paths", text: "按问题找入口", depth: 2 },
+  { id: "tu-routes", text: "四条系统路线", depth: 2 },
+  { id: "tu-inside", text: "站里有什么", depth: 2 },
+];
+
+// 原站 /learn 的「四个问题」入口，换成对应的本站路径
+const PATHS = [
+  { k: "刚接触", q: "AI 编码到底是怎么回事？", href: "/map/llm-fundamentals", d: "从 LLM、token、工具调用讲起的底层概念路线，零基础可读。" },
+  { k: "想上手", q: "怎么把 AI 编码真正用起来？", href: "/map/ai-engineer-roadmap", d: "AI 工程师路线图：能力项、顺序、每一步用什么资源练。" },
+  { k: "要效率", q: "有哪些能直接装的技能？", href: "/skills", d: "31 个技能：/grill-me 拷问方案、/tdd 测试驱动、/code-review 评审……" },
+  { k: "查概念", q: "这个词到底是什么意思？", href: "/dictionary", d: "70+ 词条一句话讲清：harness、compaction、progressive disclosure……" },
+];
+
+const ROUTES = [
+  { t: "LLM Fundamentals", href: "/map/llm-fundamentals", d: "模型、token、采样、工具调用的底层逻辑。", n: 6 },
+  { t: "AI Engineer Roadmap", href: "/map/ai-engineer-roadmap", d: "从使用者到 AI 工程师的能力地图。", n: 8 },
+  { t: "MCP 教程", href: "/map/model-context-protocol-tutorial", d: "把外部工具接进 Agent 的标准协议。", n: 9 },
+  { t: "Vercel AI SDK 教程", href: "/map/vercel-ai-sdk-tutorial", d: "TypeScript 应用接模型的完整教程。", n: 18 },
+].map((r) => ({ ...r, n: (navGroups.find((g) => g.id === "map")?.items || []).length ? r.n : r.n }));
+
+const CAT_ORDER = ["map", "articles", "skills", "dictionary", "sandcastle", "workshops"];
+const inside = CAT_ORDER.map((id) => navGroups.find((g) => g.id === id)).filter(Boolean);
+---
+
+<Site title={BRAND} description={TAGLINE} headings={headings} activeHref="/">
+  <div class="tu-home">
+    <section class="tu-hero">
+      <p class="tu-hero__eyebrow">非官方中文导读存档 · 内容来自 aihero.dev · {articleCount} 篇</p>
+      <h1>把 AI Hero 全站，<br />装进一个可检索的中文入口</h1>
+      <p class="tu-hero__lead">
+        <strong>AI Hero</strong> 是 Matt Pocock 写给 AI 工程师的学习站：一张按问题组织的地图、
+        一套可安装的编码技能、一部 AI 编码词典。本站保留它的全部公开内容与栏目结构，
+        原文一字未改，站内链接已接到本站对应页面——检索、跳转都在这里完成。
+      </p>
+      <div class="tu-hero__cta">
+        <a class="tu-btn" href={href("/map/learn")}>从学习地图开始 <i data-xxd-icon="ArrowRight" data-size="16"></i></a>
+        <a class="tu-btn tu-btn--ghost" href={href("/dictionary")}>直接查词典</a>
+        <a class="tu-btn tu-btn--plain" href={REPO} target="_blank" rel="noreferrer">去原站订阅支持作者</a>
+      </div>
+      <p class="tu-hero__note">本站为非商业学习存档，内容版权归原作者；快照生成于 2026-11-14，最新内容以 <a href={REPO} target="_blank" rel="noreferrer">原站</a> 为准。</p>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-paths">按问题找入口</h2>
+      <p class="tu-section__lead">原站 /learn 把所有内容按「你现在的问题」组织成路径。四个最常见的问题，入口在这里：</p>
+      <div class="tu-paths">
+        {PATHS.map((p) => (
+          <a class="tu-path" href={href(p.href)}>
+            <span class="tu-path__k">{p.k}</span>
+            <strong>{p.q}</strong>
+            <span>{p.d}</span>
+            <span class="tu-path__go">进入 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-routes">四条系统路线</h2>
+      <p class="tu-section__lead">想成体系地学，按顺序走。每条路线是一篇带目录的长教程。</p>
+      <ol class="tu-flow">
+        <li><span class="tu-flow__n">1</span><strong><a href={href("/map/llm-fundamentals")}>LLM Fundamentals</a></strong><span>模型、token、采样、工具调用的底层逻辑</span></li>
+        <li><span class="tu-flow__n">2</span><strong><a href={href("/map/ai-engineer-roadmap")}>AI Engineer Roadmap</a></strong><span>从使用者到 AI 工程师的能力地图</span></li>
+        <li><span class="tu-flow__n">3</span><strong><a href={href("/map/model-context-protocol-tutorial")}>MCP 教程</a></strong><span>把外部工具接进 Agent 的标准协议</span></li>
+        <li><span class="tu-flow__n">4</span><strong><a href={href("/map/vercel-ai-sdk-tutorial")}>Vercel AI SDK 教程</a></strong><span>用 TypeScript 给应用接模型</span></li>
+      </ol>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-inside">站里有什么</h2>
+      <div class="tu-cats">
+        {inside.map((g) => (
+          <a class="tu-cat" href={g.href}>
+            <span class="tu-cat__top"><i data-xxd-icon={g.icon} data-size="20"></i><span>{g.count} 页</span></span>
+            <strong>{g.short}</strong>
+            <span class="tu-cat__sum">{g.sum}</span>
+            <span class="tu-cat__go">进入 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <div class="tu-note tu-note--amber tu-home__warn">
+      <strong>版权与用途</strong>
+      <p>本站是 <strong>非商业的个人学习存档</strong>：全部英文内容版权归 <a href={REPO} target="_blank" rel="noreferrer">Matt Pocock / AI Hero</a> 所有，本站不做翻译、不改写正文，只做栏目整理与站内链接改写。觉得有用请去原站订阅。详见 <a href={href("/map/about")}>关于与版权说明</a>。</p>
+    </div>
+
+    <footer class="tu-home__foot">
+      <p>
+        非官方导读存档。内容抓取自 <a href={REPO} target="_blank" rel="noreferrer">aihero.dev</a>（2026-11-14 快照），
+        信息架构参考自公开的 xxd-pstack 教程方法。详见 <a href={href("/map/about")}>关于与版权说明</a>。
+      </p>
+    </footer>
+  </div>
+</Site>
