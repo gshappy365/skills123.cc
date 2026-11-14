@@ -2,10 +2,10 @@
   {
     "id": "shopify-handbook",
     "name": "Shopify 独立站手册",
-    "description": "从开店基础、增长运营到 Liquid 主题开发的 Shopify 中文实践手册。",
+    "description": "从注册开店、商品收款到 Liquid 主题开发的 203 篇中文实战教程。",
     "label": "整理与归档",
-    "articleCount": 157,
-    "topicCount": 4,
+    "articleCount": 202,
+    "topicCount": 5,
     "href": "/guides/shopify-handbook/",
     "tags": [
       "Shopify",
