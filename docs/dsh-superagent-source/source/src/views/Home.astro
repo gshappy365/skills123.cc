@@ -1,0 +1,196 @@
+---
+// 首页：先讲清它是什么、值不值得学，再把人分流到「新手三课」和「完整教程」。
+import Site from "../layouts/Site.astro";
+import { BRAND, TAGLINE, navGroups, articleCount } from "../data/nav.js";
+import { href, groupItems } from "../lib/content.js";
+
+const lessons = groupItems("start").filter((p) => p.href !== "/start");
+const headings = [
+  { id: "tu-pain", text: "你是不是也卡在这里", depth: 2 },
+  { id: "tu-diff", text: "装上以后有什么不一样", depth: 2 },
+  { id: "tu-flow", text: "它怎么干活", depth: 2 },
+  { id: "tu-lessons", text: "新手只要三课", depth: 2 },
+  { id: "tu-paths", text: "两条路，自己选", depth: 2 },
+  { id: "tu-fit", text: "适不适合你", depth: 2 },
+  { id: "tu-inside", text: "站里有什么", depth: 2 },
+];
+
+const PAIN = [
+  { t: "「改好了，应该没问题了」", d: "你一跑还是坏的。来回五轮，一个下午没了。" },
+  { t: "只想改一个按钮，它动了十几个文件", d: "范围没有边界，审起来比自己写还累。" },
+  { t: "新开一个对话，昨天说过的全忘了", d: "同一件事被反复解释，跟进靠人肉记。" },
+  { t: "AI 一活跃，全组都被 @ 醒", d: "能替团队干活的助手，也能浪费团队的注意力。" },
+];
+
+const DIFF = [
+  ["它什么时候在", "你打开窗口时在", "一直在：盯着仓库和群，事件来了才动"],
+  ["谁可以让它干活", "谁都能问，问什么都答", "只有名单里的人、或团队写下的规则允许时"],
+  ["一件事的记忆", "这次对话结束就没了", "从被提出到 PR 合并，一条线程上的讨论都跟得上"],
+  ["怎么算做完", "说一句「已完成」", "按影响停止：能评审才交，要决策就停下来问"],
+  ["会打扰谁", "每条回答都推给你", "只在有人必须行动或能用上结果时说话"],
+  ["谁合并", "—", "人。默认不自动合并，合并是最后一道口子"],
+];
+
+const FLOW = [
+  { n: "1", t: "有人 @ 它", d: "在 Issue、评论或群里说清要什么" },
+  { n: "2", t: "变成一条触发", d: "不可变，重复到达也只算一次" },
+  { n: "3", t: "评估", d: "先看名单和规则，再判断这件事值不值得接" },
+  { n: "4", t: "开工单", d: "授权、订阅、派工、确认，一次原子完成" },
+  { n: "5", t: "自己干", d: "独立会话与目录，改代码、跑检查、开 PR" },
+  { n: "6", t: "回到原对话", d: "一个结果，或一个具体问题；你审、你合并" },
+];
+
+const CAT_ORDER = ["start", "guide", "howto", "wiki", "faq", "reference"];
+const inside = CAT_ORDER.map((id) => navGroups.find((g) => g.id === id)).filter(Boolean);
+---
+
+<Site title={BRAND} description={TAGLINE} headings={headings} activeHref="/">
+  <div class="tu-home">
+    <section class="tu-hero">
+      <p class="tu-hero__eyebrow">研究原型 · 非官方中文教程 · {articleCount} 篇</p>
+      <h1>让 AI 替团队干活，<br />但不占用团队的注意力</h1>
+      <p class="tu-hero__lead">
+        <strong>dsh-superagent</strong> 是一份打包给 DeepSeek Harness 的插件：它盯着一个 GitHub 仓库（可选飞书），
+        被允许的人 @ 它之后，它开一份工单、在自己的目录里干活、开 PR，然后回到原来那条对话里回你一句。
+        不主动刷存在感，也不自己合并。
+      </p>
+      <div class="tu-hero__cta">
+        <a class="tu-btn" href={href("/start/1-what")}>新手三课，20 分钟 <i data-xxd-icon="ArrowRight" data-size="16"></i></a>
+        <a class="tu-btn tu-btn--ghost" href={href("/guide/0-what")}>我会配置，看完整教程</a>
+        <a class="tu-btn tu-btn--plain" href={href("/reference/fit")}>先判断适不适合我</a>
+      </div>
+      <p class="tu-hero__note">本站不是官方文档。命令与行为以官方仓库为准。</p>
+    </section>
+
+    <div class="tu-note tu-note--warn tu-home__warn">
+      <strong>先说清楚三件事</strong>
+      <p>它是<strong>研究原型</strong>，仓库自己写着「不是 DeepSeek 官方产品、不是生产级软件」；它<strong>不是安全沙箱</strong>，执行器以你的系统用户身份运行；它<strong>更慢更费 token</strong>，小改动用它不划算。</p>
+    </div>
+
+    <section class="tu-section">
+      <h2 id="tu-pain">你是不是也卡在这里</h2>
+      <ul class="tu-pains">
+        {PAIN.map((p) => (
+          <li><strong>{p.t}</strong><span>{p.d}</span></li>
+        ))}
+      </ul>
+      <p class="tu-section__lead">问题通常不在模型不够聪明，而在<mark>做事没有章法、也没人管边界</mark>。这套东西解决的正是后半句。</p>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-diff">装上以后有什么不一样</h2>
+      <div class="tu-table-wrap">
+        <table class="tu-table">
+          <thead><tr><th>什么时候</th><th>普通 AI 助手</th><th>dsh-superagent</th></tr></thead>
+          <tbody>
+            {DIFF.map(([a, b, c]) => (
+              <tr><th>{a}</th><td>{b}</td><td class="tu-table__hi">{c}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-flow">它怎么干活</h2>
+      <ol class="tu-flow">
+        {FLOW.map((f) => (
+          <li><span class="tu-flow__n">{f.n}</span><strong>{f.t}</strong><span>{f.d}</span></li>
+        ))}
+      </ol>
+      <p class="tu-section__lead">完整链路（含领域模型、评估两层、授权与订阅的边界）在 <a href={href("/reference/flow")}>概念全景图</a>。</p>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-lessons">新手只要三课</h2>
+      <p class="tu-section__lead">不会写代码也能顺着走完。每课都写了「你应该看到什么」，不对也有地方查。</p>
+      <div class="tu-lessons">
+        {lessons.map((l) => (
+          <a class="tu-lesson" href={href(l.href)}>
+            <span class="tu-lesson__n">{l.nav_order}</span>
+            <span class="tu-lesson__body">
+              <strong>{l.title}</strong>
+              <span>{l.description}</span>
+            </span>
+            <span class="tu-lesson__min">{l.reading_minutes} 分钟 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-paths">两条路，自己选</h2>
+      <div class="tu-paths">
+        <a class="tu-path" href={href("/start")}>
+          <span class="tu-path__k">没写过代码</span>
+          <strong>从这里开始</strong>
+          <span>三课 20 分钟：它能帮你什么 → 装上它 → 第一次派活。只记一句话：<em>要什么 · 怎样算做完 · 给我看什么</em>。</span>
+          <span class="tu-path__go">进入新手入门 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+        </a>
+        <a class="tu-path" href={href("/guide")}>
+          <span class="tu-path__k">会写代码</span>
+          <strong>看完整教程</strong>
+          <span>九步：边界与原则 → 环境 → 安装 → 授权 → 第一个任务 → 面板 → 工单生命周期 → 审阅合并 → 升级扩展。</span>
+          <span class="tu-path__go">进入完整教程 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-fit">适不适合你</h2>
+      <div class="tu-fit">
+        <div class="tu-fit__card tu-fit__card--yes">
+          <strong>适合</strong>
+          <ul>
+            <li>多人协作的 GitHub 仓库，事情在 Issue / PR 里讨论</li>
+            <li>有人愿意审它交出来的东西</li>
+            <li>有能长期跑的机器 + 配好模型的 DSH</li>
+            <li>想省的是「反复解释、来回追问、忘了跟进」</li>
+          </ul>
+        </div>
+        <div class="tu-fit__card tu-fit__card--no">
+          <strong>先别用</strong>
+          <ul>
+            <li>只有你一个人、只改本地项目</li>
+            <li>想要开箱即用的 SaaS 产品</li>
+            <li>用 GitHub Enterprise Server（不支持）</li>
+            <li>想让它无人值守地刷 PR</li>
+          </ul>
+        </div>
+      </div>
+      <p class="tu-section__lead">拿不准就看 <a href={href("/reference/fit")}>适不适合你</a>，两分钟有结论。</p>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-inside">站里有什么</h2>
+      <div class="tu-cats">
+        {inside.map((g) => (
+          <a class="tu-cat" href={g.href}>
+            <span class="tu-cat__top"><i data-xxd-icon={g.icon} data-size="20"></i><span>{g.count} 页</span></span>
+            <strong>{g.short}</strong>
+            <span class="tu-cat__sum">{g.sum}</span>
+            <span class="tu-cat__go">进入 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2>现在就试一句话</h2>
+      <p class="tu-section__lead">装好之后，把下面这段发成一条新的评论（不要编辑已有正文）。尖括号换成你自己的内容。</p>
+      <div class="tu-codewrap">
+        <pre><code>@&lt;agent login&gt; 请修复 &lt;页面&gt; 在 &lt;条件&gt; 下的 &lt;现象&gt;，补一条回归测试。
+做完的标准：&lt;能判断过或不过的条件&gt;，现有测试全绿。
+做完请给我：改动前后对比、测试命令输出、改动文件清单。</code></pre>
+      </div>
+      <p class="tu-section__lead">更多场景在 <a href={href("/howto/recipes")}>照抄就能用的请求模板</a>。</p>
+    </section>
+
+    <footer class="tu-home__foot">
+      <p>
+        非官方中文教程。内容依据官方仓库的 <code>README.md</code>、<code>SETUP.md</code> 与 <code>docs/000</code>–<code>008</code>，
+        信息架构参考自公开的 xxd-pstack 教程方法。详见 <a href={href("/reference/about")}>关于与致谢</a>。
+      </p>
+    </footer>
+  </div>
+</Site>

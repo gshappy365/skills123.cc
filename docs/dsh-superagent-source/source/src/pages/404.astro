@@ -1,0 +1,15 @@
+---
+import Site from "../layouts/Site.astro";
+import { href } from "../lib/content.js";
+---
+<Site title="页面不存在" description="没有找到这个页面">
+  <div class="tu-404">
+    <p class="tu-404__code">404</p>
+    <h1>没有找到这个页面</h1>
+    <p>链接可能已经调整。可以从首页或栏目页进入，也可以按 ⌘K 搜索全部教程。</p>
+    <div class="tu-hero__cta">
+      <a class="tu-btn" href="/">回到首页</a>
+      <a class="tu-btn tu-btn--ghost" href={href("/start")}>从新手三课开始</a>
+    </div>
+  </div>
+</Site>
