@@ -90,11 +90,31 @@ test("PStack package loads its Cursor plugin details and all 51 skills", async (
     "产品与界面",
   ]);
   assert.equal(await page.locator(".package-install-row code").innerText(), "/add-plugin pstack");
+  assert.equal(await page.getByRole("link", { name: "PStack 新手教程" }).getAttribute("href"), "/guides/pstack/");
   await page.getByRole("button", { name: "质量与验证", exact: true }).click();
   assert.equal(await page.locator(".skill-row").count(), 8);
   await page.locator("#skill-search").fill("验证关键假设");
   assert.equal(await page.locator(".skill-row").count(), 1);
   assert.match(await page.locator(".skill-row.is-selected").innerText(), /blast-radius/);
+  await page.close();
+});
+test("PStack tutorial loads its subpath assets and navigates to a lesson", async () => {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
+  const failed = [];
+  page.on("response", (response) => {
+    if (response.url().startsWith(`${baseUrl}/guides/pstack/`) && response.status() >= 400) {
+      failed.push(`${response.status()} ${response.url()}`);
+    }
+  });
+  await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
+  await page.locator('#topic-guides a[href="/guides/pstack/"]').click();
+  await page.waitForLoadState("networkidle");
+  assert.equal(new URL(page.url()).pathname, "/guides/pstack/");
+  assert.ok(await page.locator('link[href*="/guides/pstack/xxd/xxd.css"]').count());
+  await page.locator('a[href="/guides/pstack/guide/0-what/"]').first().click();
+  await page.waitForLoadState("networkidle");
+  assert.equal(new URL(page.url()).pathname, "/guides/pstack/guide/0-what/");
+  assert.deepEqual(failed, []);
   await page.close();
 });
 test("grouped navigation searches owned skills and restores search on back", async () => {

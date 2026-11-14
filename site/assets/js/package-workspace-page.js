@@ -70,4 +70,4 @@ app.innerHTML = `
     </div>
   </template>`;
 
-await import("./package-workspace.js?v=20261106-1");
+await import("./package-workspace.js?v=20261114-1");
