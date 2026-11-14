@@ -25,5 +25,15 @@
     "topicCount": 1,
     "href": "/guides/pstack/",
     "tags": ["PStack", "AI 编程", "Cursor", "Codex", "工程技能"]
+  },
+  {
+    "id": "dsh-superagent",
+    "name": "dsh-superagent 新手教程",
+    "description": "从安装授权到任务、工单和审阅，学习使用主动式编码智能体。",
+    "label": "入门与实践",
+    "articleCount": 44,
+    "topicCount": 6,
+    "href": "/guides/dsh-superagent/",
+    "tags": ["dsh-superagent", "DeepSeek", "AI 编程", "GitHub", "智能体"]
   }
 ]

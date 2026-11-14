@@ -132,6 +132,66 @@ test("PStack tutorial mobile menu opens and closes", async () => {
   await page.close();
 });
 
+test("dsh tutorial supports discovery, subpath search and mobile navigation", async () => {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const errors = [];
+  const failed = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  page.on("response", (response) => {
+    if (response.url().startsWith(`${baseUrl}/guides/dsh-superagent/`) && response.status() >= 400) {
+      failed.push(`${response.status()} ${response.url()}`);
+    }
+  });
+  await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
+  await page.getByPlaceholder("搜索技能包、技能或 /command").fill("dsh-superagent");
+  await page.locator('.guide-result[href="/guides/dsh-superagent/"]').click();
+  await page.waitForLoadState("networkidle");
+  assert.equal(new URL(page.url()).pathname, "/guides/dsh-superagent/");
+  const menu = page.locator("#site-menu");
+  await menu.click();
+  assert.equal(await menu.getAttribute("aria-expanded"), "true");
+  await page.locator('#site-nav a[href="/guides/dsh-superagent/start/"]').click();
+  await page.waitForLoadState("networkidle");
+  assert.equal(new URL(page.url()).pathname, "/guides/dsh-superagent/start/");
+  await page.locator("#site-search").click();
+  const search = page.getByPlaceholder("搜概念、命令、报错、场景……");
+  await search.fill("新手最容易踩的");
+  await page.keyboard.press("Enter");
+  await page.waitForURL("**/guides/dsh-superagent/reference/pitfalls/");
+  assert.equal(new URL(page.url()).pathname, "/guides/dsh-superagent/reference/pitfalls/");
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth), false);
+  assert.deepEqual(errors, []);
+  assert.deepEqual(failed, []);
+  await page.close();
+});
+
+test("dsh tutorial desktop loads local assets, links and section search", async () => {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
+  const errors = [];
+  const failed = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  page.on("response", (response) => {
+    if (response.url().startsWith(`${baseUrl}/guides/dsh-superagent/`) && response.status() >= 400) failed.push(response.url());
+  });
+  await page.goto(`${baseUrl}/guides/dsh-superagent/faq/`, { waitUntil: "networkidle" });
+  const sections = page.waitForResponse((response) => {
+    const url = new URL(response.url());
+    return url.pathname === "/guides/dsh-superagent/search-sections.json" && /^[a-f0-9]{16}$/.test(url.searchParams.get("v") || "");
+  });
+  await page.locator('.xxd-prose a[href="/guides/dsh-superagent/start/"]').first().click();
+  await page.waitForURL("**/guides/dsh-superagent/start/");
+  await page.locator("#site-search").focus();
+  await sections;
+  await page.locator("#site-search").click();
+  await page.getByPlaceholder("搜概念、命令、报错、场景……").fill("判断与行为");
+  await page.getByRole("option").filter({ hasText: "新手最容易踩的 12 个坑 › 判断与行为" }).click();
+  await page.waitForURL("**/guides/dsh-superagent/reference/pitfalls/#sec-2");
+  assert.deepEqual(errors, []);
+  assert.deepEqual(failed, []);
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth), false);
+  await page.close();
+});
+
 test("grouped navigation searches owned skills and restores search on back", async () => {
   const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
   await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });

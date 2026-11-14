@@ -1,0 +1,87 @@
+---
+// 所有内容页共用一个动态路由：/start/1-what/、/guide/2-install/、/howto/fix-bug/ 等。
+import Site from "../layouts/Site.astro";
+import { pages, renderPage, prevNext, href, groupItems, groupedItems, categories } from "../lib/content.js";
+import { CATEGORY_META } from "../data/nav.js";
+
+export async function getStaticPaths() {
+  return pages.map((page) => ({
+    params: { slug: page.href.replace(/^\/+|\/+$/g, "") },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+const { html, toc } = renderPage(page);
+const { prev, next } = prevNext(page);
+const meta = CATEGORY_META[page.category] || {};
+const cat = categories.find((c) => c.id === page.category);
+const isCategoryHome = /^\/(start|guide|howto|wiki|faq|reference)$/.test(page.href);
+const siblings = isCategoryHome ? groupItems(page.category).filter((p) => p.href !== page.href) : [];
+const subGroups = isCategoryHome && page.category === "howto" ? groupedItems("howto") : null;
+---
+<Site title={page.title} description={page.description || page.excerpt} headings={toc} activeHref={page.href}>
+  <article class="tu-doc">
+    <nav class="tu-crumb" aria-label="面包屑">
+      <a href="/">首页</a><i data-xxd-icon="ChevronRight" data-size="13"></i>
+      {cat && <><a href={href("/" + cat.id)}>{meta.short || cat.label}</a><i data-xxd-icon="ChevronRight" data-size="13"></i></>}
+      <span>{isCategoryHome ? (meta.short || cat?.label) : page.nav_title || page.title}</span>
+    </nav>
+
+    <header class="tu-doc__head">
+      <div class="tu-doc__eyebrow">
+        <span class="tu-badge">{page.category_label}</span>
+        {!!page.reading_minutes && <span>{isCategoryHome ? `共 ${siblings.length + 1} 篇` : `约 ${page.reading_minutes} 分钟`}</span>}
+      </div>
+      <h1>{page.title}</h1>
+      {page.description && <p class="tu-doc__desc">{page.description}</p>}
+    </header>
+
+    <div class="xxd-prose" set:html={html} />
+
+    {isCategoryHome && subGroups && (
+      <section class="tu-all">
+        {subGroups.map((g) => (
+          <div class="tu-all__group">
+            <h2>{g.label}</h2>
+            <div class="tu-cards">
+              {g.items.map((p) => (
+                <a class="tu-card" href={href(p.href)}>
+                  <span class="tu-card__n">{String(p.nav_order).padStart(2, "0")}</span>
+                  <strong>{p.title}</strong>
+                  <span class="tu-card__desc">{p.description}</span>
+                  <span class="tu-card__meta">约 {p.reading_minutes} 分钟</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </section>
+    )}
+
+    {isCategoryHome && !subGroups && siblings.length > 0 && (
+      <section class="tu-all">
+        <h2>本栏目全部 {siblings.length} 篇</h2>
+        <div class="tu-cards">
+          {siblings.map((p) => (
+            <a class="tu-card" href={href(p.href)}>
+              <span class="tu-card__n">{String(p.nav_order).padStart(2, "0")}</span>
+              <strong>{p.title}</strong>
+              <span class="tu-card__desc">{p.description}</span>
+              <span class="tu-card__meta">约 {p.reading_minutes} 分钟</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <nav class="tu-prevnext" aria-label="上一篇和下一篇">
+      {prev ? (
+        <a href={href(prev.href)} data-dir="prev"><small>上一篇</small><span>{prev.nav_title || prev.title}</span></a>
+      ) : <span data-dir="prev"><small>上一篇</small><span>已经是本栏目第一篇</span></span>}
+      {next ? (
+        <a href={href(next.href)} data-dir="next"><small>下一篇</small><span>{next.nav_title || next.title}</span></a>
+      ) : <span data-dir="next"><small>下一篇</small><span>已经是本栏目最后一篇</span></span>}
+    </nav>
+  </article>
+</Site>
