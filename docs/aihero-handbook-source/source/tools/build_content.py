@@ -87,10 +87,10 @@ Claude Code 的钩子和技能怎么配。装了技能之后想知道为什么�
 下面列出全部工作坊。""",
 }
 
-ABOUT_BODY = """本站是 **AI Hero（aihero.dev）** 的中文导读存档，由 [Skills123](https://skills123.cc/) 整理。
+ABOUT_BODY = """本站是 **AI Hero（aihero.dev）** 的非官方中文翻译存档，由 [Skills123](https://skills123.cc/) 整理。
 
 - **内容来源**：2026-11-14 用 wigolo 对 https://www.aihero.dev/learn 做的全站抓取，共 200+ 页（文章、技能、词典、Sandcastle 文档、工作坊）。
-- **版权说明**：全部英文内容版权归 **Matt Pocock / AI Hero** 所有。本站为非商业的个人学习存档，仅做排版适配与栏目整理，不附加任何中文翻译或改写。如果你觉得内容有用，请去原站订阅支持作者。
+- **版权说明**：原文版权归 **Matt Pocock / AI Hero** 所有。本站为非商业的中文翻译存档：正文由 AI 辅助翻译为简体中文，翻译仅供学习参考，如有出入请以每页「原文」链接指向的英文原文为准。觉得内容有用请去原站订阅支持作者。
 - **结构**：六个栏目——学习地图、深度文章、技能库、AI 编码词典、Sandcastle 文档、工作坊。原站的站内链接已改写为本站对应页面；未收录的链接保留原址。
 - **更新**：内容是静态快照，不会自动同步原站。想看最新内容请访问[原站](https://www.aihero.dev/)。
 
@@ -108,6 +108,10 @@ BOILER = [
     re.compile(r"^\[AI Coding Dictionary\]\(https://www\.aihero\.dev/ai-coding-dictionary\)\s*$", re.M),
     re.compile(r"^!\[Matt Pocock\]\([^)]*\)\s*$", re.M),
     re.compile(r"^Matt Pocock\s*$", re.M),
+    # 词典页的上一篇/下一篇导航（单行合并链接）
+    re.compile(r"^\[Previous term[^\n]*$", re.M),
+    # 词典页的分类标签行
+    re.compile(r"^Tools & Environment\s*$", re.M),
 ]
 
 

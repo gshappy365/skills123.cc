@@ -15,5 +15,8 @@
     "astro": "7.2.8",
     "micromark": "4.0.3",
     "micromark-extension-gfm": "3.0.0"
+  },
+  "devDependencies": {
+    "@tencent-ai/workbuddy-cloud-sdk": "^0.1.4-dev.ca27990.202610161713"
   }
 }

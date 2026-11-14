@@ -84,8 +84,8 @@
   },
   {
     "id": "aihero-handbook",
-    "name": "AI Hero 学习手册",
-    "description": "aihero.dev（Matt Pocock）全站中文导读存档：学习地图、75 篇深度文章、38 个技能页、72 条 AI 编码词典，站内链接全部打通。",
+    "name": "AI Hero 学习手册（中文版）",
+    "description": "aihero.dev（Matt Pocock）全站中文翻译版：学习地图、75 篇深度文章、38 个技能页、72 条 AI 编码词典，站内链接全部打通。",
     "label": "整理与归档",
     "articleCount": 210,
     "topicCount": 6,
