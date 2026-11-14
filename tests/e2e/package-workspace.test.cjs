@@ -117,6 +117,21 @@ test("PStack tutorial loads its subpath assets and navigates to a lesson", async
   assert.deepEqual(failed, []);
   await page.close();
 });
+test("PStack tutorial mobile menu opens and closes", async () => {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto(`${baseUrl}/guides/pstack/`, { waitUntil: "networkidle" });
+  const menu = page.locator("#site-menu");
+  await menu.click();
+  assert.equal(await menu.getAttribute("aria-expanded"), "true");
+  assert.equal(await page.locator("#site-nav").getAttribute("data-open"), "");
+  await page.locator("#site-nav-scrim").click({ position: { x: 380, y: 200 } });
+  assert.equal(await menu.getAttribute("aria-expanded"), "false");
+  assert.deepEqual(errors, []);
+  await page.close();
+});
+
 test("grouped navigation searches owned skills and restores search on back", async () => {
   const page = await browser.newPage({ viewport: { width: 1280, height: 850 } });
   await page.goto(`${baseUrl}/`, { waitUntil: "networkidle" });
