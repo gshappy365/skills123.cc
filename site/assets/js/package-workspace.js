@@ -3,12 +3,12 @@ import {
   createReadingUrl,
   derivePackageWorkspaceState,
   getPackageWorkspaceNavigationFromUrl,
-} from "./package-workspace-state.js?v=20261106-1";
-import { createPackageWorkspaceModel } from "./catalogue-model.js?v=20261106-1";
+} from "./package-workspace-state.js?v=20261114-1";
+import { createPackageWorkspaceModel } from "./catalogue-model.js?v=20261114-1";
 import {
   createSkillRelationshipGraph,
   skillRelationshipGraphSvg,
-} from "./skill-relationship-graph.js?v=20261106-1";
+} from "./skill-relationship-graph.js?v=20261114-1";
 const packageId = document.body.dataset.packageId;
 const workspaceInput = {
   packageId,
@@ -388,7 +388,10 @@ async function init() {
     const installRow = packageData.installCommand
       ? `<div class="package-install-row"><span><strong>安装整个技能包</strong><small>${escapeHtml(packageData.license ?? "")}</small></span><code>${escapeHtml(packageData.installCommand)}</code><button type="button" id="copy-package-command">复制整包安装命令</button></div>`
       : "";
-    elements.packageInstall.innerHTML = `${installRow}${sourceLink}`;
+    const guideLink = packageData.id === "pstack"
+      ? `<a class="package-source-link" href="/guides/pstack/">PStack 新手教程 →</a>`
+      : "";
+    elements.packageInstall.innerHTML = `${installRow}${sourceLink}${guideLink}`;
   }
   elements.totalCount.textContent = skills.length;
   elements.directoryTotal.textContent = skills.length;

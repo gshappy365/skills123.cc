@@ -83,8 +83,7 @@ test("Skills123 首页与全局搜索只暴露专题入口", async () => {
 
   assert.match(home, /href="\/guides\/shopify-handbook\/"[^>]*>专题知识库/);
   assert.match(home, /id="topic-guides"/);
-  assert.equal(guideData.length, 1);
-  assert.equal(guideData[0].articleCount, 157);
+  assert.equal(guideData.find((guide) => guide.id === "shopify-handbook").articleCount, 157);
 
   const result = searchCatalogue({
     catalog,

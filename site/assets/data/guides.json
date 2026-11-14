@@ -15,5 +15,15 @@
       "跨境电商",
       "主题开发"
     ]
+  },
+  {
+    "id": "pstack",
+    "name": "PStack 新手教程",
+    "description": "从安装配置到理解、构建和验证项目，学习使用 PStack 工程技能。",
+    "label": "入门与实践",
+    "articleCount": 9,
+    "topicCount": 1,
+    "href": "/guides/pstack/",
+    "tags": ["PStack", "AI 编程", "Cursor", "Codex", "工程技能"]
   }
 ]

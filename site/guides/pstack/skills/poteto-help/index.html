@@ -1,0 +1,628 @@
+<!DOCTYPE html><html lang="zh-CN" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>/poteto-help · 技能速查 · pstack 新手教程</title><meta name="description" content="问它「这事该用哪个技能」，它回答，并给一段能直接发的提示词。"><link rel="icon" href="/guides/pstack/favicon.svg" type="image/svg+xml"><meta property="og:type" content="website"><meta property="og:site_name" content="pstack 新手教程"><meta property="og:title" content="/poteto-help · 技能速查 · pstack 新手教程"><meta property="og:description" content="问它「这事该用哪个技能」，它回答，并给一段能直接发的提示词。"><meta property="og:url" content="https://skills123.cc/guides/pstack/skills/poteto-help/"><meta property="og:image" content="https://skills123.cc/guides/pstack/og.png"><meta property="og:image:width" content="1280"><meta property="og:image:height" content="640"><link rel="alternate" hreflang="en" href="https://skills123.cc/guides/pstack/en/skills/poteto-help/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://skills123.cc/guides/pstack/og.png"><style>@layer theme, base, xxd, components, utilities, site;</style><script src="/guides/pstack/xxd/boot.js?v=50fe612bad" data-key="xxd-pstack-site" data-default-theme="system"></script><link rel="stylesheet" href="/guides/pstack/xxd/xxd.css?v=70677e2bd9"><link rel="stylesheet" href="/guides/pstack/site.css?v=3f2a7926b8"><script src="/guides/pstack/xxd/icons.js?v=722632a48b"></script><script src="/guides/pstack/xxd/xxd.js?v=b0a77e3b41"></script></head><body class="xxd-page"><a class="xxd-sr-only-focusable" href="#main">跳到正文</a><header class="xxd-topbar site-top"><button class="xxd-btn site-menu" data-variant="ghost" data-icon-only aria-label="打开目录" id="site-menu" aria-controls="site-nav" aria-expanded="false"><i data-xxd-icon="Menu" data-size="18"></i></button><a class="xxd-logo site-brand" href="/guides/pstack/"><svg class="site-mark" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><rect class="site-mark__bg" width="20" height="20"></rect><rect class="site-mark__bar" x="4" y="4" width="9" height="3"></rect><rect class="site-mark__bar" x="5.5" y="8.5" width="9" height="3" opacity=".62"></rect><rect class="site-mark__bar" x="7" y="13" width="9" height="3" opacity=".32"></rect></svg><span class="site-brand__name">pstack 新手教程</span></a><span class="site-top__spacer"></span><!-- 顶栏和下面三栏用同一套网格（见 site.css）：标志对齐侧栏文字；搜索框占满正文栏，两端对齐正文；外观、语言、GitHub 占满目录栏，两端对齐目录文字。
+           .site-top__end 在宽屏是 display: contents（两样各进各的栏），目录收起后变成正文栏里的一行 --><div class="site-top__end"><button class="site-search" id="site-search" type="button" aria-label="搜索教程"><i data-xxd-icon="Search" data-size="16"></i><span>搜索教程</span><kbd class="xxd-kbd">⌘K</kbd></button><div class="site-tools"><!-- 外观：用 UI Kit 的外观设置组（主题 · 圆角 · 主色），和小小东其他产品同一套、同一份存储；boot.js 在首帧前应用 --><button class="xxd-btn site-look" data-size="sm" data-variant="ghost" data-icon-only type="button" data-xxd-popover="site-look-pop" aria-label="外观和命令写法" data-tooltip="外观和命令写法" data-tooltip-placement="bottom"><i data-xxd-icon="Palette" data-size="16"></i><span class="site-look__dot" id="site-look-dot" hidden></span></button><div class="xxd-popover site-look-pop" id="site-look-pop" popover data-placement="bottom-end" data-opts="{&quot;locale&quot;:&quot;zh-CN&quot;,&quot;labels&quot;:{&quot;cornersDesc&quot;:&quot;关掉就是直角&quot;}}"><!-- 外观设置组由 UI Kit 挂进来；这一组「命令」挂完以后移到它后面 --><section class="xxd-group site-tool-group" id="site-tool-group" data-tool-pick data-sk-keep><h3 class="xxd-group__title">命令</h3><div class="xxd-group__body"><div class="xxd-row site-tool-row"><div class="xxd-row__text"><div class="xxd-row__title">我用的工具</div><div class="xxd-row__desc">网站上的命令按这个工具的写法显示，复制就能用</div></div></div><div class="xxd-segmented site-tool-seg" data-xxd-segmented role="radiogroup" aria-label="我用的工具"><button type="button" role="radio" data-value="cc" aria-checked="true">Claude Code</button><button type="button" role="radio" data-value="cursor" aria-checked="false">Cursor</button><button type="button" role="radio" data-value="codex" aria-checked="false">Codex</button><button type="button" role="radio" data-value="bare" aria-checked="false">npx 装的</button></div><p class="site-tool-ex">现在这样写：<code dir="ltr" data-tool-ex>/pstack:poteto-mode</code></p></div></section></div><!-- 语言：菜单里列出全部语言，当前的那个打勾；中文、英文是全站，其他语言有首页和新手入门 --><button class="xxd-btn site-lang" data-size="sm" data-variant="ghost" type="button" data-xxd-menu="site-lang-menu" aria-label="语言" data-tooltip="语言" data-tooltip-placement="bottom"><i data-xxd-icon="Languages" data-size="16"></i><span class="site-lang__name">中文</span></button><div class="xxd-menu site-lang-menu" id="site-lang-menu" role="menu" popover data-placement="bottom-end"><a class="xxd-menu__item" role="menuitemradio" aria-checked="false" href="/guides/pstack/en/skills/poteto-help/" hreflang="en" lang="en">English</a><a class="xxd-menu__item" role="menuitemradio" aria-checked="true" href="/guides/pstack/skills/poteto-help/" hreflang="zh-CN" lang="zh-CN">中文</a><a class="xxd-menu__item" role="menuitemradio" aria-checked="false" href="/guides/pstack/ja/" hreflang="ja" lang="ja">日本語</a><a class="xxd-menu__item" role="menuitemradio" aria-checked="false" href="/guides/pstack/ko/" hreflang="ko" lang="ko">한국어</a><a class="xxd-menu__item" role="menuitemradio" aria-checked="false" href="/guides/pstack/es/" hreflang="es" lang="es">Español</a><a class="xxd-menu__item" role="menuitemradio" aria-checked="false" href="/guides/pstack/pt/" hreflang="pt-BR" lang="pt-BR">Português</a><a class="xxd-menu__item" role="menuitemradio" aria-checked="false" href="/guides/pstack/fr/" hreflang="fr" lang="fr">Français</a><a class="xxd-menu__item" role="menuitemradio" aria-checked="false" href="/guides/pstack/de/" hreflang="de" lang="de">Deutsch</a><a class="xxd-menu__item" role="menuitemradio" aria-checked="false" href="/guides/pstack/ru/" hreflang="ru" lang="ru">Русский</a><a class="xxd-menu__item" role="menuitemradio" aria-checked="false" href="/guides/pstack/ar/" hreflang="ar" lang="ar">العربية</a></div><!-- GitHub：点图标直接去本教程的仓库；旁边的小箭头展开，可以换去 pstack 的镜像或官方原版 --><div class="xxd-btn-group site-gh"><a class="xxd-btn" data-size="sm" data-variant="ghost" data-icon-only href="https://github.com/nevertoday/xxd-pstack" aria-label="本教程的 GitHub 仓库" data-tooltip="本教程的 GitHub 仓库" data-tooltip-placement="bottom-end"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg></a><button class="xxd-btn site-gh__more" data-size="sm" data-variant="ghost" data-icon-only type="button" data-xxd-menu="site-gh-menu" aria-label="其他仓库：pstack 镜像、官方原版" data-tooltip="其他仓库：pstack 镜像、官方原版" data-tooltip-placement="bottom-end"><i data-xxd-icon="ChevronDown" data-size="14"></i></button></div><div class="xxd-menu site-gh-menu" id="site-gh-menu" role="menu" popover data-placement="bottom-end"><a class="xxd-menu__item site-gh-menu__item" role="menuitem" href="https://github.com/nevertoday/xxd-pstack" aria-current="true"><span class="site-gh-menu__name">本教程<span class="site-gh-menu__tag">默认</span></span><span class="site-gh-menu__path">nevertoday/xxd-pstack</span><span class="site-gh-menu__note">教程的源码，有问题在这里提</span></a><a class="xxd-menu__item site-gh-menu__item" role="menuitem" href="https://github.com/backnotprop/pstack"><span class="site-gh-menu__name">pstack 镜像</span><span class="site-gh-menu__path">backnotprop/pstack</span><span class="site-gh-menu__note">本站依据的版本，任何工具都能装</span></a><a class="xxd-menu__item site-gh-menu__item" role="menuitem" href="https://github.com/cursor/plugins/tree/main/pstack"><span class="site-gh-menu__name">pstack 官方原版</span><span class="site-gh-menu__path">cursor/plugins</span><span class="site-gh-menu__note">poteto 维护，给 Cursor 用</span></a></div></div></div></header><div class="site-body"><nav class="xxd-sidebar site-nav" id="site-nav" aria-label="网站目录"><div class="xxd-sidebar__body"><section class="xxd-sidebar__group"><h2 class="xxd-sidebar__label">开始</h2><a class="xxd-sidebar__item" href="/guides/pstack/"><span>首页</span></a></section><section class="xxd-sidebar__group"><h2 class="xxd-sidebar__label">新手入门：先看这三课</h2><a class="xxd-sidebar__item" href="/guides/pstack/start/1-why/"><span class="site-nav__num">1</span><span>它能帮你什么</span></a><a class="xxd-sidebar__item" href="/guides/pstack/start/2-install/"><span class="site-nav__num">2</span><span>装上它</span></a><a class="xxd-sidebar__item" href="/guides/pstack/start/3-first-use/"><span class="site-nav__num">3</span><span>第一次用</span></a></section><section class="xxd-sidebar__group"><h2 class="xxd-sidebar__label">完整教程：会写代码的人看</h2><a class="xxd-sidebar__item" href="/guides/pstack/guide/0-what/"><span class="site-nav__num">0</span><span>pstack 是什么</span></a><a class="xxd-sidebar__item" href="/guides/pstack/guide/1-install/"><span class="site-nav__num">1</span><span>安装 pstack</span></a><a class="xxd-sidebar__item" href="/guides/pstack/guide/2-setup/"><span class="site-nav__num">2</span><span>选模型和预算（可跳过）</span></a><a class="xxd-sidebar__item" href="/guides/pstack/guide/3-first-task/"><span class="site-nav__num">3</span><span>第一个任务</span></a><a class="xxd-sidebar__item" href="/guides/pstack/guide/4-understand/"><span class="site-nav__num">4</span><span>改之前先看懂</span></a><a class="xxd-sidebar__item" href="/guides/pstack/guide/5-design-build/"><span class="site-nav__num">5</span><span>设计、动手、收拾干净</span></a><a class="xxd-sidebar__item" href="/guides/pstack/guide/6-verify-ship/"><span class="site-nav__num">6</span><span>验证和交付</span></a><a class="xxd-sidebar__item" href="/guides/pstack/guide/7-overnight/"><span class="site-nav__num">7</span><span>放手让它跑</span></a><a class="xxd-sidebar__item" href="/guides/pstack/guide/8-make-it-yours/"><span class="site-nav__num">8</span><span>用熟以后</span></a></section><section class="xxd-sidebar__group"><h2 class="xxd-sidebar__label">查资料</h2><a class="xxd-sidebar__item" href="/guides/pstack/skills/"><span>技能速查：34 个技能</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/"><span>How-to：具体怎么做</span></a><button class="xxd-sidebar__item site-nav__sub" type="button" aria-expanded="false" data-sidebar-sub="site-nav-g0"><span>在真实项目里</span></button><div class="xxd-sidebar__sub" id="site-nav-g0" hidden><a class="xxd-sidebar__item" href="/guides/pstack/howto/fix-bug/"><span>修一个 bug：先复现，再修，再证明</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/add-feature/"><span>加一个新功能，不碰坏旧的</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/refactor/"><span>重构：换个写法，功能不变</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/perf/"><span>嫌它慢：用数字证明变快了</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/new-codebase/"><span>接手一个陌生项目</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/review-branch/"><span>交之前，让几个 AI 挑毛病</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/write-docs/"><span>写 README、文档、PR 说明</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/big-migration/"><span>大改动：睡前交给它，早上看结果</span></a></div><button class="xxd-sidebar__item site-nav__sub" type="button" aria-expanded="false" data-sidebar-sub="site-nav-g1"><span>让 AI 自己证明</span></button><div class="xxd-sidebar__sub" id="site-nav-g1" hidden><a class="xxd-sidebar__item" href="/guides/pstack/howto/verify-app/"><span>给项目配一个验证技能，让 AI 自己去点</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/formal-verify/"><span>测试碰不到的 bug：形式化验证</span></a></div><button class="xxd-sidebar__item site-nav__sub" type="button" aria-expanded="false" data-sidebar-sub="site-nav-g2"><span>工具和环境</span></button><div class="xxd-sidebar__sub" id="site-nav-g2" hidden><a class="xxd-sidebar__item" href="/guides/pstack/howto/claude-code/"><span>在 Claude Code 里用</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/cursor/"><span>在 Cursor 里用</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/codex/"><span>在 Codex 和其他工具里用</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/pick-skills/"><span>只装几个技能</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/cost/"><span>控制花费</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/update-remove/"><span>更新、查看、卸载</span></a></div><button class="xxd-sidebar__item site-nav__sub" type="button" aria-expanded="false" data-sidebar-sub="site-nav-g3"><span>提示词</span></button><div class="xxd-sidebar__sub" id="site-nav-g3" hidden><a class="xxd-sidebar__item" href="/guides/pstack/howto/recipes/"><span>照抄就能用的提示词</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/steer/"><span>它跑偏了，一句话拉回来</span></a><a class="xxd-sidebar__item" href="/guides/pstack/howto/which-skill/"><span>不知道该用哪个技能</span></a></div><a class="xxd-sidebar__item" href="/guides/pstack/wiki/"><span>Wiki：这是什么</span></a><a class="xxd-sidebar__item site-nav__faq" href="/guides/pstack/faq/"><span>常见问题</span><span class="site-nav__ping" aria-hidden="true"></span></a></section></div></nav><main id="main" class="site-main"><article class="xxd-prose skilldoc"><ol class="xxd-breadcrumbs" data-size="sm"><li><a href="/guides/pstack/skills/">技能速查</a></li><li><a href="/guides/pstack/skills/#entry">入口：先认识这三个</a></li><li aria-current="page"><span class="sk" data-sk="poteto-help">/pstack:poteto-help</span></li></ol><div class="skilldoc__head"><h1><code><span class="sk" data-sk="poteto-help">/pstack:poteto-help</span></code></h1><span class="xxd-badge" data-tone="warning">要你亲手打</span></div><p class="page-tldr"><span class="page-tldr__label">一句话</span>问它「这事该用哪个技能」，它回答，并给一段能直接发的提示词。</p><div class="skilldoc__card"><dl class="skilldoc__facts"><div><dt>什么时候用</dt><dd>刚上手，或者拿不准该用哪个技能。</dd></div><div><dt>要一起装</dt><dd>你想问的那些技能</dd></div></dl><div class="xxd-code-block copy-block"><div class="xxd-code__head">这样说<button class="xxd-btn" data-variant="ghost" data-size="xs" data-copy-target="#skill-ex code" aria-label="复制"><i data-xxd-icon="Copy" data-size="14"></i>复制</button></div><pre class="xxd-code" id="skill-ex" tabindex="0"><code data-lang="text"><span dir="ltr"><span class="sk" data-sk="poteto-help">/pstack:poteto-help</span></span> 我想审一下这个分支，该用哪个技能？</code></pre></div></div><span id="skilldoc-top" class="skilldoc__anchor"></span><div class="skilldoc__tabbar"><div class="xxd-tabs" role="tablist" aria-label="这一页的几部分" id="skilldoc-tabs" data-xxd-tabs><button role="tab" id="tab-overview" data-value="overview" aria-controls="panel-overview" aria-selected="true" tabindex="0">概览</button><button role="tab" id="tab-learn" data-value="learn" aria-controls="panel-learn" aria-selected="false" tabindex="-1">写法亮点<span class="skilldoc__count">4</span></button><button role="tab" id="tab-full" data-value="full" aria-controls="panel-full" aria-selected="false" tabindex="-1">全文</button></div></div><section class="skilldoc__panel" role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" data-panel="overview"><span id="overview" class="skilldoc__anchor"></span><h2 id="compare">用它和不用它</h2><p class="skilldoc__lead">同一件事，直接跟 AI 说，和点名用 <span class="sk" data-sk="poteto-help">/pstack:poteto-help</span>，AI 的做法不一样：</p><div class="vs" role="table" aria-label="用它和不用它"><div class="vs__row vs__row--head" role="row"><span role="columnheader">直接说</span><span role="columnheader"><code>用 <span class="sk" data-sk="poteto-help">/pstack:poteto-help</span></code></span></div><div class="vs__row" role="row"><span class="vs__without" role="cell" data-label="直接说"><i data-xxd-icon="X" data-size="14" aria-hidden="true"></i><span>你问怎么用，它直接开工花掉 token</span></span><span class="vs__with" role="cell" data-label="用 /poteto-help"><i data-xxd-icon="Check" data-size="14" aria-hidden="true"></i><span>回答问题，再给一段提示词，发不发由你决定</span></span></div><div class="vs__row" role="row"><span class="vs__without" role="cell" data-label="直接说"><i data-xxd-icon="X" data-size="14" aria-hidden="true"></i><span>凭印象回答，说不出出处</span></span><span class="vs__with" role="cell" data-label="用 /poteto-help"><i data-xxd-icon="Check" data-size="14" aria-hidden="true"></i><span>先读要引用的那个文件，再附上它在 GitHub 上的公开链接</span></span></div><div class="vs__row" role="row"><span class="vs__without" role="cell" data-label="直接说"><i data-xxd-icon="X" data-size="14" aria-hidden="true"></i><span>给你一串技能，让你自己排顺序</span></span><span class="vs__with" role="cell" data-label="用 /poteto-help"><i data-xxd-icon="Check" data-size="14" aria-hidden="true"></i><span>默认推荐 <code class="xxd-code-inline"><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>，你要多做或少做某件事时才点名单个技能</span></span></div></div><h2 id="outline">文档写了什么</h2><p class="skilldoc__lead">原文分 8 节，约 2500 个英文单词，中文译文约 3450 字，读完约 11 分钟。点一节直接跳到全文。</p><p class="outline__intro"><span>开头</span><span>开头说它只回答 pstack 的问题，给提示词和出处链接，真要干活的请求就转到 <code class="xxd-code-inline"><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 去做。</span></p><ol class="outline"><li><a class="outline__link" href="#sec-1"><span class="outline__n">1</span><span class="outline__body"><span class="outline__title">弄清对方需要什么</span><span class="outline__what">看不出你要什么就出一道五选一的题，顺便查你跑没跑过 <code class="xxd-code-inline"><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code>。</span></span><i data-xxd-icon="ArrowRight" data-size="14" aria-hidden="true"></i></a></li><li><a class="outline__link" href="#sec-2"><span class="outline__n">2</span><span class="outline__body"><span class="outline__title">完成设置</span><span class="outline__what">给出三步：装插件，跑 <code class="xxd-code-inline"><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code>，用 <code class="xxd-code-inline"><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 开个真任务，再讲怎么少花 token。</span></span><i data-xxd-icon="ArrowRight" data-size="14" aria-hidden="true"></i></a></li><li><a class="outline__link" href="#sec-3"><span class="outline__n">3</span><span class="outline__body"><span class="outline__title">用 <span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span> 开始一个任务</span><span class="outline__what">教你写开头的提示词：说目标和怎么算做完，不列技能，再讲怎么让它每轮都开着。</span></span><i data-xxd-icon="ArrowRight" data-size="14" aria-hidden="true"></i></a></li><li><a class="outline__link" href="#sec-4"><span class="outline__n">4</span><span class="outline__body"><span class="outline__title">挑一个技能</span><span class="outline__what">用一张表把你想做的事对到具体技能，再分清 <code class="xxd-code-inline"><span class="sk" data-sk="how">/pstack:how</span></code> 和 <code class="xxd-code-inline"><span class="sk" data-sk="why">/pstack:why</span></code> 这类容易混的。</span></span><i data-xxd-icon="ArrowRight" data-size="14" aria-hidden="true"></i></a></li><li><a class="outline__link" href="#sec-5"><span class="outline__n">5</span><span class="outline__body"><span class="outline__title">剧本和原则</span><span class="outline__what">说明 playbook 没有斜杠命令，在 <code class="xxd-code-inline"><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 里说「babysit this pr」这类话就能点名。</span></span><i data-xxd-icon="ArrowRight" data-size="14" aria-hidden="true"></i></a></li><li><a class="outline__link" href="#sec-6"><span class="outline__n">6</span><span class="outline__body"><span class="outline__title">修好一次跑偏的运行</span><span class="outline__what">一张症状对照表，比如模式几轮后失效、并行的 AI 互相覆盖，每条配一个修法。</span></span><i data-xxd-icon="ArrowRight" data-size="14" aria-hidden="true"></i></a></li><li><a class="outline__link" href="#sec-7"><span class="outline__n">7</span><span class="outline__body"><span class="outline__title">把 pstack 改成自己的</span><span class="outline__what">指向 <code class="xxd-code-inline"><span class="sk" data-sk="automate-me">/pstack:automate-me</span></code>、<code class="xxd-code-inline"><span class="sk" data-sk="reflect">/pstack:reflect</span></code> 和写技能的 playbook，技能出了错就单开一个 PR 修。</span></span><i data-xxd-icon="ArrowRight" data-size="14" aria-hidden="true"></i></a></li><li><a class="outline__link" href="#sec-8"><span class="outline__n">8</span><span class="outline__body"><span class="outline__title">回复</span><span class="outline__what">回复先给答案，最多一段示例提示词，再附出处链接。你没要全部清单就写短。</span></span><i data-xxd-icon="ArrowRight" data-size="14" aria-hidden="true"></i></a></li></ol><p class="skilldoc__next"><a class="xxd-btn" data-variant="secondary" href="#learn">看写法亮点<i data-xxd-icon="ArrowRight" data-size="14"></i></a><a class="xxd-btn" data-variant="ghost" href="#full">读全文<i data-xxd-icon="ArrowRight" data-size="14"></i></a></p></section><section class="skilldoc__panel" role="tabpanel" id="panel-learn" aria-labelledby="tab-learn" data-panel="learn"><h2 id="learn" class="skilldoc__panel-h">写法亮点</h2><p class="skilldoc__lead">挑了几句原文：每句让 AI 做什么、为什么这样写管用、你写提示词时怎么借来用。</p><ol class="lessons"><li class="lesson"><p class="lesson__title">禁令后面附上理由</p><blockquote class="lesson__quote"><p lang="en">The user asked how, and a pstack run spends real tokens, so let them send the prompt.</p><p class="lesson__quote-zh">用户问的是怎么做，而跑一次 pstack 要花真金白银的 token，所以让用户自己去发那段提示词。</p></blockquote><dl class="lesson__notes"><div><dt>让 AI</dt><dd>你问「怎么用」时，它只给你一段提示词，不会自作主张开始干活、花你的钱。</dd></div><div><dt>为什么管用</dt><dd>带上理由（问的是怎么做、跑一次要花钱），AI 碰到边缘情况也能自己判断，而不是死记一条禁令。</dd></div><div class="lesson__try"><dt>借来用</dt><dd>不想让 AI 动手时写：「先别改代码，只说打算怎么改；我还要和同事确认一下。」</dd></div></dl></li><li class="lesson"><p class="lesson__title">拿不准就出选择题</p><blockquote class="lesson__quote"><p lang="en">ask one multiple-choice question with these options, then answer only the section they pick</p><p class="lesson__quote-zh">就问一道选择题，给出下面这些选项，然后只回答对方选的那一节</p></blockquote><dl class="lesson__notes"><div><dt>让 AI</dt><dd>它看不出你要什么时，会给你一道选择题，而不是猜着答一大篇。</dd></div><div><dt>为什么管用</dt><dd>选择题几秒就能答完，AI 也只需要回答你选中的那一部分。</dd></div><div class="lesson__try"><dt>借来用</dt><dd>加一句：「拿不准我要哪种，就问我：A 简短版，B 详细版，C 带代码版。」</dd></div></dl></li><li class="lesson"><p class="lesson__title">只在改变答案时才提</p><blockquote class="lesson__quote"><p lang="en">Check the state that changes the answer, and mention it only when it does</p><p class="lesson__quote-zh">检查那些会改变答案的状态，只在它确实改变答案时才提</p></blockquote><dl class="lesson__notes"><div><dt>让 AI</dt><dd>它只在你没做设置、而这又正好影响答案时才提醒你，不会每次都唠叨。</dd></div><div><dt>为什么管用</dt><dd>「只在它改变答案时才提」给提醒装了一个开关，AI 就不会把所有检查结果都倒给你。</dd></div><div class="lesson__try"><dt>借来用</dt><dd>让 AI 排行程时写：「天气会影响行程时再提天气，否则别提。」</dd></div></dl></li><li class="lesson"><p class="lesson__title">定好开头和数量上限</p><blockquote class="lesson__quote"><p lang="en">Lead with the answer. Give at most one example prompt in a code block</p><p class="lesson__quote-zh">先给答案。最多给一个示例提示词，放在代码块里</p></blockquote><dl class="lesson__notes"><div><dt>让 AI</dt><dd>回答第一句就是答案，最多附一段示例提示词，没有长长的铺垫。</dd></div><div><dt>为什么管用</dt><dd>规定开头说什么、最多给几个，就直接定住了回复的形状，比「简洁点」具体得多。</dd></div><div class="lesson__try"><dt>借来用</dt><dd>提问时加一句：「第一句直接给结论，例子最多一个。」</dd></div></dl></li></ol></section><section class="skilldoc__panel" role="tabpanel" id="panel-full" aria-labelledby="tab-full" data-panel="full"><h2 id="full" class="skilldoc__panel-h">全文</h2><p class="skilldoc__lead">AI 读到的就是这份 SKILL.md。可以看中文、看原文，或者一段一段对照着看。</p><div class="skilldoc__tools"><div class="xxd-segmented skilldoc__modes" data-xxd-segmented role="radiogroup" aria-label="全文" id="skilldoc-modes"><button type="button" role="radio" data-value="zh" aria-checked="true" tabindex="0">中文</button><button type="button" role="radio" data-value="en" aria-checked="false" tabindex="-1">原文</button><button type="button" role="radio" data-value="both" aria-checked="false" tabindex="-1">对照</button></div><label class="skilldoc__jump"><span>跳到</span><span class="xxd-select"><select id="skilldoc-jump"><option value="full">开头</option><option value="sec-1">1. 弄清对方需要什么</option><option value="sec-2">2. 完成设置</option><option value="sec-3">3. 用 <span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span> 开始一个任务</option><option value="sec-4">4. 挑一个技能</option><option value="sec-5">5. 剧本和原则</option><option value="sec-6">6. 修好一次跑偏的运行</option><option value="sec-7">7. 把 pstack 改成自己的</option><option value="sec-8">8. 回复</option></select></span></label></div><div class="doc" id="skilldoc-doc" data-mode="zh"><div class="doc__row doc__desc"><div class="doc__en" lang="en"><p><span class="doc__tag">description</span>Guides users through pstack setup, <span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span>, and picking the skill, playbook, or principle for a task. Type <span class="sk" data-sk="poteto-help">/pstack:poteto-help</span> with a question.</p></div><div class="doc__zh"><p><span class="doc__tag">description</span>带用户走一遍 pstack 的设置、<span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span> 的用法，以及怎么为一件任务挑技能、剧本或原则。输入 <span class="sk" data-sk="poteto-help">/pstack:poteto-help</span>，后面跟上你的问题。</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><h3>Poteto help</h3></div><div class="doc__zh"><h3>Poteto help（pstack 使用帮助）</h3></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>Answer the user's question about pstack, hand them a prompt they can send, and link the file the answer came from. For a help question, don't start the work. The user asked how, and a pstack run spends real tokens, so let them send the prompt.</p></div><div class="doc__zh"><p>回答用户关于 pstack 的问题，给对方一段可以直接发出去的提示词，并附上答案出自哪个文件的链接。如果是求助类的问题，不要开始干活。用户问的是怎么做，而跑一次 pstack 要花真金白银的 token，所以让用户自己去发那段提示词。</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>A message that asks for work, such as &quot;use pstack to fix this bug&quot;, is not a help question. Read <a href="/guides/pstack/skills/poteto-mode/"><code>poteto-mode</code></a>, do the work under it, and mention once that a Custom Mode keeps it on.</p></div><div class="doc__zh"><p>要求干活的消息，比如「用 pstack 修一下这个 bug」，不算求助问题。读 <a href="/guides/pstack/skills/poteto-mode/"><code>poteto-mode</code></a>，按它的方式把活干了，并提一次：用 Custom Mode 可以让它一直开着。</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>This file maps questions to the skills and guide pages that hold the answers. Those files own the details. Read the file you route to before you quote it, and trust it when it disagrees with this map. The links here point into the installed plugin, which the user may not be able to open, so give the user the file's public copy: <code>https://github.com/cursor/plugins/blob/main/pstack/</code> followed by its path.</p></div><div class="doc__zh"><p>这个文件把问题对应到存有答案的技能和指南页面。细节以那些文件为准。引用之前，先读你要指过去的那个文件；它和这份对照表说法不一致时，信它。这里的链接指向已安装的插件，用户可能打不开，所以给用户那个文件的公开版本：<code>https://github.com/cursor/plugins/blob/main/pstack/</code> 后面接上它的路径。</p></div></div><div class="doc__row" id="sec-1"><div class="doc__en" lang="en"><h4>Find out what they need</h4></div><div class="doc__zh"><h4>弄清对方需要什么</h4></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>Infer the need from the message and the conversation. A named situation, such as &quot;which skill reviews a PR?&quot;, goes straight to its section. If the need is still unclear, ask one multiple-choice question with these options, then answer only the section they pick:</p></div><div class="doc__zh"><p>从消息和前面聊过的内容推断对方需要什么。点名了具体情况的，比如「哪个技能能审 PR？」，直接去对应的那一节。如果还是不清楚对方需要什么，就问一道选择题，给出下面这些选项，然后只回答对方选的那一节：</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><ul>
+<li>Get set up</li>
+<li>Start a task with <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code></li>
+<li>Pick a skill for a situation</li>
+<li>Fix a run that went wrong</li>
+<li>Make pstack my own</li>
+</ul></div><div class="doc__zh"><ul>
+<li>完成设置</li>
+<li>用 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 开始一个任务</li>
+<li>为某种情况挑一个技能</li>
+<li>修好一次跑偏的运行</li>
+<li>把 pstack 改成自己的</li>
+</ul></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>Check the state that changes the answer, and mention it only when it does:</p></div><div class="doc__zh"><p>检查那些会改变答案的状态，只在它确实改变答案时才提：</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><ul>
+<li>No pstack settings file (<code>~/.cursor/rules/pstack-models.mdc</code> in Cursor, <code>~/.claude/rules/pstack-models.md</code> in Claude Code, <code>~/.agents/pstack-models.md</code> in other harnesses) means <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code> hasn't run for this user, so every role uses its default model.</li>
+<li>No <code>verify-*</code> skill or other app harness in the project means agents have no scripted way to drive the app. Mention <code><span class="sk" data-sk="create-verification-skill">/pstack:create-verification-skill</span></code> when the question is about proving a change works.</li>
+<li>No formal verification skill in the project means no property is checked past what tests reach. Mention <code><span class="sk" data-sk="create-formal-verification-skill">/pstack:create-formal-verification-skill</span></code> when the question is about a race, an invariant, or another case tests rarely hit. When one exists and the code it covers changed after the commit it records as last in sync, mention <code><span class="sk" data-sk="maintain-formal-verification-skill">/pstack:maintain-formal-verification-skill</span></code> if the question touches that code.</li>
+</ul></div><div class="doc__zh"><ul>
+<li>没有 pstack 设置文件（Cursor 里是 <code>~/.cursor/rules/pstack-models.mdc</code>，Claude Code 里是 <code>~/.claude/rules/pstack-models.md</code>，其他工具里是 <code>~/.agents/pstack-models.md</code>），说明这位用户还没跑过 <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code>，所以每个角色都用默认模型。</li>
+<li>项目里没有 <code>verify-*</code> 技能或其他驱动应用的工具，说明 AI 没有写好脚本的办法去操作应用。问题是关于怎么证明改动有效时，提一下 <code><span class="sk" data-sk="create-verification-skill">/pstack:create-verification-skill</span></code>。</li>
+<li>项目里没有形式化验证技能，说明除了测试碰得到的部分，没有任何性质被检查过。问题是关于竞态、不变式或其他测试很少碰到的情况时，提一下 <code><span class="sk" data-sk="create-formal-verification-skill">/pstack:create-formal-verification-skill</span></code>。如果已经有一个，而且它覆盖的代码在它记录的最后同步提交之后改过，那么问题涉及那部分代码时，提一下 <code><span class="sk" data-sk="maintain-formal-verification-skill">/pstack:maintain-formal-verification-skill</span></code>。</li>
+</ul></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>When the model rule is missing and it matters, ask whether the user wants to pick a model for each role and a reasoning budget now. It matters when the user is new, the question is about setup or cost, or the answer depends on which models run. Ask at most once per chat. If the need is also unclear, ask both questions together. Offer two choices:</p></div><div class="doc__zh"><p>如果模型规则不存在、而这又有影响，就问用户想不想现在给每个角色选模型、定一个推理预算。有影响的情况是：用户是新手，问题和设置或费用有关，或者答案取决于跑的是哪些模型。每个对话最多问一次。如果对方需要什么也不清楚，就把两个问题一起问。给出两个选择：</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><ul>
+<li>Now: give them <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code> to type, and answer their question too.</li>
+<li>Later: answer their question, and add one line saying every role keeps its default model until they run <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code>.</li>
+</ul></div><div class="doc__zh"><ul>
+<li>现在：给对方 <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code> 让对方输入，同时也回答对方的问题。</li>
+<li>以后：回答对方的问题，再加一行说明：在对方运行 <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code> 之前，每个角色都用默认模型。</li>
+</ul></div></div><div class="doc__row" id="sec-2"><div class="doc__en" lang="en"><h4>Get set up</h4></div><div class="doc__zh"><h4>完成设置</h4></div></div><div class="doc__row"><div class="doc__en" lang="en"><ol>
+<li>Install with <code>/add-plugin pstack</code> in chat, or from Customize in the sidebar. Outside Cursor, run <code>npx skills add backnotprop/pstack</code> and pick the skills.</li>
+<li>Run <a href="/guides/pstack/skills/setup-pstack/"><code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code></a>. It asks for a reasoning budget, maps a model to each role, and writes a rule. The rule applies to new chats. Then it offers once each to generate a verification skill and a formal verification skill for the project, unless the project already has one.</li>
+<li>Start a real task with <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>, a goal, and a check that can pass or fail.</li>
+</ol></div><div class="doc__zh"><ol>
+<li>在对话里用 <code>/add-plugin pstack</code> 安装，或者从侧边栏的 Customize 里装。不在 Cursor 里的话，运行 <code>npx skills add backnotprop/pstack</code>，然后挑选技能。</li>
+<li>运行 <a href="/guides/pstack/skills/setup-pstack/"><code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code></a>。它会问推理预算，给每个角色对应一个模型，然后写一条规则。这条规则对新对话生效。接着它会各提议一次，为项目生成一个验证技能和一个形式化验证技能，除非项目里已经有了。</li>
+<li>用 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>、一个目标和一个能判断通过或失败的检查，开始一个真实任务。</li>
+</ol></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>Installing changes nothing until the user invokes a skill. Only <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code> loads from the user's words. The <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../README.md" target="_blank" rel="noopener">README</a> and <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/01-setup.md" target="_blank" rel="noopener">guide page 1</a> have the details. Offer to word their first prompt with them, per <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/references/prompting.md" target="_blank" rel="noopener"><code>references/prompting.md</code></a>.</p></div><div class="doc__zh"><p>在用户调用某个技能之前，光安装什么都不会改变。只有 <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code> 会因为用户说的话而自动载入。<a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../README.md" target="_blank" rel="noopener">README</a> 和 <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/01-setup.md" target="_blank" rel="noopener">指南第 1 页</a> 里有细节。按 <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/references/prompting.md" target="_blank" rel="noopener"><code>references/prompting.md</code></a>，提议和对方一起斟酌第一条提示词。</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>If cost is the worry, say where the tokens go and how to spend fewer. pstack spends extra tokens on subagents and review panels. Rerun <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code> and pick a smaller budget or cheaper models. A role set to <code>auto</code> or <code>inherit-parent</code> runs on the chat's model, which saves tokens when the chat runs on Auto or a cheaper model. A shorter panel list runs fewer subagents, one for each entry. Save <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> for work that needs rigor.</p></div><div class="doc__zh"><p>如果担心的是费用，就说清 token 花在哪里、怎么少花。pstack 会在帮手 AI 和评审小组上多花 token。重跑 <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code>，选一个更小的预算或更便宜的模型。设成 <code>auto</code> 或 <code>inherit-parent</code> 的角色会用对话本身的模型跑；如果对话用的是 Auto 或更便宜的模型，就能省 token。小组列表短一些，派出的帮手 AI 就少一些，每个条目一个。把 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 留给需要严谨的活。</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>pstack is built for Cursor, and it also installs in Claude Code with <code>/plugin marketplace add cursor/plugins</code>, then <code>/plugin install pstack@cursor-plugins</code>. There, each command takes a <code>pstack:</code> prefix, such as <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>. The <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/harness/claude-code.md" target="_blank" rel="noopener">Claude Code adapter</a> maps the Cursor names, and a step that needs a Cursor-only feature, such as Bugbot or Automations, is skipped with a one-line note.</p></div><div class="doc__zh"><p>pstack 是为 Cursor 打造的，也能装进 Claude Code：先 <code>/plugin marketplace add cursor/plugins</code>，再 <code>/plugin install pstack@cursor-plugins</code>。在那里，每个命令都要加 <code>pstack:</code> 前缀，比如 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>。<a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/harness/claude-code.md" target="_blank" rel="noopener">Claude Code 适配说明</a> 把 Cursor 里的名字对应过去；需要 Cursor 独有功能（比如 Bugbot 或 Automations）的步骤会跳过，并留一行说明。</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>This mirror's skills also work in other harnesses (Claude Code, Codex, Pi, OpenCode, and others) through <code>npx skills add backnotprop/pstack</code>. The Harness section of <a href="/guides/pstack/skills/poteto-mode/"><code>poteto-mode</code></a> maps Cursor's subagent, question, transcript, and settings paths to the harness's own. Custom Modes are a Cursor feature.</p></div><div class="doc__zh"><p>这个镜像版的技能也能通过 <code>npx skills add backnotprop/pstack</code> 用在其他工具里（Claude Code、Codex、Pi、OpenCode 等）。<a href="/guides/pstack/skills/poteto-mode/"><code>poteto-mode</code></a> 的「Harness」一节，把 Cursor 的帮手 AI、提问、对话记录和设置路径，对应到各个工具自己的版本。Custom Modes 是 Cursor 的功能。</p></div></div><div class="doc__row" id="sec-3"><div class="doc__en" lang="en"><h4>Start a task with <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code></h4></div><div class="doc__zh"><h4>用 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 开始一个任务</h4></div></div><div class="doc__row"><div class="doc__en" lang="en"><p><code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> matches the task to a playbook, copies the playbook's steps into the todo list, and runs the other skills as the steps need them. A step it skips stays in the list as <code>skip: &lt;reason&gt;</code>. A good prompt states the goal and how to tell it's done. It doesn't list skills, because a hand-written sequence tends to drop or reorder steps the playbook would keep. Read <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/references/prompting.md" target="_blank" rel="noopener"><code>references/prompting.md</code></a> before you help word one. <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/02-poteto-mode.md" target="_blank" rel="noopener">Guide page 2</a> has examples.</p></div><div class="doc__zh"><p><code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 会给任务挑一个剧本，把剧本的步骤抄进待办清单，再在步骤需要时运行其他技能。它跳过的步骤会以 <code>skip: &lt;reason&gt;</code> 留在清单里。好的提示词说清目标，以及怎么判断做完了。它不列技能，因为手写的步骤顺序往往会漏掉或打乱剧本本来会保留的步骤。帮人斟酌提示词之前，先读 <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/references/prompting.md" target="_blank" rel="noopener"><code>references/prompting.md</code></a>。<a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/02-poteto-mode.md" target="_blank" rel="noopener">指南第 2 页</a> 里有例子。</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>Whether <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> stays on depends on how the user starts it:</p></div><div class="doc__zh"><p><code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 会不会一直开着，取决于用户怎么启动它：</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><ul>
+<li>Enter on <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> attaches the skill to one message. It fades as the chat moves on.</li>
+<li>Option+Enter on Mac or Alt+Enter on Windows, or Use as Mode from the skill entry, makes it a Custom Mode. It stays in context every turn until the user exits the mode, and it stays out of casual turns.</li>
+<li>Cursor's docs list Custom Modes in the Agents Window and the CLI. Elsewhere, start each new task with <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>.</li>
+</ul></div><div class="doc__zh"><ul>
+<li>在 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 上按 Enter，技能只附在这一条消息上。随着对话往下走，它的作用会慢慢变弱。</li>
+<li>在 Mac 上按 Option+Enter、在 Windows 上按 Alt+Enter，或者在技能条目里点 Use as Mode，会把它变成一个 Custom Mode。在用户退出这个模式之前，它每一轮都留在前面聊过的内容里；闲聊的轮次里它不掺和。</li>
+<li>Cursor 的文档写着 Custom Modes 可以在 Agents Window 和 CLI 里用。在其他地方，每个新任务都用 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 开头。</li>
+</ul></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>Link <a href="https://cursor.com/docs/skills">Cursor's skills docs</a> when this comes up. Mid-chat, &quot;new task&quot; makes the mode match a fresh playbook. <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> already uses <code>poteto-agent</code> for the subagents its playbook steps spawn. To get the same style from a subagent of your own, spawn it with <code>subagent_type: &quot;poteto-agent&quot;</code>.</p></div><div class="doc__zh"><p>聊到这个话题时，附上 <a href="https://cursor.com/docs/skills">Cursor 的技能文档</a> 链接。对话进行到一半时说「new task」，模式就会重新挑一个剧本。<code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 派帮手 AI 去做剧本步骤时，已经在用 <code>poteto-agent</code>。想让你自己派的帮手 AI 也有同样的风格，就用 <code>subagent_type: &quot;poteto-agent&quot;</code> 来派。</p></div></div><div class="doc__row" id="sec-4"><div class="doc__en" lang="en"><h4>Pick a skill</h4></div><div class="doc__zh"><h4>挑一个技能</h4></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>The default answer is <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>, which runs most of the others when its steps need them. Name a skill directly when the user wants more or less of something than the playbook gives. Read the skill before you recommend it, and give one example prompt.</p></div><div class="doc__zh"><p>默认的答案是 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>，它会在步骤需要时运行大部分其他技能。当用户想要的某样东西比剧本给的多一点或少一点时，直接点名一个技能。推荐之前先读那个技能，并给一个示例提示词。</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><table>
+<thead>
+<tr>
+<th>The user wants to</th>
+<th>Skill</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Do any non-trivial task with rigor</td>
+<td><a href="/guides/pstack/skills/poteto-mode/"><code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code></a></td>
+</tr>
+<tr>
+<td>Check that the agent understood their goal and the problem before it starts</td>
+<td><a href="/guides/pstack/skills/in-your-own-words/"><code><span class="sk" data-sk="in-your-own-words">/pstack:in-your-own-words</span></code></a></td>
+</tr>
+<tr>
+<td>Get a prompt rewritten deeper, not bigger, before sending it: what a top professional would add, their raw material and methods, and an outside check. It returns the prompt and doesn't do the task</td>
+<td><a href="/guides/pstack/skills/sharpen/"><code><span class="sk" data-sk="sharpen">/pstack:sharpen</span></code></a></td>
+</tr>
+<tr>
+<td>Know how code works now, or where new code should live</td>
+<td><a href="/guides/pstack/skills/how/"><code><span class="sk" data-sk="how">/pstack:how</span></code></a></td>
+</tr>
+<tr>
+<td>Know why code is shaped this way, or where a number came from</td>
+<td><a href="/guides/pstack/skills/why/"><code><span class="sk" data-sk="why">/pstack:why</span></code></a></td>
+</tr>
+<tr>
+<td>Understand a change or subsystem, explained plainly</td>
+<td><a href="/guides/pstack/skills/teach/"><code><span class="sk" data-sk="teach">/pstack:teach</span></code></a></td>
+</tr>
+<tr>
+<td>Catch up on their own recent work on a topic</td>
+<td><a href="/guides/pstack/skills/recall/"><code><span class="sk" data-sk="recall">/pstack:recall</span></code></a></td>
+</tr>
+<tr>
+<td>Catch up on what changed in this chat since their last message, in plain words and small visuals, with every item waiting on them listed and decidable from the reply alone</td>
+<td><a href="/guides/pstack/skills/ketchup/"><code><span class="sk" data-sk="ketchup">/pstack:ketchup</span></code></a></td>
+</tr>
+<tr>
+<td>Catch up like <code><span class="sk" data-sk="ketchup">/pstack:ketchup</span></code>, in a short subtitled video of slides, with the waiting calls as text under it</td>
+<td><a href="/guides/pstack/skills/ketchup-video/"><code><span class="sk" data-sk="ketchup-video">/pstack:ketchup-video</span></code></a></td>
+</tr>
+<tr>
+<td>Know what a small diff could break outside itself</td>
+<td><a href="/guides/pstack/skills/blast-radius/"><code><span class="sk" data-sk="blast-radius">/pstack:blast-radius</span></code></a></td>
+</tr>
+<tr>
+<td>Settle types and module shape before code that crosses a function boundary</td>
+<td><a href="/guides/pstack/skills/architect/"><code><span class="sk" data-sk="architect">/pstack:architect</span></code></a></td>
+</tr>
+<tr>
+<td>Get several attempts at one brief, merged into the best one</td>
+<td><a href="/guides/pstack/skills/arena/"><code><span class="sk" data-sk="arena">/pstack:arena</span></code></a></td>
+</tr>
+<tr>
+<td>Run parallel checks over slices, or race workers, as cloud agents</td>
+<td><a href="/guides/pstack/skills/swarm/"><code><span class="sk" data-sk="swarm">/pstack:swarm</span></code></a></td>
+</tr>
+<tr>
+<td>Have different models review a diff and try to break it</td>
+<td><a href="/guides/pstack/skills/interrogate/"><code><span class="sk" data-sk="interrogate">/pstack:interrogate</span></code></a></td>
+</tr>
+<tr>
+<td>Fix a bug test-first when a cheap local test exists</td>
+<td><a href="/guides/pstack/skills/tdd/"><code><span class="sk" data-sk="tdd">/pstack:tdd</span></code></a></td>
+</tr>
+<tr>
+<td>Apply TypeScript rules to <code>.ts</code> or <code>.tsx</code> work</td>
+<td><a href="/guides/pstack/skills/typescript-best-practices/"><code><span class="sk" data-sk="typescript-best-practices">/pstack:typescript-best-practices</span></code></a></td>
+</tr>
+<tr>
+<td>Strip comments before review, using a reviewer that didn't write them</td>
+<td><a href="/guides/pstack/skills/no-comments/"><code><span class="sk" data-sk="no-comments">/pstack:no-comments</span></code></a></td>
+</tr>
+<tr>
+<td>Clean AI tells out of prose</td>
+<td><a href="/guides/pstack/skills/unslop/"><code><span class="sk" data-sk="unslop">/pstack:unslop</span></code></a></td>
+</tr>
+<tr>
+<td>Write docs, an RFC, a README, a PR description, or a commit message to a standard</td>
+<td><a href="/guides/pstack/skills/technical-writing/"><code><span class="sk" data-sk="technical-writing">/pstack:technical-writing</span></code></a></td>
+</tr>
+<tr>
+<td>Hear the last reply again in plain words</td>
+<td><a href="/guides/pstack/skills/bro/"><code><span class="sk" data-sk="bro">/pstack:bro</span></code></a></td>
+</tr>
+<tr>
+<td>Give agents a scripted way to drive the app and prove behavior</td>
+<td><a href="/guides/pstack/skills/create-verification-skill/"><code><span class="sk" data-sk="create-verification-skill">/pstack:create-verification-skill</span></code></a></td>
+</tr>
+<tr>
+<td>Bring a verification skill and its feature map back in line with the app</td>
+<td><a href="/guides/pstack/skills/maintain-verification-skill/"><code><span class="sk" data-sk="maintain-verification-skill">/pstack:maintain-verification-skill</span></code></a></td>
+</tr>
+<tr>
+<td>Formally verify a race, invariant, or other property that tests rarely reach</td>
+<td><a href="/guides/pstack/skills/create-formal-verification-skill/"><code><span class="sk" data-sk="create-formal-verification-skill">/pstack:create-formal-verification-skill</span></code></a></td>
+</tr>
+<tr>
+<td>Bring a formal verification back in line after the code it covers changed, and learn whether a failure is drift or a bug</td>
+<td><a href="/guides/pstack/skills/maintain-formal-verification-skill/"><code><span class="sk" data-sk="maintain-formal-verification-skill">/pstack:maintain-formal-verification-skill</span></code></a></td>
+</tr>
+<tr>
+<td>Show a PM or designer what the user sees as a chart checked by a TLA+ model, with the shortest path to each state that breaks a rule</td>
+<td><a href="/guides/pstack/skills/statechart/"><code><span class="sk" data-sk="statechart">/pstack:statechart</span></code></a></td>
+</tr>
+<tr>
+<td>Vet a performance number before reporting or acting on it</td>
+<td><a href="/guides/pstack/skills/benchmark-checklist/"><code><span class="sk" data-sk="benchmark-checklist">/pstack:benchmark-checklist</span></code></a></td>
+</tr>
+<tr>
+<td>Run a large or cross-cutting change, or one to review after stepping away</td>
+<td><a href="/guides/pstack/skills/figure-it-out/"><code><span class="sk" data-sk="figure-it-out">/pstack:figure-it-out</span></code></a></td>
+</tr>
+<tr>
+<td>Keep a decision log during a run, and review it afterward</td>
+<td><a href="/guides/pstack/skills/show-me-your-work/"><code><span class="sk" data-sk="show-me-your-work">/pstack:show-me-your-work</span></code></a></td>
+</tr>
+<tr>
+<td>Pick a model for each role and a reasoning budget</td>
+<td><a href="/guides/pstack/skills/setup-pstack/"><code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code></a></td>
+</tr>
+<tr>
+<td>Turn their own working habits into a personal mode skill</td>
+<td><a href="/guides/pstack/skills/automate-me/"><code><span class="sk" data-sk="automate-me">/pstack:automate-me</span></code></a></td>
+</tr>
+<tr>
+<td>Turn what a finished task taught into skill edits</td>
+<td><a href="/guides/pstack/skills/reflect/"><code><span class="sk" data-sk="reflect">/pstack:reflect</span></code></a></td>
+</tr>
+<tr>
+<td>Stop agents from repeating the same mistakes in this repo</td>
+<td><a href="/guides/pstack/skills/correct/"><code><span class="sk" data-sk="correct">/pstack:correct</span></code></a></td>
+</tr>
+<tr>
+<td>Build a page whose buttons wake a Grok Bot over a webhook</td>
+<td><a href="/guides/pstack/skills/make-bot-ui/"><code><span class="sk" data-sk="make-bot-ui">/pstack:make-bot-ui</span></code></a></td>
+</tr>
+<tr>
+<td>Find their way around pstack</td>
+<td><code><span class="sk" data-sk="poteto-help">/pstack:poteto-help</span></code></td>
+</tr>
+</tbody>
+</table></div><div class="doc__zh"><table>
+<thead>
+<tr>
+<th>用户想要</th>
+<th>技能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>严谨地做任何不简单的任务</td>
+<td><a href="/guides/pstack/skills/poteto-mode/"><code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code></a></td>
+</tr>
+<tr>
+<td>在 AI 动手之前，确认它理解了用户的目标和问题</td>
+<td><a href="/guides/pstack/skills/in-your-own-words/"><code><span class="sk" data-sk="in-your-own-words">/pstack:in-your-own-words</span></code></a></td>
+</tr>
+<tr>
+<td>发出提示词之前，把它改得更深而不是更大：顶尖行家会补充什么、行家用的原始材料和方法，以及一个外部检查。它只交回提示词，不做任务</td>
+<td><a href="/guides/pstack/skills/sharpen/"><code><span class="sk" data-sk="sharpen">/pstack:sharpen</span></code></a></td>
+</tr>
+<tr>
+<td>知道代码现在怎么运作，或者新代码该放在哪里</td>
+<td><a href="/guides/pstack/skills/how/"><code><span class="sk" data-sk="how">/pstack:how</span></code></a></td>
+</tr>
+<tr>
+<td>知道代码为什么是这个样子，或者某个数字是从哪来的</td>
+<td><a href="/guides/pstack/skills/why/"><code><span class="sk" data-sk="why">/pstack:why</span></code></a></td>
+</tr>
+<tr>
+<td>听人用大白话讲懂一处改动或一个子系统</td>
+<td><a href="/guides/pstack/skills/teach/"><code><span class="sk" data-sk="teach">/pstack:teach</span></code></a></td>
+</tr>
+<tr>
+<td>追上自己最近在某个话题上做过的事</td>
+<td><a href="/guides/pstack/skills/recall/"><code><span class="sk" data-sk="recall">/pstack:recall</span></code></a></td>
+</tr>
+<tr>
+<td>追上这个对话里自从自己上一条消息以来变了什么：用大白话和小图，等自己拍板的每件事都列出来，光看回复就能做决定</td>
+<td><a href="/guides/pstack/skills/ketchup/"><code><span class="sk" data-sk="ketchup">/pstack:ketchup</span></code></a></td>
+</tr>
+<tr>
+<td>像 <code><span class="sk" data-sk="ketchup">/pstack:ketchup</span></code> 那样追上进度，但做成一段带字幕的短幻灯片视频，等拍板的事以文字放在视频下面</td>
+<td><a href="/guides/pstack/skills/ketchup-video/"><code><span class="sk" data-sk="ketchup-video">/pstack:ketchup-video</span></code></a></td>
+</tr>
+<tr>
+<td>知道一个小 diff 在它自身之外可能弄坏什么</td>
+<td><a href="/guides/pstack/skills/blast-radius/"><code><span class="sk" data-sk="blast-radius">/pstack:blast-radius</span></code></a></td>
+</tr>
+<tr>
+<td>写跨函数边界的代码之前，先定好类型和模块结构</td>
+<td><a href="/guides/pstack/skills/architect/"><code><span class="sk" data-sk="architect">/pstack:architect</span></code></a></td>
+</tr>
+<tr>
+<td>同一份说明拿到几份尝试，合并成最好的一份</td>
+<td><a href="/guides/pstack/skills/arena/"><code><span class="sk" data-sk="arena">/pstack:arena</span></code></a></td>
+</tr>
+<tr>
+<td>以云端帮手 AI 的方式，分块并行检查，或者让几个帮手竞速</td>
+<td><a href="/guides/pstack/skills/swarm/"><code><span class="sk" data-sk="swarm">/pstack:swarm</span></code></a></td>
+</tr>
+<tr>
+<td>让不同的模型审一个 diff，并试着把它弄坏</td>
+<td><a href="/guides/pstack/skills/interrogate/"><code><span class="sk" data-sk="interrogate">/pstack:interrogate</span></code></a></td>
+</tr>
+<tr>
+<td>有便宜的本地测试时，先写测试再修 bug</td>
+<td><a href="/guides/pstack/skills/tdd/"><code><span class="sk" data-sk="tdd">/pstack:tdd</span></code></a></td>
+</tr>
+<tr>
+<td>对 <code>.ts</code> 或 <code>.tsx</code> 的工作套用 TypeScript 规则</td>
+<td><a href="/guides/pstack/skills/typescript-best-practices/"><code><span class="sk" data-sk="typescript-best-practices">/pstack:typescript-best-practices</span></code></a></td>
+</tr>
+<tr>
+<td>审查之前去掉注释，由一个没写这些注释的审阅者来做</td>
+<td><a href="/guides/pstack/skills/no-comments/"><code><span class="sk" data-sk="no-comments">/pstack:no-comments</span></code></a></td>
+</tr>
+<tr>
+<td>清掉文字里的 AI 腔</td>
+<td><a href="/guides/pstack/skills/unslop/"><code><span class="sk" data-sk="unslop">/pstack:unslop</span></code></a></td>
+</tr>
+<tr>
+<td>按标准写文档、RFC、README、PR 描述或提交信息</td>
+<td><a href="/guides/pstack/skills/technical-writing/"><code><span class="sk" data-sk="technical-writing">/pstack:technical-writing</span></code></a></td>
+</tr>
+<tr>
+<td>用大白话再听一遍上一条回复</td>
+<td><a href="/guides/pstack/skills/bro/"><code><span class="sk" data-sk="bro">/pstack:bro</span></code></a></td>
+</tr>
+<tr>
+<td>给 AI 一个写好脚本的办法去操作应用、证明行为</td>
+<td><a href="/guides/pstack/skills/create-verification-skill/"><code><span class="sk" data-sk="create-verification-skill">/pstack:create-verification-skill</span></code></a></td>
+</tr>
+<tr>
+<td>让验证技能和它的功能地图重新和应用对上</td>
+<td><a href="/guides/pstack/skills/maintain-verification-skill/"><code><span class="sk" data-sk="maintain-verification-skill">/pstack:maintain-verification-skill</span></code></a></td>
+</tr>
+<tr>
+<td>对竞态、不变式或其他测试很少碰到的性质做形式化验证</td>
+<td><a href="/guides/pstack/skills/create-formal-verification-skill/"><code><span class="sk" data-sk="create-formal-verification-skill">/pstack:create-formal-verification-skill</span></code></a></td>
+</tr>
+<tr>
+<td>被覆盖的代码改了之后，让形式化验证重新对上，并弄清一次失败是验证跟代码脱节了，还是真有 bug</td>
+<td><a href="/guides/pstack/skills/maintain-formal-verification-skill/"><code><span class="sk" data-sk="maintain-formal-verification-skill">/pstack:maintain-formal-verification-skill</span></code></a></td>
+</tr>
+<tr>
+<td>给产品经理或设计师看用户会看到什么：一张经 TLA+ 模型检查过的图，附上走到每个违反规则的状态的最短路径</td>
+<td><a href="/guides/pstack/skills/statechart/"><code><span class="sk" data-sk="statechart">/pstack:statechart</span></code></a></td>
+</tr>
+<tr>
+<td>报告或依据一个性能数字行动之前，先核一遍</td>
+<td><a href="/guides/pstack/skills/benchmark-checklist/"><code><span class="sk" data-sk="benchmark-checklist">/pstack:benchmark-checklist</span></code></a></td>
+</tr>
+<tr>
+<td>跑一个很大或横跨很多地方的改动，或者一个要离开一阵、回来再审的改动</td>
+<td><a href="/guides/pstack/skills/figure-it-out/"><code><span class="sk" data-sk="figure-it-out">/pstack:figure-it-out</span></code></a></td>
+</tr>
+<tr>
+<td>运行过程中记一份决定日志，事后回头看</td>
+<td><a href="/guides/pstack/skills/show-me-your-work/"><code><span class="sk" data-sk="show-me-your-work">/pstack:show-me-your-work</span></code></a></td>
+</tr>
+<tr>
+<td>给每个角色选模型，定一个推理预算</td>
+<td><a href="/guides/pstack/skills/setup-pstack/"><code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code></a></td>
+</tr>
+<tr>
+<td>把自己的工作习惯变成一个个人模式技能</td>
+<td><a href="/guides/pstack/skills/automate-me/"><code><span class="sk" data-sk="automate-me">/pstack:automate-me</span></code></a></td>
+</tr>
+<tr>
+<td>把一件做完的任务教会的东西，变成对技能的修改</td>
+<td><a href="/guides/pstack/skills/reflect/"><code><span class="sk" data-sk="reflect">/pstack:reflect</span></code></a></td>
+</tr>
+<tr>
+<td>别让 AI 在这个仓库里一再犯同样的错</td>
+<td><a href="/guides/pstack/skills/correct/"><code><span class="sk" data-sk="correct">/pstack:correct</span></code></a></td>
+</tr>
+<tr>
+<td>做一个页面，上面的按钮能通过 webhook 唤醒 Grok Bot</td>
+<td><a href="/guides/pstack/skills/make-bot-ui/"><code><span class="sk" data-sk="make-bot-ui">/pstack:make-bot-ui</span></code></a></td>
+</tr>
+<tr>
+<td>在 pstack 里找到路</td>
+<td><code><span class="sk" data-sk="poteto-help">/pstack:poteto-help</span></code></td>
+</tr>
+</tbody>
+</table></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>If a skill directory next to this one is missing from the table, read its frontmatter and route by its description. The <code>principle-*</code> directories are covered under principles below.</p></div><div class="doc__zh"><p>如果这个目录旁边有某个技能目录不在表里，就读它的 frontmatter，按它的描述来对应。<code>principle-*</code> 目录放在下面的原则部分里讲。</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>Close calls:</p></div><div class="doc__zh"><p>容易混的几组：</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><ul>
+<li><code><span class="sk" data-sk="how">/pstack:how</span></code> explains what the code does. <code><span class="sk" data-sk="why">/pstack:why</span></code> explains the reasons. <code><span class="sk" data-sk="teach">/pstack:teach</span></code> runs one or both and explains the result plainly.</li>
+<li><code><span class="sk" data-sk="arena">/pstack:arena</span></code> gives every worker the same brief and merges the best parts. <code><span class="sk" data-sk="swarm">/pstack:swarm</span></code> splits work into slices or a race and returns one report.</li>
+<li><code><span class="sk" data-sk="architect">/pstack:architect</span></code> implements right after it settles the design. Add &quot;with checkpoint&quot; to review the design before it writes code.</li>
+<li><code><span class="sk" data-sk="interrogate">/pstack:interrogate</span></code> reviews the diff. <code><span class="sk" data-sk="blast-radius">/pstack:blast-radius</span></code> looks for breakage outside the diff and proves the one fact that makes the change safe.</li>
+<li><code><span class="sk" data-sk="recall">/pstack:recall</span></code> rebuilds context across recent chats. <code><span class="sk" data-sk="ketchup">/pstack:ketchup</span></code> covers only this chat since the user's last message. Resuming one specific chat or branch is the Session pickup playbook.</li>
+<li><code><span class="sk" data-sk="figure-it-out">/pstack:figure-it-out</span></code> designs one rigorous run. The Orchestrate playbook runs a program that spans days and many PRs. The Autonomous run playbook drives one task to a finish condition.</li>
+</ul></div><div class="doc__zh"><ul>
+<li><code><span class="sk" data-sk="how">/pstack:how</span></code> 解释代码在做什么。<code><span class="sk" data-sk="why">/pstack:why</span></code> 解释背后的原因。<code><span class="sk" data-sk="teach">/pstack:teach</span></code> 运行其中一个或两个，再用大白话讲出结果。</li>
+<li><code><span class="sk" data-sk="arena">/pstack:arena</span></code> 给每个帮手同一份说明，然后合并最好的部分。<code><span class="sk" data-sk="swarm">/pstack:swarm</span></code> 把活切成几块或者搞竞速，交回一份报告。</li>
+<li><code><span class="sk" data-sk="architect">/pstack:architect</span></code> 定好设计之后马上动手实现。加上「with checkpoint」，就能在它写代码之前先审设计。</li>
+<li><code><span class="sk" data-sk="interrogate">/pstack:interrogate</span></code> 审 diff 本身。<code><span class="sk" data-sk="blast-radius">/pstack:blast-radius</span></code> 找 diff 之外的破坏，并证明让这个改动安全的那一个事实。</li>
+<li><code><span class="sk" data-sk="recall">/pstack:recall</span></code> 跨最近的几个对话，重建前面聊过的内容。<code><span class="sk" data-sk="ketchup">/pstack:ketchup</span></code> 只管这个对话里、从用户上一条消息以来的部分。接着某一个具体的对话或分支继续做，用的是 Session pickup 剧本。</li>
+<li><code><span class="sk" data-sk="figure-it-out">/pstack:figure-it-out</span></code> 设计一次严谨的运行。Orchestrate 剧本跑一个持续好几天、涉及很多 PR 的大项目。Autonomous run 剧本把一个任务一直推到完成条件。</li>
+</ul></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>Not in pstack:</p></div><div class="doc__zh"><p>不在 pstack 里的：</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><ul>
+<li><code>/deslop</code>, <code>control-cli</code>, and <code>control-ui</code> ship in the <code>cursor-team-kit</code> plugin.</li>
+<li><code>/loop</code> and <code>/create-skill</code> are Cursor built-ins.</li>
+<li>pstack has no <code>/orchestrate</code> skill. Orchestrate is a <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> playbook. If the slash menu shows <code>/orchestrate</code>, another plugin provides it.</li>
+</ul></div><div class="doc__zh"><ul>
+<li><code>/deslop</code>、<code>control-cli</code> 和 <code>control-ui</code> 在 <code>cursor-team-kit</code> 插件里。</li>
+<li><code>/loop</code> 和 <code>/create-skill</code> 是 Cursor 自带的。</li>
+<li>pstack 没有 <code>/orchestrate</code> 技能。Orchestrate 是 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 的一个剧本。如果斜杠菜单里出现了 <code>/orchestrate</code>，那是别的插件提供的。</li>
+</ul></div></div><div class="doc__row" id="sec-5"><div class="doc__en" lang="en"><h4>Playbooks and principles</h4></div><div class="doc__zh"><h4>剧本和原则</h4></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>Playbooks are step lists inside <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>, not skills, so they have no slash command. Inside <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>, describing the task picks one, and these phrases name one directly:</p></div><div class="doc__zh"><p>剧本是 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 里面的步骤清单，不是技能，所以没有斜杠命令。在 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 里，描述任务就会挑中一个剧本，下面这些说法能直接点名一个：</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><ul>
+<li>&quot;babysit this pr&quot; or &quot;check on pr 123&quot; runs Babysit. It drives the PR to merge-ready and stops there. It doesn't merge unless the user asks to merge, land, or ship.</li>
+<li>&quot;land the stack&quot; runs Shipping.</li>
+<li>&quot;take over this branch&quot; runs Session pickup.</li>
+<li>&quot;pause safely&quot; runs Pause safely.</li>
+<li>&quot;full autopilot on this queue&quot; runs Autopilot-full. &quot;autopilot, don't merge&quot; runs Autopilot-stack.</li>
+<li>&quot;run the eval playbook&quot; runs Eval.</li>
+</ul></div><div class="doc__zh"><ul>
+<li>「babysit this pr」或「check on pr 123」会运行 Babysit。它把 PR 推到可以合并的状态，然后停在那里。除非用户要求合并（merge、land 或 ship），否则它不合并。</li>
+<li>「land the stack」会运行 Shipping。</li>
+<li>「take over this branch」会运行 Session pickup。</li>
+<li>「pause safely」会运行 Pause safely。</li>
+<li>「full autopilot on this queue」会运行 Autopilot-full。「autopilot, don't merge」会运行 Autopilot-stack。</li>
+<li>「run the eval playbook」会运行 Eval。</li>
+</ul></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>Without <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>, a phrase such as &quot;babysit this pr&quot; can start Cursor's own skill for the same job instead. The Playbooks section of <a href="/guides/pstack/skills/poteto-mode/"><code>poteto-mode</code></a> lists every playbook and when it applies. <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/06-verify-and-ship.md" target="_blank" rel="noopener">Guide page 6</a> covers opening, babysitting, and landing a PR.</p></div><div class="doc__zh"><p>不开 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 时，「babysit this pr」这类说法可能会启动 Cursor 自己做同一件事的技能。<a href="/guides/pstack/skills/poteto-mode/"><code>poteto-mode</code></a> 的「Playbooks」一节列出了每个剧本和它适用的场合。<a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/06-verify-and-ship.md" target="_blank" rel="noopener">指南第 6 页</a> 讲了怎么开 PR、盯 PR 和合入 PR。</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>pstack has no planning skill. Cursor's Plan Mode works alongside it. For work that spans phases or stacked PRs, asking <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> for a plan runs the <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../poteto-mode/playbooks/multi-phase-plan.md" target="_blank" rel="noopener">Multi-phase plan playbook</a>, which writes the plan and doesn't implement it. For a design question, the Prototype playbook or <code><span class="sk" data-sk="architect">/pstack:architect</span></code> settles it in code first.</p></div><div class="doc__zh"><p>pstack 没有做计划的技能。Cursor 的 Plan Mode 可以和它一起用。对于跨好几个阶段或一串叠起来的 PR 的活，让 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 出一份计划，就会运行 <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../poteto-mode/playbooks/multi-phase-plan.md" target="_blank" rel="noopener">Multi-phase plan 剧本</a>，它只写计划，不去实现。如果是设计上的问题，Prototype 剧本或 <code><span class="sk" data-sk="architect">/pstack:architect</span></code> 会先在代码里把它定下来。</p></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>Principles are one-rule skills that <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> reads and cites in its replies. The user rarely invokes one. They steer with the names instead, as in &quot;apply prove it works. show me the real output.&quot; Typing <code>/principle-&lt;name&gt;</code> still loads one on demand. <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/08-principles.md" target="_blank" rel="noopener">Guide page 8</a> lists them.</p></div><div class="doc__zh"><p>原则是只有一条规则的技能，<code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 会读它们，并在回复里引用。用户很少直接调用原则，而是用原则的名字来引导，比如「用上 prove it works，把真实输出给我看」。输入 <code>/principle-&lt;name&gt;</code> 仍然可以按需载入一个。<a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/08-principles.md" target="_blank" rel="noopener">指南第 8 页</a> 列出了它们。</p></div></div><div class="doc__row" id="sec-6"><div class="doc__en" lang="en"><h4>Fix a run that went wrong</h4></div><div class="doc__zh"><h4>修好一次跑偏的运行</h4></div></div><div class="doc__row"><div class="doc__en" lang="en"><table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The mode stopped applying after a few turns</td>
+<td>It was started with Enter. Start it as a Custom Mode, or start each task with <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>.</td>
+</tr>
+<tr>
+<td>A question got treated as the next step of the last task</td>
+<td>Say &quot;new task&quot;, or say the turn doesn't need the mode.</td>
+</tr>
+<tr>
+<td>A new model choice had no effect</td>
+<td>The rule from <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code> applies to new chats. Start one.</td>
+</tr>
+<tr>
+<td>Runs cost more than expected</td>
+<td>See the cost paragraph under Get set up.</td>
+</tr>
+<tr>
+<td>A skill didn't load on its own</td>
+<td>Only <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code> loads from the user's words. The others load when the user types them or when <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> runs them, and it doesn't run every skill.</td>
+</tr>
+<tr>
+<td>Parallel agents overwrote each other</td>
+<td>Give each agent its own worktree, or run them as cloud agents, which each get their own machine.</td>
+</tr>
+<tr>
+<td>An overnight run moved but finished nothing</td>
+<td><code>/loop</code> needs a check that can pass or fail, not a duration. See <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/07-overnight.md" target="_blank" rel="noopener">guide page 7</a>.</td>
+</tr>
+<tr>
+<td>The reply claims success from a green build</td>
+<td>Ask for the real command, flow, stored value, or profile. That's the prove-it-works principle.</td>
+</tr>
+</tbody>
+</table></div><div class="doc__zh"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>解决办法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>几轮之后模式就不起作用了</td>
+<td>它是用 Enter 启动的。改成以 Custom Mode 启动，或者每个任务都用 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 开头。</td>
+</tr>
+<tr>
+<td>一个问题被当成了上一个任务的下一步</td>
+<td>说「new task」，或者说这一轮不需要这个模式。</td>
+</tr>
+<tr>
+<td>换了模型却没效果</td>
+<td><code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code> 写的规则对新对话生效。开一个新对话。</td>
+</tr>
+<tr>
+<td>跑起来比预想的贵</td>
+<td>见「完成设置」下面讲费用的那一段。</td>
+</tr>
+<tr>
+<td>某个技能没有自己载入</td>
+<td>只有 <code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code> 会因为用户说的话而自动载入。其他技能在用户输入它们、或者 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 运行它们时才载入，而它并不会运行每一个技能。</td>
+</tr>
+<tr>
+<td>几个并行的 AI 互相覆盖了对方的改动</td>
+<td>给每个 AI 各自的 worktree，或者把它们当云端帮手 AI 来跑，每个都有自己的机器。</td>
+</tr>
+<tr>
+<td>一次通宵运行动了不少，却什么都没做完</td>
+<td><code>/loop</code> 需要一个能判断通过或失败的检查，而不是一段时长。见 <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/07-overnight.md" target="_blank" rel="noopener">指南第 7 页</a>。</td>
+</tr>
+<tr>
+<td>回复看到构建变绿就说成功了</td>
+<td>要真实的命令、流程、存下来的值或性能剖析结果。这就是 prove-it-works 原则。</td>
+</tr>
+</tbody>
+</table></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>For a run that drifts, <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/references/prompting.md" target="_blank" rel="noopener"><code>references/prompting.md</code></a> has one-line steers. <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/10-recipes-and-pitfalls.md" target="_blank" rel="noopener">Guide page 10</a> has more pitfalls and the recipes worth copying.</p></div><div class="doc__zh"><p>如果一次运行跑偏了，<a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/references/prompting.md" target="_blank" rel="noopener"><code>references/prompting.md</code></a> 里有一句话就能纠偏的提示。<a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/10-recipes-and-pitfalls.md" target="_blank" rel="noopener">指南第 10 页</a> 有更多坑，以及值得照抄的做法。</p></div></div><div class="doc__row" id="sec-7"><div class="doc__en" lang="en"><h4>Make pstack my own</h4></div><div class="doc__zh"><h4>把 pstack 改成自己的</h4></div></div><div class="doc__row"><div class="doc__en" lang="en"><ul>
+<li><a href="/guides/pstack/skills/automate-me/"><code><span class="sk" data-sk="automate-me">/pstack:automate-me</span></code></a> drafts a personal mode skill from the user's own history, to use alongside <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code>.</li>
+<li><a href="/guides/pstack/skills/reflect/"><code><span class="sk" data-sk="reflect">/pstack:reflect</span></code></a> after a session turns its lessons into skill edits the user approves.</li>
+<li><code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span> write a skill for &lt;workflow&gt;</code> runs the authoring playbook. The eval playbook tests a skill change blind.</li>
+<li>Fix a misbehaving skill in its own PR, not inside the feature work where it went wrong.</li>
+</ul></div><div class="doc__zh"><ul>
+<li><a href="/guides/pstack/skills/automate-me/"><code><span class="sk" data-sk="automate-me">/pstack:automate-me</span></code></a> 根据用户自己的历史记录，起草一个个人模式技能，和 <code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code> 搭配使用。</li>
+<li>一次会话之后用 <a href="/guides/pstack/skills/reflect/"><code><span class="sk" data-sk="reflect">/pstack:reflect</span></code></a>，它会把这次的教训变成技能修改，由用户批准。</li>
+<li><code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span> write a skill for &lt;workflow&gt;</code> 会运行写技能的剧本。eval 剧本会对一次技能修改做盲测。</li>
+<li>某个技能表现不对，就单独开一个 PR 去修，不要在它出错的那个功能开发里顺手修。</li>
+</ul></div></div><div class="doc__row"><div class="doc__en" lang="en"><p><a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/09-make-it-yours.md" target="_blank" rel="noopener">Guide page 9</a> covers each of these.</p></div><div class="doc__zh"><p><a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/../../docs/guide/09-make-it-yours.md" target="_blank" rel="noopener">指南第 9 页</a> 对这几样都有讲。</p></div></div><div class="doc__row" id="sec-8"><div class="doc__en" lang="en"><h4>Reply</h4></div><div class="doc__zh"><h4>回复</h4></div></div><div class="doc__row"><div class="doc__en" lang="en"><p>Lead with the answer. Give at most one example prompt in a code block, adapted from <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/references/recipes.md" target="_blank" rel="noopener"><code>references/recipes.md</code></a> when one fits, then the link to that file. Keep it short unless the user asked for the whole map.</p></div><div class="doc__zh"><p>先给答案。最多给一个示例提示词，放在代码块里；有合适的，就从 <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/references/recipes.md" target="_blank" rel="noopener"><code>references/recipes.md</code></a> 改编，然后附上那个文件的链接。保持简短，除非用户要的是整张地图。</p></div></div></div><p class="skilldoc__credit">原文作者 Lauren Tan（poteto），MIT 许可。译文由本站翻译，核对到 pstack 镜像 <code class="xxd-code-inline">97de40d</code>。 <a href="https://github.com/backnotprop/pstack/blob/97de40d/skills/poteto-help/SKILL.md" target="_blank" rel="noopener">在 GitHub 上看</a></p></section><nav class="skilldoc__more" aria-label="「入口：先认识这三个」里的其他技能"><p class="skilldoc__more-h">「入口：先认识这三个」里的其他技能</p><ul class="skilldoc__chips"><li><a href="/guides/pstack/skills/poteto-mode/" title="总入口。你说要什么、怎么算做完，它自己安排步骤。"><code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code></a></li><li><a href="/guides/pstack/skills/setup-pstack/" title="帮你选模型：查你能用哪些模型、问预算，写成所有技能共用的配置。"><code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code></a></li></ul><div class="skilldoc__pager"><a class="skilldoc__pg" href="/guides/pstack/skills/poteto-mode/"><span>上一个</span><code><span class="sk" data-sk="poteto-mode">/pstack:poteto-mode</span></code></a><a class="skilldoc__pg skilldoc__pg--next" href="/guides/pstack/skills/setup-pstack/"><span>下一个</span><code><span class="sk" data-sk="setup-pstack">/pstack:setup-pstack</span></code></a></div></nav></article><script>
+    (() => {
+      // 三个标签页：点标签、点站内锚点（目录、搜索结果、「读这一节」）都切到对应的那一页
+      const bar = document.getElementById("skilldoc-tabs");
+      if (!bar) return;
+      const tabs = [...bar.querySelectorAll('[role="tab"]')];
+      const panels = [...document.querySelectorAll("[data-panel]")];
+      const show = (v) => {
+        for (const t of tabs) { const on = t.dataset.value === v; t.setAttribute("aria-selected", String(on)); t.tabIndex = on ? 0 : -1; }
+        for (const p of panels) p.hidden = p.dataset.panel !== v;
+        if (window.Xxd?.moveInk) try { window.Xxd.moveInk(bar); } catch {}
+      };
+      const panelOf = (id) => { const el = id && document.getElementById(id); return el ? el.closest("[data-panel]") : null; };
+      // 标签栏贴在顶上时，切换后回到这一页的开头（标签栏自己是 sticky，scrollIntoView 对它不起作用，所以量它前面的占位）
+      const mark = document.getElementById("skilldoc-top");
+      const stuck = () => mark.getBoundingClientRect().top < 56;
+      const toTop = () => window.scrollTo({ top: mark.getBoundingClientRect().top + window.scrollY - 56, behavior: "instant" });
+      const goHash = (smooth) => {
+        const id = decodeURIComponent(location.hash.slice(1));
+        const p = panelOf(id);
+        if (!p) return false;
+        show(p.dataset.panel);
+        const el = document.getElementById(id);
+        if (el && id !== p.dataset.panel && !el.classList.contains("skilldoc__anchor")) el.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" });
+        else toTop();
+        return true;
+      };
+      if (!goHash(false)) show("overview");
+      window.addEventListener("hashchange", () => goHash(true));
+      bar.addEventListener("xxd:change", (e) => {
+        const v = e.detail.value;
+        show(v);
+        history.replaceState(null, "", v === "overview" ? location.pathname + location.search : "#" + v);
+        if (stuck()) toTop();
+      });
+
+      // 全文：跳到某一节
+      const jump = document.getElementById("skilldoc-jump");
+      jump?.addEventListener("change", () => { const el = document.getElementById(jump.value); el?.scrollIntoView({ block: "start" }); });
+
+      // 全文：中文 / 原文 / 对照，记住上次选的（只是个人偏好，存不了也没关系）
+      const seg = document.getElementById("skilldoc-modes");
+      const doc = document.getElementById("skilldoc-doc");
+      if (!seg || !doc) return;
+      const set = (v) => {
+        doc.dataset.mode = v;
+        for (const b of seg.children) { const on = b.dataset.value === v; b.setAttribute("aria-checked", String(on)); b.tabIndex = on ? 0 : -1; }
+      };
+      let saved = null;
+      try { saved = localStorage.getItem("pstack-skilldoc-mode"); } catch {}
+      if (saved && [...seg.children].some((b) => b.dataset.value === saved)) set(saved);
+      seg.addEventListener("xxd:change", (e) => { set(e.detail.value); try { localStorage.setItem("pstack-skilldoc-mode", e.detail.value); } catch {} });
+    })();
+  </script><footer class="site-foot"><p>本站是 <a href="https://github.com/backnotprop/pstack">pstack</a> 的非官方入门教程，不是官方文档；pstack 由 poteto 开发（MIT），命令和行为以官方仓库为准。教程源码和问题反馈在 <a href="https://github.com/nevertoday/xxd-pstack">GitHub</a>。</p></footer></main><nav class="site-toc" aria-label="本页目录"><p class="xxd-toc__title">本页</p><ul class="xxd-toc" data-spy><li><a href="#compare">用它和不用它</a></li><li><a href="#outline">文档写了什么</a></li><li><a href="#learn">写法亮点</a></li><li><a href="#full">全文</a></li></ul></nav></div><div class="site-nav-scrim" id="site-nav-scrim"></div><script type="application/json" id="site-search-index" data-opts="{&quot;placeholder&quot;:&quot;搜步骤、How-to、技能、名词、问题……&quot;,&quot;empty&quot;:&quot;没找到，换个词试试&quot;}" data-base="/guides/pstack/" data-sections="/guides/pstack/search-sections.json">[{"label":"1. 它能帮你什么","hint":"新手入门","keywords":"pstack 是什么，要准备什么，代价是什么","href":"/guides/pstack/start/1-why/"},{"label":"2. 装上它","hint":"新手入门","keywords":"在 Claude Code 里输入两行，选一个选项","href":"/guides/pstack/start/2-install/"},{"label":"3. 第一次用","hint":"新手入门","keywords":"发一段三部分的话，做出一个小网页","href":"/guides/pstack/start/3-first-use/"},{"label":"0. pstack 是什么","hint":"完整教程","keywords":"它管什么用、代价是什么、要准备什么","href":"/guides/pstack/guide/0-what/"},{"label":"1. 安装 pstack","hint":"完整教程","keywords":"Claude Code、Cursor、Codex 各一种装法","href":"/guides/pstack/guide/1-install/"},{"label":"2. 选模型和预算（可跳过）","hint":"完整教程","keywords":"不设置也能用；想省钱或换模型再看","href":"/guides/pstack/guide/2-setup/"},{"label":"3. 第一个任务","hint":"完整教程","keywords":"一句话交代清楚，再看它的复述和结果","href":"/guides/pstack/guide/3-first-task/"},{"label":"4. 改之前先看懂","hint":"完整教程","keywords":"让 AI 先讲清楚代码怎么工作，再决定改不改","href":"/guides/pstack/guide/4-understand/"},{"label":"5. 设计、动手、收拾干净","hint":"完整教程","keywords":"大改动先定方案，写完让别的模型挑毛病，再删掉多余的","href":"/guides/pstack/guide/5-design-build/"},{"label":"6. 验证和交付","hint":"完整教程","keywords":"先确认真的能用，再交上去合并","href":"/guides/pstack/guide/6-verify-ship/"},{"label":"7. 放手让它跑","hint":"完整教程","keywords":"睡前交代清楚，早上看它的记录","href":"/guides/pstack/guide/7-overnight/"},{"label":"8. 用熟以后","hint":"完整教程","keywords":"一句话拉回跑偏，同样的错不犯第二次","href":"/guides/pstack/guide/8-make-it-yours/"},{"label":"修一个 bug：先复现，再修，再证明","hint":"How-to · 在真实项目里","keywords":"在真实项目里","href":"/guides/pstack/howto/fix-bug/"},{"label":"加一个新功能，不碰坏旧的","hint":"How-to · 在真实项目里","keywords":"在真实项目里","href":"/guides/pstack/howto/add-feature/"},{"label":"重构：换个写法，功能不变","hint":"How-to · 在真实项目里","keywords":"在真实项目里","href":"/guides/pstack/howto/refactor/"},{"label":"嫌它慢：用数字证明变快了","hint":"How-to · 在真实项目里","keywords":"在真实项目里","href":"/guides/pstack/howto/perf/"},{"label":"接手一个陌生项目","hint":"How-to · 在真实项目里","keywords":"在真实项目里","href":"/guides/pstack/howto/new-codebase/"},{"label":"交之前，让几个 AI 挑毛病","hint":"How-to · 在真实项目里","keywords":"在真实项目里","href":"/guides/pstack/howto/review-branch/"},{"label":"写 README、文档、PR 说明","hint":"How-to · 在真实项目里","keywords":"在真实项目里","href":"/guides/pstack/howto/write-docs/"},{"label":"大改动：睡前交给它，早上看结果","hint":"How-to · 在真实项目里","keywords":"在真实项目里","href":"/guides/pstack/howto/big-migration/"},{"label":"给项目配一个验证技能，让 AI 自己去点","hint":"How-to · 让 AI 自己证明","keywords":"让 AI 自己证明","href":"/guides/pstack/howto/verify-app/"},{"label":"测试碰不到的 bug：形式化验证","hint":"How-to · 让 AI 自己证明","keywords":"让 AI 自己证明","href":"/guides/pstack/howto/formal-verify/"},{"label":"在 Claude Code 里用","hint":"How-to · 工具和环境","keywords":"工具和环境","href":"/guides/pstack/howto/claude-code/"},{"label":"在 Cursor 里用","hint":"How-to · 工具和环境","keywords":"工具和环境","href":"/guides/pstack/howto/cursor/"},{"label":"在 Codex 和其他工具里用","hint":"How-to · 工具和环境","keywords":"工具和环境","href":"/guides/pstack/howto/codex/"},{"label":"只装几个技能","hint":"How-to · 工具和环境","keywords":"工具和环境","href":"/guides/pstack/howto/pick-skills/"},{"label":"控制花费","hint":"How-to · 工具和环境","keywords":"工具和环境","href":"/guides/pstack/howto/cost/"},{"label":"更新、查看、卸载","hint":"How-to · 工具和环境","keywords":"工具和环境","href":"/guides/pstack/howto/update-remove/"},{"label":"照抄就能用的提示词","hint":"How-to · 提示词","keywords":"提示词","href":"/guides/pstack/howto/recipes/"},{"label":"它跑偏了，一句话拉回来","hint":"How-to · 提示词","keywords":"提示词","href":"/guides/pstack/howto/steer/"},{"label":"不知道该用哪个技能","hint":"How-to · 提示词","keywords":"提示词","href":"/guides/pstack/howto/which-skill/"},{"label":"/poteto-mode","hint":"技能 · 入口：先认识这三个","keywords":"总入口。你说要什么、怎么算做完，它自己安排步骤。 任何要认真做的事。一行就能改完的明显小事不用。","href":"/guides/pstack/skills/poteto-mode/"},{"label":"/poteto-help","hint":"技能 · 入口：先认识这三个","keywords":"问它「这事该用哪个技能」，它回答，并给一段能直接发的提示词。 刚上手，或者拿不准该用哪个技能。","href":"/guides/pstack/skills/poteto-help/"},{"label":"/setup-pstack","hint":"技能 · 入口：先认识这三个","keywords":"帮你选模型：查你能用哪些模型、问预算，写成所有技能共用的配置。 装完先跑它。想换模型、想省钱时再跑一次。","href":"/guides/pstack/skills/setup-pstack/"},{"label":"/in-your-own-words","hint":"技能 · 先听懂你","keywords":"让 AI 用自己的话说一遍你要什么，理解错了马上能看出来。 需求很乱，或是一长串讨论，怕 AI 理解偏。","href":"/guides/pstack/skills/in-your-own-words/"},{"label":"/sharpen","hint":"技能 · 先听懂你","keywords":"把提示词改准：补上行家会想到的步骤和检查办法。它不干活。 一件重要的活，发出去之前想把要求说准。","href":"/guides/pstack/skills/sharpen/"},{"label":"/how","hint":"技能 · 看懂代码","keywords":"讲清楚一段代码现在怎么跑：流程、关键类型、容易踩的坑。 改之前想先弄懂它，或者怀疑它哪里慢。","href":"/guides/pstack/skills/how/"},{"label":"/why","hint":"技能 · 看懂代码","keywords":"查清「当初为什么这么做」：翻 Git 历史和文档，每条结论都带出处。 看到奇怪的代码或配置，想知道来历、理由还成不成立。","href":"/guides/pstack/skills/why/"},{"label":"/teach","hint":"技能 · 看懂代码","keywords":"把 /how 和 /why 合成一篇讲解，一张图一张图带你真正看懂。 光看摘要不够，想真正弄懂一个改动或模块。","href":"/guides/pstack/skills/teach/"},{"label":"/recall","hint":"技能 · 看懂代码","keywords":"翻你最近的聊天和共享记录，帮你想起做到哪了、下一步做什么。 隔几天回到老话题，或开新对话前想先找回进度。","href":"/guides/pstack/skills/recall/"},{"label":"/architect","hint":"技能 · 设计和把关","keywords":"写跨模块的代码前，先定好怎么调用、类型怎么定，再比几个方案。 改动跨出一个函数，牵涉好几个模块。","href":"/guides/pstack/skills/architect/"},{"label":"/arena","hint":"技能 · 设计和把关","keywords":"让几个 AI 各做一份，换一家模型打分，挑最好的，再吸收别家的好点子。 命名、格式、算法这类以后很难改的决定，想多看几个方案。","href":"/guides/pstack/skills/arena/"},{"label":"/swarm","hint":"技能 · 设计和把关","keywords":"把活切成互不相干的几块，各派一个 AI 去做，最后汇总成一份报告。 要挨个检查很多东西：每个包、每个功能都过一遍。","href":"/guides/pstack/skills/swarm/"},{"label":"/interrogate","hint":"技能 · 设计和把关","keywords":"让几个不同的模型给改动挑错，只留下能跑出失败的问题。它只看不改。 代码写完了心里没底，合并前想被挑一遍刺。","href":"/guides/pstack/skills/interrogate/"},{"label":"/blast-radius","hint":"技能 · 设计和把关","keywords":"一个小改动还会弄坏哪里？它找出来，并跑代码证明为什么安全。 改动很小，但你不完全放心。","href":"/guides/pstack/skills/blast-radius/"},{"label":"/figure-it-out","hint":"技能 · 设计和把关","keywords":"现成的 23 种做法都不合适时，它现场设计一套，每步都能回头查。 很大的活、没有现成做法的活，或你要离开、回来再审的活。","href":"/guides/pstack/skills/figure-it-out/"},{"label":"/tdd","hint":"技能 · 动手和清理","keywords":"先写一个会失败的测试，再修，再跑一遍确认它通过。 修 bug，而且在本地跑测试很方便。","href":"/guides/pstack/skills/tdd/"},{"label":"/typescript-best-practices","hint":"技能 · 动手和清理","keywords":"把类型原则变成 TypeScript 的写法，比如每种情况都处理到。 改的是 .ts / .tsx 文件。它不会自己加载，要你点名。","href":"/guides/pstack/skills/typescript-best-practices/"},{"label":"/unslop","hint":"技能 · 动手和清理","keywords":"去掉文字里的「AI 味」：套话、空话、排比、破折号。 写 README、PR 说明、提交信息，或嫌 AI 的回复太啰嗦。","href":"/guides/pstack/skills/unslop/"},{"label":"/no-comments","hint":"技能 · 动手和清理","keywords":"审核前清理注释：只留许可证、公开 API 文档和外部规则的说明。 代码拿去审核之前。","href":"/guides/pstack/skills/no-comments/"},{"label":"/technical-writing","hint":"技能 · 动手和清理","keywords":"按一套标准写文档，一句一句改到累了的工程师读一遍就懂。 写文档、RFC、README、PR 说明或提交信息。","href":"/guides/pstack/skills/technical-writing/"},{"label":"/create-verification-skill","hint":"技能 · 验证","keywords":"给项目做一个「验证技能」，教 AI 像用户一样把功能真用一遍。 还没有办法自动证明功能真能用。新手最该做的一件事。","href":"/guides/pstack/skills/create-verification-skill/"},{"label":"/maintain-verification-skill","hint":"技能 · 验证","keywords":"应用改了，它逐个功能核对验证技能，过时就修。不碰产品代码。 最好每天跑一次，可以设成定时任务。","href":"/guides/pstack/skills/maintain-verification-skill/"},{"label":"/create-formal-verification-skill","hint":"技能 · 验证","keywords":"测试碰不到的情况（比如并发、重试），检查某条规则永远成立。 有些地方出错代价很高，测试又很难触发。","href":"/guides/pstack/skills/create-formal-verification-skill/"},{"label":"/maintain-formal-verification-skill","hint":"技能 · 验证","keywords":"验证过的代码改了，它更新并重跑检查，告诉你是检查过时还是真有 bug。 合并或重构碰到了验证过的代码。","href":"/guides/pstack/skills/maintain-formal-verification-skill/"},{"label":"/statechart","hint":"技能 · 验证","keywords":"把用户会经历的状态画成图，标出违反规则的状态和怎么走到那里。 产品、设计这些不看代码的人，想「看见」程序怎么表现。","href":"/guides/pstack/skills/statechart/"},{"label":"/benchmark-checklist","hint":"技能 · 验证","keywords":"用 7 个问题核对性能数字，结论只给快、慢、没差别、说不准。 你测了性能，或者别人的数字好得可疑。","href":"/guides/pstack/skills/benchmark-checklist/"},{"label":"/bro","hint":"技能 · 汇报、复盘、越用越顺","keywords":"把上一条回复用大白话重说一遍：更短，没有行话。 AI 回得很专业，你看完还是不知道它说了啥。","href":"/guides/pstack/skills/bro/"},{"label":"/ketchup","hint":"技能 · 汇报、复盘、越用越顺","keywords":"「catch up」的谐音：告诉你变了什么、哪些事等你拍板。只看不改。 离开一会儿回来，想快速知道进展。","href":"/guides/pstack/skills/ketchup/"},{"label":"/ketchup-video","hint":"技能 · 汇报、复盘、越用越顺","keywords":"和 /ketchup 一样，但做成一段带字幕的幻灯片小视频。 想「看」进展，不想读。","href":"/guides/pstack/skills/ketchup-video/"},{"label":"/show-me-your-work","hint":"技能 · 汇报、复盘、越用越顺","keywords":"让 AI 每做一个决定就记一行：做了什么、为什么、证据和结果。 长任务，或者你要离开、让它自己跑的任务。","href":"/guides/pstack/skills/show-me-your-work/"},{"label":"/reflect","hint":"技能 · 汇报、复盘、越用越顺","keywords":"做完一件事，让三个审阅者读对话、提改进建议，你批准了才改。 某次任务太慢、走了弯路，想下次别再犯。","href":"/guides/pstack/skills/reflect/"},{"label":"/correct","hint":"技能 · 汇报、复盘、越用越顺","keywords":"找出 AI 反复犯的错，优先用结构和类型堵住，最后才写文档。 同一个错，你要纠正第二次的时候。","href":"/guides/pstack/skills/correct/"},{"label":"/automate-me","hint":"技能 · 汇报、复盘、越用越顺","keywords":"读你的聊天记录，按你的习惯做一个「<你的名字>-mode」技能。 /poteto-mode 用熟了，想要一套更像你自己的。","href":"/guides/pstack/skills/automate-me/"},{"label":"/make-bot-ui","hint":"技能 · 其他","keywords":"做一个小网页，点按钮就唤醒 Grok Bot，密钥只留在你电脑上。 你在用 Grok Bot，想要按钮式的操作界面。一般用不到。","href":"/guides/pstack/skills/make-bot-ui/"},{"label":"pstack 是什么","hint":"Wiki","keywords":"pstack 是一套免费的工作规矩，装进 AI 编程工具，让 AI 像老手一样干活。","href":"/guides/pstack/wiki/pstack/"},{"label":"Agent Skill（技能）","hint":"Wiki","keywords":"技能是一份写给 AI 的做法说明：遇到某类任务，就照这个来。","href":"/guides/pstack/wiki/agent-skill/"},{"label":"SKILL.md","hint":"Wiki","keywords":"SKILL.md 是技能的正文：开头写名字和什么时候用，后面写步骤和规矩。","href":"/guides/pstack/wiki/skill-md/"},{"label":"宿主工具（Claude Code、Cursor、Codex）","hint":"Wiki","keywords":"宿主就是真正跑 AI 的那个工具，比如 Claude Code、Cursor。pstack 装在它里面。","href":"/guides/pstack/wiki/harness/"},{"label":"斜杠命令","hint":"Wiki","keywords":"在对话框里打 `/` 开头的词，就是点名让 AI 用某个技能，比如 `/how`。","href":"/guides/pstack/wiki/slash/"},{"label":"token 和推理预算","hint":"Wiki","keywords":"token 是 AI 按量计费的单位。推理预算决定它每一步想多久。","href":"/guides/pstack/wiki/token-budget/"},{"label":"PR、提交和合并","hint":"Wiki","keywords":"PR 是一份「请审一下这些改动」的申请，审过才合并进主分支。","href":"/guides/pstack/wiki/pr/"},{"label":"/poteto-mode","hint":"Wiki","keywords":"`/poteto-mode` 是总入口：你说要什么，它自己安排步骤、干活。","href":"/guides/pstack/wiki/poteto-mode/"},{"label":"剧本（Playbook）","hint":"Wiki","keywords":"剧本是一类任务的固定步骤。你说任务，它自己挑一套照着做。","href":"/guides/pstack/wiki/playbook/"},{"label":"待办清单和 skip","hint":"Wiki","keywords":"待办清单是它开工时列的步骤。不做的步骤也留着，写明 `skip:` 和理由。","href":"/guides/pstack/wiki/todo/"},{"label":"子代理","hint":"Wiki","keywords":"子代理就是派出去干一小块活的帮手 AI。它读完一大堆东西，只把结论带回来。","href":"/guides/pstack/wiki/subagent/"},{"label":"worktree（工作树）","hint":"Wiki","keywords":"worktree 是同一个仓库的另一份工作目录。几个 AI 同时改代码，各用一份，互不打架。","href":"/guides/pstack/wiki/worktree/"},{"label":"Custom Mode（常驻模式）","hint":"Wiki","keywords":"Custom Mode 是 Cursor 的功能：让 `/poteto-mode` 一直开着，不用每句都打。","href":"/guides/pstack/wiki/custom-mode/"},{"label":"模型角色和 pstack-models 配置","hint":"Wiki","keywords":"pstack 把活分成几种角色，每种可以配不同的模型，写在一个小配置文件里。","href":"/guides/pstack/wiki/model-roles/"},{"label":"/arena 和 /swarm 的区别","hint":"Wiki","keywords":"`/arena`：同一道题几个人各做一份，挑最好的。`/swarm`：大活切成块，一人一块。","href":"/guides/pstack/wiki/arena-swarm/"},{"label":"证据（而不是「应该好了」）","hint":"Wiki","keywords":"在 pstack 里，「做完了」要拿真东西证明：真实的输出、存下的值、点过的界面。","href":"/guides/pstack/wiki/evidence/"},{"label":"验证技能","hint":"Wiki","keywords":"验证技能是给你的项目生成的说明：教 AI 启动应用，像用户一样操作一遍。","href":"/guides/pstack/wiki/verify-skill/"},{"label":"形式化验证","hint":"Wiki","keywords":"形式化验证是在限定范围内，把一条规则的所有情况都查一遍。","href":"/guides/pstack/wiki/formal-verification/"},{"label":"决策日志","hint":"Wiki","keywords":"决策日志是 AI 边干边记的表，每个决定一行。你回来看它，不用重看整段对话。","href":"/guides/pstack/wiki/decision-log/"},{"label":"24 条原则","hint":"Wiki","keywords":"pstack 把工程经验写成 24 条短原则。AI 跑偏时，你说出名字就能把它拉回来。","href":"/guides/pstack/wiki/principles/"},{"label":"pstack 要钱吗？","hint":"常见问题 · 上手之前","keywords":"pstack 不要钱，它免费开源（MIT）。要钱的是你用的 AI 工具，订阅或 API 费用照常算。同一件事，用 pstack 会多花一些额度，因为它会多派帮手 AI、多做检查。怎么省见 [控制花费](/howto/cost/)。","href":"/guides/pstack/faq/#before-1"},{"label":"必须用 Cursor 吗？","hint":"常见问题 · 上手之前","keywords":"不用。官方版是给 Cursor 写的。[backnotprop/pstack](https://github.com/backnotprop/pstack) 是一份改过的副本（镜像），Claude Code、Codex、OpenCode、Pi 等都能用。Cursor 独有的几样功能（Automations、Bugbot、云端代理）在别的工具里会跳过，并留一行说明。","href":"/guides/pstack/faq/#before-2"},{"label":"我不太会写代码，能用吗？","hint":"常见问题 · 上手之前","keywords":"能，先用它读懂代码。`/how`、`/teach`、`/bro` 会让 AI 用大白话讲清楚一个项目。要让它改代码，你得看得懂它给的证据：命令输出、截图、前后对比。项目最好也在用 Git。","href":"/guides/pstack/faq/#before-3"},{"label":"和 Claude Code、Cursor 自带的计划模式有什么关系？","hint":"常见问题 · 上手之前","keywords":"不冲突，用哪个都行。pstack 没有专门写计划的技能，作者觉得最好的计划就是代码本身。真要计划，等设计定下来，让 `/poteto-mode` 写一份分阶段的计划。每个 PR 都要写上怎么检查。","href":"/guides/pstack/faq/#before-4"},{"label":"官方版和 backnotprop 镜像有什么区别？","hint":"常见问题 · 上手之前","keywords":"用 Cursor 就装官方版，用别的工具装镜像。镜像每天和 [官方版](https://github.com/cursor/plugins/tree/main/pstack) 同步，并把只有 Cursor 能用的写法改成了通用的。它还多带了两个社区修复。`/no-comments` 会留下说明外部规则的注释，`/statechart` 能在 Windows 上跑。","href":"/guides/pstack/faq/#before-5"},{"label":"每件事都要打 /poteto-mode 吗？","hint":"常见问题 · 用起来","keywords":"不用，要认真做的事才打。改一行文案、很明显的小改动，直接跟 AI 说就行。拿不准的时候：做错了会返工的事，就打。","href":"/guides/pstack/faq/#using-1"},{"label":"可以用中文写提示词吗？","hint":"常见问题 · 用起来","keywords":"可以。技能是英文写的，但模型读得懂中文。技能名和原则名保留英文，比如 `/how`、`prove it works`，其他写中文。本站的提示词都是这么写的。","href":"/guides/pstack/faq/#using-2"},{"label":"它会不会乱改我的代码？","hint":"常见问题 · 用起来","keywords":"不会乱改，你也管得住它。只想让它查问题，就说「先别改代码」。要改的活，它默认在一份单独的副本（worktree）里做，改完交一个 PR 等你审。删东西、强推这类撤不回的事，它会先停下来问你。","href":"/guides/pstack/faq/#using-3"},{"label":"它为什么不问我就往下做了？","hint":"常见问题 · 用起来","keywords":"这是故意的：能撤回的事它先做，做完给你看，你再纠正。它第一条回复会复述你要什么、打算改哪里。理解错了，直接打断就行。跑一下就能知道答案的问题，它会自己试，不来问你。","href":"/guides/pstack/faq/#using-4"},{"label":"回复太长太专业，看不懂怎么办？","hint":"常见问题 · 用起来","keywords":"打 `/bro`。它会把上一条回复用大白话重说一遍，更短，没有行话。离开一会儿回来想看进展，打 `/ketchup`。","href":"/guides/pstack/faq/#using-5"},{"label":"在 Claude Code 里打了命令没反应？","hint":"常见问题 · 用起来","keywords":"用插件装的，命令都挂在 `pstack:` 下面：要打 `/pstack:poteto-mode`，只打 `/poteto-mode` 它不认。这是 Claude Code 给插件定的规矩，免得两个插件的命令撞名。本站的命令默认就按这个写，复制就能用；用 `npx skills` 装的没有这个前缀，到右上角「外观」里把「我用的工具」换成「npx 装的」。另外，跑完 `/setup-pstack` 要开一个新会话，选的模型才生效。见 [在 Claude Code 里用](/howto/claude-code/)。","href":"/guides/pstack/faq/#using-6"},{"label":"我没有 grok 模型，会不会用不了？","hint":"常见问题 · 用起来","keywords":"能用。默认让 grok 写代码，没有的话会自动换。Claude Code 里换成当前会话的模型，别的工具换成最接近的那个。想自己选，跑一次 `/setup-pstack`，它会查出你能用的模型让你挑。","href":"/guides/pstack/faq/#using-7"},{"label":"项目不在 Git 里能用吗？","hint":"常见问题 · 用起来","keywords":"读代码、查问题可以；要它改代码，先用上 Git。改代码的剧本大多要建 worktree、提交、开 PR，都离不开 Git。在项目里跑 `git init`，提交一次，就能用了。","href":"/guides/pstack/faq/#using-8"},{"label":"不想用了，怎么卸掉？","hint":"常见问题 · 用起来","keywords":"看当初怎么装的。Claude Code 插件：在对话框里输入 `/plugin uninstall pstack@cursor-plugins`，再输入 `/reload-plugins`；只想暂停，把 `uninstall` 换成 `disable`。用 `npx skills` 装的：在终端运行 `npx skills remove`。跑过 `/setup-pstack` 的，再把它写的设置文件删掉。见 [更新、查看、卸载](/howto/update-remove/)。","href":"/guides/pstack/faq/#using-9"},{"label":"它说做完了，我怎么知道是真的？","hint":"常见问题 · 信得过吗","keywords":"看它贴出来的真实结果：命令输出、截图、前后数字。想让它一定贴，就在提示词里写上「做完给我看什么」。查不了的，好的回复会写「说不准」。只说「没问题了」、什么都没贴的，别信：回它 `apply prove it works`。","href":"/guides/pstack/faq/#trust-1"},{"label":"放它跑一整夜靠谱吗？","hint":"常见问题 · 信得过吗","keywords":"四条都满足了才靠谱。① 这件事你做过，或者看它做过一次。② 它有你会用的工具，比如验证技能、日志、性能分析器。③ 每一步都能检查，不达标会停。④ 你读过几次对话记录，把反复出的错变成了检查。见 [放手让它跑](/guide/7-overnight/)。","href":"/guides/pstack/faq/#trust-2"},{"label":"为什么它要让好几个不同的模型来评审？","hint":"常见问题 · 信得过吗","keywords":"因为同一个模型容易认可自己写的东西。pstack 让别家的模型来挑错、打分，`/interrogate` 和 `/arena` 都这样做。挑出的问题，只留下能用命令跑出失败的。不同模型的盲点不一样，一起看漏得更少。","href":"/guides/pstack/faq/#trust-3"}]</script><script id="site-tool" type="application/json">{"key":"xxd-pstack-tool","def":"cc","tools":["cc","cursor","codex","bare"],"names":["poteto-mode","poteto-help","setup-pstack","in-your-own-words","sharpen","how","why","teach","recall","architect","arena","swarm","interrogate","blast-radius","figure-it-out","tdd","typescript-best-practices","unslop","no-comments","technical-writing","create-verification-skill","maintain-verification-skill","create-formal-verification-skill","maintain-formal-verification-skill","statechart","benchmark-checklist","bro","ketchup","ketchup-video","show-me-your-work","reflect","correct","automate-me","make-bot-ui"]}</script><script>
+      // 我用的工具：正文里每个技能命令（构建时包成 .sk）、复制按钮（data-sk-a 记着改哪几个属性）换成这个工具的写法。
+      // 选择存在这个浏览器里；存不了就每次按默认（Claude Code）显示
+      (() => {
+        const o = JSON.parse(document.getElementById("site-tool").textContent);
+        const re = new RegExp(`(^|[^\\w./:$!-])([/$])(?:pstack:)?(${o.names.join("|")})(?![\\w-])`, "g");
+        const fmt = (n, t) => (t === "codex" ? "$" : t === "cc" ? "/pstack:" : "/") + n;
+        const apply = (t) => {
+          document.documentElement.dataset.tool = t;
+          for (const el of document.querySelectorAll(".sk")) el.textContent = fmt(el.dataset.sk, t);
+          for (const el of document.querySelectorAll("[data-sk-a]")) {
+            for (const a of el.dataset.skA.split(" ")) {
+              const v = el.getAttribute(a);
+              if (v) el.setAttribute(a, v.replace(re, (_, p, _s, n) => p + fmt(n, t)));
+            }
+          }
+          for (const b of document.querySelectorAll("[data-tool-pick] [role=radio]")) {
+            const on = b.dataset.value === t;
+            b.setAttribute("aria-checked", String(on));
+            b.tabIndex = on ? 0 : -1;
+          }
+          for (const c of document.querySelectorAll("[data-tool-ex]")) c.textContent = fmt("poteto-mode", t);
+        };
+        const read = () => { try { const v = localStorage.getItem(o.key); return o.tools.includes(v) ? v : o.def; } catch { return o.def; } };
+        apply(read());
+        document.addEventListener("xxd:change", (e) => {
+          const v = e.detail?.value;
+          if (!e.target.closest?.("[data-tool-pick]") || !o.tools.includes(v)) return;
+          try { localStorage.setItem(o.key, v); } catch {}
+          apply(v);
+        });
+        addEventListener("storage", (e) => { if (e.key === o.key) apply(read()); });
+      })();
+    </script><script>
+      (() => {
+        const T = window.XxdTheme, X = window.Xxd;
+        if (!T || !X) return;
+        // 外观面板：直接挂 UI Kit 的外观设置组。改了就写进同一份设置，下次打开首帧就是这个样子
+        const pop = document.getElementById("site-look-pop");
+        X.mountAppearance(pop, JSON.parse(pop.dataset.opts || "{}"));
+        pop.append(document.getElementById("site-tool-group"));
+        // 外观按钮右下角的小圆点：选了主色才出现，就是那个颜色
+        const dot = document.getElementById("site-look-dot");
+        const syncDot = () => {
+          const a = ({ ...T.DEFAULT_SETTINGS, ...T.read() }).accent || "";
+          dot.hidden = !a;
+          if (a) dot.style.background = a;
+        };
+        pop.addEventListener("xxd:appearance", syncDot);
+        window.addEventListener("xxd:settings", syncDot);
+        syncDot();
+        X.init(document);
+        sync();
+
+        // 搜索：⌘K / 点按钮，用 xxd 的命令面板
+        const pages = JSON.parse(document.getElementById("site-search-index").textContent);
+        const items = pages.map((p) => ({ label: p.label, hint: p.hint, keywords: p.keywords, run: () => { location.href = p.href; } }));
+        const opts = JSON.parse(document.getElementById("site-search-index").dataset.opts);
+        const btn = document.getElementById("site-search");
+        btn.addEventListener("click", () => X.openCommandPalette({ items, ...opts }));
+        X.bindCommandPalette(items, opts);
+        // 全文：各篇正文按小节切好的搜索数据（构建时生成），空闲时或要搜索时加载一次，加进同一个列表
+        const idx = document.getElementById("site-search-index");
+        let sections = null;
+        const loadSections = () => {
+          if (sections) return;
+          sections = fetch(idx.dataset.sections).then((r) => (r.ok ? r.json() : [])).then((list) => {
+            const base = idx.dataset.base.replace(/\/$/, "");
+            for (const p of list) items.push({ label: p.label, hint: p.hint, keywords: p.keywords, run: () => { location.href = base + p.href; } });
+          }).catch(() => { sections = null; });
+        };
+        btn.addEventListener("pointerenter", loadSections);
+        btn.addEventListener("focus", loadSections);
+        addEventListener("keydown", (e) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") loadSections(); }, true);
+        (window.requestIdleCallback || ((f) => setTimeout(f, 1500)))(loadSections);
+
+        // 常见问题：从搜索或链接跳到 #某个问题 时，自动展开它
+        const openHash = () => {
+          const el = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+          if (el && el.tagName === "DETAILS") { el.open = true; el.scrollIntoView({ block: "center" }); }
+        };
+        openHash();
+        addEventListener("hashchange", openHash);
+
+        // 窄屏目录抽屉
+        const nav = document.getElementById("site-nav"), scrim = document.getElementById("site-nav-scrim"), menu = document.getElementById("site-menu");
+        const toggle = (on) => {
+          nav.toggleAttribute("data-open", on); scrim.toggleAttribute("data-open", on);
+          menu.setAttribute("aria-expanded", String(on));
+          if (on) (nav.querySelector('[aria-current="page"]') || nav.querySelector("a"))?.focus();
+          else if (nav.contains(document.activeElement)) menu.focus();
+        };
+        menu.addEventListener("click", () => toggle(!nav.hasAttribute("data-open")));
+        scrim.addEventListener("click", () => toggle(false));
+        nav.addEventListener("keydown", (e) => { if (e.key === "Escape" && nav.hasAttribute("data-open")) { e.preventDefault(); toggle(false); } });
+
+        // 检查点：打勾只存在这个浏览器里；存不了（无痕、禁用存储）也照常能勾
+        for (const box of document.querySelectorAll("[data-checkpoint]")) {
+          const key = "xxd-pstack-check:" + box.dataset.checkpoint;
+          const inputs = [...box.querySelectorAll("input[type=checkbox]")];
+          const done = box.querySelector(".checkpoint__done");
+          let saved = [];
+          try { saved = JSON.parse(localStorage.getItem(key) || "[]"); } catch {}
+          inputs.forEach((el, i) => { el.checked = !!saved[i]; });
+          const update = () => {
+            const all = inputs.every((el) => el.checked);
+            if (done) done.hidden = !all;
+            try { localStorage.setItem(key, JSON.stringify(inputs.map((el) => el.checked))); } catch {}
+          };
+          inputs.forEach((el) => el.addEventListener("change", update));
+          update();
+        }
+      })();
+    </script></body></html>
