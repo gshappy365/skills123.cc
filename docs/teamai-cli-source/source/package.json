@@ -1,0 +1,19 @@
+{
+  "name": "teamai-cli-handbook",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "teamai-cli 中文新手教程：三课入门、九步上手、可照抄的命令；Astro 静态站，三栏骨架参考 xxd-pstack 的公开信息架构",
+  "scripts": {
+    "dev": "node ./node_modules/astro/bin/astro.mjs dev --port 4423",
+    "build": "node ./node_modules/astro/bin/astro.mjs build && node scripts/search-sections.mjs",
+    "preview": "node ./node_modules/astro/bin/astro.mjs preview --port 4423",
+    "content": "python3 tools/build_content.py",
+    "check": "node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "astro": "7.2.8",
+    "micromark": "4.0.3",
+    "micromark-extension-gfm": "3.0.0"
+  }
+}

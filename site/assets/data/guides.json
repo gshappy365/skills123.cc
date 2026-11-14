@@ -52,5 +52,22 @@
       "二进制分析",
       "Electron"
     ]
+  },
+  {
+    "id": "teamai-cli",
+    "name": "teamai-cli 新手教程",
+    "description": "把团队的 AI 资源放进一个 Git 仓库：从安装、init 接入到 push 分享与诊断维护的中文入门教程。",
+    "label": "入门与实践",
+    "articleCount": 44,
+    "topicCount": 6,
+    "href": "/guides/teamai-cli/",
+    "tags": [
+      "teamai-cli",
+      "TeamAI",
+      "技能分发",
+      "Git 仓库",
+      "AI 协作",
+      "腾讯"
+    ]
   }
 ]

@@ -1,0 +1,209 @@
+---
+// 外壳：顶栏（搜索、外观、GitHub）、左侧导航（六个栏目 + How-to 四组）、正文、右侧目录。
+// 三栏结构与交互沿用本地骨架；品牌、配色、文案、内容全部换成本站自己的。
+import { BRAND, TAGLINE, REPO, navGroups, siteLinks, searchItems, articleCount } from "../data/nav.js";
+import { href, BASE } from "../lib/content.js";
+import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { join } from "node:path";
+
+interface Props {
+  title: string;
+  description?: string;
+  headings?: { id: string; text: string; depth: number }[];
+  activeHref?: string;
+}
+const { title, description = TAGLINE, headings = [], activeHref = "" } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const cur = (h: string) => (String(h).replace(/\/$/, "") || "/") === path;
+const activeGroup = navGroups.find((g) => activeHref === "/" + g.id || activeHref.startsWith("/" + g.id + "/"));
+const toc = headings.filter((h) => h.depth === 2);
+
+// 静态文件带内容指纹，改了就换地址，避免新页面配旧样式
+const ver = (f: string) => {
+  try { return createHash("sha256").update(readFileSync(join(process.cwd(), "public", f))).digest("hex").slice(0, 10); }
+  catch { return "0"; }
+};
+const asset = (f: string) => `${BASE}/${f}?v=${ver(f)}`;
+// 挂到 skills123.cc 时用 SITE_TITLE_SUFFIX 补站点名
+const SUFFIX = process.env.SITE_TITLE_SUFFIX || "";
+// 宿主站点入口：只在作为子专题发布时出现（SITE_HOME=/）
+const HOME = process.env.SITE_HOME || "";
+const HOME_LABEL = process.env.SITE_HOME_LABEL || "";
+const pageTitle = title === BRAND ? `${title}${SUFFIX}` : `${title} · ${BRAND}${SUFFIX}`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href={asset("favicon.svg")} type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={BRAND} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site)} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <style is:inline>@layer theme, base, xxd, components, utilities, site;</style>
+    <script is:inline src={asset("xxd/boot.js")} data-key="teamai-cli-handbook" data-default-theme="system"></script>
+    <link rel="stylesheet" href={asset("xxd/xxd.css")} />
+    <link rel="stylesheet" href={asset("site.css")} />
+    <link rel="stylesheet" href={asset("site-teamai.css")} />
+    <script is:inline src={asset("xxd/icons.js")}></script>
+    <script is:inline src={asset("xxd/xxd.js")}></script>
+  </head>
+  <body class="xxd-page">
+    <a class="xxd-sr-only-focusable" href="#main">跳到正文</a>
+    <header class="xxd-topbar site-top">
+      <button class="xxd-btn site-menu" data-variant="ghost" data-icon-only aria-label="打开目录" id="site-menu" aria-controls="site-nav" aria-expanded="false"><i data-xxd-icon="Menu" data-size="18"></i></button>
+      <a class="xxd-logo site-brand" href={href("/")}>
+        <svg class="site-mark" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <rect class="site-mark__bg" width="20" height="20" rx="4.5" />
+          <circle class="site-mark__node" cx="6.6" cy="6.6" r="1.5" />
+          <circle class="site-mark__node" cx="13.4" cy="6.6" r="1.5" />
+          <circle class="site-mark__node" cx="10" cy="13.6" r="1.5" />
+          <path class="site-mark__edge" d="M7.9 7.5h4.2M7.4 8l1.9 4.3M12.6 8l-1.9 4.3" fill="none" stroke-width="1.1" stroke-linecap="round" />
+        </svg>
+        <span class="site-brand__name">{BRAND}</span>
+      </a>
+      <span class="site-top__spacer"></span>
+      <div class="site-top__end">
+        <button class="site-search" id="site-search" type="button" aria-label="搜索教程"><i data-xxd-icon="Search" data-size="16"></i><span>搜索 {articleCount} 篇</span><kbd class="xxd-kbd">⌘K</kbd></button>
+        <div class="site-tools">
+          {HOME && <a class="site-up" href={HOME} aria-label={`返回${HOME_LABEL || "宿主站点"}`}>← {HOME_LABEL || "返回"}</a>}
+          <button class="xxd-btn site-look" data-size="sm" data-variant="ghost" data-icon-only type="button" data-xxd-popover="site-look-pop" aria-label="外观设置" data-tooltip="外观设置" data-tooltip-placement="bottom">
+            <i data-xxd-icon="Palette" data-size="16"></i>
+          </button>
+          <div class="xxd-popover site-look-pop" id="site-look-pop" popover data-placement="bottom-end" data-opts={JSON.stringify({ locale: "zh-CN", labels: { cornersDesc: "关掉就是直角" } })}></div>
+          <a class="xxd-btn" data-size="sm" data-variant="ghost" href={REPO} target="_blank" rel="noreferrer" aria-label="官方仓库" data-tooltip="官方仓库" data-tooltip-placement="bottom-end"><i data-xxd-icon="ArrowUpRight" data-size="16"></i></a>
+          <a class="xxd-btn" data-size="sm" data-variant="ghost" href={href("/reference/about")} aria-label="关于本站" data-tooltip="关于本站" data-tooltip-placement="bottom-end"><i data-xxd-icon="Info" data-size="16"></i></a>
+        </div>
+      </div>
+    </header>
+
+    <div class="site-body">
+      <nav class="xxd-sidebar site-nav" id="site-nav" aria-label="网站目录">
+        <div class="xxd-sidebar__body">
+          <section class="xxd-sidebar__group">
+            <h2 class="xxd-sidebar__label">开始</h2>
+            <a class="xxd-sidebar__item" href={href("/")} aria-current={cur(href("/")) ? "page" : undefined}><span>首页</span></a>
+            <a class="xxd-sidebar__item" href={href("/reference/flow")} aria-current={cur(href("/reference/flow")) ? "page" : undefined}><span>它是怎么干活的</span></a>
+            <a class="xxd-sidebar__item" href={href("/reference/fit")} aria-current={cur(href("/reference/fit")) ? "page" : undefined}><span>适不适合你</span></a>
+          </section>
+          {navGroups.map((g, i) => {
+            const open = activeGroup?.id === g.id;
+            return (
+              <section class="xxd-sidebar__group">
+                <h2 class="xxd-sidebar__label">{g.short}</h2>
+                <a class="xxd-sidebar__item" href={g.href} aria-current={cur(g.href) ? "page" : undefined}><span>栏目首页</span></a>
+                {g.subGroups ? (
+                  g.subGroups.map((sg, j) => (
+                    <details class="site-nav__fold" id={`site-nav-g${i}-${j}`} open={open}>
+                      <summary class="xxd-sidebar__item site-nav__sub"><span>{sg.label} · {sg.items.length}</span><i data-xxd-icon="ChevronRight" data-size="14"></i></summary>
+                      <div class="xxd-sidebar__sub">
+                        {sg.items.map((p) => (
+                          <a class="xxd-sidebar__item" href={href(p.href)} aria-current={cur(href(p.href)) ? "page" : undefined}><span>{p.nav_title || p.title}</span></a>
+                        ))}
+                      </div>
+                    </details>
+                  ))
+                ) : (
+                  <details class="site-nav__fold" id={`site-nav-g${i}`} open={open}>
+                    <summary class="xxd-sidebar__item site-nav__sub"><span>全部 {g.items.length} 篇</span><i data-xxd-icon="ChevronRight" data-size="14"></i></summary>
+                    <div class="xxd-sidebar__sub">
+                      {g.items.map((p) => (
+                        <a class="xxd-sidebar__item" href={href(p.href)} aria-current={cur(href(p.href)) ? "page" : undefined}><span>{p.nav_title || p.title}</span></a>
+                      ))}
+                    </div>
+                  </details>
+                )}
+              </section>
+            );
+          })}
+          <section class="xxd-sidebar__group">
+            <h2 class="xxd-sidebar__label">站点资料</h2>
+            {siteLinks.map((l) => (
+              <a class="xxd-sidebar__item" href={l.href} aria-current={cur(l.href) ? "page" : undefined}><span>{l.label}</span></a>
+            ))}
+            <a class="xxd-sidebar__item" href={REPO} target="_blank" rel="noreferrer"><span>官方仓库 ↗</span></a>
+          </section>
+        </div>
+      </nav>
+
+      <main id="main" class="site-main">
+        <slot />
+        <footer class="site-foot">
+          <p>非官方中文教程 · 内容依据 <a href={REPO} target="_blank" rel="noreferrer">Tencent/teamai-cli</a> 的公开文档 · 共 {articleCount} 篇 · 命令与行为以官方仓库为准</p>
+        </footer>
+      </main>
+
+      {toc.length > 1 && (
+        <nav class="site-toc" aria-label="本页目录">
+          <p class="xxd-toc__title">本页</p>
+          <ul class="xxd-toc" data-spy>{toc.map((h) => <li><a href={`#${h.id}`}>{h.text}</a></li>)}</ul>
+        </nav>
+      )}
+    </div>
+    <div class="site-nav-scrim" id="site-nav-scrim"></div>
+
+    <script type="application/json" id="site-search-index" data-opts={JSON.stringify({ placeholder: "搜概念、命令、报错、场景……", empty: "没找到，换个词试试" })} data-sections={`${BASE}/search-sections.json`} set:html={JSON.stringify(searchItems)} />
+    <script is:inline>
+      (() => {
+        const T = window.XxdTheme, X = window.Xxd;
+        if (!T || !X) return;
+        const pop = document.getElementById("site-look-pop");
+        X.mountAppearance(pop, JSON.parse(pop.dataset.opts || "{}"));
+        X.init(document);
+
+        // 搜索：⌘K / 点按钮，用命令面板；正文细索引按需加载一次
+        const idx = document.getElementById("site-search-index");
+        const pages = JSON.parse(idx.textContent);
+        const items = pages.map((p) => ({ label: p.label, hint: p.hint, keywords: p.keywords, run: () => { location.href = p.href; } }));
+        const opts = JSON.parse(idx.dataset.opts);
+        const btn = document.getElementById("site-search");
+        btn.addEventListener("click", () => X.openCommandPalette({ items, ...opts }));
+        X.bindCommandPalette(items, opts);
+        let sections = null;
+        const loadSections = () => {
+          if (sections) return;
+          sections = fetch(idx.dataset.sections).then((r) => (r.ok ? r.json() : [])).then((list) => {
+            for (const p of list) items.push({ label: p.label, hint: p.hint, keywords: p.keywords, run: () => { location.href = p.href; } });
+          }).catch(() => { sections = null; });
+        };
+        btn.addEventListener("pointerenter", loadSections);
+        btn.addEventListener("focus", loadSections);
+        addEventListener("keydown", (e) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") loadSections(); }, true);
+        (window.requestIdleCallback || ((f) => setTimeout(f, 1500)))(loadSections);
+
+        // 窄屏目录抽屉
+        const nav = document.getElementById("site-nav"), scrim = document.getElementById("site-nav-scrim"), menu = document.getElementById("site-menu");
+        const toggle = (on) => {
+          nav.toggleAttribute("data-open", on); scrim.toggleAttribute("data-open", on);
+          menu.setAttribute("aria-expanded", String(on));
+          if (on) (nav.querySelector('[aria-current="page"]') || nav.querySelector("a"))?.focus();
+          else if (nav.contains(document.activeElement)) menu.focus();
+        };
+        menu.addEventListener("click", () => toggle(!nav.hasAttribute("data-open")));
+        scrim.addEventListener("click", () => toggle(false));
+        nav.addEventListener("keydown", (e) => { if (e.key === "Escape" && nav.hasAttribute("data-open")) { e.preventDefault(); toggle(false); } });
+        nav.addEventListener("click", (e) => { if (e.target.closest?.("a") && nav.hasAttribute("data-open")) toggle(false); });
+
+        // 每个代码块一个复制按钮：教程里的命令都能直接抄走
+        for (const pre of document.querySelectorAll(".xxd-prose pre, .tu-codewrap pre")) {
+          const b = document.createElement("button");
+          b.type = "button"; b.className = "tu-copy"; b.textContent = "复制";
+          b.addEventListener("click", async () => {
+            const code = pre.querySelector("code")?.innerText ?? pre.innerText;
+            try { await navigator.clipboard.writeText(code); b.textContent = "已复制"; }
+            catch { b.textContent = "请手动选中"; }
+            setTimeout(() => { b.textContent = "复制"; }, 1600);
+          });
+          pre.appendChild(b);
+        }
+      })();
+    </script>
+  </body>
+</html>
