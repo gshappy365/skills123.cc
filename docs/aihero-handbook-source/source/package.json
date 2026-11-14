@@ -1,0 +1,22 @@
+{
+  "name": "aihero-handbook",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "AI Hero（aihero.dev）全站中文导读存档：学习地图、文章、技能、词典；Astro 静态站，三栏骨架参考 xxd-pstack 的公开信息架构",
+  "scripts": {
+    "dev": "node ./node_modules/astro/bin/astro.mjs dev --port 4431",
+    "build": "node ./node_modules/astro/bin/astro.mjs build && node scripts/search-sections.mjs",
+    "preview": "node ./node_modules/astro/bin/astro.mjs preview --port 4431",
+    "content": "python3 tools/build_content.py",
+    "check": "node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "astro": "7.2.8",
+    "micromark": "4.0.3",
+    "micromark-extension-gfm": "3.0.0"
+  },
+  "devDependencies": {
+    "@tencent-ai/workbuddy-cloud-sdk": "^0.1.4-dev.ca27990.202610161713"
+  }
+}
