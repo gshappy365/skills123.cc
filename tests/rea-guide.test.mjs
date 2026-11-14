@@ -24,7 +24,7 @@ test("专题可从首页进入，并保留界面组件的许可声明", async ()
   const readme = await readFile(path.join(guide, "SOURCE-README.md"), "utf8");
 
   assert.ok(home.includes(`href="${prefix}"`));
-  assert.match(home, /<small>4 个专题<\/small>/);
+  assert.match(home, /<small>5 个专题<\/small>/);
   const entry = guides.find((item) => item.id === "rea-handbook");
   assert.equal(entry.href, prefix);
   assert.equal(entry.articleCount, 54);

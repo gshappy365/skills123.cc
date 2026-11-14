@@ -1,0 +1,196 @@
+---
+// 首页：先讲清它解决什么问题，再把人分流到「新手三课」和「完整教程」。
+import Site from "../layouts/Site.astro";
+import { BRAND, TAGLINE, navGroups, articleCount, REPO } from "../data/nav.js";
+import { href, groupItems } from "../lib/content.js";
+
+const lessons = groupItems("start").filter((p) => p.href !== "/start");
+const headings = [
+  { id: "tu-pain", text: "你是不是也卡在这里", depth: 2 },
+  { id: "tu-diff", text: "装上以后有什么不一样", depth: 2 },
+  { id: "tu-flow", text: "它怎么干活", depth: 2 },
+  { id: "tu-lessons", text: "新手只要三课", depth: 2 },
+  { id: "tu-paths", text: "两条路，自己选", depth: 2 },
+  { id: "tu-fit", text: "适不适合你", depth: 2 },
+  { id: "tu-inside", text: "站里有什么", depth: 2 },
+];
+
+const PAIN = [
+  { t: "「这个 skill 我装了，你装了吗？」", d: "每个人本地的技能和规则版本都不一样，同一个问题问出来，答案自然也不一样。" },
+  { t: "新同事第一周全在配环境", d: "同一套规矩贴第三遍，第四个人还是不知道去哪找。" },
+  { t: "改了一条团队规范，没人知道", d: "规则散在各自的 ~/.claude、~/.codex 里，改没改全靠嘴同步。" },
+  { t: "MCP 地址和 token 在群里传", d: "每次换人重发一遍，密钥留在聊天记录里。" },
+];
+
+const DIFF = [
+  ["资源放在哪", "各自的工具目录，一人一份", "一个 Git 仓库，工具目录只是它的投影"],
+  ["怎么更新", "手动复制、群里发压缩包", "会话启动自动 pull，不用记"],
+  ["怎么改", "谁用谁改，改完不吭声", "push 开分支 + PR，评审后合并"],
+  ["谁收到什么", "全都有，或者都没有", "角色、项目、标签决定谁收到哪一份"],
+  ["密钥怎么走", "明文贴进配置或群里", "仓库只声明 key，值留本机，用时注入"],
+  ["想回滚怎么办", "靠记忆重贴一遍", "它就是 Git，回滚就是回滚"],
+];
+
+const FLOW = [
+  { n: "1", t: "建一个团队仓库", d: "GitHub / GitLab / GitCode / CNB / 工蜂，或私有 Git" },
+  { n: "2", t: "把资源写进去", d: "skills、rules、agents、hooks、mcp、env、models" },
+  { n: "3", t: "push 开 PR", d: "团队评审合并，改的是仓库，不是谁的笔记本" },
+  { n: "4", t: "成员 init 一次", d: "项目级或整机级，认一次就够" },
+  { n: "5", t: "会话启动 pull", d: "钩子自动同步，拉最新版本" },
+  { n: "6", t: "落到各工具目录", d: "Claude Code、Cursor、CodeBuddy……各按各的格式" },
+];
+
+const CAT_ORDER = ["start", "guide", "howto", "wiki", "faq", "reference"];
+const inside = CAT_ORDER.map((id) => navGroups.find((g) => g.id === id)).filter(Boolean);
+---
+
+<Site title={BRAND} description={TAGLINE} headings={headings} activeHref="/">
+  <div class="tu-home">
+    <section class="tu-hero">
+      <p class="tu-hero__eyebrow">非官方中文教程 · 依据官方文档 · {articleCount} 篇</p>
+      <h1>把团队的 AI 资源，<br />放进一个 Git 仓库</h1>
+      <p class="tu-hero__lead">
+        <strong>teamai-cli</strong>（TeamAI）管的是团队的 skills、rules、agents、hooks、MCP、env、models：
+        它们全放在一个 Git 仓库里，成员 <code>init</code> 一次，之后每次开 AI 会话都会自动拉最新的。
+        于是「我们团队怎么让 AI 干活」变成一份可分发、可评审、可回滚的文件，而不是每个人笔记本上的私人配置。
+      </p>
+      <div class="tu-hero__cta">
+        <a class="tu-btn" href={href("/start/1-why")}>新手三课，20 分钟 <i data-xxd-icon="ArrowRight" data-size="16"></i></a>
+        <a class="tu-btn tu-btn--ghost" href={href("/guide/0-what")}>我会配环境，看完整教程</a>
+        <a class="tu-btn tu-btn--plain" href={href("/reference/fit")}>先判断适不适合我</a>
+      </div>
+      <p class="tu-hero__note">本站不是官方文档。命令、参数与行为以 <a href={REPO} target="_blank" rel="noreferrer">官方仓库</a> 为准。</p>
+    </section>
+
+    <div class="tu-note tu-note--amber tu-home__warn">
+      <strong>先说清楚三件事</strong>
+      <p>它不<strong>让模型变聪明</strong>，只是把「团队怎么干活」变成能分发的文件；它要求你<strong>有一个能写权限的 Git 仓库</strong>，没有仓库只能只读接入；它会<strong>往你的 AI 工具目录写文件</strong>（装技能、规则、钩子），想藏起来可以把这些路径写进 <code>.git/info/exclude</code>。</p>
+    </div>
+
+    <section class="tu-section">
+      <h2 id="tu-pain">你是不是也卡在这里</h2>
+      <ul class="tu-pains">
+        {PAIN.map((p) => (
+          <li><strong>{p.t}</strong><span>{p.d}</span></li>
+        ))}
+      </ul>
+      <p class="tu-section__lead">问题通常不在模型，而在<mark>团队里没有一份共同的、能被分发的东西</mark>。TeamAI 补的就是这一块。</p>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-diff">装上以后有什么不一样</h2>
+      <div class="tu-table-wrap">
+        <table class="tu-table">
+          <thead><tr><th>什么时候</th><th>各管各的</th><th>用 TeamAI</th></tr></thead>
+          <tbody>
+            {DIFF.map(([a, b, c]) => (
+              <tr><th>{a}</th><td>{b}</td><td class="tu-table__hi">{c}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-flow">它怎么干活</h2>
+      <ol class="tu-flow">
+        {FLOW.map((f) => (
+          <li><span class="tu-flow__n">{f.n}</span><strong>{f.t}</strong><span>{f.d}</span></li>
+        ))}
+      </ol>
+      <p class="tu-section__lead">完整链路（仓库目录、角色过滤、钩子写在哪、pull 的判定顺序）在 <a href={href("/reference/flow")}>概念全景图</a>。</p>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-lessons">新手只要三课</h2>
+      <p class="tu-section__lead">不写代码也能顺着走完。每课都写了「你应该看到什么」，不对也有地方查。</p>
+      <div class="tu-lessons">
+        {lessons.map((l) => (
+          <a class="tu-lesson" href={href(l.href)}>
+            <span class="tu-lesson__n">{l.nav_order}</span>
+            <span class="tu-lesson__body">
+              <strong>{l.title}</strong>
+              <span>{l.description}</span>
+            </span>
+            <span class="tu-lesson__min">{l.reading_minutes} 分钟 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-paths">两条路，自己选</h2>
+      <div class="tu-paths">
+        <a class="tu-path" href={href("/start")}>
+          <span class="tu-path__k">不写代码</span>
+          <strong>从这里开始</strong>
+          <span>三课 20 分钟：它解决什么 → 装上它 → 加入团队并确认同步成功。只记一句话：<em>把这句话发给你的 AI 工具就行</em>。</span>
+          <span class="tu-path__go">进入新手入门 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+        </a>
+        <a class="tu-path" href={href("/guide")}>
+          <span class="tu-path__k">会配环境</span>
+          <strong>看完整教程</strong>
+          <span>九步：它是什么 → 准备工作 → 安装 → init → pull 落点 → push 分享 → 角色与项目 → 工作流 → 维护升级。</span>
+          <span class="tu-path__go">进入完整教程 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-fit">适不适合你</h2>
+      <div class="tu-fit">
+        <div class="tu-fit__card tu-fit__card--yes">
+          <strong>适合</strong>
+          <ul>
+            <li>三个人以上共用一套 AI 工作方式</li>
+            <li>已经有 Git 仓库，并且有人愿意评审改动</li>
+            <li>想让新同事第一天就和老同事用同一套技能</li>
+            <li>团队同时用多种 AI 工具（Claude Code、Cursor、CodeBuddy…）</li>
+          </ul>
+        </div>
+        <div class="tu-fit__card tu-fit__card--no">
+          <strong>先别用</strong>
+          <ul>
+            <li>只有你一个人，配置自己记得住</li>
+            <li>团队没有仓库、也没人愿意管合并</li>
+            <li>指望它自动写好团队规范（它只负责分发）</li>
+            <li>需要云端 SaaS 式管理后台（它围绕 Git）</li>
+          </ul>
+        </div>
+      </div>
+      <p class="tu-section__lead">拿不准就看 <a href={href("/reference/fit")}>适不适合你</a>，两分钟有结论。</p>
+    </section>
+
+    <section class="tu-section">
+      <h2 id="tu-inside">站里有什么</h2>
+      <div class="tu-cats">
+        {inside.map((g) => (
+          <a class="tu-cat" href={g.href}>
+            <span class="tu-cat__top"><i data-xxd-icon={g.icon} data-size="20"></i><span>{g.count} 页</span></span>
+            <strong>{g.short}</strong>
+            <span class="tu-cat__sum">{g.sum}</span>
+            <span class="tu-cat__go">进入 <i data-xxd-icon="ArrowRight" data-size="14"></i></span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="tu-section">
+      <h2>现在就试一句话</h2>
+      <p class="tu-section__lead">把下面这句原样发给你的 AI 工具（Claude Code、Cursor、CodeBuddy、WorkBuddy 都行）。它会装好 skill，再带你走完接入。</p>
+      <div class="tu-codewrap">
+        <pre><code>帮我装好 teamai skill：https://github.com/Tencent/teamai-cli/tree/main/skills/teamai
+加载 teamai skill，然后从零搭建团队的 TeamAI。</code></pre>
+      </div>
+      <p class="tu-section__lead">已经装好了？那就直接用 <code>/teamai</code> 说话：<code>/teamai 帮我加入团队的 TeamAI，仓库地址是 &lt;repo&gt;</code>。更多场景在 <a href={href("/howto/recipes")}>照抄就能用的场景清单</a>。</p>
+    </section>
+
+    <footer class="tu-home__foot">
+      <p>
+        非官方中文教程。内容依据官方仓库的 <code>README.zh-CN.md</code>、<code>docs/usage-guide.zh-CN.md</code>、
+        <code>docs/product-overview.zh-CN.md</code> 与 <code>docs/guide/zh-CN/</code> 系列；
+        信息架构参考自公开的 xxd-pstack 教程方法。详见 <a href={href("/reference/about")}>关于与致谢</a>。
+      </p>
+    </footer>
+  </div>
+</Site>
