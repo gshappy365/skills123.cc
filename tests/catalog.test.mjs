@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { searchCatalogue } from "../site/assets/js/catalogue-search.js";
 const catalogUrl = new URL("../site/assets/data/catalog.json", import.meta.url);
 const atlasSkillsUrl = new URL(
   "../site/assets/data/atlas-skills.json",
@@ -12,17 +13,39 @@ async function loadCatalog() {
 test("new upstream libraries preserve their package placement and snapshots", async () => {
   const catalog = await loadCatalog();
   const expected = {
-    wigolo: ["research", 11, "unconfirmed", "56da0c80d52bba51cc428545f468ec0dbd6651c3"],
-    last30days: ["research", 1, "MIT", "a22c8e7576c2c69885b895002cc15968cd4cb25a"],
-    waza: ["development", 8, "MIT", "9c97ccb6d96e776bf814e27498d0afc0ed3d1e94"],
+    wigolo: ["research", 11, "unconfirmed", "56da0c80d52bba51cc428545f468ec0dbd6651c3", "active"],
+    last30days: ["research", 1, "MIT", "a22c8e7576c2c69885b895002cc15968cd4cb25a", "active"],
+    // Waza 已从首页下架，数据与工作台页面保留，状态改记为 archived
+    waza: ["development", 8, "MIT", "9c97ccb6d96e776bf814e27498d0afc0ed3d1e94", "archived"],
   };
-  for (const [id, [scenario, skillCount, license, commit]] of Object.entries(expected)) {
+  for (const [id, [scenario, skillCount, license, commit, status]] of Object.entries(expected)) {
     const pkg = catalog.packages.find((item) => item.id === id);
     assert.equal(pkg.scenario, scenario);
     assert.equal(pkg.skillCount, skillCount);
     assert.equal(pkg.license, license);
     assert.equal(pkg.source.commit, commit);
-    assert.equal(pkg.status, "active");
+    assert.equal(pkg.status, status);
+  }
+});
+test("首页下架的三个技能包不再出现在首页分组与全局搜索里", async () => {
+  const catalog = await loadCatalog();
+  const archived = ["addyosmani-agent-skills", "founder-project-evaluator", "waza"];
+  for (const id of archived) {
+    assert.equal(catalog.packages.find((item) => item.id === id).status, "archived", id);
+  }
+  for (const query of ["Waza", "Addy Osmani", "Founder", "创业项目评估", "工程习惯"]) {
+    const { packageMatches, skillMatches } = searchCatalogue({
+      catalog,
+      packageSkills: {},
+      guides: [],
+      query,
+    });
+    assert.deepEqual(
+      packageMatches.filter((item) => archived.includes(item.id)),
+      [],
+      `已下架的技能包仍能被搜索到：${query}`
+    );
+    assert.deepEqual(skillMatches, [], query);
   }
 });
 test("founder project evaluator is catalogued as a research Gate Review skill", async () => {

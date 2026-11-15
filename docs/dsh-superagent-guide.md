@@ -1,7 +1,11 @@
 # dsh-superagent tutorial snapshot
 
 `site/guides/dsh-superagent/` is a static snapshot of the local
-`~/WorkBuddy/dsh-superagent-tutorial` source on 2026-11-14.
+`~/WorkBuddy/dsh-superagent-tutorial` source on 2026-11-15 (refreshed from the
+2026-11-14 snapshot; the 2026-11-15 pass re-verified the upstream 002/003/006/
+007/008 documents and corrected the admission-table defaults, the empty
+allow-list exception, and the thread-level `stop` wording, and added the
+top-bar "← Skills123" return link).
 The source is not a Git checkout and contained no lockfile or standalone MIT
 license file. Its original README, including its MIT licensing statement and
 the UI Kit exception, is preserved as `SOURCE-README.md` in the guide root.
@@ -29,3 +33,11 @@ compared byte-for-byte against the snapshot, excluding the separately preserved
 `SOURCE-README.md`. No standalone `sync()` call is introduced after
 `X.init(document)`; such a call breaks initialization in the PStack snapshot.
 Run `npm test` and `npm run test:e2e` before publishing.
+
+The top bar carries the same host link as the other guides
+(`<a class="site-up" href="/" aria-label="返回Skills123">← Skills123</a>`, first child of
+`.site-tools`, styled in `public/site-dsh.css`). It is part of the archived source rather
+than a post-build patch, so a rebuild keeps it; it is also the only allowed escape from
+the guide prefix in `tests/dsh-superagent-guide.test.mjs`. Below 560px the pill collapses
+to an arrow because the tool row is 204px wide, and the 11px desktop size is what keeps
+320–1440px free of horizontal scrolling.

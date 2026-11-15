@@ -33,7 +33,7 @@ description: "三分钟判断这个值不值得学，以及开始前要准备什
 | --- | --- |
 | 一台能长期开着的机器 | 要用 `tmux` 让它在后台持续运行；本机或服务器都行 |
 | DeepSeek Harness（DSH） | 它是一份打包给 DSH 的插件，不是独立运行的程序；还要配好模型提供方 |
-| 一个 github.com 仓库 | 一个实例对着一个仓库；文档明确说不支持 GitHub Enterprise Server |
+| 一个 github.com 仓库 | 一个实例只对着一个仓库，多仓库就多跑几份（各自 profile、端口、状态目录）；不支持 GitHub Enterprise Server |
 | 一个专门的 GitHub 账号 | 它写下的每条评论、每个 PR 都挂在这个账号名下，别用你自己的 |
 | 几个命令行工具 | Node、pnpm、git、tmux、Python、GitHub CLI；具体版本在第 1 步 |
 | 飞书（可选） | 想让同事在群里直接 @ 它才需要 |

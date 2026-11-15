@@ -7,7 +7,7 @@ description: "按现象排列的排查清单，每条给一句能马上做的动
 
 ## 配置与安装
 
-**1 · 允许名单没加人。**名单为空，任何请求都成不了工单。→ Settings → Eval → On each Source，先把自己的登录名加进去。
+**1 · 允许名单没加人。**默认准入表下，名单为空时没人能发起明确请求。→ Settings → Eval → On each Source，先把自己的登录名加进去；想让某个群人人可用，把那一行的「名单外 · 点名」改成 `explicit`。
 
 **2 · 编辑 Issue 正文补 @。**来源不接收这种编辑，等于没发。→ 发一条**新评论**。
 
@@ -26,6 +26,19 @@ description: "按现象排列的排查清单，每条给一句能马上做的动
 **8 · 以为自动合并默认开着、审批由系统强制。**默认从不以智能体账号启用，host 也没有合并决策逻辑。→ 人工合并 + GitHub 分支保护并开启「新提交作废旧审批」。
 
 **9 · 把 CLI 包装 / git 配置当安全沙箱。**执行器和主会话都以 `danger-full-access`、以操作者系统用户运行，能按绝对路径执行程序、读家目录。→ 用只含智能体凭证的专用系统账号。
+
+## 看日志才懂的报错
+
+| 日志里出现 | 意思与处理 |
+| --- | --- |
+| `… was not written by dsh-superagent` | `worker-bin` / `worker-gitconfig` 里混进了外部文件；移出去，或换一个 `stateDir` |
+| `git does not read the github.com credential configuration dsh-superagent writes` | git 太旧；装 2.32+ |
+| `The bot lark-cli allows user identities` | 飞书 CLI 配置太宽；换成只允许机器人身份的 strict mode |
+| `The GitHub Source names no repository` | GitHub 卡片没填 `owner/name` |
+| `The prepare command failed: …` | 输出里就是原因，常见是克隆路径错；改好后用 `Retry` |
+| `… timed out after 90 s` / `… exited with code …` | CLI 失败但没打原因；用操作者账号手动跑那个程序，看它自己的报错 |
+| `dsh-superagent configuration has keys it does not use` | 配置里有旧键；删掉被点名的那项（消息会告诉你它搬去哪了） |
+| `Failed to load plugins`（DSH 升级后） | 重启正在运行的实例 |
 
 ## 日常使用
 

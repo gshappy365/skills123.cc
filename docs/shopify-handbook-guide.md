@@ -41,3 +41,14 @@ commercial use or redistribution.
 `npm test` covers page and section counts, in-site link resolution, image locality,
 absence of upstream hosts and affiliate links, and the guide's presence in the global
 catalogue and search.
+
+## Host navigation
+
+Every page carries a top-bar link back to the host site:
+`<a class="site-up" href="/" aria-label="返回Skills123">← Skills123</a>`, inserted as the
+first child of `.site-tools`. Styling lives in `site-shopify.css` and mirrors the REA and
+teamai-cli guides: an 11px pill at desktop widths, and an arrow-only square below
+560px because the tool row is only 204px wide in the third grid column. The link is the
+single intentional escape from the guide prefix, so `tests/shopify-guide.test.mjs` allows exactly
+`href="/"` in its link check. This markup is added after the upstream build, so a
+refreshed snapshot must re-insert it and bump the `site-shopify.css?v=` hash in every page.

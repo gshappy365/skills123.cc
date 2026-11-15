@@ -55,6 +55,7 @@ src/layouts/Site.astro 三栏外壳、搜索、外观切换、代码复制按钮
 
 - 官方 `README.md`、`SETUP.md`、`package.json`、`examples/profile.cordis.patch.yml`
 - 官方 `docs/000`–`008`（理念、领域模型、授权、执行、提示词、面板、部署、架构、扩展手册）
+- 2026-11-15 逐文件复核了 002/003/006/007/008、`scripts/dsh-superagent`、准入表默认值（`src/admission.ts`）与面板文案来源（`src/client/locales.ts`、各 Source 的字段定义）；核验记录与补强清单在 `docs/RESEARCH-UPSTREAM.md`
 - 信息架构参考 [nevertoday/xxd-pstack](https://github.com/nevertoday/xxd-pstack) 的公开做法：数据驱动导航、新手/完整双轨、每页一句话、可照抄提示词、「你应该看到什么 / 不对怎么办」、术语悬停、全站搜索、亮暗主题
 
 本站文字、示例请求、类比与页面组织为原创撰写，没有复制上述仓库的教程正文、文案或插画。

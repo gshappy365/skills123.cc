@@ -20,6 +20,7 @@ description: "真正改代码的那个会话与目录，在领域模型之外。
 - 执行器读 DSH 的编码提示词和仓库的 `AGENTS.md`；**主会话不读**，主会话只路由，不做技术决定；
 - 无人值守：它的工具里去掉了 `ask_user_question`、`present`、`plugin_manager` 这类会找人、开界面或改 profile 的工具；
 - 预设叫 `dsh-superagent-worker`，主会话用 `dsh-superagent-router`；配置里这两行在会话使用期间不能删；
+- 工具是可枚举的：执行器有 6 个应用工具（`orchestrator_read`、`orchestrator_ack`、`orchestrator_report`、`orchestrator_thread_unrelated`、`orchestrator_thread_follow`、`orchestrator_trigger_handback`），主会话有 14 个（路由、评估、工单重试/备注、回复、设置与提示词保存等）。面板上的动作不在工具里。
 - 安全上要清楚：它以 `danger-full-access`、以操作者的系统用户运行，CLI 包装不是隔离边界。
 
 ## 常见误区

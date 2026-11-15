@@ -36,8 +36,9 @@ pnpm check          # typecheck + test + build
 | profile | `superagent`（DSH Web profile 的副本） |
 | 面板 | `http://127.0.0.1:3082` → 侧栏 **Superagent** |
 | 管理 API | `/orchestrator/api/`，需 `x-orchestrator-request: 1`，host 必须是 `127.0.0.1:<port>` / `localhost:<port>` |
-| 状态目录 | `<home>/.dsh/state/superagent`（绝对路径） |
-| 分支前缀 | `agent/` |
+| 状态目录 `stateDir` | **必填，无内置默认**，必须是绝对路径；SETUP 推荐 `<home>/.dsh/state/superagent` |
+| PR 归属 | PR 分支的**最后一段**等于工单简称；`agent/` 前缀来自示例 prepare 命令，不是配置项 |
+| 并发 / 评估超时 | `maxWorkers = 3`；`evalTimeoutSeconds = 120`（可在 Settings 里调） |
 | 接单模式 | `observe` |
 | 自动合并 | 关 |
 | 配置文件 | `$DSH_HOME/profiles/<profile>/cordis.patch.yml`（模板：`examples/profile.cordis.patch.yml`） |
@@ -64,6 +65,16 @@ scripts/dsh-superagent --profile superagent status
 scripts/dsh-superagent --profile superagent --respect-stop restart
 ```
 
+| 参数 | 默认 | 作用 |
+| --- | --- | --- |
+| `--profile` | 环境变量 `DSH_SUPERAGENT_PROFILE`，否则 `superagent` | 目标 profile；tmux 会话名是 `dsh-<profile>` |
+| `--url` | `DSH_SUPERAGENT_URL`，否则 `http://127.0.0.1:3082` | 健康检查地址；改端口时必须同步 |
+| `--timeout` | 60 秒 | `start` 等运行时就绪的上限 |
+| `--stop-timeout` | 300 秒 | 优雅关闭上限（先让执行器做完当前 step） |
+| `--respect-stop` | 关 | 监控用：看到 `manually-stopped` 标记就跳过 start/restart，返回 0 |
+
+`stop` 只发 SIGINT，从不强杀，也不动其他 tmux 会话。日志写在 `.artifacts/dsh-superagent-<profile>-<日期>-<时间>-<pid>.log`，保留最近 20 个；控制文件在 `.artifacts/control/profiles/<profile>/`（`manually-stopped`、`service.pid`、`operation.lock`）。
+
 | `status` 退出码 | 含义 |
 | --- | --- |
 | 0 | 正常 |
@@ -76,8 +87,12 @@ scripts/dsh-superagent --profile superagent --respect-stop restart
 ## 升级
 
 ```
+# 0. 等执行器没有在途的 turn（官方顺序的第一步）
+# 1. 备份唯一的状态数据库
 cp <stateDir>/orchestrator.sqlite <stateDir>/orchestrator.sqlite.bak
+# 2. 拉代码、装依赖、构建
 git pull && pnpm install && pnpm build
+# 3. 重启
 scripts/dsh-superagent restart
 ```
 

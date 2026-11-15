@@ -1,4 +1,4 @@
-import { createCatalogueModel } from "./catalogue-model.js?v=20261114-2";
+import { createCatalogueModel } from "./catalogue-model.js?v=20261115-1";
 
 export const PACKAGE_GROUP_ORDER = Object.freeze([
   "development",
@@ -17,6 +17,10 @@ function packageHref(packageId, skillId = null) {
   const base = `/packages/${encodeURIComponent(packageId)}/`;
   return skillId ? `${base}?skill=${encodeURIComponent(skillId)}` : base;
 }
+
+// 只有 active 的技能包会出现在首页分组和全局搜索里；archived 的包保留数据与工作台页面，
+// 但不再从首页或搜索进入。
+const isListed = (pkg) => pkg.status === "active";
 
 export function buildPackageGroups(catalog) {
   const scenarioById = new Map(
@@ -48,6 +52,7 @@ export function searchCatalogue({ catalog, packageSkills, guides = [], query }) 
     catalog.scenarios.map((scenario) => [scenario.id, scenario])
   );
   const packageMatches = catalog.packages
+    .filter(isListed)
     .filter((pkg) =>
       normalizedText([
         pkg.name,
@@ -58,33 +63,35 @@ export function searchCatalogue({ catalog, packageSkills, guides = [], query }) 
     )
     .map((pkg) => ({ ...pkg, href: packageHref(pkg.id) }));
 
-  const skillMatches = catalog.packages.flatMap((pkg) =>
-    (packageSkills[pkg.id] ?? [])
-      .filter((skill) =>
-        normalizedText([
-          skill.id,
-          skill.name,
-          skill.command,
-          skill.description,
-          skill.descriptionZh,
-          skill.descriptionEn,
-          skill.tags,
-          pkg.workspace?.groupLabels?.[skill.group],
-          skill.requirements,
-          skill.outputs,
-          skill.environmentVariables?.map((variable) => [variable.name, variable.description]),
-        ]).includes(normalizedQuery)
-      )
-      .map((skill) => ({
-        ...skill,
-        package: {
-          id: pkg.id,
-          name: pkg.name,
-          scenario: pkg.scenario,
-        },
-        href: packageHref(pkg.id, skill.id),
-      }))
-  );
+  const skillMatches = catalog.packages
+    .filter(isListed)
+    .flatMap((pkg) =>
+      (packageSkills[pkg.id] ?? [])
+        .filter((skill) =>
+          normalizedText([
+            skill.id,
+            skill.name,
+            skill.command,
+            skill.description,
+            skill.descriptionZh,
+            skill.descriptionEn,
+            skill.tags,
+            pkg.workspace?.groupLabels?.[skill.group],
+            skill.requirements,
+            skill.outputs,
+            skill.environmentVariables?.map((variable) => [variable.name, variable.description]),
+          ]).includes(normalizedQuery)
+        )
+        .map((skill) => ({
+          ...skill,
+          package: {
+            id: pkg.id,
+            name: pkg.name,
+            scenario: pkg.scenario,
+          },
+          href: packageHref(pkg.id, skill.id),
+        }))
+    );
 
   const guideMatches = guides
     .filter((guide) =>

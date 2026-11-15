@@ -14,6 +14,10 @@ description: "知道要多准备什么、群消息怎么收、以及身份不互
 
 安装时智能体会问「接哪些群」「群里谁可以叫它干活」。群可以按「全部消息」或「仅 @」接收；私信默认开启，也可以关。
 
+<div class="tu-note tu-note--warn">
+<strong>机器人 CLI 要用 strict mode</strong><p>先跑 <code>lark-cli config strict-mode bot</code>，只允许机器人身份。另外<strong>不要跑 <code>lark-cli config remove</code></strong>——它会删掉共享的 keychain 条目，影响这台机器上其他用到它的东西，而且不好恢复。</p>
+</div>
+
 ## 两个来源的身份不互通
 
 这是领域模型里明确写下的规则：**不同来源上的身份永远不做映射**。GitHub 的允许名单写 GitHub 登录名，飞书写飞书用户 id，两者之间不自动对应。「某个飞书用户其实是哪个 GitHub 账号」属于团队提示词的内容（例如 `identities` 技能），不是一份身份表。

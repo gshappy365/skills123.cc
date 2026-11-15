@@ -34,7 +34,7 @@ START = [
 | --- | --- |
 | 一台能长期开着的机器 | 要用 `tmux` 让它在后台持续运行；本机或服务器都行 |
 | DeepSeek Harness（DSH） | 它是一份打包给 DSH 的插件，不是独立运行的程序；还要配好模型提供方 |
-| 一个 github.com 仓库 | 一个实例对着一个仓库；文档明确说不支持 GitHub Enterprise Server |
+| 一个 github.com 仓库 | 一个实例只对着一个仓库，多仓库就多跑几份（各自 profile、端口、状态目录）；不支持 GitHub Enterprise Server |
 | 一个专门的 GitHub 账号 | 它写下的每条评论、每个 PR 都挂在这个账号名下，别用你自己的 |
 | 几个命令行工具 | Node、pnpm、git、tmux、Python、GitHub CLI；具体版本在第 1 步 |
 | 飞书（可选） | 想让同事在群里直接 @ 它才需要 |
@@ -89,11 +89,17 @@ Read SETUP.md in this repository and set up dsh-superagent with me.
 
 问题不是随便问的，是顺着一件事流动的方向：**请求从哪来 → 谁可以提 → 干活时用什么**。
 
-| 顺序 | 会问什么 | 推荐回答 |
+| # | 会问什么 | 推荐回答 |
 | --- | --- | --- |
-| 1–4 | 只接 GitHub，还是也接飞书？哪个仓库？智能体用哪个 GitHub 账号？飞书接哪些群？ | 先只接 GitHub；账号用专门新建的那个 |
-| 5–6 | GitHub 上哪些登录名可以叫它干活？飞书群里谁可以？ | 先只填你自己一个人 |
-| 7–9 | 每个工单从哪份本地克隆开工？提交署名用谁？要不要自动合并？ | 新建一份克隆；署名用智能体账号；自动合并先选「不要」 |
+| 1 | 只接 GitHub，还是也接飞书？ | 先只接 GitHub |
+| 2 | 哪个 github.com 仓库（`owner/name`）？ | 你想让它盯的那一个 |
+| 3 | 智能体用哪个 GitHub 账号？ | 专门新建的那个，别用你自己的 |
+| 4 | 飞书接哪些群（按名字）？ | 只在第 1 问选了飞书时才问 |
+| 5 | GitHub 上哪些登录名可以叫它干活？ | 先只填你自己 |
+| 6 | 飞书群里谁可以？ | 先只填第一个群里的人 |
+| 7 | 每个工单从哪份本地克隆开工？ | 新建一份克隆，例如 `~/src/<name>` |
+| 8 | 提交署名用谁？ | 智能体账号，让它的工作一眼可辨 |
+| 9 | PR 就绪后要不要自动合并？ | 不要（默认推荐） |
 
 <div class="tu-note tu-note--tip">
 <strong>一个问题一句话就能答</strong><p>每个问题都带一个推荐答案，回一个字（比如「好」「用默认」）就能过。它每句话不超过 300 词，不会给你念文档。</p>
@@ -338,7 +344,7 @@ grep -l -E 'id: dsh-superagent\b' "${DSH_HOME:-$HOME/.dsh}"/profiles/*/cordis.pa
         body=r"""
 ## 为什么要独立的 profile
 
-默认建议建一个叫 `superagent` 的 profile，它是 DSH Web profile 的副本，和你平时用的那个分开。好处很实际：**它重启时不会关掉你自己的会话**。面板端口默认 `3082`，状态目录默认 `~/.dsh/state/superagent`。
+默认建议建一个叫 `superagent` 的 profile，它是 DSH Web profile 的副本，和你平时用的那个分开。好处很实际：**它重启时不会关掉你自己的会话**。面板端口默认 `3082`，状态目录推荐放在 `~/.dsh/state/superagent`——注意这是 SETUP 的推荐值，插件配置里的 `stateDir` 是**必填项、没有内置默认**，而且必须是绝对路径。
 
 ## 一次性安装
 
@@ -374,7 +380,7 @@ dsh plugin --profile superagent add "link:$PWD"
 #   disabled: false
 ```
 
-`stateDir` 下面会放：`orchestrator.sqlite`（唯一的数据库）、`lock`、`worker-bin`（CLI 包装）、`worker-gitconfig`、`work`（工单默认目录）。升级前**先备份 `orchestrator.sqlite`**——迁移过的数据库旧版本打不开。
+`stateDir` 下面会放：`orchestrator.sqlite`（唯一的数据库）、锁文件（文档只叫它 the lock）、`worker-bin`（CLI 包装）、`worker-gitconfig`、`work`（工单默认目录）。升级前**先备份 `orchestrator.sqlite`**——迁移过的数据库旧版本打不开。
 
 ## 启停与体检
 
@@ -387,6 +393,12 @@ pnpm check                        # typecheck + test + build
 ```
 
 `status` 的退出码：`0` 正常；`1` 没运行 / 双实例 / 无响应；`2` 某个组件报错，重启也修不好；`3` 还有安装步骤没做完。还能用 `--profile`、`--url` 或对应的环境变量指定目标。
+
+## 改端口要同时改三处
+
+<div class="tu-note tu-note--tip">
+<strong>只改一个地方，<code>status</code> 会一直退出 1</strong><p>端口不是只写在 <code>cordis.patch.yml</code> 的 <code>webserver.port</code> 里：脚本的 <code>--url</code> 参数（或环境变量 <code>DSH_SUPERAGENT_URL</code>）也要指向新端口，否则健康检查会打到旧地址。三处是：<code>cordis.patch.yml</code>、<code>--url</code>、<code>DSH_SUPERAGENT_URL</code>。</p>
+</div>
 
 ## 打开面板
 
@@ -422,7 +434,37 @@ pnpm check                        # typecheck + test + build
 | 准入表 admission table | 哪类消息、有没有 @、是不是名单里的人，分别给多强的资格 | 同一个 Source 的 tab |
 | 接单模式 accept mode | 推断出来的工作，是记下、还是真接 | Settings → Eval |
 
-**名单为空，任何请求都变不成工单。**这是 host 强制的，不是提示词里的一句话。消息、评论、引用文档都只是判断用的输入，改不了权限。
+消息、评论、引用文档都只是判断用的输入，改不了权限——这三道闸门由 host 强制。
+
+### 准入表的真实结构
+
+每个来源一张表。**行是接收范围，格（cell）最多三个**：
+
+| 格 | 可选值 | 默认 |
+| --- | --- | --- |
+| 名单内 · 未 @ | `inferred` / `ignore` | ==`inferred`== |
+| 名单外 · 点名智能体 | `explicit` / `inferred` / `ignore` | `ignore` |
+| 名单外 · 未 @ | `inferred` / `ignore` | `ignore` |
+
+行分别是：GitHub 的**新 Issue / 新 PR / 评论 / 默认分支 CI**；飞书的**每个群 / 其他群 / 私聊**。
+
+<div class="tu-note tu-note--warn">
+<strong>两个最容易看漏的地方</strong><p>第一，<strong>名单内的人不 @，默认也会成为推断候选</strong>（<code>inferred</code>）——这正是 <code>observe</code> 模式要盯的东西。第二，<strong>CI 那一行只有一格</strong>，因为 CI 事件没有发送者，它只看「名单外 · 未 @」这一格。</p>
+</div>
+
+判定顺序比表格更好记：
+
+1. 名单内 + 点名 → `explicit`，不查表；
+2. 表里那一格是 `explicit` → `explicit`（优先于「线程已有工单」的跟进逻辑）；
+3. 线程已有工单（或人已在名单）→ 算跟进：名单内 `explicit`、名单外 `inferred`（`off` 模式除外）；
+4. 表格给 `inferred` 且模式不是 `off` → `inferred`；
+5. 其余 → 拒绝（`not_a_member` / `admission_ignored` / `no_mention`）。
+
+### 「名单为空」到底意味着什么
+
+默认准入表下，名单为空时没人能发起**明确**请求。但它不是绝对无入口：把某一行的「名单外 · 点名智能体」设成 `explicit`，这个范围里任何人 @ 它都能直接派活（面板会提示「这个范围里任何人点名智能体都能直接发起工作」）；把机器人加进 bot 名单，它也能产生推断候选。
+
+==想让一个支持群人人可用，改那一行，而不是把所有人加进名单==。
 
 ## 两种强度
 
@@ -431,7 +473,7 @@ pnpm check                        # typecheck + test + build
 | `explicit` 明确 | 有人直接、明确地点名要它做某件事 |
 | `inferred` 推断 | 它从上下文觉得「大概该做点什么」，没人直接要求 |
 
-默认的准入表大致是：名单里的人 @ 了 → `explicit`；名单外的人 @ 了 → 忽略；没 @ → 忽略。想让某个支持群里任何人都能派活，把那一行的「名单外 @」设成 `explicit` 即可。
+名单外的人点名也能拿到 `explicit`，前提是准入表那一格设为 `explicit`。
 
 机器人（GitHub Apps、`[bot]` 结尾的登录名、飞书 bot）只能产生 `inferred` 候选，**不能 explicit，也不能叫停工作**。用普通账号跑的自动评审会被 host 当成「人」，得在团队提示词的 review bots 里点名。
 
@@ -537,7 +579,7 @@ pnpm check                        # typecheck + test + build
 | 现象 | 去哪查 |
 | --- | --- |
 | 完全没记录 | Source 页的开关与 setup 问题；发消息的人是否在允许名单 |
-| 有触发但决定是 `ignore` | Eval 页的理由。`observe` 下推断的工作会写「本来会接」 |
+| 有触发但决定是 `ignore` | Eval 页的理由。`observe` 下推断的工作会写「观察模式：本会接单（…）」——这就是它「本来想接」的证据 |
 | 决定是 `unavailable` | 评估超时或不可用，触发会重新排队；面板上可以 `Evaluate again` |
 | 工单 `failed` | 多半是 prepare 命令（克隆路径）失败，改好后用 `Retry` |
 | 它开始动不该动的文件 | 在原对话里回一句「只处理 <文件>，先把改动清单给我」；订阅会把这句送到工单 |
@@ -567,6 +609,23 @@ pnpm check                        # typecheck + test + build
 | Settings | 怎么改行为 | 来源、评估、执行、提示词、部署，每组都有保存历史 |
 
 安装没完成时，Overview 会直接列出缺什么、并链到对应设置，不会让你猜。
+
+## 工单阶段：面板上的八个标签
+
+Execution 页最容易被误读的就是这一列。**阶段不是状态码，而是「按顺序读表，第一行匹配者胜」**：
+
+| 面板标签（中 / 英） | 含义 |
+| --- | --- |
+| 输入未送达 / Input undelivered | 投递输入失败，2 秒后退避重试（逐次翻倍，最多 1 分钟） |
+| 待回答 / Awaiting answer | 有一个[[待人工决定|Attention：工单上等人回答的结构化具体问题]] |
+| 待验收 / Awaiting review | 最新报告是 `ready`，等你审 |
+| 待处理受阻 / Blocked | 报告 `blocked`，且此后没人发消息 |
+| 待处理失败 / Failed | 报告 `failed`，且此后没人发消息 |
+| 排队中 / Queued | 没有派工，或派工待启动 |
+| 等待新触发 / Waiting for a Trigger | 报告 `waiting`，或派工已结束 |
+| 执行中 / Working | 其他情况 |
+
+这八个标签比内部状态码有用得多：它们直接告诉你**在等谁、等什么**。
 
 ## 你能点的几个动作
 
@@ -670,7 +729,7 @@ Mandate 记的是「当时凭什么允许做这件事、允许做到哪」。工
         body=r"""
 ## 「开了 PR」不等于「做完了」
 
-内置提示词写得很直白：开 PR 不代表就绪；草稿要标未完成；一个 UI 改动没有真实的改前截图，就不算 ready。它在 `ready` 报告里会绑上 PR（分支前缀默认 `agent/`）。
+内置提示词写得很直白：开 PR 不代表就绪；草稿要标未完成；一个 UI 改动没有真实的改前截图，就不算 ready。它在 `ready` 报告里会绑上 PR。绑定的判据是**PR 分支的最后一段等于工单简称**；常见的 `agent/` 前缀来自官方示例里的 prepare 命令，不是配置项。
 
 审的时候重点看三样：
 
@@ -684,27 +743,48 @@ Mandate 记的是「当时凭什么允许做这件事、允许做到哪」。工
 
 ## 合并由你做
 
-默认人工合并。自动合并要在 `Delivery requirements` 里点名**另一个账号**的 CLI，并且满足一串条件（PR 属于该工单、状态就绪、审批覆盖 head commit、增删合计小于 200 行）；推新 revision 之前还会先撤回自动合并。
+默认人工合并。自动合并要在 `Delivery requirements` 里点名**另一个账号**的 CLI，并且同时满足五个条件：
+
+1. PR 由本工单的分支开出；
+2. 状态就绪（ready）；
+3. 增删合计小于 200 行；
+4. 要求的每条批准都覆盖当前 head commit；
+5. 如果改的是用户可见内容，指令必须点名由谁批准这类改动，且批准覆盖该 commit。
+
+任一条件不再成立、或要推新提交之前，先撤回自动合并。原文档里对应的两条命令长这样（`<merge CLI>` 指你点名的那个 CLI）：
+
+```
+<merge CLI> pr merge <number> --auto --merge --match-head-commit <sha> --repo $DSH_SUPERAGENT_GITHUB_REPOSITORY
+<merge CLI> pr merge <number> --disable-auto --repo $DSH_SUPERAGENT_GITHUB_REPOSITORY
+```
+
+就绪即可上报，不必等批准；批准到了再开自动合并。强制审批要靠 GitHub 的分支保护，并开启「新提交作废旧审批」。
 
 host 里没有合并决策逻辑。要强制「必须有人审过」，请用 GitHub 的**分支保护**并开启「新提交作废旧审批」。删掉 merge CLI 或自动合并段落，就等于强制人工合并。
 
 ==把自动合并一直关着，是这套系统最划算的一道保险==。它给的自由度越大，操作者对团队的责任就越重。
 
-## 想让它停，说一句话
+## 想让它停：两条路，机制不同
+
+**在对话里说 stop**——它是一条普通触发，和其他消息一样要先过评估，由[[评估|Eval：把一批触发变成一个决定]]判定 `stop`。好处是上下文完整，它知道你在停哪件事。
 
 ```
 @<agent login> 停一下，这个先不要继续了。
 ```
 
-人在线程里说「stop」是一条普通触发，但它的效果很硬：直接作用于工单、记作人工停止、**撤回 Mandate**。而且人的暂停会跨跟进消息、跨新的执行器会话、跨重启一直保持，直到人亲自解除；自动反馈不会把暂停的活重新唤醒。
+**在面板上按 `Stop`**——这是一个命令，直接作用在工单上，不需要评估，记作人工停止。适合你已经不想再解释、就要它立刻停下的时候。
 
-面板上也有 `Stop` 按钮，效果一样。
+两条路的结果一样：都会**撤回那份授权**，工单不再接收任何东西。区别只在路径——一个是「请求它停」，一个是「命令它停」。
+
+人的暂停还会跨跟进消息、跨新的执行器会话、跨重启一直保持，直到人亲自解除；自动反馈不会把暂停的活重新唤醒。
 
 ## 它什么时候会来找你
 
 - 有结果可以用了；
 - 需要人做一个决定或提供资源（一个结构化问题，原样转达）；
 - 活干不下去了。
+
+评审还有一套固定规矩，值得当成降噪手段用：修好并验证过的意见静默关掉，不采纳的给一句理由；==每个自动评审员每个 PR 最多 3 轮==。这比「把提示词写短」更硬，也更好验证。
 
 除此之外不说话。聊天消息默认一句，硬上限 100 词。主会话自己**从不等待**：报告、候选、后台任务完成都会自动作为消息到达，没事可做就结束这一轮；它甚至拒绝 `sleep`、超过 30 秒的 shell 超时和超过 5 秒的任务等待，因为一个卡住的步骤会拖住后面所有候选。
 
@@ -791,6 +871,8 @@ git pull && pnpm install && pnpm build
 # 4. 重启
 scripts/dsh-superagent restart
 ```
+
+重启之后还有一件事要处理：你改过的内置提示词如果默认值变了，面板会把它标成 **Default updated（默认内容已更新）**，并在你的文字上方并排给出新旧默认值。这时要做一次选择——「保留我的」还是「改用新的默认」；没改过的部件会自动跟随，不用管。
 
 **不要重跑 `dsh superagent --from-default-profile ...`**（会替换 profile 并删掉 `cordis.patch.yml`）。迁移过的数据库旧版本打不开，所以回滚必须靠备份。`cordis.patch.yml` 里 `dsh-superagent-worker` 和 `dsh-superagent-router` 两行在会话使用期间不能删，否则恢复会话会报 `agent-preset/not-found`。
 

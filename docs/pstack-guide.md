@@ -27,3 +27,14 @@ XXD license before any commercial use or redistribution.
 
 The tutorial is a separate upstream snapshot from the Cursor plugin snapshot
 in the PStack package, so their skill lists and versions can differ.
+
+## Host navigation
+
+Every page carries a top-bar link back to the host site:
+`<a class="site-up" href="/" aria-label="返回Skills123">← Skills123</a>`, inserted as the
+first child of `.site-tools`. Styling lives in `site.css` and mirrors the REA and
+teamai-cli guides: an 11px pill at desktop widths, and an arrow-only square below
+560px because the tool row is only 204px wide in the third grid column. The link is the
+single intentional escape from the guide prefix, so `tests/pstack-guide.test.mjs` allows exactly
+`href="/"` in its link check. This markup is added after the upstream build, so a
+refreshed snapshot must re-insert it and bump the `site.css?v=` hash in every page.

@@ -7,7 +7,7 @@ description: "把插件装进一个独立的 DSH profile，配好状态目录，
 
 ## 为什么要独立的 profile
 
-默认建议建一个叫 `superagent` 的 profile，它是 DSH Web profile 的副本，和你平时用的那个分开。好处很实际：**它重启时不会关掉你自己的会话**。面板端口默认 `3082`，状态目录默认 `~/.dsh/state/superagent`。
+默认建议建一个叫 `superagent` 的 profile，它是 DSH Web profile 的副本，和你平时用的那个分开。好处很实际：**它重启时不会关掉你自己的会话**。面板端口默认 `3082`，状态目录推荐放在 `~/.dsh/state/superagent`——注意这是 SETUP 的推荐值，插件配置里的 `stateDir` 是**必填项、没有内置默认**，而且必须是绝对路径。
 
 ## 一次性安装
 
@@ -43,7 +43,7 @@ dsh plugin --profile superagent add "link:$PWD"
 #   disabled: false
 ```
 
-`stateDir` 下面会放：`orchestrator.sqlite`（唯一的数据库）、`lock`、`worker-bin`（CLI 包装）、`worker-gitconfig`、`work`（工单默认目录）。升级前**先备份 `orchestrator.sqlite`**——迁移过的数据库旧版本打不开。
+`stateDir` 下面会放：`orchestrator.sqlite`（唯一的数据库）、锁文件（文档只叫它 the lock）、`worker-bin`（CLI 包装）、`worker-gitconfig`、`work`（工单默认目录）。升级前**先备份 `orchestrator.sqlite`**——迁移过的数据库旧版本打不开。
 
 ## 启停与体检
 
@@ -56,6 +56,12 @@ pnpm check                        # typecheck + test + build
 ```
 
 `status` 的退出码：`0` 正常；`1` 没运行 / 双实例 / 无响应；`2` 某个组件报错，重启也修不好；`3` 还有安装步骤没做完。还能用 `--profile`、`--url` 或对应的环境变量指定目标。
+
+## 改端口要同时改三处
+
+<div class="tu-note tu-note--tip">
+<strong>只改一个地方，<code>status</code> 会一直退出 1</strong><p>端口不是只写在 <code>cordis.patch.yml</code> 的 <code>webserver.port</code> 里：脚本的 <code>--url</code> 参数（或环境变量 <code>DSH_SUPERAGENT_URL</code>）也要指向新端口，否则健康检查会打到旧地址。三处是：<code>cordis.patch.yml</code>、<code>--url</code>、<code>DSH_SUPERAGENT_URL</code>。</p>
+</div>
 
 ## 打开面板
 

@@ -92,27 +92,33 @@ test("global search reaches PStack skills and retains development package owners
   assert.equal(match.href, "/packages/pstack/?skill=blast-radius");
 });
 
-test("global search reaches the four newly catalogued packages", async () => {
+test("global search reaches the catalogued packages that are still listed", async () => {
   const { catalog, packageSkills } = await fixtures();
   for (const [query, packageId, skillId] of [
     ["网页搜索", "wigolo", "wigolo-search"],
     ["近况研究", "last30days", "last30days"],
-    ["根因分析", "waza", "hunt"],
   ]) {
     const result = searchCatalogue({ catalog, packageSkills, query });
     const match = result.skillMatches.find((item) => item.id === skillId);
     assert.ok(match, `${query} should find ${skillId}`);
     assert.equal(match.package.id, packageId);
   }
+  // Waza 已从首页下架（status: archived），全局搜索不再返回它的技能
+  const waza = searchCatalogue({ catalog, packageSkills, query: "根因分析" });
+  assert.deepEqual(waza.skillMatches.filter((item) => item.package.id === "waza"), []);
 });
 
-test("global search reaches the founder evaluator and its Gate Review skill", async () => {
+test("global search no longer reaches the archived founder evaluator", async () => {
   const { catalog, packageSkills } = await fixtures();
   const result = searchCatalogue({ catalog, packageSkills, query: "Gate Review" });
-  const match = result.skillMatches.find((item) => item.id === "founder-project-evaluator");
-  assert.ok(match);
-  assert.equal(match.package.id, "founder-project-evaluator");
-  assert.equal(match.href, "/packages/founder-project-evaluator/?skill=founder-project-evaluator");
+  assert.deepEqual(
+    result.packageMatches.filter((item) => item.id === "founder-project-evaluator"),
+    []
+  );
+  assert.deepEqual(
+    result.skillMatches.filter((item) => item.package.id === "founder-project-evaluator"),
+    []
+  );
 });
 
 
@@ -161,10 +167,12 @@ test("loading featured skills does not mutate a shared package data source", asy
   ]);
 });
 
-test("global search finds an Addy Osmani skill and excludes removed packages", async () => {
- const {catalog, packageSkills} = await fixtures();
- const match=searchCatalogue({catalog,packageSkills,query:"test-driven-development"}).skillMatches.find(s=>s.package.id === "addyosmani-agent-skills");
- assert.equal(match?.id,"test-driven-development");
- assert.equal(match.href,"/packages/addyosmani-agent-skills/?skill=test-driven-development");
- assert.equal(searchCatalogue({catalog,packageSkills,query:"ray-writer"}).skillMatches.length,0);
+test("global search excludes the archived Addy Osmani package and removed packages", async () => {
+  const { catalog, packageSkills } = await fixtures();
+  const result = searchCatalogue({ catalog, packageSkills, query: "test-driven-development" });
+  assert.deepEqual(
+    result.skillMatches.filter((item) => item.package.id === "addyosmani-agent-skills"),
+    []
+  );
+  assert.equal(searchCatalogue({ catalog, packageSkills, query: "ray-writer" }).skillMatches.length, 0);
 });
