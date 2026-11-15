@@ -725,3 +725,23 @@
   [dir="rtl"] .xxd-toc a { border-left: 0; border-right: 1px solid var(--line); padding: var(--space-1) var(--space-3) var(--space-1) 0; }
   [dir="rtl"] .xxd-toc a[aria-current=true] { border-right-color: var(--action); box-shadow: inset -1px 0 0 var(--action); }
 }
+
+@layer site {
+  /* 作为子专题发布时的返回入口（与 REA 手册、teamai-cli 教程同款位置）。
+     顶栏工具区只有 204px，胶囊收成 11px / 6px 内边距才放得下，避免出现横向滚动。 */
+  .site-up {
+    display: inline-flex; align-items: center; height: 28px; padding: 0 6px;
+    border: 1px solid var(--line-strong, var(--line)); border-radius: 6px;
+    color: var(--muted); font-size: 11px; font-weight: 500; text-decoration: none; white-space: nowrap;
+  }
+  .site-up:hover { border-color: var(--accent-line); color: var(--accent-text); }
+  /* 窄屏顶栏放不下文字胶囊（360px 时连图标都紧），只留箭头，名字交给 aria-label */
+  @media (max-width: 560px) {
+    .site-up { width: 28px; padding: 0; justify-content: center; font-size: 0; }
+    .site-up::before { content: "←"; font-size: 14px; line-height: 1; }
+  }
+  /* ≤340px 顶栏放不下时，沿用骨架本来的降级规则：只把语言名收成省略号，其他按钮不缩 */
+  @media (max-width: 400px) {
+    .site-top__end > .site-tools { min-width: 0; flex-shrink: 1; }
+  }
+}

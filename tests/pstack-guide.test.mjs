@@ -38,6 +38,8 @@ test("PStack generated HTML uses the subpath and resolves local links and assets
   for (const page of pages) {
     const html = await readFile(page, "utf8");
     for (const [, url] of html.matchAll(/(?:href|src)="(\/(?!\/)[^"#?]*)/g)) {
+      // 顶栏那个「← Skills123」按设计指向宿主站点根，是全站唯一允许逃出前缀的链接
+      if (url === "/") { await access(path.join(site, "index.html")); continue; }
       if (!url.startsWith("/guides/pstack/")) {
         broken.push(`${path.relative(site, page)}: ${url} (outside subpath)`);
         continue;

@@ -26,6 +26,8 @@ async function walk(dir, out = []) {
 function localTarget(reference) {
   const pathname = reference.split(/[?#]/, 1)[0];
   if (!pathname.startsWith("/")) return null;
+  // 顶栏那个「← Skills123」按设计指向宿主站点根，是全站唯一允许逃出前缀的链接
+  if (pathname === "/") return path.join(siteRoot, "index.html");
   assert.ok(pathname.startsWith(guideBase), `站内链接缺少专题前缀：${reference}`);
   const rel = pathname.slice(guideBase.length);
   return pathname.endsWith("/") || rel === ""

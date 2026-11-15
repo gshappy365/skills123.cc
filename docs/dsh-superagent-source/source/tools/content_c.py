@@ -133,6 +133,8 @@ WIKI = [
 - 策略变更不会取消正在跑的工单（避免半成品），而是把变更记录并送达它的派工；
 - 它的存在把「授权」和「上下文」彻底分开：[[订阅|Subscription]]只送上下文，不带任何权限。
 
+只有三种操作会动它：接单时建立、人明确 stop 时撤回、已结束工单恢复前拿当前 Policy 重新校验失败时吊销。工单结束、策略变更、新消息都改不了它。理解这一句，能解释大多数「它为什么现在不理我」。
+
 ## 常见误区
 
 - 当成登录凭证或权限位：它是一份**记录**，真正的权限由 host 和工具参数强制。
@@ -158,6 +160,7 @@ WIKI = [
 - 引用它的[[授权|Mandate]]，持有渠道和输入，并记录决定 id；
 - 只有派工的**最终报告**才可能从执行器这一侧结束它；
 - 结局写成人能读懂的结果，比如 **Pull request merged** 或 **Stopped by a person**。
+- 面板上的阶段标签有八个（输入未送达、待回答、待验收、待处理受阻、待处理失败、排队中、等待新触发、执行中），完整读法见 [看懂面板](/guide/5-panel/)。
 
 ## 常见误区
 
@@ -243,6 +246,7 @@ WIKI = [
 - 执行器读 DSH 的编码提示词和仓库的 `AGENTS.md`；**主会话不读**，主会话只路由，不做技术决定；
 - 无人值守：它的工具里去掉了 `ask_user_question`、`present`、`plugin_manager` 这类会找人、开界面或改 profile 的工具；
 - 预设叫 `dsh-superagent-worker`，主会话用 `dsh-superagent-router`；配置里这两行在会话使用期间不能删；
+- 工具是可枚举的：执行器有 6 个应用工具（`orchestrator_read`、`orchestrator_ack`、`orchestrator_report`、`orchestrator_thread_unrelated`、`orchestrator_thread_follow`、`orchestrator_trigger_handback`），主会话有 14 个（路由、评估、工单重试/备注、回复、设置与提示词保存等）。面板上的动作不在工具里。
 - 安全上要清楚：它以 `danger-full-access`、以操作者的系统用户运行，CLI 包装不是隔离边界。
 
 ## 常见误区
@@ -397,7 +401,13 @@ REFERENCE = [
 
 ## 引擎内部（想深入再看）
 
-`src/core/` 是纯领域逻辑、零 I/O；**Engine 是触发、线程、决定、工单、派工的唯一写入者**，内部分成单向依赖的五段：`Intake → Evals → Tickets → Assignments → Replies`。所有方法同步、每条命令一个事务，并按角色暴露不同视图。状态存在单个 SQLite 文件 `<stateDir>/orchestrator.sqlite`；副作用走 `Effects` 队列，`Outbox` 是唯一写回执的地方；`Passes` 每 2 秒驱动一次到期评估。
+`src/core/` 是纯领域逻辑、零 I/O；**Engine 是触发、线程、决定、工单、派工的唯一写入者**，内部分成单向依赖的五段：`Intake → Evals → Tickets → Assignments → Replies`。所有方法同步、每条命令一个事务，并按角色暴露不同视图。状态存在单个 SQLite 文件 `<stateDir>/orchestrator.sqlite`，只有 9 张单数表：`trigger`、`disposition`、`trigger_thread`、`thread`、`ticket`、`decision`、`effect`、`outbox`、`kv`。
+
+副作用走 `Effects` 队列，`Outbox` 是唯一写回执的地方。`Passes` 一次只跑一个、==每 2 秒一趟==，先处理到期 effects 再驱动评估——这就是「为什么它总慢半拍」的答案。
+
+重试节奏也有规律：评估、投递、中继、通知从 2 秒起翻倍到 60 秒；启动执行器从 5 秒起翻倍到 300 秒、最多三次；回复从 5 秒起翻倍到 300 秒；执行器 turn 失败后的续跑是 15 / 30 / 60 秒。同一个工单、同一个会话的回复保序。
+
+工具数量也是可数的：主会话 14 个应用工具，执行器 6 个。主会话另有一批 DSH 内置工具（`skill`、`bash`、`read`、`read_image`、`job_output`、`job_list`、`job_kill`）。
 
 完整架构见官方 `docs/007-architecture.md`。
 """,
@@ -408,7 +418,7 @@ REFERENCE = [
         body=r"""
 ## 配置与安装
 
-**1 · 允许名单没加人。**名单为空，任何请求都成不了工单。→ Settings → Eval → On each Source，先把自己的登录名加进去。
+**1 · 允许名单没加人。**默认准入表下，名单为空时没人能发起明确请求。→ Settings → Eval → On each Source，先把自己的登录名加进去；想让某个群人人可用，把那一行的「名单外 · 点名」改成 `explicit`。
 
 **2 · 编辑 Issue 正文补 @。**来源不接收这种编辑，等于没发。→ 发一条**新评论**。
 
@@ -427,6 +437,19 @@ REFERENCE = [
 **8 · 以为自动合并默认开着、审批由系统强制。**默认从不以智能体账号启用，host 也没有合并决策逻辑。→ 人工合并 + GitHub 分支保护并开启「新提交作废旧审批」。
 
 **9 · 把 CLI 包装 / git 配置当安全沙箱。**执行器和主会话都以 `danger-full-access`、以操作者系统用户运行，能按绝对路径执行程序、读家目录。→ 用只含智能体凭证的专用系统账号。
+
+## 看日志才懂的报错
+
+| 日志里出现 | 意思与处理 |
+| --- | --- |
+| `… was not written by dsh-superagent` | `worker-bin` / `worker-gitconfig` 里混进了外部文件；移出去，或换一个 `stateDir` |
+| `git does not read the github.com credential configuration dsh-superagent writes` | git 太旧；装 2.32+ |
+| `The bot lark-cli allows user identities` | 飞书 CLI 配置太宽；换成只允许机器人身份的 strict mode |
+| `The GitHub Source names no repository` | GitHub 卡片没填 `owner/name` |
+| `The prepare command failed: …` | 输出里就是原因，常见是克隆路径错；改好后用 `Retry` |
+| `… timed out after 90 s` / `… exited with code …` | CLI 失败但没打原因；用操作者账号手动跑那个程序，看它自己的报错 |
+| `dsh-superagent configuration has keys it does not use` | 配置里有旧键；删掉被点名的那项（消息会告诉你它搬去哪了） |
+| `Failed to load plugins`（DSH 升级后） | 重启正在运行的实例 |
 
 ## 日常使用
 
@@ -480,8 +503,9 @@ pnpm check          # typecheck + test + build
 | profile | `superagent`（DSH Web profile 的副本） |
 | 面板 | `http://127.0.0.1:3082` → 侧栏 **Superagent** |
 | 管理 API | `/orchestrator/api/`，需 `x-orchestrator-request: 1`，host 必须是 `127.0.0.1:<port>` / `localhost:<port>` |
-| 状态目录 | `<home>/.dsh/state/superagent`（绝对路径） |
-| 分支前缀 | `agent/` |
+| 状态目录 `stateDir` | **必填，无内置默认**，必须是绝对路径；SETUP 推荐 `<home>/.dsh/state/superagent` |
+| PR 归属 | PR 分支的**最后一段**等于工单简称；`agent/` 前缀来自示例 prepare 命令，不是配置项 |
+| 并发 / 评估超时 | `maxWorkers = 3`；`evalTimeoutSeconds = 120`（可在 Settings 里调） |
 | 接单模式 | `observe` |
 | 自动合并 | 关 |
 | 配置文件 | `$DSH_HOME/profiles/<profile>/cordis.patch.yml`（模板：`examples/profile.cordis.patch.yml`） |
@@ -508,6 +532,16 @@ scripts/dsh-superagent --profile superagent status
 scripts/dsh-superagent --profile superagent --respect-stop restart
 ```
 
+| 参数 | 默认 | 作用 |
+| --- | --- | --- |
+| `--profile` | 环境变量 `DSH_SUPERAGENT_PROFILE`，否则 `superagent` | 目标 profile；tmux 会话名是 `dsh-<profile>` |
+| `--url` | `DSH_SUPERAGENT_URL`，否则 `http://127.0.0.1:3082` | 健康检查地址；改端口时必须同步 |
+| `--timeout` | 60 秒 | `start` 等运行时就绪的上限 |
+| `--stop-timeout` | 300 秒 | 优雅关闭上限（先让执行器做完当前 step） |
+| `--respect-stop` | 关 | 监控用：看到 `manually-stopped` 标记就跳过 start/restart，返回 0 |
+
+`stop` 只发 SIGINT，从不强杀，也不动其他 tmux 会话。日志写在 `.artifacts/dsh-superagent-<profile>-<日期>-<时间>-<pid>.log`，保留最近 20 个；控制文件在 `.artifacts/control/profiles/<profile>/`（`manually-stopped`、`service.pid`、`operation.lock`）。
+
 | `status` 退出码 | 含义 |
 | --- | --- |
 | 0 | 正常 |
@@ -520,8 +554,12 @@ scripts/dsh-superagent --profile superagent --respect-stop restart
 ## 升级
 
 ```
+# 0. 等执行器没有在途的 turn（官方顺序的第一步）
+# 1. 备份唯一的状态数据库
 cp <stateDir>/orchestrator.sqlite <stateDir>/orchestrator.sqlite.bak
+# 2. 拉代码、装依赖、构建
 git pull && pnpm install && pnpm build
+# 3. 重启
 scripts/dsh-superagent restart
 ```
 
@@ -584,6 +622,7 @@ scripts/dsh-superagent restart
 
 - 官方 `README.md`、`SETUP.md`、`package.json`、`examples/profile.cordis.patch.yml`；
 - 编号文档 `docs/000-philosophy.md` 到 `docs/008-cookbook.md`；
+- 2026-11-15 又逐文件复核了 002 / 003 / 006 / 007 / 008、`scripts/dsh-superagent`、准入表默认值（`src/admission.ts`）与面板文案来源（`src/client/locales.ts`、各 Source 的字段定义）。站内的准入表、八个工单阶段、CLI 参数、auto-merge 五条件据此改写；核验记录留在仓库的 `docs/RESEARCH-UPSTREAM.md`；
 - 框架与教学设计参考 [nevertoday/xxd-pstack](https://github.com/nevertoday/xxd-pstack) 的公开信息架构：**数据驱动导航、新手入门与完整教程双轨、每页一句话说明、可照抄的提示词、「你应该看到什么 / 不对怎么办」、术语悬停、亮暗主题与全站搜索**。
 
 本站的文字、示例请求、类比、表格与页面组织均为原创撰写，没有复制上述两个仓库的教程正文、文案或插画。示例中出现的命令与配置项来自官方文档；示意性的请求正文是本站按官方文档描述的语法构造的，不是官方给出的模板。

@@ -42,6 +42,8 @@ test("generated links, assets, canonical URLs and search entries stay under the 
     assert.doesNotMatch(html, /X\.init\(document\);\s*sync\(\)/);
     assert.ok(html.includes(`data-sections="${prefix}search-sections.json?v=${version}"`));
     for (const [, url] of html.matchAll(/(?:href|src|data-sections)="(\/(?!\/)[^"#?]*)/g)) {
+      // 顶栏那个「← Skills123」按设计指向宿主站点根，是全站唯一允许逃出前缀的链接
+      if (url === "/") { await access(path.join(site, "index.html")); continue; }
       if (!url.startsWith(prefix)) { broken.push(`${page}: ${url}`); continue; }
       const target = path.join(site, decodeURIComponent(url));
       try { await access(url.endsWith("/") ? path.join(target, "index.html") : target); }

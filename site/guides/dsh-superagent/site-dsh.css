@@ -24,6 +24,21 @@
   .site-mark__dot { fill: #fff; }
   .site-brand__name { font-weight: 600; letter-spacing: -.01em; }
 
+  /* 作为子专题发布时的返回入口 */
+  /* 顶栏工具区宽 204px（目录栏 232 减去两端内边距），连同三个图标按钮放不下 12px 的胶囊，
+     所以这里收成 11px / 6px 内边距，保证 1280 及以上都不出现横向滚动。 */
+  .site-up {
+    display: inline-flex; align-items: center; height: 28px; padding: 0 6px;
+    border: 1px solid var(--line-strong, var(--line)); border-radius: 6px;
+    color: var(--muted); font-size: 11px; font-weight: 500; text-decoration: none; white-space: nowrap;
+  }
+  .site-up:hover { border-color: var(--tu-blue-line); color: var(--tu-blue); }
+  /* 窄屏顶栏放不下文字胶囊（360px 时连图标都紧），只留箭头，名字交给 aria-label */
+  @media (max-width: 560px) {
+    .site-up { width: 28px; padding: 0; justify-content: center; font-size: 0; }
+    .site-up::before { content: "←"; font-size: 14px; line-height: 1; }
+  }
+
   /* 左栏：原生 details 折叠 */
   .site-nav__fold { margin: 0; }
   .site-nav__fold > summary { list-style: none; cursor: pointer; }

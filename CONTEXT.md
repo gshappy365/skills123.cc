@@ -57,3 +57,9 @@
 `rayskills` 使用固定上游 commit `454bff330bb3ddae9d3c639bd0f791e6c61dd830` 快照，手动研究和同步，页面运行时不调用 GitHub API。
 
 `rayskills` 技能包中文名称为“Rayskills 内容技能包”，英文标识为“RAYSKILLS BUILDER TOOLKIT”，稳定 ID 为 `rayskills`，永久路由为 `/packages/rayskills/`。
+
+## 已归档技能包
+
+`catalog.json` 中 `status` 为 `archived` 的技能包。数据、技能清单和 `/packages/<id>/` 工作台页面都保留，但不再出现在首页分组与全局搜索里，只能通过直接链接进入。用于「曾经收录、现在不想摆在首页」的来源，避免删除数据后无法复核；恢复展示只需把 `status` 改回 `active`。
+
+第一批归档：`addyosmani-agent-skills`（Addy Osmani 工程技能包）、`founder-project-evaluator`（Founder Project Evaluator 创业项目评估技能包）、`waza`（Waza 工程习惯技能包）。

@@ -130,7 +130,7 @@
         "代码审查",
         "持续交付"
       ],
-      "status": "active",
+      "status": "archived",
       "installCommand": "npx -y skills add addyosmani/agent-skills",
       "platform": "Claude Code / Codex / Cursor",
       "license": "MIT",
@@ -291,7 +291,7 @@
         "证据审查",
         "单位经济"
       ],
-      "status": "active",
+      "status": "archived",
       "platform": "Codex",
       "license": "unconfirmed",
       "groups": [
@@ -324,7 +324,7 @@
         "调试",
         "产品设计"
       ],
-      "status": "active",
+      "status": "archived",
       "installCommand": "npx -y skills add tw93/Waza -a codex -g -y",
       "platform": "Codex / Claude Code / Cursor",
       "license": "MIT",

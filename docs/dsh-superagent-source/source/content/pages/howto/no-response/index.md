@@ -9,12 +9,13 @@ description: "从消息写法一路查到来源、名单、评估和暂停，五
 
 | # | 查什么 | 在哪看 | 常见结果 |
 | --- | --- | --- | --- |
+| 0 | 有没有「被丢弃的消息」 | Source 页 | 它会说明是会话消失了，还是来源不再听它 |
 | 1 | 是不是发成了**新评论** | 原 Issue | 编辑正文补 @ 收不到，必须发新评论 |
-| 2 | 发消息的人在不在允许名单 | Settings → Eval → On each Source | 名单为空则任何请求都成不了工单 |
+| 2 | 发消息的人在不在允许名单 | Settings → Eval → On each Source | 默认准入表下，名单为空时没人能发起明确请求 |
 | 3 | 来源开着吗、有没有 setup 问题 | Source 页 | 开关、账号、CLI 登录 |
 | 4 | 是不是被暂停了 | Execution 页 | `Pause processing` |
 | 5 | 触发到底进没进来 | Trigger 页 | 没有触发＝问题在前四步 |
-| 6 | 决定是什么 | Eval 页 | `ignore`（含 observe 的「本来会接」）/ `unavailable` |
+| 6 | 决定是什么 | Eval 页 | `ignore`（含「观察模式：本会接单」）/ `unavailable` |
 | 7 | 工单是不是失败了 | Execution 页 | prepare 命令（克隆路径）失败最常见，改好 `Retry` |
 
 ## 几个高频答案

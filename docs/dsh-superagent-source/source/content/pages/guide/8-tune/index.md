@@ -57,6 +57,8 @@ git pull && pnpm install && pnpm build
 scripts/dsh-superagent restart
 ```
 
+重启之后还有一件事要处理：你改过的内置提示词如果默认值变了，面板会把它标成 **Default updated（默认内容已更新）**，并在你的文字上方并排给出新旧默认值。这时要做一次选择——「保留我的」还是「改用新的默认」；没改过的部件会自动跟随，不用管。
+
 **不要重跑 `dsh superagent --from-default-profile ...`**（会替换 profile 并删掉 `cordis.patch.yml`）。迁移过的数据库旧版本打不开，所以回滚必须靠备份。`cordis.patch.yml` 里 `dsh-superagent-worker` 和 `dsh-superagent-router` 两行在会话使用期间不能删，否则恢复会话会报 `agent-preset/not-found`。
 
 ## 每小时自检

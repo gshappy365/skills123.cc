@@ -15,6 +15,7 @@ description: "本站的来源、写法、许可边界，以及内容出错时怎
 
 - 官方 `README.md`、`SETUP.md`、`package.json`、`examples/profile.cordis.patch.yml`；
 - 编号文档 `docs/000-philosophy.md` 到 `docs/008-cookbook.md`；
+- 2026-11-15 又逐文件复核了 002 / 003 / 006 / 007 / 008、`scripts/dsh-superagent`、准入表默认值（`src/admission.ts`）与面板文案来源（`src/client/locales.ts`、各 Source 的字段定义）。站内的准入表、八个工单阶段、CLI 参数、auto-merge 五条件据此改写；核验记录留在仓库的 `docs/RESEARCH-UPSTREAM.md`；
 - 框架与教学设计参考 [nevertoday/xxd-pstack](https://github.com/nevertoday/xxd-pstack) 的公开信息架构：**数据驱动导航、新手入门与完整教程双轨、每页一句话说明、可照抄的提示词、「你应该看到什么 / 不对怎么办」、术语悬停、亮暗主题与全站搜索**。
 
 本站的文字、示例请求、类比、表格与页面组织均为原创撰写，没有复制上述两个仓库的教程正文、文案或插画。示例中出现的命令与配置项来自官方文档；示意性的请求正文是本站按官方文档描述的语法构造的，不是官方给出的模板。

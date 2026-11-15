@@ -53,6 +53,12 @@ description: "一张图看懂从有人在 GitHub @ 它，到人来合并 PR 的�
 
 ## 引擎内部（想深入再看）
 
-`src/core/` 是纯领域逻辑、零 I/O；**Engine 是触发、线程、决定、工单、派工的唯一写入者**，内部分成单向依赖的五段：`Intake → Evals → Tickets → Assignments → Replies`。所有方法同步、每条命令一个事务，并按角色暴露不同视图。状态存在单个 SQLite 文件 `<stateDir>/orchestrator.sqlite`；副作用走 `Effects` 队列，`Outbox` 是唯一写回执的地方；`Passes` 每 2 秒驱动一次到期评估。
+`src/core/` 是纯领域逻辑、零 I/O；**Engine 是触发、线程、决定、工单、派工的唯一写入者**，内部分成单向依赖的五段：`Intake → Evals → Tickets → Assignments → Replies`。所有方法同步、每条命令一个事务，并按角色暴露不同视图。状态存在单个 SQLite 文件 `<stateDir>/orchestrator.sqlite`，只有 9 张单数表：`trigger`、`disposition`、`trigger_thread`、`thread`、`ticket`、`decision`、`effect`、`outbox`、`kv`。
+
+副作用走 `Effects` 队列，`Outbox` 是唯一写回执的地方。`Passes` 一次只跑一个、==每 2 秒一趟==，先处理到期 effects 再驱动评估——这就是「为什么它总慢半拍」的答案。
+
+重试节奏也有规律：评估、投递、中继、通知从 2 秒起翻倍到 60 秒；启动执行器从 5 秒起翻倍到 300 秒、最多三次；回复从 5 秒起翻倍到 300 秒；执行器 turn 失败后的续跑是 15 / 30 / 60 秒。同一个工单、同一个会话的回复保序。
+
+工具数量也是可数的：主会话 14 个应用工具，执行器 6 个。主会话另有一批 DSH 内置工具（`skill`、`bash`、`read`、`read_image`、`job_output`、`job_list`、`job_kill`）。
 
 完整架构见官方 `docs/007-architecture.md`。
